@@ -40,7 +40,7 @@ export namespace Arr {
    * // Type: IntersectBrand<PositiveNumber, SizeType.Arr>
    * // Value: 3 (branded, guaranteed positive)
    *
-   * const nonEmpty: NonEmptyArray<string> = ['a', 'b'] as NonEmptyArray<string>;
+   * const nonEmpty: NonEmptyArray<string> = ['a', 'b'];
    * const nonEmptySize = Arr.size(nonEmpty);
    * // Type: IntersectBrand<PositiveNumber, SizeType.Arr>
    * // Guaranteed to be > 0
@@ -70,13 +70,6 @@ export namespace Arr {
    * const indices = Arr.seq(dataSize); // Creates [0, 1, 2]
    * const zeros = Arr.zeros(dataSize); // Creates [0, 0, 0]
    *
-   * // Safe for bounds checking
-   * const isValidIndex = (index: number) => index >= 0 && index < dataSize;
-   *
-   * // Comparison with other sizes
-   * const otherArray = ['a', 'b'];
-   * const sizeDiff = Uint32.sub(Arr.size(data), Arr.size(otherArray)); // 1
-   *
    * // Functional composition
    * const arrays = [
    *   [1, 2],
@@ -103,18 +96,13 @@ export namespace Arr {
    * @see {@link isEmpty} for checking if size is 0
    * @see {@link isNonEmpty} for checking if size > 0
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const size: SizeFnOverload = (<Ar extends readonly unknown[]>(
+  export const size = <Ar extends readonly unknown[]>(
     array: Ar,
-  ): SizeType.Arr => asUint32(array.length)) as SizeFnOverload;
-
-  type SizeFnOverload = {
-    <Ar extends NonEmptyArray<unknown>>(
-      array: Ar,
-    ): IntersectBrand<PositiveNumber, SizeType.Arr>;
-
-    <Ar extends readonly unknown[]>(array: Ar): SizeType.Arr;
-  };
+  ): Ar extends NonEmptyArray<unknown>
+    ? IntersectBrand<PositiveNumber, SizeType.Arr>
+    : SizeType.Arr =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    asUint32(array.length) as never;
 
   export const length = size;
 
@@ -182,25 +170,10 @@ export namespace Arr {
    *   if (Arr.isEmpty(arr)) {
    *     // arr is now typed as readonly []
    *     console.log('Array is empty');
+   *     // arr[0]; // type error!
    *     return 0;
-   *   } else {
-   *     // arr is now typed as NonEmptyArray<number>
-   *     return arr[0]; // Safe access - TypeScript knows it's non-empty
    *   }
    * }
-   *
-   * // Conditional processing
-   * const data = [10, 20, 30];
-   * if (!Arr.isEmpty(data)) {
-   *   // Safe to access elements
-   *   const firstElement = data[0]; // No undefined risk
-   *   const lastElement = data[data.length - 1];
-   * }
-   *
-   * // Filtering empty arrays
-   * const arrayList: readonly number[][] = [[1, 2], [], [3], []];
-   * const nonEmptyArrays = arrayList.filter(arr => !Arr.isEmpty(arr));
-   * // nonEmptyArrays: [[1, 2], [3]]
    *
    * // Early returns
    * function sumArray(numbers: readonly number[]): number {
@@ -210,12 +183,6 @@ export namespace Arr {
    *   return numbers.reduce((sum, n) => sum + n, 0);
    * }
    *
-   * // Type inference examples
-   * const testEmpty = [] as const;
-   * const testNonEmpty = [1, 2] as const;
-   *
-   * expectType<Parameters<typeof Arr.isEmpty>[0], readonly unknown[]>('=');
-   * expectType<ReturnType<typeof Arr.isEmpty>, boolean>('=');
    * ```
    *
    * @see {@link isNonEmpty} for the opposite check (non-empty arrays)
@@ -258,16 +225,14 @@ export namespace Arr {
    *
    * // Safe operations on non-empty arrays
    * function processData(data: readonly string[]) {
-   *   if (Arr.isNonEmpty(data)) {
-   *     // All of these are now safe without undefined checks
+   *   if (!Arr.isNonEmpty(data)) return;  // early return pattern
+   *
+   *    // This is now safe without undefined checks
    *     const first = data[0];
-   *     const last = data[data.length - 1];
-   *     const middle = data[Math.floor(data.length / 2)];
    *
    *     // Can safely use non-empty array methods
-   *     const joined = data.join(', ');
-   *     const reduced = data.reduce((acc, item) => acc + item.length, 0);
-   *   }
+   *     const lastElement = Arr.last(data);
+   *
    * }
    *
    * // Filtering and working with arrays
@@ -292,7 +257,7 @@ export namespace Arr {
    *   }
    *
    *   // numbers is now NonEmptyArray<number>
-   *   return numbers.reduce((sum, n) => sum + n, 0) / numbers.length;
+   *   return Arr.sum(numbers) / Arr.size(numbers);
    * }
    *
    * // Functional composition
@@ -440,27 +405,15 @@ export namespace Arr {
    * expectType<typeof maybeEmpty, readonly 0[]>('=');
    * ```
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const zeros: ZerosFnOverload = ((
-    len: SizeType.ArgArrNonNegative,
-  ): readonly 0[] => Array.from<0>({ length: len }).fill(0)) as ZerosFnOverload;
-
-  type ZerosFnOverload = {
-    /**
-     * Create array of zeros with compile-time length.
-     */
-    <N extends SmallUint>(len: N): ArrayOfLength<N, 0>;
-
-    /**
-     * Create non-empty array of zeros.
-     */
-    (len: SizeType.ArgArrPositive): NonEmptyArray<0>;
-
-    /**
-     * Create array of zeros.
-     */
-    (len: SizeType.ArgArrNonNegative): readonly 0[];
-  };
+  export const zeros = <N extends number>(
+    len: N,
+  ): N extends SmallUint
+    ? ArrayOfLength<N, 0>
+    : N extends SizeType.ArgArrPositive
+      ? NonEmptyArray<0>
+      : readonly 0[] =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    Array.from<0>({ length: len }).fill(0) as never;
 
   /**
    * Creates a sequence of consecutive integers from 0 to `len-1`.
@@ -503,19 +456,15 @@ export namespace Arr {
    * expectType<typeof single, readonly [0]>('=');
    * ```
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const seq: SeqFnOverload = ((
-    len: SizeType.ArgArrNonNegative,
-  ): readonly SizeType.Arr[] =>
-    Array.from({ length: len }, (_, i) => asUint32(i))) as SeqFnOverload;
-
-  type SeqFnOverload = {
-    <N extends SmallUint>(len: N): Seq<N>;
-
-    (len: SizeType.ArgArrPositive): NonEmptyArray<SizeType.Arr>;
-
-    (len: SizeType.ArgArrNonNegative): readonly SizeType.Arr[];
-  };
+  export const seq = <N extends number>(
+    len: N,
+  ): N extends SmallUint
+    ? Seq<N>
+    : N extends SizeType.ArgArrPositive
+      ? NonEmptyArray<SizeType.Arr>
+      : readonly SizeType.Arr[] =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    Array.from({ length: len }, (_, i) => i) as never;
 
   /**
    * Creates a new array of the specified length, with each position filled with the provided initial value.
@@ -565,20 +514,16 @@ export namespace Arr {
    * @see {@link zeros} for creating arrays filled with zeros
    * @see {@link seq} for creating sequences of consecutive integers
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const create: CreateFnOverload = (<const V,>(
-    len: SizeType.ArgArrNonNegative,
+  export const create = <const V, N extends number>(
+    len: N,
     init: V,
-  ): readonly V[] =>
-    Array.from({ length: Math.max(0, len) }, () => init)) as CreateFnOverload;
-
-  type CreateFnOverload = {
-    <const V, N extends SmallUint>(len: N, init: V): ArrayOfLength<N, V>;
-
-    <const V>(len: SizeType.ArgArrPositive, init: V): NonEmptyArray<V>;
-
-    <const V>(len: SizeType.ArgArrNonNegative, init: V): readonly V[];
-  };
+  ): N extends SmallUint
+    ? ArrayOfLength<N, V>
+    : N extends SizeType.ArgArrPositive
+      ? NonEmptyArray<V>
+      : readonly V[] =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    Array.from({ length: Math.max(0, len) }, () => init) as never;
 
   export const newArray = create;
 
@@ -932,9 +877,6 @@ export namespace Arr {
     }
   }) as AtFnOverload;
 
-  /**
-   * Function type for safely accessing an array element at a given index.
-   */
   type AtFnOverload = {
     <E>(array: readonly E[], index: SizeType.ArgArr): Optional<E>;
 
@@ -1013,35 +955,22 @@ export namespace Arr {
    * @see {@link at} for accessing elements at specific indices
    * @see {@link tail} for getting all elements except the first
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const head: HeadFnOverload = (<E,>(array: readonly E[]) => {
-    const element = array.at(0);
-    return element === undefined ? Optional.none : Optional.some(element);
-  }) as HeadFnOverload;
-
-  type HeadFnOverload = {
-    /**
-     * Get head of empty array.
-     */
-    (array: readonly []): Optional.None;
-
-    /**
-     * Get head of tuple.
-     */
-    <E, L extends readonly unknown[]>(
-      array: readonly [E, ...L],
-    ): Optional.Some<E>;
-
-    /**
-     * Get head of non-empty array.
-     */
-    <E>(array: NonEmptyArray<E>): Optional.Some<E>;
-
-    /**
-     * Get head of any array.
-     */
-    <E>(array: readonly E[]): Optional<E>;
-  };
+  export const head = <Ar extends readonly unknown[]>(
+    array: Ar,
+  ): Ar extends readonly []
+    ? Optional.None
+    : Ar extends readonly [infer E, ...unknown[]]
+      ? Optional.Some<E>
+      : Ar extends NonEmptyArray<infer E>
+        ? Optional.Some<E>
+        : Optional<Ar[number]> =>
+    pipe(array.at(0)).map(
+      (element) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+        (element === undefined
+          ? Optional.none
+          : Optional.some(element)) as never,
+    ).value;
 
   /**
    * Returns the last element of an array wrapped in an Optional.
@@ -1123,35 +1052,22 @@ export namespace Arr {
    * @see {@link at} for accessing elements at specific indices with negative indexing support
    * @see {@link butLast} for getting all elements except the last
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const last: LastFnOverload = (<E,>(array: readonly E[]) => {
-    const element = array.at(-1);
-    return element === undefined ? Optional.none : Optional.some(element);
-  }) as LastFnOverload;
-
-  type LastFnOverload = {
-    /**
-     * Get last of empty array.
-     */
-    (array: readonly []): Optional.None;
-
-    /**
-     * Get last of tuple.
-     */
-    <Ar extends readonly unknown[], L>(
-      array: readonly [...Ar, L],
-    ): Optional.Some<L>;
-
-    /**
-     * Get last of non-empty array.
-     */
-    <E>(array: NonEmptyArray<E>): Optional.Some<E>;
-
-    /**
-     * Get last of any array.
-     */
-    <E>(array: readonly E[]): Optional<E>;
-  };
+  export const last = <Ar extends readonly unknown[]>(
+    array: Ar,
+  ): Ar extends readonly []
+    ? Optional.None
+    : Ar extends readonly [...unknown[], infer E]
+      ? Optional.Some<E>
+      : Ar extends NonEmptyArray<infer E>
+        ? Optional.Some<E>
+        : Optional<Ar[number]> =>
+    pipe(array.at(-1)).map(
+      (element) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+        (element === undefined
+          ? Optional.none
+          : Optional.some(element)) as never,
+    ).value;
 
   // slicing
 
@@ -1351,30 +1267,29 @@ export namespace Arr {
   }) as unknown as TakeFnOverload;
 
   type TakeFnOverload = {
-    <Ar extends readonly unknown[], N extends SmallUint>(
+    <Ar extends readonly unknown[], N extends SizeType.ArgArrNonNegative>(
       array: Ar,
       num: N,
-    ): List.Take<N, Ar>;
+    ): N extends SmallUint
+      ? List.Take<N, Ar>
+      : N extends SizeType.ArgArrPositive
+        ? Ar extends NonEmptyArray<unknown>
+          ? NonEmptyArray<Ar[number]>
+          : readonly Ar[number][]
+        : readonly Ar[number][];
 
     // curried version
-    <N extends SmallUint>(
+    <N extends SizeType.ArgArrNonNegative>(
       num: N,
-    ): <Ar extends readonly unknown[]>(array: Ar) => List.Take<N, Ar>;
-
-    <E>(
-      array: NonEmptyArray<E>,
-      num: SizeType.ArgArrPositive,
-    ): NonEmptyArray<E>;
-
-    // curried version
-    (
-      num: SizeType.ArgArrPositive,
-    ): <E>(array: NonEmptyArray<E>) => NonEmptyArray<E>;
-
-    <E>(array: readonly E[], num: SizeType.ArgArrNonNegative): readonly E[];
-
-    // curried version
-    (num: SizeType.ArgArrNonNegative): <E>(array: readonly E[]) => readonly E[];
+    ): <Ar extends readonly unknown[]>(
+      array: Ar,
+    ) => N extends SmallUint
+      ? List.Take<N, Ar>
+      : N extends SizeType.ArgArrPositive
+        ? Ar extends NonEmptyArray<unknown>
+          ? NonEmptyArray<Ar[number]>
+          : readonly Ar[number][]
+        : readonly Ar[number][];
   };
 
   /**
@@ -1419,30 +1334,29 @@ export namespace Arr {
   }) as unknown as TakeLastFnOverload;
 
   type TakeLastFnOverload = {
-    <Ar extends readonly unknown[], N extends SmallUint>(
+    <Ar extends readonly unknown[], N extends SizeType.ArgArrNonNegative>(
       array: Ar,
       num: N,
-    ): List.TakeLast<N, Ar>;
+    ): N extends SmallUint
+      ? List.TakeLast<N, Ar>
+      : N extends SizeType.ArgArrPositive
+        ? Ar extends NonEmptyArray<unknown>
+          ? NonEmptyArray<Ar[number]>
+          : readonly Ar[number][]
+        : readonly Ar[number][];
 
     // curried version
-    <N extends SmallUint>(
+    <N extends SizeType.ArgArrNonNegative>(
       num: N,
-    ): <Ar extends readonly unknown[]>(array: Ar) => List.TakeLast<N, Ar>;
-
-    <E>(
-      array: NonEmptyArray<E>,
-      num: SizeType.ArgArrPositive,
-    ): NonEmptyArray<E>;
-
-    // curried version
-    (
-      num: SizeType.ArgArrPositive,
-    ): <E>(array: NonEmptyArray<E>) => NonEmptyArray<E>;
-
-    <E>(array: readonly E[], num: SizeType.ArgArrNonNegative): readonly E[];
-
-    // curried version
-    (num: SizeType.ArgArrNonNegative): <E>(array: readonly E[]) => readonly E[];
+    ): <Ar extends readonly unknown[]>(
+      array: Ar,
+    ) => N extends SmallUint
+      ? List.TakeLast<N, Ar>
+      : N extends SizeType.ArgArrPositive
+        ? Ar extends NonEmptyArray<unknown>
+          ? NonEmptyArray<Ar[number]>
+          : readonly Ar[number][]
+        : readonly Ar[number][];
   };
 
   /**
@@ -1487,25 +1401,17 @@ export namespace Arr {
   }) as SkipFnOverload;
 
   type SkipFnOverload = {
-    <Ar extends readonly unknown[], N extends SmallUint>(
+    <Ar extends readonly unknown[], N extends SizeType.ArgArrNonNegative>(
       array: Ar,
       num: N,
-    ): List.Skip<N, Ar>;
-
-    <E>(array: NonEmptyArray<E>, num: SizeType.ArgArrPositive): readonly E[];
-
-    <E>(array: readonly E[], num: SizeType.ArgArrNonNegative): readonly E[];
+    ): N extends SmallUint ? List.Skip<N, Ar> : readonly Ar[number][];
 
     // curried version
-    <N extends SmallUint>(
+    <N extends SizeType.ArgArrNonNegative>(
       num: N,
-    ): <Ar extends readonly unknown[]>(array: Ar) => List.Skip<N, Ar>;
-
-    (
-      num: SizeType.ArgArrPositive,
-    ): <E>(array: NonEmptyArray<E>) => readonly E[];
-
-    (num: SizeType.ArgArrNonNegative): <E>(array: readonly E[]) => readonly E[];
+    ): <Ar extends readonly unknown[]>(
+      array: Ar,
+    ) => N extends SmallUint ? List.Skip<N, Ar> : readonly Ar[number][];
   };
 
   /**
@@ -1550,22 +1456,91 @@ export namespace Arr {
   }) as SkipLastFnOverload;
 
   type SkipLastFnOverload = {
-    <Ar extends readonly unknown[], N extends SmallUint>(
+    <Ar extends readonly unknown[], N extends SizeType.ArgArrNonNegative>(
       array: Ar,
       num: N,
-    ): List.SkipLast<N, Ar>;
-
-    <E>(array: readonly E[], num: SizeType.ArgArrNonNegative): readonly E[];
+    ): N extends SmallUint ? List.SkipLast<N, Ar> : readonly Ar[number][];
 
     // curried version
-    <N extends SmallUint>(
+    <N extends SizeType.ArgArrNonNegative>(
       num: N,
-    ): <Ar extends readonly unknown[]>(array: Ar) => List.SkipLast<N, Ar>;
-
-    (num: SizeType.ArgArrNonNegative): <E>(array: readonly E[]) => readonly E[];
+    ): <Ar extends readonly unknown[]>(
+      array: Ar,
+    ) => N extends SmallUint ? List.SkipLast<N, Ar> : readonly Ar[number][];
   };
 
   // modification (returns new array)
+
+  /**
+   * Returns a new tuple with the element at the specified index replaced.
+   *
+   * This operation is type-safe with compile-time index validation.
+   * The resulting tuple type reflects that the element at the given index
+   * may be either the new type or the original type.
+   *
+   * @template T - The type of the input tuple
+   * @template N - The type of the new value to set
+   * @param tpl - The input tuple
+   * @param index - The index to update (must be valid for the tuple length)
+   * @param newValue - The new value to place at the index
+   * @returns A new tuple with the updated element
+   *
+   * @example
+   * ```typescript
+   * // Basic usage
+   * const tpl = ['a', 'b', 'c'] as const;
+   * const updated = Arr.set(tpl, 1, 'B'); // readonly ['a', 'B', 'c']
+   *
+   * // Type changes are reflected
+   * const mixed = [1, 'hello', true] as const;
+   * const withNumber = Arr.set(mixed, 1, 42);
+   * // readonly [1, 42 | 'hello', true]
+   *
+   * // Compile-time index validation
+   * const short = [1, 2] as const;
+   * // Arr.set(short, 2, 3); // Error: index 2 is out of bounds
+   *
+   * // Different value types
+   * const nums = [1, 2, 3] as const;
+   * const withString = Arr.set(nums, 0, 'first');
+   * // readonly ['first' | 1, 2, 3]
+   * ```
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+  export const set: SetFnOverload = (<
+    const Ar extends readonly unknown[],
+    const V,
+  >(
+    array: Ar,
+    index: SizeType.ArgArrNonNegative,
+    newValue: V,
+  ) => array.with(index, newValue)) as unknown as SetFnOverload;
+
+  type SetFnOverload = {
+    <const Ar extends readonly unknown[], const V>(
+      array: Ar,
+      index: IsFixedLengthList<Ar> extends true
+        ? Index<Length<Ar>>
+        : SizeType.ArgArrNonNegative,
+      newValue: V,
+    ): IsFixedLengthList<Ar> extends true
+      ? Readonly<{ [K in keyof Ar]: Ar[K] | V }>
+      : Ar extends NonEmptyArray<unknown>
+        ? NonEmptyArray<Ar[number] | V>
+        : readonly (Ar[number] | V)[];
+
+    // curried version
+    <const V>(
+      index: SizeType.ArgArrNonNegative,
+      newValue: V,
+    ): <const Ar extends readonly unknown[]>(
+      array: Ar,
+    ) => IsFixedLengthList<Ar> extends true
+      ? Readonly<{ [K in keyof Ar]: Ar[K] | V }>
+      : Ar extends NonEmptyArray<unknown>
+        ? NonEmptyArray<Ar[number] | V>
+        : readonly (Ar[number] | V)[];
+  };
 
   /**
    * Returns a new array with the element at the specified index updated by a function.
@@ -1747,17 +1722,29 @@ export namespace Arr {
   }) as ToUpdatedFnOverload;
 
   type ToUpdatedFnOverload = {
-    <E, U>(
-      array: readonly E[],
-      index: SizeType.ArgArrNonNegative,
-      updater: (prev: E) => U,
-    ): readonly (E | U)[];
+    <const Ar extends readonly unknown[], const U>(
+      array: Ar,
+      index: IsFixedLengthList<Ar> extends true
+        ? Index<Length<Ar>>
+        : SizeType.ArgArrNonNegative,
+      updater: (prev: Ar[number]) => U,
+    ): IsFixedLengthList<Ar> extends true
+      ? Readonly<{ [K in keyof Ar]: Ar[K] | U }>
+      : Ar extends NonEmptyArray<unknown>
+        ? NonEmptyArray<Ar[number] | U>
+        : readonly (Ar[number] | U)[];
 
     // curried version
-    <E, U>(
+    <E, const U>(
       index: SizeType.ArgArrNonNegative,
       updater: (prev: E) => U,
-    ): (array: readonly E[]) => readonly (E | U)[];
+    ): <const Ar extends readonly E[]>(
+      array: Ar,
+    ) => IsFixedLengthList<Ar> extends true
+      ? Readonly<{ [K in keyof Ar]: Ar[K] | U }>
+      : Ar extends NonEmptyArray<unknown>
+        ? NonEmptyArray<Ar[number] | U>
+        : readonly (Ar[number] | U)[];
   };
 
   /**
@@ -1808,18 +1795,26 @@ export namespace Arr {
   }) as ToInsertedFnOverload;
 
   type ToInsertedFnOverload = {
-    <E, const V = E>(
-      array: readonly E[],
+    <Ar extends readonly unknown[], const V = Ar[number]>(
+      array: Ar,
       index: SizeType.ArgArrNonNegative,
       newValue: V,
-    ): NonEmptyArray<E | V>;
+    ): IsFixedLengthList<Ar> extends true
+      ? ArrayOfLength<CastToNumber<Increment<Ar['length']>>, Ar[number] | V>
+      : NonEmptyArray<Ar[number] | V>;
 
     // curried version
-    <E, const V = E>(
+    <const V>(
       index: SizeType.ArgArrNonNegative,
       newValue: V,
-    ): (array: readonly E[]) => NonEmptyArray<E | V>;
+    ): <Ar extends readonly unknown[]>(
+      array: Ar,
+    ) => IsFixedLengthList<Ar> extends true
+      ? ArrayOfLength<CastToNumber<Increment<Ar['length']>>, Ar[number] | V>
+      : NonEmptyArray<Ar[number] | V>;
   };
+
+  type CastToNumber<T> = T extends number ? T : never;
 
   /**
    * Returns a new array with the element at the specified index removed.
@@ -1987,15 +1982,13 @@ export namespace Arr {
    * ```
    */
   // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const toFilled: ToFilledFnOverload = (<E,>(
-    ...args: readonly [array: readonly E[], value: E] | readonly [value: E]
+  export const toFilled: ToFilledFnOverload = (<E, V>(
+    ...args: readonly [array: readonly E[], value: V] | readonly [value: V]
   ) => {
     switch (args.length) {
       case 2: {
         const [array, value] = args;
-        const cp = castMutable(copy(array));
-        cp.fill(value);
-        return cp;
+        return create(array.length, value);
       }
       case 1: {
         const [value] = args;
@@ -2005,22 +1998,37 @@ export namespace Arr {
   }) as ToFilledFnOverload;
 
   type ToFilledFnOverload = {
-    <E>(array: readonly E[], value: E): readonly E[];
+    <Ar extends readonly unknown[], const V>(
+      array: Ar,
+      value: V,
+    ): IsFixedLengthList<Ar> extends true
+      ? ArrayOfLength<Ar['length'], V>
+      : Ar extends NonEmptyArray<unknown>
+        ? NonEmptyArray<V>
+        : readonly V[];
 
     // curried version
-    <E>(value: E): (array: readonly E[]) => readonly E[];
+    <const V>(
+      value: V,
+    ): <Ar extends readonly unknown[]>(
+      array: Ar,
+    ) => IsFixedLengthList<Ar> extends true
+      ? ArrayOfLength<Ar['length'], V>
+      : Ar extends NonEmptyArray<unknown>
+        ? NonEmptyArray<V>
+        : readonly V[];
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const toRangeFilled: ToRangeFilledFnOverload = (<E,>(
+  export const toRangeFilled: ToRangeFilledFnOverload = (<E, V>(
     ...args:
       | readonly [
           array: readonly E[],
-          value: E,
+          value: V,
           fillRange: readonly [start: SizeType.ArgArr, end: SizeType.ArgArr],
         ]
       | readonly [
-          value: E,
+          value: V,
           fillRange: readonly [start: SizeType.ArgArr, end: SizeType.ArgArr],
         ]
   ) => {
@@ -2028,7 +2036,8 @@ export namespace Arr {
       case 3: {
         const [array, value, [start, end]] = args;
         const cp = castMutable(copy(array));
-        cp.fill(value, start, end);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+        cp.fill(value as never, start, end);
         return cp;
       }
       case 2: {
@@ -2040,17 +2049,27 @@ export namespace Arr {
   }) as ToRangeFilledFnOverload;
 
   type ToRangeFilledFnOverload = {
-    <E>(
-      array: readonly E[],
-      value: E,
+    <Ar extends readonly unknown[], const V>(
+      array: Ar,
+      value: V,
       fillRange: readonly [start: SizeType.ArgArr, end: SizeType.ArgArr],
-    ): readonly E[];
+    ): IsFixedLengthList<Ar> extends true
+      ? ArrayOfLength<Ar['length'], V | Ar[number]>
+      : Ar extends NonEmptyArray<unknown>
+        ? NonEmptyArray<V | Ar[number]>
+        : readonly (V | Ar[number])[];
 
     // curried version
-    <E>(
-      value: E,
+    <const V>(
+      value: V,
       fillRange: readonly [start: SizeType.ArgArr, end: SizeType.ArgArr],
-    ): (array: readonly E[]) => readonly E[];
+    ): <Ar extends readonly unknown[]>(
+      array: Ar,
+    ) => IsFixedLengthList<Ar> extends true
+      ? ArrayOfLength<Ar['length'], V | Ar[number]>
+      : Ar extends NonEmptyArray<unknown>
+        ? NonEmptyArray<V | Ar[number]>
+        : readonly (V | Ar[number])[];
   };
 
   // searching
@@ -2173,8 +2192,18 @@ export namespace Arr {
         const [array, predicate] = args;
         const foundIndex = array.findIndex(
           // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-          predicate as (value: E, index: number, arr: readonly E[]) => boolean,
+          predicate as () => boolean,
         );
+
+        expectType<
+          Parameters<typeof array.findIndex>[0],
+          (value: E, index: number, arr: readonly E[]) => unknown
+        >('=');
+
+        expectType<
+          typeof predicate,
+          (value: E, index: SizeType.Arr, arr: readonly E[]) => boolean
+        >('=');
 
         return foundIndex === -1
           ? Optional.none
@@ -2685,12 +2714,10 @@ export namespace Arr {
    * Arr.min([]); // Optional.none
    * ```
    */
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const min: MinFnOverload = (<E extends number>(
-    array: readonly E[],
-    comparator?: (x: E, y: E) => number,
-  ): Optional<E> => {
+  export const min: MinFnOverload = <Ar extends readonly unknown[]>(
+    array: readonly Ar[number][],
+    comparator?: (x: Ar[number], y: Ar[number]) => number,
+  ): Optional<Ar[number]> => {
     if (!isNonEmpty(array)) {
       return Optional.none;
     }
@@ -2703,25 +2730,22 @@ export namespace Arr {
         array[0],
       ),
     );
-  }) as MinFnOverload;
+  };
 
   type MinFnOverload = {
-    <E extends number>(
-      array: NonEmptyArray<E>,
-      comparator?: (x: E, y: E) => number,
-    ): Optional.Some<E>;
+    <Ar extends readonly number[]>(
+      array: Ar,
+      comparator?: (x: Ar[number], y: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
 
-    <E extends number>(
-      array: readonly E[],
-      comparator?: (x: E, y: E) => number,
-    ): Optional<E>;
-
-    <E>(
-      array: NonEmptyArray<E>,
-      comparator: (x: E, y: E) => number,
-    ): Optional.Some<E>;
-
-    <E>(array: readonly E[], comparator: (x: E, y: E) => number): Optional<E>;
+    <Ar extends readonly unknown[]>(
+      array: Ar,
+      comparator: (x: Ar[number], y: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
   };
 
   /**
@@ -2742,33 +2766,29 @@ export namespace Arr {
    * Arr.max([]); // Optional.none
    * ```
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const max: MaxFnOverload = (<E extends number>(
-    array: readonly E[],
-    comparator?: (x: E, y: E) => number,
-  ): Optional<E> => {
+  export const max: MaxFnOverload = <Ar extends readonly unknown[]>(
+    array: readonly Ar[number][],
+    comparator?: (x: Ar[number], y: Ar[number]) => number,
+  ): Optional<Ar[number]> => {
     const cmp = comparator ?? ((x, y) => Num.from(x) - Num.from(y));
     // Find max by finding min with an inverted comparator
     return min(array, (x, y) => -cmp(x, y));
-  }) as MaxFnOverload;
+  };
 
   type MaxFnOverload = {
-    <E extends number>(
-      array: NonEmptyArray<E>,
-      comparator?: (x: E, y: E) => number,
-    ): Optional.Some<E>;
+    <Ar extends readonly number[]>(
+      array: Ar,
+      comparator?: (x: Ar[number], y: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
 
-    <E extends number>(
-      array: readonly E[],
-      comparator?: (x: E, y: E) => number,
-    ): Optional<E>;
-
-    <E>(
-      array: NonEmptyArray<E>,
-      comparator: (x: E, y: E) => number,
-    ): Optional.Some<E>;
-
-    <E>(array: readonly E[], comparator: (x: E, y: E) => number): Optional<E>;
+    <Ar extends readonly unknown[]>(
+      array: Ar,
+      comparator: (x: Ar[number], y: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
   };
 
   /**
@@ -2791,8 +2811,6 @@ export namespace Arr {
    * Arr.minBy([], p => p.age); // Optional.none
    * ```
    */
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   export const minBy: MinByFnOverload = (<E, V>(
     array: readonly E[],
     comparatorValueMapper: (value: E) => V,
@@ -2806,27 +2824,20 @@ export namespace Arr {
     )) as MinByFnOverload;
 
   type MinByFnOverload = {
-    <E>(
-      array: NonEmptyArray<E>,
-      comparatorValueMapper: (value: E) => number,
-    ): Optional.Some<E>;
+    <Ar extends readonly unknown[]>(
+      array: Ar,
+      comparatorValueMapper: (value: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
 
-    <E>(
-      array: readonly E[],
-      comparatorValueMapper: (value: E) => number,
-    ): Optional<E>;
-
-    <E, V>(
-      array: NonEmptyArray<E>,
-      comparatorValueMapper: (value: E) => V,
+    <Ar extends readonly unknown[], V>(
+      array: Ar,
+      comparatorValueMapper: (value: Ar[number]) => V,
       comparator: (x: V, y: V) => number,
-    ): Optional.Some<E>;
-
-    <E, V>(
-      array: readonly E[],
-      comparatorValueMapper: (value: E) => V,
-      comparator: (x: V, y: V) => number,
-    ): Optional<E>;
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
   };
 
   /**
@@ -2849,7 +2860,6 @@ export namespace Arr {
    * Arr.maxBy([], p => p.age); // Optional.none
    * ```
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   export const maxBy: MaxByFnOverload = (<E, V>(
     array: readonly E[],
     comparatorValueMapper: (value: E) => V,
@@ -2863,27 +2873,20 @@ export namespace Arr {
     )) as MaxByFnOverload;
 
   type MaxByFnOverload = {
-    <E>(
-      array: NonEmptyArray<E>,
-      comparatorValueMapper: (value: E) => number,
-    ): Optional.Some<E>;
+    <Ar extends readonly unknown[]>(
+      array: Ar,
+      comparatorValueMapper: (value: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
 
-    <E>(
-      array: readonly E[],
-      comparatorValueMapper: (value: E) => number,
-    ): Optional<E>;
-
-    <E, V>(
-      array: NonEmptyArray<E>,
-      comparatorValueMapper: (value: E) => V,
+    <Ar extends readonly unknown[], V>(
+      array: Ar,
+      comparatorValueMapper: (value: Ar[number]) => V,
       comparator: (x: V, y: V) => number,
-    ): Optional.Some<E>;
-
-    <E, V>(
-      array: readonly E[],
-      comparatorValueMapper: (value: E) => V,
-      comparator: (x: V, y: V) => number,
-    ): Optional<E>;
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
   };
 
   /**
@@ -3127,6 +3130,74 @@ export namespace Arr {
     ) as unknown as List.Zip<Ar1, Ar2>;
 
   /**
+   * Creates a new tuple by transforming each element with a mapping function.
+   *
+   * Preserves the tuple's length while allowing element type transformation.
+   * The resulting tuple has the same structure but with transformed element types.
+   *
+   * @template T - The type of the input tuple
+   * @template B - The type that elements will be transformed to
+   * @param tpl - The input tuple
+   * @param mapFn - Function that transforms each element (receives element and index)
+   * @returns A new tuple with transformed elements, preserving the original length
+   *
+   * @example
+   * ```typescript
+   * // Basic transformation
+   * const nums = [1, 2, 3] as const;
+   * const doubled = Arr.map(nums, (x) => x * 2); // readonly [2, 4, 6]
+   * const strings = Arr.map(nums, (x) => String(x)); // readonly ['1', '2', '3']
+   *
+   * // With index
+   * const indexed = Arr.map(nums, (x, i) => `${i}:${x}`);
+   * // readonly ['0:1', '1:2', '2:3']
+   *
+   * // Mixed type tuples
+   * const mixed = [1, 'hello', true] as const;
+   * const descriptions = Arr.map(mixed, (x) => `Value: ${x}`);
+   * // readonly ['Value: 1', 'Value: hello', 'Value: true']
+   *
+   * // Type transformation preserves tuple structure
+   * type Original = readonly [number, string, boolean];
+   * type Mapped = { readonly [K in keyof Original]: string };
+   * // Mapped = readonly [string, string, string]
+   * ```
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+  export const map: MapFnOverload = (<
+    const Ar extends readonly unknown[],
+    const B,
+  >(
+    ...args:
+      | readonly [array: Ar, mapFn: (a: Ar[number], index: SizeType.Arr) => B]
+      | readonly [mapFn: (a: Ar[number], index: SizeType.Arr) => B]
+  ) => {
+    switch (args.length) {
+      case 2: {
+        const [array, mapFn] = args;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+        return array.map(mapFn as never);
+      }
+      case 1: {
+        const [mapFn] = args;
+        return (array: Ar) => map(array, mapFn);
+      }
+    }
+  }) as MapFnOverload;
+
+  type MapFnOverload = {
+    <const Ar extends readonly unknown[], B>(
+      tpl: Ar,
+      mapFn: (a: Ar[number], index: SizeType.Arr) => B,
+    ): Readonly<{ [K in keyof Ar]: B }>;
+
+    // curried version
+    <const A, const B>(
+      mapFn: (a: A, index: SizeType.Arr) => B,
+    ): <Ar extends readonly A[]>(array: Ar) => Readonly<{ [K in keyof Ar]: B }>;
+  };
+
+  /**
    * Filters an array by excluding elements for which the predicate returns true.
    * This is the opposite of `Array.prototype.filter`.
    * @template E The type of elements in the array.
@@ -3257,6 +3328,76 @@ export namespace Arr {
   };
 
   /**
+   * Reverses a tuple, preserving element types in their new positions.
+   *
+   * The type system precisely tracks the reversal, so the returned tuple
+   * has its element types in the exact reverse order. This is more precise
+   * than array reversal which loses positional type information.
+   *
+   * @template T - The tuple type to reverse
+   * @param array - The input tuple
+   * @returns A new tuple with elements in reverse order and precise typing
+   *
+   * @example
+   * ```typescript
+   * // Basic reversal
+   * const nums = [1, 2, 3] as const;
+   * const reversed = Arr.toReversed(nums); // readonly [3, 2, 1]
+   *
+   * // Mixed types preserved in reverse positions
+   * const mixed = [1, 'hello', true, null] as const;
+   * const revMixed = Arr.toReversed(mixed);
+   * // readonly [null, true, 'hello', 1]
+   *
+   * // Type-level reversal
+   * type Original = readonly [number, string, boolean];
+   * type Reversed = Tuple.Reverse<Original>;
+   * // Reversed = readonly [boolean, string, number]
+   *
+   * // Empty and single-element tuples
+   * const empty = [] as const;
+   * const revEmpty = Arr.toReversed(empty); // readonly []
+   * const single = [42] as const;
+   * const revSingle = Arr.toReversed(single); // readonly [42]
+   * ```
+   */
+  export const toReversed = <const Ar extends readonly unknown[]>(
+    array: Ar,
+  ): Tuple.Reverse<Ar> =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-type-assertion
+    array.toReversed() as Tuple.Reverse<Ar>;
+
+  /**
+   * Sorts an array by a value derived from its elements, using a numeric mapping.
+   * @template E The type of elements in the array.
+   * @param array The input array.
+   * @param comparatorValueMapper A function `(value: A) => number` that maps an element to a number for comparison.
+   * @param comparator An optional custom comparator function `(x: number, y: number) => number` for the mapped numbers. Defaults to ascending sort (x - y).
+   * @returns A new array sorted by the mapped values.
+   * @example
+   * ```ts
+   * const items = [{ name: 'Eve', score: 70 }, { name: 'Adam', score: 90 }, { name: 'Bob', score: 80 }];
+   * Arr.toSortedBy(items, item => item.score);
+   * // [{ name: 'Eve', score: 70 }, { name: 'Bob', score: 80 }, { name: 'Adam', score: 90 }]
+   * Arr.toSortedBy(items, item => item.score, (a, b) => b - a); // Sort descending
+   * // [{ name: 'Adam', score: 90 }, { name: 'Bob', score: 80 }, { name: 'Eve', score: 70 }]
+   * ```
+   */
+  export const toSorted = <Ar extends readonly unknown[]>(
+    array: Ar,
+    comparator?: (x: Ar[number], y: Ar[number]) => number,
+  ): IsFixedLengthList<Ar> extends true
+    ? ArrayOfLength<Ar['length'], Ar[number]>
+    : Ar extends NonEmptyArray<unknown>
+      ? NonEmptyArray<Ar[number]>
+      : readonly Ar[number][] =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    array.toSorted(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+      comparator ?? ((x, y) => (x as number) - (y as number)),
+    ) as never;
+
+  /**
    * Sorts an array by a value derived from its elements, using a numeric mapping.
    * @template E The type of elements in the array.
    * @param array The input array.
@@ -3289,17 +3430,25 @@ export namespace Arr {
     );
 
   type ToSortedByFnOverload = {
-    <E>(
-      array: readonly E[],
-      comparatorValueMapper: (value: E) => number,
+    <Ar extends readonly unknown[]>(
+      array: Ar,
+      comparatorValueMapper: (value: Ar[number]) => number,
       comparator?: (x: number, y: number) => number,
-    ): readonly E[];
+    ): IsFixedLengthList<Ar> extends true
+      ? ArrayOfLength<Ar['length'], Ar[number]>
+      : Ar extends NonEmptyArray<unknown>
+        ? NonEmptyArray<Ar[number]>
+        : readonly Ar[number][];
 
-    <E, const V>(
-      array: readonly E[],
-      comparatorValueMapper: (value: E) => V,
+    <Ar extends readonly unknown[], const V>(
+      array: Ar,
+      comparatorValueMapper: (value: Ar[number]) => V,
       comparator: (x: V, y: V) => number,
-    ): readonly E[];
+    ): IsFixedLengthList<Ar> extends true
+      ? ArrayOfLength<Ar['length'], Ar[number]>
+      : Ar extends NonEmptyArray<unknown>
+        ? NonEmptyArray<Ar[number]>
+        : readonly Ar[number][];
   };
 
   /**
@@ -3483,7 +3632,7 @@ export namespace Arr {
       case 3: {
         const [array, reducer, init] = args;
         const mut_result: MutableNonEmptyArray<S> = castMutable(
-          newArray<S>(asPositiveUint32(array.length + 1), init),
+          newArray<S, PositiveUint32>(asPositiveUint32(array.length + 1), init),
         );
 
         let mut_acc = init;
@@ -3730,9 +3879,13 @@ export namespace Arr {
    * Arr.uniq(['a', 'b', 'a']); // ['a', 'b']
    * ```
    */
-  export const uniq = <P extends Primitive>(
-    array: readonly P[],
-  ): readonly P[] => Array.from(new Set(array));
+  export const uniq = <Ar extends readonly Primitive[]>(
+    array: Ar,
+  ): Ar extends NonEmptyArray<unknown>
+    ? NonEmptyArray<Ar[number]>
+    : readonly Ar[number][] =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    Array.from(new Set(array)) as never;
 
   /**
    * Creates a new array with unique elements from the input array, based on the values returned by `mapFn`.
@@ -3755,13 +3908,15 @@ export namespace Arr {
    * Arr.uniqBy(users, user => user.id); // [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
    * ```
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const uniqBy: UniqByFnOverload = (<E, P extends Primitive>(
-    array: readonly E[],
-    mapFn: (value: E) => P,
-  ): readonly E[] => {
+  export const uniqBy = <Ar extends readonly unknown[], P extends Primitive>(
+    array: Ar,
+    mapFn: (value: Ar[number]) => P,
+  ): Ar extends NonEmptyArray<unknown>
+    ? NonEmptyArray<Ar[number]>
+    : readonly Ar[number][] => {
     const mut_mappedValues = new Set<P>();
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     return array.filter((val) => {
       const mappedValue = mapFn(val);
 
@@ -3769,19 +3924,9 @@ export namespace Arr {
       mut_mappedValues.add(mappedValue);
 
       return true;
-    });
-  }) as UniqByFnOverload;
-
-  type UniqByFnOverload = {
-    <E, P extends Primitive>(
-      array: NonEmptyArray<E>,
-      mapFn: (value: E) => P,
-    ): NonEmptyArray<E>;
-
-    <E, P extends Primitive>(
-      array: readonly E[],
-      mapFn: (value: E) => P,
-    ): readonly E[];
+    }) as unknown as Ar extends NonEmptyArray<unknown>
+      ? NonEmptyArray<Ar[number]>
+      : readonly Ar[number][];
   };
 
   // set operations & equality

@@ -232,11 +232,7 @@ describe('Arr transformations', () => {
 
       expectType<
         typeof sorted,
-        readonly (
-          | Readonly<{ v: 1 }>
-          | Readonly<{ v: 2 }>
-          | Readonly<{ v: 3 }>
-        )[]
+        ArrayOfLength<3, Readonly<{ v: 1 } | { v: 2 } | { v: 3 }>>
       >('=');
 
       test('case 1', () => {
@@ -253,11 +249,7 @@ describe('Arr transformations', () => {
 
       expectType<
         typeof sorted,
-        readonly (
-          | Readonly<{ v: 1 }>
-          | Readonly<{ v: 2 }>
-          | Readonly<{ v: 3 }>
-        )[]
+        ArrayOfLength<3, Readonly<{ v: 1 } | { v: 2 } | { v: 3 }>>
       >('=');
 
       test('case 2', () => {
