@@ -213,9 +213,11 @@ describe('Arr reducing value', () => {
       expectType<
         typeof res,
         Optional.Some<
-          | Readonly<{ name: 'apple'; score: 10 }>
-          | Readonly<{ name: 'banana'; score: 5 }>
-          | Readonly<{ name: 'cherry'; score: 12 }>
+          Readonly<
+            | { name: 'apple'; score: 10 }
+            | { name: 'banana'; score: 5 }
+            | { name: 'cherry'; score: 12 }
+          >
         >
       >('=');
 
