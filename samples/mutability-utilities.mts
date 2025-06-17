@@ -1,0 +1,49 @@
+import { castMutable } from 'ts-data-forge';
+
+const readonlyOptions: readonly string[] = ['Option 1', 'Option 2', 'Option 3'];
+
+// Example: Material-UI Autocomplete (commented out since @mui/material is not installed)
+// import { Autocomplete } from '@mui/material';
+// const SomeComponent: React.FC = () => {
+//     return (
+//         <Autocomplete
+//             options={castMutable(readonlyOptions)}
+//             // ...
+//         />
+//     );
+// };
+
+// Example with a function that expects mutable array
+// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+function processItems(mut_items: string[]): void {
+  mut_items.push('New Item');
+  console.log('Items:', mut_items);
+}
+
+// Use castMutable to safely pass readonly array to mutable API
+processItems(castMutable(readonlyOptions));
+
+// Immer.js example (commented out since immer is not installed)
+// import { produce } from 'immer';
+//
+// type State = Readonly<{
+//     items: readonly string[];
+// }>;
+//
+// const initialState: State = {
+//     items: ['item1', 'item2'],
+// } as const;
+//
+// const newItems: readonly string[] = ['newItem1', 'newItem2'];
+//
+// const updatedState = produce(initialState, (draft) => {
+//     // draft.items expects mutable array, but newItems is readonly
+//     draft.items = castMutable(newItems); // Safe cast for assignment
+// });
+//
+// console.log(updatedState.items); // ['newItem1', 'newItem2']
+
+// Demonstrating type safety
+const mutableCopy = castMutable(readonlyOptions);
+console.log('Mutable copy:', mutableCopy);
+console.log('Original is still readonly:', readonlyOptions);
