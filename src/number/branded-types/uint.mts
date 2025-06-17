@@ -1,5 +1,5 @@
 import { expectType } from '../../expect-type.mjs';
-import { TsVerifiedInternals } from '../refined-number-utils.mjs';
+import { TsDataForgeInternals } from '../refined-number-utils.mjs';
 
 type ElementType = Uint;
 
@@ -18,14 +18,14 @@ const {
   is,
   castType,
   clamp,
-} = TsVerifiedInternals.RefinedNumberUtils.operatorsForInteger<
+} = TsDataForgeInternals.RefinedNumberUtils.operatorsForInteger<
   ElementType,
   0,
-  undefined
+  number
 >({
   integerOrSafeInteger: 'Integer',
   MIN_VALUE: 0,
-  MAX_VALUE: undefined,
+  MAX_VALUE: Number.MAX_VALUE,
   typeNameInMessage,
 } as const);
 
@@ -164,7 +164,7 @@ export const Uint = {
 
 expectType<
   keyof typeof Uint,
-  keyof TsVerifiedInternals.RefinedNumberUtils.NumberClass<
+  keyof TsDataForgeInternals.RefinedNumberUtils.NumberClass<
     ElementType,
     'int' | 'non-negative'
   >
@@ -172,7 +172,7 @@ expectType<
 
 expectType<
   typeof Uint,
-  TsVerifiedInternals.RefinedNumberUtils.NumberClass<
+  TsDataForgeInternals.RefinedNumberUtils.NumberClass<
     ElementType,
     'int' | 'non-negative'
   >
