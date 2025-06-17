@@ -103,18 +103,13 @@ export namespace Arr {
    * @see {@link isEmpty} for checking if size is 0
    * @see {@link isNonEmpty} for checking if size > 0
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const size: SizeFnOverload = (<Ar extends readonly unknown[]>(
+  export const size = <Ar extends readonly unknown[]>(
     array: Ar,
-  ): SizeType.Arr => asUint32(array.length)) as SizeFnOverload;
-
-  type SizeFnOverload = {
-    <Ar extends NonEmptyArray<unknown>>(
-      array: Ar,
-    ): IntersectBrand<PositiveNumber, SizeType.Arr>;
-
-    <Ar extends readonly unknown[]>(array: Ar): SizeType.Arr;
-  };
+  ): Ar extends NonEmptyArray<unknown>
+    ? IntersectBrand<PositiveNumber, SizeType.Arr>
+    : SizeType.Arr =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    asUint32(array.length) as never;
 
   export const length = size;
 
@@ -1013,35 +1008,38 @@ export namespace Arr {
    * @see {@link at} for accessing elements at specific indices
    * @see {@link tail} for getting all elements except the first
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const head: HeadFnOverload = (<E,>(array: readonly E[]) => {
-    const element = array.at(0);
-    return element === undefined ? Optional.none : Optional.some(element);
-  }) as HeadFnOverload;
+  export const head = <Ar extends readonly unknown[]>(
+    array: Ar,
+  ): Ar extends readonly []
+    ? Optional.None
+    : Ar extends readonly [infer E, ...unknown[]]
+      ? Optional.Some<E>
+      : Ar extends NonEmptyArray<infer E>
+        ? Optional.Some<E>
+        : Optional<Ar[number]> =>
+    pipe(array.at(0)).map(
+      (element) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+        (element === undefined
+          ? Optional.none
+          : Optional.some(element)) as never,
+    ).value;
+  // export const head: HeadFnOverload = (<E,>(array: readonly E[]) => {
+  //   const element = array.at(0);
+  //   return element === undefined ? Optional.none : Optional.some(element);
+  // }) as HeadFnOverload;
 
-  type HeadFnOverload = {
-    /**
-     * Get head of empty array.
-     */
-    (array: readonly []): Optional.None;
+  // type HeadFnOverload = {
+  //   (array: readonly []): Optional.None;
 
-    /**
-     * Get head of tuple.
-     */
-    <E, L extends readonly unknown[]>(
-      array: readonly [E, ...L],
-    ): Optional.Some<E>;
+  //   <E, L extends readonly unknown[]>(
+  //     array: readonly [E, ...L],
+  //   ): Optional.Some<E>;
 
-    /**
-     * Get head of non-empty array.
-     */
-    <E>(array: NonEmptyArray<E>): Optional.Some<E>;
+  //   <E>(array: NonEmptyArray<E>): Optional.Some<E>;
 
-    /**
-     * Get head of any array.
-     */
-    <E>(array: readonly E[]): Optional<E>;
-  };
+  //   <E>(array: readonly E[]): Optional<E>;
+  // };
 
   /**
    * Returns the last element of an array wrapped in an Optional.
@@ -1123,35 +1121,22 @@ export namespace Arr {
    * @see {@link at} for accessing elements at specific indices with negative indexing support
    * @see {@link butLast} for getting all elements except the last
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const last: LastFnOverload = (<E,>(array: readonly E[]) => {
-    const element = array.at(-1);
-    return element === undefined ? Optional.none : Optional.some(element);
-  }) as LastFnOverload;
-
-  type LastFnOverload = {
-    /**
-     * Get last of empty array.
-     */
-    (array: readonly []): Optional.None;
-
-    /**
-     * Get last of tuple.
-     */
-    <Ar extends readonly unknown[], L>(
-      array: readonly [...Ar, L],
-    ): Optional.Some<L>;
-
-    /**
-     * Get last of non-empty array.
-     */
-    <E>(array: NonEmptyArray<E>): Optional.Some<E>;
-
-    /**
-     * Get last of any array.
-     */
-    <E>(array: readonly E[]): Optional<E>;
-  };
+  export const last = <Ar extends readonly unknown[]>(
+    array: Ar,
+  ): Ar extends readonly []
+    ? Optional.None
+    : Ar extends readonly [...unknown[], infer E]
+      ? Optional.Some<E>
+      : Ar extends NonEmptyArray<infer E>
+        ? Optional.Some<E>
+        : Optional<Ar[number]> =>
+    pipe(array.at(-1)).map(
+      (element) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+        (element === undefined
+          ? Optional.none
+          : Optional.some(element)) as never,
+    ).value;
 
   // slicing
 
@@ -1361,17 +1346,24 @@ export namespace Arr {
       num: N,
     ): <Ar extends readonly unknown[]>(array: Ar) => List.Take<N, Ar>;
 
-    <E>(
-      array: NonEmptyArray<E>,
-      num: SizeType.ArgArrPositive,
-    ): NonEmptyArray<E>;
+    <Ar extends readonly unknown[], N extends SizeType.ArgArrNonNegative>(
+      array: Ar,
+      num: N,
+    ): BoolAnd<
+      TypeExtends<Ar, NonEmptyArray<unknown>>,
+      TypeExtends<N, SizeType.ArgArrPositive>
+    > extends true
+      ? NonEmptyArray<Ar[number]>
+      : readonly Ar[number][];
 
     // curried version
     (
       num: SizeType.ArgArrPositive,
-    ): <E>(array: NonEmptyArray<E>) => NonEmptyArray<E>;
-
-    <E>(array: readonly E[], num: SizeType.ArgArrNonNegative): readonly E[];
+    ): <Ar extends readonly unknown[]>(
+      array: Ar,
+    ) => Ar extends NonEmptyArray<unknown>
+      ? NonEmptyArray<Ar[number]>
+      : readonly Ar[number][];
 
     // curried version
     (num: SizeType.ArgArrNonNegative): <E>(array: readonly E[]) => readonly E[];
@@ -1429,17 +1421,24 @@ export namespace Arr {
       num: N,
     ): <Ar extends readonly unknown[]>(array: Ar) => List.TakeLast<N, Ar>;
 
-    <E>(
-      array: NonEmptyArray<E>,
-      num: SizeType.ArgArrPositive,
-    ): NonEmptyArray<E>;
+    <Ar extends readonly unknown[], N extends SizeType.ArgArrNonNegative>(
+      array: Ar,
+      num: N,
+    ): BoolAnd<
+      TypeExtends<Ar, NonEmptyArray<unknown>>,
+      TypeExtends<N, SizeType.ArgArrPositive>
+    > extends true
+      ? NonEmptyArray<Ar[number]>
+      : readonly Ar[number][];
 
     // curried version
     (
       num: SizeType.ArgArrPositive,
-    ): <E>(array: NonEmptyArray<E>) => NonEmptyArray<E>;
-
-    <E>(array: readonly E[], num: SizeType.ArgArrNonNegative): readonly E[];
+    ): <Ar extends readonly unknown[]>(
+      array: Ar,
+    ) => Ar extends NonEmptyArray<unknown>
+      ? NonEmptyArray<Ar[number]>
+      : readonly Ar[number][];
 
     // curried version
     (num: SizeType.ArgArrNonNegative): <E>(array: readonly E[]) => readonly E[];
@@ -1492,19 +1491,14 @@ export namespace Arr {
       num: N,
     ): List.Skip<N, Ar>;
 
-    <E>(array: NonEmptyArray<E>, num: SizeType.ArgArrPositive): readonly E[];
-
-    <E>(array: readonly E[], num: SizeType.ArgArrNonNegative): readonly E[];
-
     // curried version
     <N extends SmallUint>(
       num: N,
     ): <Ar extends readonly unknown[]>(array: Ar) => List.Skip<N, Ar>;
 
-    (
-      num: SizeType.ArgArrPositive,
-    ): <E>(array: NonEmptyArray<E>) => readonly E[];
+    <E>(array: readonly E[], num: SizeType.ArgArrNonNegative): readonly E[];
 
+    // curried version
     (num: SizeType.ArgArrNonNegative): <E>(array: readonly E[]) => readonly E[];
   };
 
@@ -1555,13 +1549,14 @@ export namespace Arr {
       num: N,
     ): List.SkipLast<N, Ar>;
 
-    <E>(array: readonly E[], num: SizeType.ArgArrNonNegative): readonly E[];
-
     // curried version
     <N extends SmallUint>(
       num: N,
     ): <Ar extends readonly unknown[]>(array: Ar) => List.SkipLast<N, Ar>;
 
+    <E>(array: readonly E[], num: SizeType.ArgArrNonNegative): readonly E[];
+
+    // curried version
     (num: SizeType.ArgArrNonNegative): <E>(array: readonly E[]) => readonly E[];
   };
 
@@ -2685,12 +2680,10 @@ export namespace Arr {
    * Arr.min([]); // Optional.none
    * ```
    */
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const min: MinFnOverload = (<E extends number>(
-    array: readonly E[],
-    comparator?: (x: E, y: E) => number,
-  ): Optional<E> => {
+  export const min: MinFnOverload = <Ar extends readonly unknown[]>(
+    array: readonly Ar[number][],
+    comparator?: (x: Ar[number], y: Ar[number]) => number,
+  ): Optional<Ar[number]> => {
     if (!isNonEmpty(array)) {
       return Optional.none;
     }
@@ -2703,25 +2696,22 @@ export namespace Arr {
         array[0],
       ),
     );
-  }) as MinFnOverload;
+  };
 
   type MinFnOverload = {
-    <E extends number>(
-      array: NonEmptyArray<E>,
-      comparator?: (x: E, y: E) => number,
-    ): Optional.Some<E>;
+    <Ar extends readonly number[]>(
+      array: Ar,
+      comparator?: (x: Ar[number], y: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
 
-    <E extends number>(
-      array: readonly E[],
-      comparator?: (x: E, y: E) => number,
-    ): Optional<E>;
-
-    <E>(
-      array: NonEmptyArray<E>,
-      comparator: (x: E, y: E) => number,
-    ): Optional.Some<E>;
-
-    <E>(array: readonly E[], comparator: (x: E, y: E) => number): Optional<E>;
+    <Ar extends readonly unknown[]>(
+      array: Ar,
+      comparator: (x: Ar[number], y: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
   };
 
   /**
@@ -2742,33 +2732,29 @@ export namespace Arr {
    * Arr.max([]); // Optional.none
    * ```
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const max: MaxFnOverload = (<E extends number>(
-    array: readonly E[],
-    comparator?: (x: E, y: E) => number,
-  ): Optional<E> => {
+  export const max: MaxFnOverload = <Ar extends readonly unknown[]>(
+    array: readonly Ar[number][],
+    comparator?: (x: Ar[number], y: Ar[number]) => number,
+  ): Optional<Ar[number]> => {
     const cmp = comparator ?? ((x, y) => Num.from(x) - Num.from(y));
     // Find max by finding min with an inverted comparator
     return min(array, (x, y) => -cmp(x, y));
-  }) as MaxFnOverload;
+  };
 
   type MaxFnOverload = {
-    <E extends number>(
-      array: NonEmptyArray<E>,
-      comparator?: (x: E, y: E) => number,
-    ): Optional.Some<E>;
+    <Ar extends readonly number[]>(
+      array: Ar,
+      comparator?: (x: Ar[number], y: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
 
-    <E extends number>(
-      array: readonly E[],
-      comparator?: (x: E, y: E) => number,
-    ): Optional<E>;
-
-    <E>(
-      array: NonEmptyArray<E>,
-      comparator: (x: E, y: E) => number,
-    ): Optional.Some<E>;
-
-    <E>(array: readonly E[], comparator: (x: E, y: E) => number): Optional<E>;
+    <Ar extends readonly unknown[]>(
+      array: Ar,
+      comparator: (x: Ar[number], y: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
   };
 
   /**
@@ -2791,8 +2777,6 @@ export namespace Arr {
    * Arr.minBy([], p => p.age); // Optional.none
    * ```
    */
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   export const minBy: MinByFnOverload = (<E, V>(
     array: readonly E[],
     comparatorValueMapper: (value: E) => V,
@@ -2806,27 +2790,20 @@ export namespace Arr {
     )) as MinByFnOverload;
 
   type MinByFnOverload = {
-    <E>(
-      array: NonEmptyArray<E>,
-      comparatorValueMapper: (value: E) => number,
-    ): Optional.Some<E>;
+    <Ar extends readonly unknown[]>(
+      array: Ar,
+      comparatorValueMapper: (value: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
 
-    <E>(
-      array: readonly E[],
-      comparatorValueMapper: (value: E) => number,
-    ): Optional<E>;
-
-    <E, V>(
-      array: NonEmptyArray<E>,
-      comparatorValueMapper: (value: E) => V,
+    <Ar extends readonly unknown[], V>(
+      array: Ar,
+      comparatorValueMapper: (value: Ar[number]) => V,
       comparator: (x: V, y: V) => number,
-    ): Optional.Some<E>;
-
-    <E, V>(
-      array: readonly E[],
-      comparatorValueMapper: (value: E) => V,
-      comparator: (x: V, y: V) => number,
-    ): Optional<E>;
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
   };
 
   /**
@@ -2849,7 +2826,6 @@ export namespace Arr {
    * Arr.maxBy([], p => p.age); // Optional.none
    * ```
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   export const maxBy: MaxByFnOverload = (<E, V>(
     array: readonly E[],
     comparatorValueMapper: (value: E) => V,
@@ -2863,27 +2839,20 @@ export namespace Arr {
     )) as MaxByFnOverload;
 
   type MaxByFnOverload = {
-    <E>(
-      array: NonEmptyArray<E>,
-      comparatorValueMapper: (value: E) => number,
-    ): Optional.Some<E>;
+    <Ar extends readonly unknown[]>(
+      array: Ar,
+      comparatorValueMapper: (value: Ar[number]) => number,
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
 
-    <E>(
-      array: readonly E[],
-      comparatorValueMapper: (value: E) => number,
-    ): Optional<E>;
-
-    <E, V>(
-      array: NonEmptyArray<E>,
-      comparatorValueMapper: (value: E) => V,
+    <Ar extends readonly unknown[], V>(
+      array: Ar,
+      comparatorValueMapper: (value: Ar[number]) => V,
       comparator: (x: V, y: V) => number,
-    ): Optional.Some<E>;
-
-    <E, V>(
-      array: readonly E[],
-      comparatorValueMapper: (value: E) => V,
-      comparator: (x: V, y: V) => number,
-    ): Optional<E>;
+    ): Ar extends NonEmptyArray<unknown>
+      ? Optional.Some<Ar[number]>
+      : Optional<Ar[number]>;
   };
 
   /**
@@ -3755,13 +3724,15 @@ export namespace Arr {
    * Arr.uniqBy(users, user => user.id); // [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
    * ```
    */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  export const uniqBy: UniqByFnOverload = (<E, P extends Primitive>(
-    array: readonly E[],
-    mapFn: (value: E) => P,
-  ): readonly E[] => {
+  export const uniqBy = <Ar extends readonly unknown[], P extends Primitive>(
+    array: Ar,
+    mapFn: (value: Ar[number]) => P,
+  ): Ar extends NonEmptyArray<unknown>
+    ? NonEmptyArray<Ar[number]>
+    : readonly Ar[number][] => {
     const mut_mappedValues = new Set<P>();
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     return array.filter((val) => {
       const mappedValue = mapFn(val);
 
@@ -3769,19 +3740,9 @@ export namespace Arr {
       mut_mappedValues.add(mappedValue);
 
       return true;
-    });
-  }) as UniqByFnOverload;
-
-  type UniqByFnOverload = {
-    <E, P extends Primitive>(
-      array: NonEmptyArray<E>,
-      mapFn: (value: E) => P,
-    ): NonEmptyArray<E>;
-
-    <E, P extends Primitive>(
-      array: readonly E[],
-      mapFn: (value: E) => P,
-    ): readonly E[];
+    }) as unknown as Ar extends NonEmptyArray<unknown>
+      ? NonEmptyArray<Ar[number]>
+      : readonly Ar[number][];
   };
 
   // set operations & equality
