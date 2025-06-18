@@ -9,6 +9,11 @@ await assertExt({
       ignorePatterns: ['tsconfig.json', 'globals.d.mts'],
     },
     {
+      path: path.resolve(projectRootPath, './samples'),
+      extension: '.mts',
+      ignorePatterns: ['tsconfig.json', 'mutability-utilities.tsx'],
+    },
+    {
       path: path.resolve(projectRootPath, './scripts'),
       extension: '.mts',
       ignorePatterns: ['tsconfig.json'],
