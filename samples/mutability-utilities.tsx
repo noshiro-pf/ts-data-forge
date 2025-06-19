@@ -3,24 +3,23 @@ import { castMutable } from 'ts-data-forge';
 const readonlyOptions: readonly string[] = ['Option 1', 'Option 2', 'Option 3'];
 
 // Example: Material-UI Autocomplete
-import { Autocomplete } from '@mui/material';
-export const SomeComponent: React.FC = () => {
-  return (
-    <Autocomplete
-      options={castMutable(readonlyOptions)}
-      renderInput={(params) => (
-        <input {...params} placeholder="Select an option" />
-      )}
-    />
-  );
-};
+import { Autocomplete, TextField } from '@mui/material';
+
+export const SomeComponent: React.FC = () => (
+  <Autocomplete
+    options={castMutable(readonlyOptions)}
+    renderInput={(params) => (
+      <TextField {...params} placeholder="Select an option" />
+    )}
+  />
+);
 
 // Example with a function that expects mutable array
 // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-function processItems(mut_items: string[]): void {
+const processItems = (mut_items: string[]): void => {
   mut_items.push('New Item');
   console.log('Items:', mut_items);
-}
+};
 
 // Use castMutable to safely pass readonly array to mutable API
 processItems(castMutable(readonlyOptions));

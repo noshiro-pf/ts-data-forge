@@ -1,6 +1,6 @@
 import { hasKey, isNonNullObject, isRecord } from 'ts-data-forge';
 
-function processData(data: unknown): void {
+const processData = (data: unknown): void => {
   if (isRecord(data)) {
     // data is now UnknownRecord (= Readonly<Record<string, unknown>>)
     if (
@@ -11,7 +11,7 @@ function processData(data: unknown): void {
       console.log(`Hello, ${data.name}!`);
     }
   }
-}
+};
 
 // Non-null object checking
 const value: unknown = { key: 'value' };
