@@ -139,7 +139,9 @@ expectType<{ x: number }, { x: number }>('=');
 // The following would cause a compile-time error:
 // expectType<User, Admin>("="); // Error: Type 'User' is not strictly equal to type 'Admin'.
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 expectType<User, any>('!='); // Error: Comparisons with `any` are also strictly checked.
+
 ```
 
 ### 2. Functional Programming with `Optional`, `Result`, `pipe`, and `match`
@@ -147,31 +149,31 @@ expectType<User, any>('!='); // Error: Comparisons with `any` are also strictly 
 Handle nullable values and error-prone operations safely.
 
 ```typescript
-import { Optional, Result, pipe, match } from 'ts-data-forge';
+import { match, Optional, pipe, Result } from 'ts-data-forge';
 
 // Optional for nullable values
 const maybeValue = Optional.some(42);
-const nothing = Optional.none;
 
 const doubled = Optional.map(maybeValue, (x) => x * 2);
 console.log(Optional.unwrapOr(doubled, 0)); // 84
 
 // Result for error handling
 const success = Result.ok(42);
-const failure = Result.err('Something went wrong');
 
 const mapped = Result.map(success, (x) => x * 2);
 if (Result.isOk(mapped)) {
-    console.log(mapped.value); // 84
+  console.log(mapped.value); // 84
 }
 
 // Advanced pipe usage
-const processNumber = (input: number) =>
-    pipe(input)
-        .map((x) => x * 2) // Regular transformation
-        .map((x) => x + 10) // Chain transformations
-        .map((x) => (x > 50 ? Optional.some(x) : Optional.none)) // Convert to Optional
-        .mapOptional((x) => x / 2).value; // Continue with Optional chain and get final Optional<number>
+const processNumber = (input: number): Optional<number> => {
+  const result = pipe(input)
+    .map((x) => x * 2) // Regular transformation
+    .map((x) => x + 10).value; // Chain transformations // Get the result
+
+  // Convert to Optional and continue processing
+  return result > 50 ? Optional.some(result / 2) : Optional.none;
+};
 
 console.log(processNumber(30)); // Optional.some(35)
 console.log(processNumber(10)); // Optional.none
@@ -179,23 +181,24 @@ console.log(processNumber(10)); // Optional.none
 // Pattern matching with match
 type Status = 'loading' | 'success' | 'error';
 
-const handleStatus = (status: Status, data?: string) =>
-    match(status, {
-        loading: 'Please wait...',
-        success: `Data: ${data ?? 'No data'}`,
-        error: 'An error occurred',
-    });
+const handleStatus = (status: Status, data?: string): string =>
+  match(status, {
+    loading: 'Please wait...',
+    success: `Data: ${data ?? 'No data'}`,
+    error: 'An error occurred',
+  });
 
 console.log(handleStatus('loading')); // 'Please wait...'
 console.log(handleStatus('success', 'Hello')); // 'Data: Hello'
 console.log(handleStatus('error')); // 'An error occurred'
 
 // Pattern matching with Result
-const processResult = (result: Result<number, string>) =>
-    Result.isOk(result) ? `Success: ${result.value}` : `Error: ${result.value}`;
+const processResult = (result: Result<number, string>): string =>
+  Result.isOk(result) ? `Success: ${result.value}` : `Error: ${result.value}`;
 
 console.log(processResult(Result.ok(42))); // 'Success: 42'
 console.log(processResult(Result.err('Failed'))); // 'Error: Failed'
+
 ```
 
 ### 3. Number Utilities with `Num` and Branded Number Types
@@ -206,8 +209,8 @@ The `Num` object provides safe and convenient functions for numerical operations
 import { Num } from 'ts-data-forge';
 
 // Basic conversions
-const num = Num.from('123'); // 123
-const invalid = Num.from('abc'); // NaN
+console.log(Num.from('123')); // 123
+console.log(Num.from('abc')); // NaN
 
 // Range checking
 const inRange = Num.isInRange(0, 10);
@@ -225,14 +228,16 @@ const round2 = Num.round(2);
 console.log(round2(3.14159)); // 3.14
 
 console.log(Num.roundAt(3.14159, 3)); // 3.142
-console.log(Num.roundToInt(3.7) satisfies Int); // 4
+console.log(Num.roundToInt(3.7)); // 4
 
 // Type guards
-declare const value: number;
+const value = 5; // example value
 if (Num.isNonZero(value)) {
-    // value is guaranteed to be non-zero
-    const result = Num.div(10, value); // Safe division
+  // value is guaranteed to be non-zero
+  const result = Num.div(10, value); // Safe division
+  console.log(result); // 2
 }
+
 ```
 
 #### Branded Number Types for Enhanced Type Safety
@@ -241,22 +246,16 @@ if (Num.isNonZero(value)) {
 
 ```typescript
 import {
-    asInt,
-    asUint,
-    asFiniteNumber,
-    asSafeInt,
-    asInt16,
-    asUint32,
-    asNonZeroInt,
-    asPositiveInt,
-    Int,
-    Uint,
-    FiniteNumber,
-    SafeInt,
-    Int16,
-    Uint32,
-    NonZeroInt,
-    PositiveInt,
+  asFiniteNumber,
+  asInt,
+  asInt16,
+  asNonZeroInt,
+  asPositiveInt,
+  asSafeInt,
+  asUint,
+  asUint32,
+  Int16,
+  NonZeroInt,
 } from 'ts-data-forge';
 
 // Basic branded types
@@ -265,7 +264,8 @@ const unsigned = asUint(42); // Uint - non-negative integer
 const finite = asFiniteNumber(3.14); // FiniteNumber - finite floating-point
 const safeInt = asSafeInt(42); // SafeInt - integer in safe range
 
-const nonInteger = asInt(3.14); // This line causes a runtime error
+// This line would cause a runtime error:
+// const nonInteger = asInt(3.14);
 
 // Range-constrained types (16-bit, 32-bit)
 const int16 = asInt16(1000); // Int16: [-32768, 32767]
@@ -284,6 +284,22 @@ const ratio = NonZeroInt.div(asNonZeroInt(10), nonZeroInt); // No division by ze
 
 // Random generation within type constraints
 const randomInt16 = Int16.random(); // Int16 (random value in valid range)
+
+console.log({
+  integer,
+  unsigned,
+  finite,
+  safeInt,
+  int16,
+  uint32,
+  nonZeroInt,
+  positiveInt,
+  sum,
+  clamped,
+  ratio,
+  randomInt16,
+});
+
 ```
 
 ### 4. Array Utilities with `Arr`
@@ -291,13 +307,13 @@ const randomInt16 = Int16.random(); // Int16 (random value in valid range)
 The `Arr` object provides a rich set of functions for array manipulation.
 
 ```typescript
-import { Arr } from 'ts-data-forge';
+import { Arr, expectType } from 'ts-data-forge';
 
 const numbers: readonly number[] = [1, 2, 3, 4, 5, 2, 3];
 const people = [
-    { name: 'Alice', age: 30 },
-    { name: 'Bob', age: 25 },
-    { name: 'Charlie', age: 35 },
+  { name: 'Alice', age: 30 },
+  { name: 'Bob', age: 25 },
+  { name: 'Charlie', age: 35 },
 ] as const;
 
 // Reduction
@@ -310,9 +326,9 @@ const range: readonly [1, 2, 3] = Arr.range(1, 4); // [1, 2, 3]
 
 // Type-safe length checking
 if (Arr.isArrayAtLeastLength(numbers, 2)) {
-    // numbers is now guaranteed to have at least 3 elements
-    expectType<typeof numbers, readonly [number, number, ...number[]]>('=');
-    console.log(numbers[1]); // Safe access to index 2
+  // numbers is now guaranteed to have at least 3 elements
+  expectType<typeof numbers, readonly [number, number, ...number[]]>('=');
+  console.log(numbers[1]); // Safe access to index 2
 }
 
 // Take first n elements
@@ -320,10 +336,13 @@ const firstThree = Arr.take(numbers, 3); // [1, 2, 3]
 
 // Find maximum by property
 const oldestPerson = Arr.maxBy(people, (person) => person.age);
-console.log(oldestPerson?.name); // 'Charlie'
+console.log(oldestPerson.value.name); // 'Charlie'
 
 // Remove duplicates
 const unique = Arr.uniq(numbers); // [1, 2, 3, 4, 5]
+
+console.log({ zeros, range, firstThree, unique });
+
 ```
 
 ### 5. Immutable Collections: `IMap` and `ISet`
@@ -331,7 +350,7 @@ const unique = Arr.uniq(numbers); // [1, 2, 3, 4, 5]
 Type-safe, immutable data structures.
 
 ```typescript
-import { IMap, ISet, pipe } from 'ts-data-forge';
+import { Arr, IMap, ISet } from 'ts-data-forge';
 
 // IMap usage - immutable operations
 const originalMap = IMap.create<string, number>([]);
@@ -344,18 +363,20 @@ console.log(mapWithTwo.get('one')); // Optional.some(1)
 console.log(mapWithTwo.has('three')); // false
 
 // Using pipe for fluent updates
-const idMap = pipe(Arr.seq(10))
-    .map(Arr.map<number>(i => [i, i.toString()])
-     .map(Arr.skip(1)) // [ [1, "1"], ..., [9, "9"]]
-    .map(IMap.create<number, string>).value;
+const sequence = Arr.seq(10); // [0, 1, 2, ..., 9]
+const pairs = sequence.map(
+  (i) => [i, i.toString()] as readonly [number, string],
+);
+const skipped = Arr.skip(pairs, 1); // [ [1, "1"], ..., [9, "9"]]
+const idMap = IMap.create<number, string>(skipped);
 
 console.log(idMap.size); // 9
 
 // Efficient batch updates with withMutations
 const idMapUpdated = idMap.withMutations([
-    { type: 'set', key: 99, value: "99" },
-    { type: 'update', key: 5, value: "five" },
-    { type: 'delete', key: 4 },
+  { type: 'set', key: 99, value: '99' },
+  { type: 'update', key: 5, updater: () => 'five' },
+  { type: 'delete', key: 4 },
 ]);
 
 console.log(idMapUpdated.size); // 9
@@ -367,6 +388,7 @@ const setWithItems = originalSet.add(1).add(2).add(1); // Duplicate ignored
 console.log(originalSet.size); // 0 (unchanged)
 console.log(setWithItems.has(1)); // true
 console.log(setWithItems.size); // 2
+
 ```
 
 ### 6. Type Guards
@@ -374,27 +396,33 @@ console.log(setWithItems.size); // 2
 Safe type narrowing with comprehensive type guards.
 
 ```typescript
-import { isNonNullObject, isRecord, hasKey } from 'ts-data-forge';
+import { hasKey, isNonNullObject, isRecord } from 'ts-data-forge';
 
-function processData(data: unknown) {
-    if (isRecord(data)) {
-        // data is now UnknownRecord (= Readonly<Record<string, unknown>>)
-        if (
-            hasKey(data, 'name') &&
-            // data is now ReadonlyRecord<"name", unknown> & UnknownRecord
-            typeof data.name === 'string'
-        ) {
-            console.log(`Hello, ${data.name}!`);
-        }
+const processData = (data: unknown): void => {
+  if (isRecord(data)) {
+    // data is now UnknownRecord (= Readonly<Record<string, unknown>>)
+    if (
+      hasKey(data, 'name') &&
+      // data is now ReadonlyRecord<"name", unknown> & UnknownRecord
+      typeof data.name === 'string'
+    ) {
+      console.log(`Hello, ${data.name}!`);
     }
-}
+  }
+};
 
 // Non-null object checking
-declare const value: unknown;
+const value: unknown = { key: 'value' };
 if (isNonNullObject(value)) {
-    // value is guaranteed to be a non-null object
-    console.log(Object.keys(value));
+  // value is guaranteed to be a non-null object
+  console.log(Object.keys(value));
 }
+
+// Example usage
+processData({ name: 'Alice' }); // Hello, Alice!
+processData({ age: 30 }); // No output
+processData('not an object'); // No output
+
 ```
 
 ### 7. Iteration with `range`
@@ -406,7 +434,7 @@ import { range } from 'ts-data-forge';
 
 // Traditional for loop using range
 for (const i of range(0, 5)) {
-    console.log(i); // 0, 1, 2, 3, 4
+  console.log(i); // 0, 1, 2, 3, 4
 }
 
 // Create arrays from ranges
@@ -415,8 +443,11 @@ const squares = Array.from(range(1, 6), (x) => x * x); // [1, 4, 9, 16, 25]
 
 // Step ranges
 for (const i of range(0, 10, 2)) {
-    console.log(i); // 0, 2, 4, 6, 8
+  console.log(i); // 0, 2, 4, 6, 8
 }
+
+console.log({ numbers, squares });
+
 ```
 
 ### 8. Mutability Utilities with `castMutable`
