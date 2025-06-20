@@ -40,7 +40,7 @@ export namespace Arr {
    * // Type: IntersectBrand<PositiveNumber, SizeType.Arr>
    * // Value: 3 (branded, guaranteed positive)
    *
-   * const nonEmpty: NonEmptyArray<string> = ['a', 'b'] as NonEmptyArray<string>;
+   * const nonEmpty: NonEmptyArray<string> = ['a', 'b'];
    * const nonEmptySize = Arr.size(nonEmpty);
    * // Type: IntersectBrand<PositiveNumber, SizeType.Arr>
    * // Guaranteed to be > 0
@@ -69,13 +69,6 @@ export namespace Arr {
    * // Safe for array creation
    * const indices = Arr.seq(dataSize); // Creates [0, 1, 2]
    * const zeros = Arr.zeros(dataSize); // Creates [0, 0, 0]
-   *
-   * // Safe for bounds checking
-   * const isValidIndex = (index: number) => index >= 0 && index < dataSize;
-   *
-   * // Comparison with other sizes
-   * const otherArray = ['a', 'b'];
-   * const sizeDiff = Uint32.sub(Arr.size(data), Arr.size(otherArray)); // 1
    *
    * // Functional composition
    * const arrays = [
@@ -177,25 +170,10 @@ export namespace Arr {
    *   if (Arr.isEmpty(arr)) {
    *     // arr is now typed as readonly []
    *     console.log('Array is empty');
+   *     // arr[0]; // type error!
    *     return 0;
-   *   } else {
-   *     // arr is now typed as NonEmptyArray<number>
-   *     return arr[0]; // Safe access - TypeScript knows it's non-empty
    *   }
    * }
-   *
-   * // Conditional processing
-   * const data = [10, 20, 30];
-   * if (!Arr.isEmpty(data)) {
-   *   // Safe to access elements
-   *   const firstElement = data[0]; // No undefined risk
-   *   const lastElement = data[data.length - 1];
-   * }
-   *
-   * // Filtering empty arrays
-   * const arrayList: readonly number[][] = [[1, 2], [], [3], []];
-   * const nonEmptyArrays = arrayList.filter(arr => !Arr.isEmpty(arr));
-   * // nonEmptyArrays: [[1, 2], [3]]
    *
    * // Early returns
    * function sumArray(numbers: readonly number[]): number {
@@ -205,12 +183,6 @@ export namespace Arr {
    *   return numbers.reduce((sum, n) => sum + n, 0);
    * }
    *
-   * // Type inference examples
-   * const testEmpty = [] as const;
-   * const testNonEmpty = [1, 2] as const;
-   *
-   * expectType<Parameters<typeof Arr.isEmpty>[0], readonly unknown[]>('=');
-   * expectType<ReturnType<typeof Arr.isEmpty>, boolean>('=');
    * ```
    *
    * @see {@link isNonEmpty} for the opposite check (non-empty arrays)
@@ -253,16 +225,14 @@ export namespace Arr {
    *
    * // Safe operations on non-empty arrays
    * function processData(data: readonly string[]) {
-   *   if (Arr.isNonEmpty(data)) {
-   *     // All of these are now safe without undefined checks
+   *   if (!Arr.isNonEmpty(data)) return;  // early return pattern
+   *
+   *    // This is now safe without undefined checks
    *     const first = data[0];
-   *     const last = data[data.length - 1];
-   *     const middle = data[Math.floor(data.length / 2)];
    *
    *     // Can safely use non-empty array methods
-   *     const joined = data.join(', ');
-   *     const reduced = data.reduce((acc, item) => acc + item.length, 0);
-   *   }
+   *     const lastElement = Arr.last(data);
+   *     
    * }
    *
    * // Filtering and working with arrays
@@ -287,7 +257,7 @@ export namespace Arr {
    *   }
    *
    *   // numbers is now NonEmptyArray<number>
-   *   return numbers.reduce((sum, n) => sum + n, 0) / numbers.length;
+   *   return Arr.sum(numbers) / Arr.size(numbers);
    * }
    *
    * // Functional composition
