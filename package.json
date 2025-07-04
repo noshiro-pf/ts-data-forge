@@ -47,7 +47,6 @@
     "lint:fix": "eslint . --fix",
     "lint:samples": "eslint ./samples",
     "md": "markdownlint-cli2",
-    "sync-examples": "npm run z:node-esm -- ./scripts/sync-jsdoc-examples.mts",
     "test": "npm run z:vitest -- run",
     "test:cov": "npm run z:vitest -- run --coverage",
     "test:cov:ui": "vite preview --outDir ./coverage",
