@@ -117,8 +117,15 @@ type MergeIntersection<T> = {
  *     .value; // number | undefined
  * ```
  */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-export const pipe: PipeFnOverload = (<const A,>(a: A) => {
+export function pipe<const A extends Optional.Base>(
+  a: A,
+): PipeWithMapOptional<A>;
+
+export function pipe<const A>(a: A): PipeWithMapNullable<A>;
+
+export function pipe<const A>(
+  a: A,
+): PipeWithMapOptional<A> | PipeWithMapNullable<A> {
   if (Optional.isOptional(a)) {
     return {
       value: a,
@@ -132,22 +139,8 @@ export const pipe: PipeFnOverload = (<const A,>(a: A) => {
       mapNullable: (fn) => pipe(a == null ? undefined : fn(a)),
     } satisfies PipeWithMapNullable<A>;
   }
-}) as PipeFnOverload;
+}
 
-/**
- * @internal
- * Overloaded function type for the pipe function.
- * Automatically selects the appropriate pipe type based on input:
- * - Optional types get PipeWithMapOptional
- * - All other types get PipeWithMapNullable
- * @template A The type of value being piped.
- */
-type PipeFnOverload = {
-  /** Creates a pipe for Optional values with mapOptional support. */
-  <const A extends Optional.Base>(a: A): PipeWithMapOptional<A>;
-  /** Creates a pipe for any other value type with mapNullable support. */
-  <const A>(a: A): PipeWithMapNullable<A>;
-};
 
 /**
  * @internal

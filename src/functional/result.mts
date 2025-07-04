@@ -933,13 +933,23 @@ export namespace Result {
    * console.log(Result.unwrapOk(result)); // "default"
    * ```
    */
-  export const orElse: OrElseFnOverload = (<R extends Base, R2 extends Base>(
+  export function orElse<R extends Base, R2 extends Base>(
+    result: R,
+    alternative: R2,
+  ): NarrowToOk<R> | R2;
+
+  // Curried version
+  export function orElse<S, E, S2, E2>(
+    alternative: Result<S2, E2>,
+  ): (result: Result<S, E>) => Result<S, E> | Result<S2, E2>;
+
+  export function orElse<R extends Base, R2 extends Base>(
     ...args: readonly [result: R, alternative: R2] | readonly [alternative: R2]
   ):
     | (NarrowToOk<R> | R2)
     | ((
         result: Result<UnwrapOk<R>, UnwrapErr<R>>,
-      ) => Result<UnwrapOk<R>, UnwrapErr<R>> | R2) => {
+      ) => Result<UnwrapOk<R>, UnwrapErr<R>> | R2) {
     switch (args.length) {
       case 2: {
         const [result, alternative] = args;
@@ -953,19 +963,7 @@ export namespace Result {
           orElse(result, alternative);
       }
     }
-  }) as OrElseFnOverload;
-
-  type OrElseFnOverload = {
-    <R extends Base, R2 extends Base>(
-      result: R,
-      alternative: R2,
-    ): NarrowToOk<R> | R2;
-
-    // Curried version
-    <S, E, S2, E2>(
-      alternative: Result<S2, E2>,
-    ): (result: Result<S, E>) => Result<S, E> | Result<S2, E2>;
-  };
+  }
 
   /**
    * Combines two `Result` values into a single `Result` containing a tuple.
