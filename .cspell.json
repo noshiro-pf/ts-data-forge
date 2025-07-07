@@ -5,6 +5,7 @@
     "bivariant",
     "contravariance",
     "darkred",
+    "doctest",
     "foldl",
     "foldr",
     "funcs",

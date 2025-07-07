@@ -13,7 +13,7 @@
  * @returns The result of applying `mapFn` to `value` if value is not null/undefined; otherwise `undefined`
  *
  * @example Basic usage with nullable values
- * ```typescript
+ * ```ts
  * // Safe string transformation
  * mapNullable("hello", s => s.toUpperCase()); // "HELLO"
  * mapNullable(null, s => s.toUpperCase()); // undefined
@@ -26,49 +26,54 @@
  * ```
  *
  * @example Working with optional object properties
- * ```typescript
- * interface User {
+ * ```ts
+ * type User = Readonly<{
  *   id: number;
  *   name?: string;
  *   email?: string;
- * }
+ * }>;
  *
- * function formatUserDisplay(user: User): string {
+ * function formatUserDisplay(user: Readonly<User>): string {
  *   const displayName = mapNullable(user.name, name => name.toUpperCase()) ?? 'Anonymous';
  *   const emailDomain = mapNullable(user.email, email => email.split('@')[1]);
  *
- *   return `${displayName} ${emailDomain ? `(${emailDomain})` : ''}`;
+ *   return `${displayName} ${emailDomain !== undefined ? `(${emailDomain})` : ''}`;
  * }
  *
- * formatUserDisplay({ id: 1, name: 'John', email: 'john@example.com' }); // "JOHN (example.com)"
- * formatUserDisplay({ id: 2 }); // "Anonymous "
+ * const result1 = formatUserDisplay({ id: 1, name: 'John', email: 'john@example.com' }); // "JOHN (example.com)"
+ * const result2 = formatUserDisplay({ id: 2 }); // "Anonymous "
+ * assert(result1 === "JOHN (example.com)");
+ * assert(result2 === "Anonymous ");
  * ```
  *
  * @example Curried usage for functional composition
- * ```typescript
+ * ```ts
  * // Create reusable transformers
  * const toUpperCase = mapNullable((s: string) => s.toUpperCase());
  * const addPrefix = mapNullable((s: string) => `PREFIX_${s}`);
- * const parseNumber = mapNullable((s: string) => parseInt(s, 10));
  *
  * // Use in different contexts
- * toUpperCase("hello"); // "HELLO"
- * toUpperCase(null); // undefined
+ * const result1 = toUpperCase("hello"); // "HELLO"
+ * const result2 = toUpperCase(null); // undefined
+ * assert(result1 === "HELLO");
+ * assert(result2 === undefined);
  *
  * // Compose transformations
- * const processString = (s: string | null) => {
+ * const processString = (s: string | null): string | undefined => {
  *   const upper = toUpperCase(s);
  *   return addPrefix(upper);
  * };
  *
- * processString("test"); // "PREFIX_TEST"
- * processString(null); // undefined
+ * const result3 = processString("test"); // "PREFIX_TEST"
+ * const result4 = processString(null); // undefined
+ * assert(result3 === "PREFIX_TEST");
+ * assert(result4 === undefined);
  * ```
  *
  * @example Chaining nullable operations
- * ```typescript
+ * ```ts
  * // API response handling
- * interface ApiResponse {
+ * type ApiResponse = DeepReadonly<{
  *   data?: {
  *     user?: {
  *       profile?: {
@@ -76,9 +81,9 @@
  *       };
  *     };
  *   };
- * }
+ * }>;
  *
- * function getDisplayName(response: ApiResponse): string | undefined {
+ * function getDisplayName(response: Readonly<ApiResponse>): string | undefined {
  *   return mapNullable(
  *     response.data?.user?.profile?.displayName,
  *     name => name.trim().toUpperCase()
@@ -92,10 +97,17 @@
  *   const step3 = mapNullable(step2, v => v.toUpperCase());
  *   return step3;
  * }
+ *
+ * const response: ApiResponse = { data: { user: { profile: { displayName: '  test  ' } } } };
+ * const result = getDisplayName(response);
+ * assert(result === 'TEST');
+ *
+ * const chainResult = processNullableChain('  hello  ');
+ * assert(chainResult === 'HELLO');
  * ```
  *
  * @example Integration with array methods
- * ```typescript
+ * ```ts
  * const nullableNumbers: (number | null | undefined)[] = [1, null, 3, undefined, 5];
  *
  * // Transform and filter in one step
@@ -103,9 +115,11 @@
  *   .map(n => mapNullable(n, x => x * 2))
  *   .filter((n): n is number => n !== undefined);
  * // Result: [2, 6, 10]
+ * assert(doubled.length === 3);
+ * assert(doubled[0] === 2);
  *
  * // Process optional array elements
- * const users: Array<{ name?: string }> = [
+ * const users: DeepReadonly<{ name?: string }[]> = [
  *   { name: 'Alice' },
  *   { name: undefined },
  *   { name: 'Bob' }
@@ -115,10 +129,12 @@
  *   .map(u => mapNullable(u.name, n => n.toUpperCase()))
  *   .filter((n): n is string => n !== undefined);
  * // Result: ['ALICE', 'BOB']
+ * assert(upperNames.length === 2);
+ * assert(upperNames[0] === 'ALICE');
  * ```
  *
  * @example Error handling patterns
- * ```typescript
+ * ```ts
  * // Safe JSON parsing
  * function parseJsonSafe<T>(json: string | null): T | undefined {
  *   return mapNullable(json, j => {
@@ -137,6 +153,20 @@
  *     return age >= 0 ? `${age} years old` : null;
  *   }) ?? undefined;
  * }
+ *
+ * // Test the functions
+ * const validJson = parseJsonSafe<{ id: number }>('{"id": 42}');
+ * const invalidJson = parseJsonSafe<{ id: number }>('invalid');
+ * const nullJson = parseJsonSafe<{ id: number }>(null);
+ * assert(validJson?.id === 42);
+ * assert(invalidJson === undefined);
+ * assert(nullJson === undefined);
+ *
+ * const currentYear = new Date().getFullYear();
+ * const ageResult = calculateAge(currentYear - 25);
+ * const invalidAge = calculateAge(null);
+ * assert(ageResult === '25 years old');
+ * assert(invalidAge === undefined);
  * ```
  *
  * @see Optional - For more complex optional value handling

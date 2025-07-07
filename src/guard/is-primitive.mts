@@ -21,7 +21,7 @@ import { expectType } from '../expect-type.mjs';
  *
  * @example
  * Basic usage with different value types:
- * ```typescript
+ * ```ts
  * isPrimitive("hello");        // true (string)
  * isPrimitive(42);             // true (number)
  * isPrimitive(true);           // true (boolean)
@@ -39,7 +39,7 @@ import { expectType } from '../expect-type.mjs';
  *
  * @example
  * Type guard usage for separating primitives from objects:
- * ```typescript
+ * ```ts
  * const values: unknown[] = [
  *   'string',
  *   42,
@@ -63,7 +63,7 @@ import { expectType } from '../expect-type.mjs';
  *
  * @example
  * Deep cloning detection - primitives don't need cloning:
- * ```typescript
+ * ```ts
  * function deepClone<T>(value: T): T {
  *   if (isPrimitive(value)) {
  *     // Primitives are immutable, return as-is
@@ -92,7 +92,7 @@ import { expectType } from '../expect-type.mjs';
  *
  * @example
  * Serialization helpers:
- * ```typescript
+ * ```ts
  * function canSerializeDirectly(value: unknown): boolean {
  *   if (isPrimitive(value)) {
  *     // Most primitives can be serialized directly
@@ -116,7 +116,7 @@ import { expectType } from '../expect-type.mjs';
  *
  * @example
  * Type narrowing in conditional logic:
- * ```typescript
+ * ```ts
  * function processValue(value: unknown): string {
  *   if (isPrimitive(value)) {
  *     // value is now Primitive type
@@ -130,19 +130,24 @@ import { expectType } from '../expect-type.mjs';
  *       case 'undefined':
  *         return 'Undefined';
  *       case 'symbol':
- *         return `Symbol: ${value.description || 'unnamed'}`;
+ *         return `Symbol: ${value.description ?? 'unnamed'}`;
  *       case 'bigint':
  *         return `BigInt: ${value}n`;
  *       case 'object': // This is null
  *         return 'Null';
- *       default:
- *         return 'Unknown primitive';
+ *       case 'function':
+ *         return 'Function (should not reach here)';
  *     }
  *   } else {
- *     return `Object: ${value?.constructor?.name || 'Unknown'}`;
+ *     return `Object: ${(value as UnknownRecord).constructor?.name ?? 'Unknown'}`;
  *   }
  * }
+ *
+ * assert(processValue('hello') === 'String: hello');
+ * assert(processValue(42) === 'Number: 42');
+ * assert(processValue({}) === 'Object: Object');
  * ```
+ *
  */
 export const isPrimitive = (u: unknown): u is Primitive => {
   switch (typeof u) {

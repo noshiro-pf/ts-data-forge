@@ -121,24 +121,26 @@ export namespace Result {
    * @template S The type of the success value.
    * @param value The success value.
    * @returns A `Result.Ok<S>` containing the value.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic success case
    * const success = Result.ok(42);
-   * console.log(Result.isOk(success)); // true
-   * console.log(Result.unwrapOk(success)); // 42
+   * assert(Result.isOk(success) === true);
+   * assert(Result.unwrapOk(success) === 42);
    *
    * // Function that returns a Result
    * function divide(a: number, b: number): Result<number, string> {
    *   if (b === 0) {
-   *     return Result.err("Division by zero");
+   *     return Result.err('Division by zero');
    *   }
    *   return Result.ok(a / b);
    * }
    *
    * const result = divide(10, 2);
-   * console.log(Result.unwrapOk(result)); // 5
+   * assert(Result.unwrapOk(result) === 5);
    * ```
+   *
    */
   export const ok = <S,>(value: S): Ok<S> => ({
     $$tag: OkTypeTagName,
@@ -154,12 +156,13 @@ export namespace Result {
    * @template E The type of the error value.
    * @param value The error value.
    * @returns A `Result.Err<E>` containing the value.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic error case
-   * const failure = Result.err("Something went wrong");
-   * console.log(Result.isErr(failure)); // true
-   * console.log(Result.unwrapErr(failure)); // "Something went wrong"
+   * const failure = Result.err('Something went wrong');
+   * assert(Result.isErr(failure) === true);
+   * assert(Result.unwrapErr(failure) === 'Something went wrong');
    *
    * // Function that can fail
    * function parseInteger(input: string): Result<number, string> {
@@ -170,8 +173,8 @@ export namespace Result {
    *   return Result.ok(num);
    * }
    *
-   * const result = parseInteger("abc");
-   * console.log(Result.unwrapErr(result)); // "Invalid number format: abc"
+   * const result = parseInteger('abc');
+   * assert(Result.unwrapErr(result) === 'Invalid number format: abc');
    *
    * // Using custom error types
    * interface ValidationError {
@@ -180,10 +183,12 @@ export namespace Result {
    * }
    *
    * const validationError = Result.err<ValidationError>({
-   *   field: "email",
-   *   message: "Invalid email format"
+   *   field: 'email',
+   *   message: 'Invalid email format',
    * });
+   * assert(Result.isErr(validationError) === true);
    * ```
+   *
    */
   export const err = <E,>(value: E): Err<E> => ({
     $$tag: ErrTypeTagName,
@@ -207,36 +212,37 @@ export namespace Result {
    * @template R The `Result.Base` type to check.
    * @param result The `Result` to check.
    * @returns `true` if the `Result` is `Result.Ok`, otherwise `false`.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic type guard usage
+   * function divide(a: number, b: number): Result<number, string> {
+   *   if (b === 0) return Result.err('Division by zero');
+   *   return Result.ok(a / b);
+   * }
    * const result: Result<number, string> = divide(10, 2);
    *
    * if (Result.isOk(result)) {
    *   // TypeScript knows result is Result.Ok<number>
-   *   console.log(result.value); // Safe to access .value
-   *   console.log(Result.unwrapOk(result)); // 5
+   *   assert(result.value === 5); // Safe to access .value
+   *   assert(Result.unwrapOk(result) === 5);
    * } else {
    *   // TypeScript knows result is Result.Err<string>
-   *   console.log(result.value); // Error message
+   *   assert(false); // Should not reach here
    * }
-   *
-   * // Using in conditional logic
-   * const processResult = (r: Result<string, Error>) => {
-   *   return Result.isOk(r)
-   *     ? r.value.toUpperCase() // Safe string operations
-   *     : "Error occurred";
-   * };
    *
    * // Filtering arrays of Results
    * const results: Result<number, string>[] = [
    *   Result.ok(1),
-   *   Result.err("error"),
-   *   Result.ok(2)
+   *   Result.err('error'),
+   *   Result.ok(2),
    * ];
    * const successes = results.filter(Result.isOk);
-   * // successes is Result.Ok<number>[]
+   * assert(successes.length === 2);
+   * assert(successes[0]?.value === 1);
+   * assert(successes[1]?.value === 2);
    * ```
+   *
    */
   export const isOk = <R extends Base>(result: R): result is NarrowToOk<R> =>
     result.$$tag === OkTypeTagName;
@@ -252,35 +258,26 @@ export namespace Result {
    * @template R The `Result.Base` type to check.
    * @param result The `Result` to check.
    * @returns `true` if the `Result` is `Result.Err`, otherwise `false`.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic type guard usage
+   * function divide(a: number, b: number): Result<number, string> {
+   *   if (b === 0) return Result.err('Division by zero');
+   *   return Result.ok(a / b);
+   * }
    * const result: Result<number, string> = divide(10, 0);
    *
    * if (Result.isErr(result)) {
    *   // TypeScript knows result is Result.Err<string>
-   *   console.log(result.value); // Safe to access error .value
-   *   console.log(Result.unwrapErr(result)); // "Division by zero"
+   *   assert(result.value === 'Division by zero'); // Safe to access error .value
+   *   assert(Result.unwrapErr(result) === 'Division by zero');
    * } else {
    *   // TypeScript knows result is Result.Ok<number>
-   *   console.log(result.value); // Success value
+   *   assert(false); // Should not reach here
    * }
-   *
-   * // Error handling patterns
-   * const handleResult = (r: Result<Data, ApiError>) => {
-   *   if (Result.isErr(r)) {
-   *     logError(r.value); // Safe error operations
-   *     return null;
-   *   }
-   *   return processData(r.value);
-   * };
-   *
-   * // Collecting errors from multiple Results
-   * const results: Result<string, ValidationError>[] = validateForm();
-   * const errors = results
-   *   .filter(Result.isErr)
-   *   .map(err => err.value); // ValidationError[]
    * ```
+   *
    */
   export const isErr = <R extends Base>(result: R): result is NarrowToErr<R> =>
     result.$$tag === ErrTypeTagName;
@@ -298,18 +295,21 @@ export namespace Result {
    * @param toStr An optional function to convert the error value to a string for the error message. Defaults to `String`.
    * @returns The success value if `Result.Ok`.
    * @throws {Error} Error with the stringified error value if the `Result` is `Result.Err`.
-   * @example
-   * ```typescript
-   * const success = Result.ok(42);
-   * console.log(Result.unwrapThrow(success)); // 42
    *
-   * const failure = Result.err("Network error");
+   * @example
+   * ```ts
+   * const success = Result.ok(42);
+   * assert(Result.unwrapThrow(success) === 42);
+   *
+   * const failure = Result.err('Network error');
    * try {
    *   Result.unwrapThrow(failure); // throws Error: "Network error"
+   *   assert(false); // should not reach here
    * } catch (error) {
-   *   console.log(error.message); // "Network error"
+   *   assert((error as Error).message === 'Network error');
    * }
    * ```
+   *
    */
   export const unwrapThrow = <R extends Base>(
     result: R,
@@ -335,21 +335,19 @@ export namespace Result {
    * @template R The `Result.Base` type to unwrap.
    * @param result The `Result` to unwrap.
    * @returns The success value if `Result.Ok`, otherwise `undefined`.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // With guaranteed Ok - returns the value
    * const success = Result.ok(42);
    * const value = Result.unwrapOk(success); // Type: number, Value: 42
-   *
-   * // With general Result - may return undefined
-   * const maybeResult: Result<string, Error> = fetchData();
-   * const data = Result.unwrapOk(maybeResult); // Type: string | undefined
+   * assert(value === 42);
    *
    * // Safe pattern for handling both cases
-   * const result = Result.ok("hello");
+   * const result = Result.ok('hello');
    * const unwrapped = Result.unwrapOk(result);
    * if (unwrapped !== undefined) {
-   *   console.log(unwrapped.toUpperCase()); // "HELLO"
+   *   assert(unwrapped.toUpperCase() === 'HELLO');
    * }
    *
    * // Useful in conditional chains
@@ -357,7 +355,10 @@ export namespace Result {
    *   const value = Result.unwrapOk(r);
    *   return value !== undefined ? value * 2 : 0;
    * };
+   * assert(processResult(Result.ok(5)) === 10);
+   * assert(processResult(Result.err('error')) === 0);
    * ```
+   *
    */
   export function unwrapOk<R extends Ok<unknown>>(result: R): UnwrapOk<R>;
 
@@ -377,12 +378,18 @@ export namespace Result {
    * @param result The `Result` to unwrap.
    * @param defaultValue The value to return if `result` is `Result.Err`.
    * @returns The success value if `Result.Ok`, otherwise `defaultValue`.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * const result = Result.ok(42);
    * const value = Result.unwrapOkOr(result, 0);
-   * console.log(value); // 42
+   * assert(value === 42);
+   *
+   * const errorResult = Result.err('error');
+   * const fallbackValue = Result.unwrapOkOr(errorResult, 0);
+   * assert(fallbackValue === 0);
    * ```
+   *
    */
   export function unwrapOkOr<R extends Base, D>(
     result: R,
@@ -430,18 +437,21 @@ export namespace Result {
    * @param toStr An optional function to convert the success value to a string for the error message when the Result is unexpectedly Ok. Defaults to `String`.
    * @returns The error value if `Result.Err`.
    * @throws {Error} Error with message "Expected Err but got Ok: {value}" if the `Result` is `Result.Ok`.
+   *
    * @example
-   * ```typescript
-   * const failure = Result.err("Network timeout");
-   * console.log(Result.unwrapErrThrow(failure)); // "Network timeout"
+   * ```ts
+   * const failure = Result.err('Network timeout');
+   * assert(Result.unwrapErrThrow(failure) === 'Network timeout');
    *
    * const success = Result.ok(42);
    * try {
    *   Result.unwrapErrThrow(success); // throws Error: "Expected Err but got Ok: 42"
+   *   assert(false); // should not reach here
    * } catch (error) {
-   *   console.log(error.message); // "Expected Err but got Ok: 42"
+   *   assert((error as Error).message === 'Expected Err but got Ok: 42');
    * }
    * ```
+   *
    */
   export const unwrapErrThrow = <R extends Base>(
     result: R,
@@ -468,14 +478,16 @@ export namespace Result {
    * @template R The `Result.Base` type to unwrap.
    * @param result The `Result` to unwrap.
    * @returns The error value if `Result.Err`, otherwise `undefined`.
+   *
    * @example
-   * ```typescript
-   * const failure = Result.err("Connection failed");
-   * console.log(Result.unwrapErr(failure)); // "Connection failed"
+   * ```ts
+   * const failure = Result.err('Connection failed');
+   * assert(Result.unwrapErr(failure) === 'Connection failed');
    *
    * const success = Result.ok(42);
-   * console.log(Result.unwrapErr(success)); // undefined
+   * assert(Result.unwrapErr(success) === undefined);
    * ```
+   *
    */
   export const unwrapErr = <R extends Base>(
     result: R,
@@ -490,12 +502,18 @@ export namespace Result {
    * @param result The `Result` to unwrap.
    * @param defaultValue The value to return if `result` is `Result.Ok`.
    * @returns The error value if `Result.Err`, otherwise `defaultValue`.
+   *
    * @example
-   * ```typescript
-   * const result = Result.err("failed");
-   * const error = Result.unwrapErrOr(result, "default");
-   * console.log(error); // "failed"
+   * ```ts
+   * const result = Result.err('failed');
+   * const error = Result.unwrapErrOr(result, 'default');
+   * assert(error === 'failed');
+   *
+   * const okResult = Result.ok(42);
+   * const defaultError = Result.unwrapErrOr(okResult, 'default');
+   * assert(defaultError === 'default');
    * ```
+   *
    */
   export function unwrapErrOr<R extends Base, D>(
     result: R,
@@ -538,18 +556,25 @@ export namespace Result {
    * @param result The `Result` to map.
    * @param mapFn The function to apply to the success value if present.
    * @returns A new `Result<S2, UnwrapErr<R>>`.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Regular usage
    * const result = Result.ok(5);
-   * const mapped = Result.map(result, x => x * 2);
-   * console.log(Result.unwrap(mapped)); // 10
+   * const mapped = Result.map(result, (x) => x * 2);
+   * assert(Result.unwrapOk(mapped) === 10);
    *
-   * // Curried version for use with pipe
+   * // Curried version
    * const doubler = Result.map((x: number) => x * 2);
-   * const result2 = pipe(Result.ok(5)).map(doubler).value;
-   * console.log(Result.unwrap(result2)); // 10
+   * const result2 = doubler(Result.ok(5));
+   * assert(Result.unwrapOk(result2) === 10);
+   *
+   * // Error case stays error
+   * const errorResult = Result.err('error');
+   * const mappedError = Result.map(errorResult, (x) => x * 2);
+   * assert(Result.isErr(mappedError) === true);
    * ```
+   *
    */
   export function map<R extends Base, S2>(
     result: R,
@@ -592,12 +617,20 @@ export namespace Result {
    * @param result The `Result` to map.
    * @param mapFn The function to apply to the error value if present.
    * @returns A new `Result<UnwrapOk<R>, E2>`.
+   *
    * @example
-   * ```typescript
-   * const result = Result.err("error");
-   * const mapped = Result.mapErr(result, e => e.toUpperCase());
-   * console.log(Result.unwrapErr(mapped)); // "ERROR"
+   * ```ts
+   * const result = Result.err('error');
+   * const mapped = Result.mapErr(result, (e) => e.toUpperCase());
+   * assert(Result.unwrapErr(mapped) === 'ERROR');
+   *
+   * // Ok case stays Ok
+   * const okResult = Result.ok(42);
+   * const mappedOk = Result.mapErr(okResult, (e: string) => e.toUpperCase());
+   * assert(Result.isOk(mappedOk) === true);
+   * assert(Result.unwrapOk(mappedOk) === 42);
    * ```
+   *
    */
   export function mapErr<R extends Base, E2>(
     result: R,
@@ -641,12 +674,26 @@ export namespace Result {
    * @param mapFn The function to apply if `result` is `Ok`.
    * @param mapErrFn The function to apply if `result` is `Err`.
    * @returns A new `Result<S2, E2>` based on the applied function.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * const result = Result.ok(42);
-   * const folded = Result.fold(result, x => x * 2, () => 0);
-   * console.log(Result.unwrapOk(folded)); // 84
+   * const folded = Result.fold(
+   *   result,
+   *   (x) => x * 2,
+   *   () => 0,
+   * );
+   * assert(Result.unwrapOk(folded) === 84);
+   *
+   * const errorResult = Result.err('error');
+   * const foldedError = Result.fold(
+   *   errorResult,
+   *   (x) => x * 2,
+   *   () => 0,
+   * );
+   * assert(Result.unwrapErr(foldedError) === 0);
    * ```
+   *
    */
   export function fold<R extends Base, S2, E2>(
     result: R,
@@ -702,14 +749,19 @@ export namespace Result {
    * @param result The `Result` to flat map.
    * @param flatMapFn The function to apply that returns a `Result`.
    * @returns The result of applying the function, or the original `Err`.
-   * @example
-   * ```typescript
-   * const divide = (a: number, b: number): Result<number, string> =>
-   *   b === 0 ? Result.err("Division by zero") : Result.ok(a / b);
    *
-   * const result = Result.flatMap(Result.ok(10), x => divide(x, 2));
-   * console.log(Result.unwrapOk(result)); // 5
+   * @example
+   * ```ts
+   * const divide = (a: number, b: number): Result<number, string> =>
+   *   b === 0 ? Result.err('Division by zero') : Result.ok(a / b);
+   *
+   * const result = Result.flatMap(Result.ok(10), (x) => divide(x, 2));
+   * assert(Result.unwrapOk(result) === 5);
+   *
+   * const errorResult = Result.flatMap(Result.ok(10), (x) => divide(x, 0));
+   * assert(Result.unwrapErr(errorResult) === 'Division by zero');
    * ```
+   *
    */
   export function flatMap<R extends Base, S2, E2>(
     result: R,
@@ -753,12 +805,22 @@ export namespace Result {
    * @param message The error message to throw if the `Result` is `Result.Err`.
    * @returns The success value if `Result.Ok`.
    * @throws Error with the provided message if the `Result` is `Result.Err`.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * const result = Result.ok(42);
-   * const value = Result.expectToBe(result, "Operation must succeed");
-   * console.log(value); // 42
+   * const value = Result.expectToBe(result, 'Operation must succeed');
+   * assert(value === 42);
+   *
+   * const errorResult = Result.err('failed');
+   * try {
+   *   Result.expectToBe(errorResult, 'Operation must succeed');
+   *   assert(false); // should not reach here
+   * } catch (error) {
+   *   assert((error as Error).message === 'Operation must succeed');
+   * }
    * ```
+   *
    */
   export function expectToBe<R extends Base>(
     result: R,
@@ -797,6 +859,7 @@ export namespace Result {
    * @internal
    * Utility type to extract the resolved value type from a Promise.
    * @template P The Promise type.
+   *
    * @example
    * UnwrapPromise<Promise<string>> // string
    * UnwrapPromise<Promise<number>> // number
@@ -831,18 +894,22 @@ export namespace Result {
    * @template T The return type of the function.
    * @param fn The function to execute that may throw.
    * @returns A `Result<T, Error>` containing either the successful result or the caught error.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Wrapping JSON.parse which can throw
-   * const parseJson = <T>(text: string): Result<T, Error> =>
+   * const parseJson = <T,>(text: string): Result<T, Error> =>
    *   Result.fromThrowable(() => JSON.parse(text) as T);
    *
-   * const validJson = parseJson<{valid: boolean}>('{"valid": true}');
+   * const validJson = parseJson<{ valid: boolean }>('{"valid": true}');
    * if (Result.isOk(validJson)) {
-   *   console.log(validJson.value.valid); // true
+   *   assert(validJson.value.valid === true);
    * }
    *
+   * const invalidJson = parseJson('invalid json');
+   * assert(Result.isErr(invalidJson) === true);
    * ```
+   *
    */
   export const fromThrowable = <T,>(fn: () => T): Result<T, Error> => {
     try {
@@ -865,13 +932,20 @@ export namespace Result {
    * @template R The input `Result.Base` type.
    * @param result The `Result` to swap.
    * @returns A new `Result` with success and error swapped.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * const okResult = Result.ok(42);
    * const swapped = Result.swap(okResult);
-   * console.log(Result.isErr(swapped)); // true
-   * console.log(Result.unwrapErr(swapped)); // 42
+   * assert(Result.isErr(swapped) === true);
+   * assert(Result.unwrapErr(swapped) === 42);
+   *
+   * const errResult = Result.err('error');
+   * const swappedErr = Result.swap(errResult);
+   * assert(Result.isOk(swappedErr) === true);
+   * assert(Result.unwrapOk(swappedErr) === 'error');
    * ```
+   *
    */
   export const swap = <R extends Base>(
     result: R,
@@ -892,19 +966,20 @@ export namespace Result {
    * @template R The input `Result.Base` type.
    * @param result The `Result` to convert.
    * @returns An `Optional<UnwrapOk<R>>` containing the success value or representing `None`.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic conversion
    * const okResult = Result.ok(42);
    * const optional = Result.toOptional(okResult);
-   * console.log(Optional.isSome(optional)); // true
-   * console.log(Optional.unwrap(optional)); // 42
+   * assert(Optional.isSome(optional) === true);
+   * assert(Optional.unwrap(optional) === 42);
    *
-   * const errResult = Result.err("Network error");
+   * const errResult = Result.err('Network error');
    * const none = Result.toOptional(errResult);
-   * console.log(Optional.isNone(none)); // true
-   *
+   * assert(Optional.isNone(none) === true);
    * ```
+   *
    */
   export const toOptional = <R extends Base>(
     result: R,
@@ -917,13 +992,20 @@ export namespace Result {
    * @param result The `Result` to check.
    * @param alternative The alternative `Result` to return if the first is `Err`.
    * @returns The first `Result` if `Ok`, otherwise the alternative.
+   *
    * @example
-   * ```typescript
-   * const primary = Result.err("error");
-   * const fallback = Result.ok("default");
+   * ```ts
+   * const primary = Result.err('error');
+   * const fallback = Result.ok('default');
    * const result = Result.orElse(primary, fallback);
-   * console.log(Result.unwrapOk(result)); // "default"
+   * assert(Result.unwrapOk(result) === 'default');
+   *
+   * const okPrimary = Result.ok('success');
+   * const notUsed = Result.ok('fallback');
+   * const resultOk = Result.orElse(okPrimary, notUsed);
+   * assert(Result.unwrapOk(resultOk) === 'success');
    * ```
+   *
    */
   export function orElse<R extends Base, R2 extends Base>(
     result: R,
@@ -967,16 +1049,18 @@ export namespace Result {
    * @param resultA The first `Result`.
    * @param resultB The second `Result`.
    * @returns A `Result` containing a tuple of both values, or the first `Err`.
-   * @example
-   * ```typescript
-   * const a = Result.ok(1);
-   * const b = Result.ok("hello");
-   * const zipped = Result.zip(a, b);
-   * console.log(Result.unwrapOk(zipped)); // [1, "hello"]
    *
-   * const withErr = Result.zip(a, Result.err("error"));
-   * console.log(Result.unwrapErr(withErr)); // "error"
+   * @example
+   * ```ts
+   * const a = Result.ok(1);
+   * const b = Result.ok('hello');
+   * const zipped = Result.zip(a, b);
+   * assert.deepStrictEqual(Result.unwrapOk(zipped), [1, 'hello']);
+   *
+   * const withErr = Result.zip(a, Result.err('error'));
+   * assert(Result.unwrapErr(withErr) === 'error');
    * ```
+   *
    */
   export const zip = <S1, E1, S2, E2>(
     resultA: Result<S1, E1>,

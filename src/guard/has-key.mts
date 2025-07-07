@@ -19,69 +19,76 @@
  *
  * @example
  * Basic usage with known object structure:
- * ```typescript
+ * ```ts
  * const obj = { a: 1, b: 'hello' };
  *
  * if (hasKey(obj, 'a')) {
  *   // obj is narrowed to guarantee 'a' exists
- *   console.log(obj.a); // TypeScript knows 'a' exists and is type number
- *   // No need for optional chaining or undefined checks
+ *   assert(obj.a === 1); // TypeScript knows 'a' exists and is type number
  * }
  *
  * if (hasKey(obj, 'c')) {
- *   // This block won't execute at runtime
- *   console.log(obj.c); // But TypeScript would know 'c' exists if it did
+ *   assert(false); // This block won't execute at runtime
+ * } else {
+ *   assert(true); // 'c' does not exist
  * }
+ *
+ * assert(hasKey(obj, 'a') === true);
+ * assert(hasKey(obj, 'b') === true);
+ * assert(hasKey(obj, 'c') === false);
  * ```
  *
  * @example
  * Working with dynamic objects and unknown keys:
- * ```typescript
+ * ```ts
  * const dynamicObj: Record<string, unknown> = { x: 10, y: 20 };
- * const userInput: string = getUserInput();
+ * const userInput: string = 'x';
  *
  * if (hasKey(dynamicObj, userInput)) {
  *   // Safe to access the dynamic key
  *   const value = dynamicObj[userInput]; // Type: unknown
- *   console.log(`Value for ${userInput}:`, value);
+ *   assert(value === 10);
  * } else {
- *   console.log(`Key '${userInput}' not found`);
+ *   assert(false); // should not reach here
  * }
+ *
+ * assert(hasKey(dynamicObj, 'x') === true);
+ * assert(hasKey(dynamicObj, 'z') === false);
  * ```
  *
  * @example
  * Type narrowing with union types:
- * ```typescript
+ * ```ts
  * type UserPreferences =
  *   | { theme: 'dark'; notifications: boolean }
  *   | { theme: 'light' }
  *   | { autoSave: true; interval: number };
  *
- * const preferences: UserPreferences = getPreferences();
+ * const preferences: UserPreferences = { theme: 'dark', notifications: true };
  *
  * if (hasKey(preferences, 'theme')) {
  *   // preferences is narrowed to the first two union members
- *   console.log(preferences.theme); // 'dark' | 'light'
+ *   assert(preferences.theme === 'dark' || preferences.theme === 'light');
  * }
  *
  * if (hasKey(preferences, 'autoSave')) {
- *   // preferences is narrowed to the third union member
- *   console.log(preferences.interval); // number (we know this exists)
+ *   assert(false); // This won't execute for this example
  * }
  * ```
  *
  * @example
  * Basic usage with isRecord for progressive narrowing:
- * ```typescript
- * const data: unknown = parseApiResponse();
+ * ```ts
+ * const data: unknown = { user: { name: 'John', age: 30 } };
  *
- * if (isRecord(data) && hasKey(data, 'user')) {
+ * // This example requires isRecord import - simplified for doctest
+ * if (typeof data === 'object' && data !== null && hasKey(data, 'user')) {
  *   // data is now Record<string, unknown> with guaranteed 'user' key
  *   const user = data.user;
  *
- *   if (isRecord(user) && hasKey(user, 'name')) {
+ *   if (typeof user === 'object' && user !== null && hasKey(user, 'name')) {
  *     // Safely access nested properties
- *     console.log('User name:', user.name);
+ *     assert(user.name === 'John');
  *   }
  * }
  * ```

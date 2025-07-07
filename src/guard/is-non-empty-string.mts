@@ -18,45 +18,46 @@
  *
  * @example
  * Basic usage with different string types:
- * ```typescript
- * isNonEmptyString("hello");    // true
- * isNonEmptyString(" ");        // true (whitespace is considered non-empty)
- * isNonEmptyString("\t\n");     // true (whitespace characters are non-empty)
- * isNonEmptyString("");         // false
- * isNonEmptyString(null);       // false
- * isNonEmptyString(undefined);  // false
+ * ```ts
+ * assert(isNonEmptyString("hello") === true);    // true
+ * assert(isNonEmptyString(" ") === true);        // true (whitespace is considered non-empty)
+ * assert(isNonEmptyString("\t\n") === true);     // true (whitespace characters are non-empty)
+ * assert(isNonEmptyString("") === false);        // false
+ * assert(isNonEmptyString(null) === false);      // false
+ * assert(isNonEmptyString(undefined) === false); // false
  * ```
  *
  * @example
  * Type guard usage with nullable strings:
- * ```typescript
- * const userInput: string | null | undefined = getUserInput();
+ * ```ts
+ * const userInput: string | null | undefined = 'hello';
  *
  * if (isNonEmptyString(userInput)) {
  *   // userInput is now typed as non-empty string
- *   console.log(userInput.charAt(0));     // Safe to access string methods
- *   console.log(userInput.toUpperCase()); // No need for null checks
- *   const length = userInput.length;      // Guaranteed to be > 0
+ *   assert(userInput.charAt(0) === 'h');   // Safe to access string methods
+ *   assert(userInput.toUpperCase() === 'HELLO'); // No need for null checks
+ *   const length = userInput.length;       // Guaranteed to be > 0
+ *   assert(length === 5);
  * } else {
- *   console.log('No valid input provided');
+ *   assert(false); // should not reach here
  * }
  * ```
  *
  * @example
  * Working with literal string types:
- * ```typescript
+ * ```ts
  * type Status = "active" | "inactive" | "" | null;
- * const status: Status = getStatus();
+ * const status: Status = "active";
  *
  * if (isNonEmptyString(status)) {
  *   // status is now typed as "active" | "inactive"
- *   console.log(`Status is: ${status}`);
+ *   assert(status === "active" || status === "inactive");
  * }
  * ```
  *
  * @example
  * Form validation patterns:
- * ```typescript
+ * ```ts
  * interface FormData {
  *   name?: string;
  *   email?: string;
@@ -83,7 +84,7 @@
  *
  * @example
  * Filtering arrays of potentially empty strings:
- * ```typescript
+ * ```ts
  * const responses: (string | null | undefined)[] = [
  *   "hello",
  *   "",
@@ -101,6 +102,7 @@
  *   console.log(response.trim().toUpperCase());
  * });
  * ```
+ *
  */
 export const isNonEmptyString = <S extends string | null | undefined>(
   s: S,

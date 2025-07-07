@@ -19,7 +19,7 @@
  * @returns A memoized version of the input function with the same signature
  *
  * @example Basic memoization for expensive calculations
- * ```typescript
+ * ```ts
  * // Fibonacci calculation (exponential time complexity)
  * const fibonacci = (n: number): number => {
  *   console.log(`Computing fib(${n})`);
@@ -32,12 +32,13 @@
  *   (n) => n // Number itself as key
  * );
  *
- * memoizedFib(40); // Much faster than unmemoized version
- * memoizedFib(40); // Returns instantly from cache
+ * const result1 = memoizedFib(40); // Much faster than unmemoized version
+ * const result2 = memoizedFib(40); // Returns instantly from cache
+ * assert(result1 === result2);
  * ```
  *
  * @example Multi-argument functions with composite keys
- * ```typescript
+ * ```ts
  * // Grid calculation with x,y coordinates
  * const calculateGridValue = (x: number, y: number, scale: number): number => {
  *   console.log(`Computing grid(${x},${y},${scale})`);
@@ -55,21 +56,28 @@
  *   calculateGridValue,
  *   (x, y, scale) => (x << 20) | (y << 10) | scale // Assuming small positive integers
  * );
+ *
+ * const result = memoizedGrid(1, 2, 0.5);
+ * const result2 = memoizedGrid2(1, 2, 1);
+ * assert(typeof result === 'number');
+ * assert(typeof result2 === 'number');
  * ```
  *
  * @example Object arguments with selective memoization
- * ```typescript
- * interface User {
+ * ```ts
+ * type User = Readonly<{
  *   id: number;
  *   name: string;
  *   email: string;
- *   metadata?: Record<string, unknown>;
- * }
+ *   metadata?: UnknownRecord;
+ * }>;
  *
- * const fetchUserPermissions = async (user: User): Promise<string[]> => {
+ * type ProcessedData = Readonly<{ processed: boolean }>;
+ *
+ * const fetchUserPermissions = (user: User): Promise<readonly string[]> => {
  *   console.log(`Fetching permissions for user ${user.id}`);
- *   const response = await api.get(`/permissions/${user.id}`);
- *   return response.data;
+ *   // Mock implementation
+ *   return Promise.resolve(['read', 'write']);
  * };
  *
  * // Memoize based only on user ID, ignoring other fields
@@ -81,20 +89,27 @@
  * // For multiple identifying fields
  * const processUserData = (user: User, orgId: number): ProcessedData => {
  *   // Complex processing...
+ *   return { processed: true };
  * };
  *
  * const memoizedProcess = memoizeFunction(
  *   processUserData,
  *   (user, orgId) => `${user.id}:${orgId}` // Composite key with separator
  * );
+ *
+ * const user: User = { id: 1, name: 'John', email: 'john@example.com' };
+ * const permissions = memoizedFetchPermissions(user);
+ * const processed = memoizedProcess(user, 123);
+ * assert(processed.processed === true);
  * ```
  *
  * @example Memoizing recursive functions
- * ```typescript
+ * ```ts
  * // Recursive path finding
- * const findPaths = (start: string, end: string, visited: Set<string> = new Set()): string[][] => {
+ * const findPaths = (start: string, end: string, visited: ReadonlySet<string> = new Set()): string[][] => {
  *   if (start === end) return [[end]];
  *   // ... complex recursive logic
+ *   return [[start, end]];
  * };
  *
  * // Use sorted, serialized visited set for consistent keys
@@ -103,51 +118,74 @@
  *   (start, end, visited = new Set()) =>
  *     `${start}->${end}:[${[...visited].sort().join(',')}]`
  * );
+ *
+ * const paths = memoizedFindPaths('A', 'B');
+ * assert(paths.length > 0);
  * ```
  *
  * @example Cache key strategies
- * ```typescript
+ * ```ts
+ * // Mock function for examples
+ * const mockFn = (x: unknown): string => String(x);
+ *
  * // 1. Simple primitive argument
- * memoizeFunction(fn, (x: number) => x);
+ * const memoized1 = memoizeFunction(mockFn, (x: number) => x);
  *
  * // 2. Multiple arguments with separator
- * memoizeFunction(fn, (a: string, b: number) => `${a}|${b}`);
+ * const mockFn2 = (a: string, b: number): string => `${a}-${b}`;
+ * const memoized2 = memoizeFunction(mockFn2, (a: string, b: number) => `${a}|${b}`);
  *
  * // 3. Object with specific fields
- * memoizeFunction(fn, (obj: { id: number; version: number }) =>
+ * const mockFn3 = (obj: { readonly id: number; readonly version: number }): string => `${obj.id}:${obj.version}`;
+ * const memoized3 = memoizeFunction(mockFn3, (obj: Readonly<{ id: number; version: number }>) =>
  *   `${obj.id}:v${obj.version}`
  * );
  *
  * // 4. Array argument with JSON serialization
- * memoizeFunction(fn, (arr: number[]) => JSON.stringify(arr));
+ * const mockFn4 = (arr: readonly number[]): string => arr.join(',');
+ * const memoized4 = memoizeFunction(mockFn4, (arr: readonly number[]) => JSON.stringify(arr));
  *
  * // 5. Boolean flags as bit field
- * memoizeFunction(fn, (a: boolean, b: boolean, c: boolean) =>
+ * const mockFn5 = (a: boolean, b: boolean, c: boolean): number => (a ? 1 : 0) + (b ? 1 : 0) + (c ? 1 : 0);
+ * const memoized5 = memoizeFunction(mockFn5, (a: boolean, b: boolean, c: boolean) =>
  *   (a ? 4 : 0) | (b ? 2 : 0) | (c ? 1 : 0)
  * );
+ *
+ * const result1 = memoized1(42);
+ * const result2 = memoized2('test', 123);
+ * assert(typeof result1 === 'string');
+ * assert(typeof result2 === 'string');
  * ```
  *
  * @example Memory-conscious memoization with weak references
- * ```typescript
+ * ```ts
  * // For object keys, consider using WeakMap externally
- * const cache = new WeakMap<object, Result>();
+ * const cache = new WeakMap<UnknownRecord, Result<unknown, unknown>>();
  *
- * function memoizeWithWeakMap<T extends object, R>(
+ * function memoizeWithWeakMap<T extends UnknownRecord, R>(
  *   fn: (obj: T) => R
  * ): (obj: T) => R {
  *   return (obj: T): R => {
  *     if (cache.has(obj)) {
- *       return cache.get(obj)!;
+ *       const cached = cache.get(obj);
+ *       if (cached !== undefined) {
+ *         return cached as R;
+ *       }
  *     }
  *     const result = fn(obj);
- *     cache.set(obj, result);
+ *     cache.set(obj, result as Result<unknown, unknown>);
  *     return result;
  *   };
  * }
+ *
+ * const testFn = (obj: { readonly value: number }): number => obj.value * 2;
+ * const memoized = memoizeWithWeakMap(testFn);
+ * const result = memoized({ value: 5 });
+ * assert(result === 10);
  * ```
  *
  * @example Anti-patterns to avoid
- * ```typescript
+ * ```ts
  * // ❌ Bad: Memoizing impure functions
  * const memoizedRandom = memoizeFunction(
  *   () => Math.random(),
@@ -156,15 +194,34 @@
  *
  * // ❌ Bad: Memoizing functions with side effects
  * const memoizedLog = memoizeFunction(
- *   (msg: string) => { console.log(msg); return msg; },
+ *   (msg: string): string => { console.log(msg); return msg; },
  *   (msg) => msg // Logs only on first call!
  * );
  *
  * // ❌ Bad: Non-unique cache keys
+ * type User = Readonly<{ id: number; name: string }>;
+ * const processUser = (user: Readonly<User>): string => `Processed: ${user.name}`;
  * const memoizedProcess = memoizeFunction(
- *   (user: User) => processUser(user),
+ *   processUser,
  *   (user) => user.name // Multiple users can have same name!
  * );
+ *
+ * // Test anti-patterns (to show they exist, even though they're bad)
+ * const firstRandom = memoizedRandom();
+ * const secondRandom = memoizedRandom();
+ * assert(firstRandom === secondRandom); // Shows the problem with memoizing impure functions
+ *
+ * const logResult1 = memoizedLog('test message');
+ * const logResult2 = memoizedLog('test message');
+ * assert(logResult1 === 'test message');
+ * assert(logResult2 === 'test message');
+ *
+ * // Test the problematic memoization (same name, different users)
+ * const user1: User = { id: 1, name: 'John' };
+ * const user2: User = { id: 2, name: 'John' };
+ * const result1 = memoizedProcess(user1);
+ * const result2 = memoizedProcess(user2); // Returns cached result from user1!
+ * assert(result1 === result2); // Shows the cache collision problem
  * ```
  *
  * @see https://en.wikipedia.org/wiki/Memoization

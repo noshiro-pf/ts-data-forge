@@ -5,64 +5,31 @@ import { castMutable } from '../others/index.mjs';
 
 /**
  * Interface for a high-performance queue with FIFO (First-In, First-Out) behavior.
- *
- * This interface defines a mutable queue data structure where elements are added to the back
- * and removed from the front, maintaining the order in which they were added. The implementation
- * uses a circular buffer for optimal performance, providing O(1) operations for both enqueue
- * and dequeue operations.
- *
- * **FIFO Behavior:**
- * - **enqueue**: Adds elements to the back of the queue
- * - **dequeue**: Removes and returns elements from the front of the queue
- * - Elements are processed in the exact order they were added
- *
- * **Performance Characteristics:**
- * - enqueue: O(1) amortized (O(n) when buffer needs resizing)
- * - dequeue: O(1) always
- * - size/isEmpty: O(1) always
- * - Memory efficient with automatic garbage collection of removed elements
- *
- * **Use Cases:**
- * - Task scheduling and job queues
- * - Breadth-first search algorithms
- * - Event processing systems
- * - Producer-consumer patterns
- * - Buffer management for streaming data
+ * Uses a circular buffer for O(1) enqueue/dequeue operations.
  *
  * @template T The type of elements stored in the queue.
  *
  * @example
- * ```typescript
- * import { createQueue, Queue } from './queue';
+ * ```ts
+ * import { Optional } from '../functional/index.mjs';
  *
- * // Example 1: Basic FIFO operations
- * const messageQueue: Queue<string> = createQueue<string>();
+ * const queue = createQueue<string>();
+ * queue.enqueue("first");
+ * queue.enqueue("second");
  *
- * messageQueue.enqueue("first message");   // Add to back
- * messageQueue.enqueue("second message");  // Add to back
- * messageQueue.enqueue("third message");   // Add to back
+ * assert(Optional.unwrap(queue.dequeue()) === "first"); // FIFO order
+ * assert(queue.size === 1);
  *
- * console.log(messageQueue.size); // Output: 3
- *
- * // Process messages in FIFO order
- * console.log(messageQueue.dequeue().unwrap()); // "first message" (first in, first out)
- * console.log(messageQueue.dequeue().unwrap()); // "second message"
- * console.log(messageQueue.size); // Output: 1
- *
- * // Example 2: Task processing system
- * type Task = { id: number; priority: string; action: () => void };
- * const taskQueue: Queue<Task> = createQueue<Task>();
- *
- * taskQueue.enqueue({ id: 1, priority: "high", action: () => console.log("Task 1") });
- * taskQueue.enqueue({ id: 2, priority: "low", action: () => console.log("Task 2") });
- *
- * // Process tasks in order
+ * // Task processing example
+ * const taskQueue = createQueue<{ id: number }>();
+ * taskQueue.enqueue({ id: 1 });
+ * taskQueue.enqueue({ id: 2 });
  * while (!taskQueue.isEmpty) {
- *   const task = taskQueue.dequeue().unwrap();
- *   console.log(`Processing task ${task.id} with ${task.priority} priority`);
- *   task.action();
+ *   const task = Optional.unwrap(taskQueue.dequeue());
+ *   assert(typeof task.id === "number");
  * }
  * ```
+ *
  */
 export type Queue<T> = Readonly<{
   /** Checks if the queue is empty. */
@@ -149,41 +116,26 @@ class QueueClass<T> implements Queue<T> {
 
   /**
    * Removes and returns the element at the front of the queue (FIFO).
+   * Returns Optional.none if the queue is empty. O(1) operation.
    *
-   * This operation removes the element that was added earliest (first-in) and returns it.
-   * If the queue is empty, returns `Optional.none`. The operation is guaranteed to be O(1)
-   * and does not require any array shifting or copying.
-   *
-   * **Time Complexity:** O(1) - constant time operation
-   * **Space Complexity:** O(1) - no additional memory allocation
-   *
-   * @returns An Optional containing the removed element, or `Optional.none` if the queue is empty.
+   * @returns An Optional containing the removed element, or Optional.none if empty.
    *
    * @example
-   * ```typescript
-   * const queue = createQueue<string>();
+   * ```ts
+   * import { Optional } from '../functional/index.mjs';
    *
-   * // Add some elements
+   * const queue = createQueue<string>();
    * queue.enqueue("first");
    * queue.enqueue("second");
-   * queue.enqueue("third");
    *
-   * // Remove elements in FIFO order
    * const first = queue.dequeue();
-   * if (first.isSome) {
-   *   console.log(first.value); // "first"
-   * }
+   * assert(Optional.isSome(first));
+   * assert(Optional.unwrap(first) === "first");
    *
-   * const second = queue.dequeue().unwrap(); // "second"
-   * console.log(queue.size); // 1
-   *
-   * // Safe handling of empty queue
-   * const emptyQueue = createQueue<number>();
-   * const result = emptyQueue.dequeue();
-   * if (result.isNone) {
-   *   console.log("Queue is empty");
-   * }
+   * const empty = createQueue<number>();
+   * assert(Optional.isNone(empty.dequeue()));
    * ```
+   *
    */
   dequeue(): Optional<T> {
     if (this.isEmpty) {
@@ -201,45 +153,22 @@ class QueueClass<T> implements Queue<T> {
 
   /**
    * Adds an element to the back of the queue (FIFO).
-   *
-   * This operation adds the element to the end of the queue, where it will be the last
-   * to be dequeued (first-in, first-out ordering). The operation is amortized O(1),
-   * meaning it's O(1) for most operations with occasional O(n) when the buffer needs resizing.
-   *
-   * **Time Complexity:** O(1) amortized - O(n) only when buffer resize is needed
-   * **Space Complexity:** O(1) - constant additional memory per element
-   *
-   * **Buffer Resizing:** When the internal buffer becomes full, it automatically doubles
-   * in size and reorganizes elements to maintain the circular buffer structure.
+   * O(1) amortized operation.
    *
    * @param value The element to add to the back of the queue.
    *
    * @example
-   * ```typescript
-   * const taskQueue = createQueue<string>();
+   * ```ts
+   * import { Optional } from '../functional/index.mjs';
    *
-   * // Add tasks in order of arrival
-   * taskQueue.enqueue("Process order #1001");  // O(1)
-   * taskQueue.enqueue("Send notification");    // O(1)
-   * taskQueue.enqueue("Update inventory");     // O(1)
+   * const queue = createQueue<string>();
+   * queue.enqueue("first");
+   * queue.enqueue("second");
    *
-   * console.log(taskQueue.size); // 3
-   *
-   * // Tasks will be processed in the order they were added
-   * while (!taskQueue.isEmpty) {
-   *   const task = taskQueue.dequeue().unwrap();
-   *   console.log(`Executing: ${task}`);
-   * }
-   *
-   * // High-volume enqueueing (demonstrates amortized O(1) performance)
-   * const dataQueue = createQueue<number>();
-   *
-   * for (let i = 0; i < 1000000; i++) {
-   *   dataQueue.enqueue(i); // Each operation is O(1) amortized
-   * }
-   *
-   * console.log(dataQueue.size); // 1000000
+   * assert(queue.size === 2);
+   * assert(Optional.unwrap(queue.dequeue()) === "first"); // First in, first out
    * ```
+   *
    */
   enqueue(value: T): void {
     // Resize if buffer is full
@@ -277,114 +206,69 @@ class QueueClass<T> implements Queue<T> {
 }
 
 /**
- * Creates a new Queue instance with FIFO (First-In, First-Out) behavior using a high-performance circular buffer.
- *
- * This factory function creates an optimized queue implementation that maintains excellent performance
- * characteristics for both enqueue and dequeue operations. The underlying circular buffer automatically
- * resizes to accommodate growing workloads while providing predictable O(1) operations.
- *
- * **Implementation Features:**
- * - **O(1) enqueue operations** (amortized - occasionally O(n) when resizing)
- * - **O(1) dequeue operations** (always)
- * - **Automatic buffer resizing** - starts at 8 elements, doubles when full
- * - **Memory efficient** - garbage collects removed elements immediately
- * - **Circular buffer design** - eliminates need for array shifting operations
- *
- * **Performance Benefits:**
- * - No array copying during normal operations
- * - Minimal memory allocation overhead
- * - Predictable performance under high load
- * - Efficient memory usage with automatic cleanup
+ * Creates a new Queue instance with FIFO behavior.
+ * Provides O(1) enqueue/dequeue operations with automatic buffer resizing.
  *
  * @template T The type of elements stored in the queue.
  * @param initialValues Optional array of initial elements to populate the queue.
- *                      Elements will be dequeued in the same order they appear in the array.
- *                      If provided, the initial buffer capacity will be at least twice the array length.
- * @returns A new Queue instance optimized for high-performance FIFO operations.
+ * @returns A new Queue instance.
  *
  * @example
- * ```typescript
- * import { createQueue } from './queue';
+ * ```ts
+ * const queue = createQueue<string>();
+ * queue.enqueue('first');
+ * queue.enqueue('second');
  *
- * // Example 1: Basic FIFO workflow
- * const requestQueue = createQueue<string>();
+ * assert(Optional.unwrap(queue.dequeue()) === 'first'); // FIFO order
+ * assert(queue.size === 1);
  *
- * // Add requests to the queue
- * requestQueue.enqueue("GET /api/users");     // O(1)
- * requestQueue.enqueue("POST /api/orders");   // O(1)
- * requestQueue.enqueue("DELETE /api/cache");  // O(1)
- *
- * // Process requests in order
- * while (!requestQueue.isEmpty) {
- *   const request = requestQueue.dequeue().unwrap(); // O(1)
- *   console.log(`Processing: ${request}`);
+ * // Task processing example
+ * const taskQueue = createQueue<{ id: number }>();
+ * taskQueue.enqueue({ id: 1 });
+ * taskQueue.enqueue({ id: 2 });
+ * while (!taskQueue.isEmpty) {
+ *   const task = Optional.unwrap(taskQueue.dequeue());
+ *   assert(typeof task.id === 'number');
  * }
- * // Output:
- * // Processing: GET /api/users
- * // Processing: POST /api/orders
- * // Processing: DELETE /api/cache
- *
- * // Example 2: High-throughput event processing
- * type Event = { timestamp: number; type: string; data: any };
- * const eventQueue = createQueue<Event>();
- *
- * // Simulate high-volume event ingestion
- * for (let i = 0; i < 10000; i++) {
- *   eventQueue.enqueue({
- *     timestamp: Date.now(),
- *     type: `event-${i % 5}`,
- *     data: { value: i }
- *   }); // Each enqueue is O(1) amortized
- * }
- *
- * // Process events efficiently
- * let processedCount = 0;
- * while (!eventQueue.isEmpty) {
- *   const event = eventQueue.dequeue().unwrap(); // O(1)
- *   // Process event...
- *   processedCount++;
- * }
- * console.log(`Processed ${processedCount} events`); // 10000
- *
- * // Example 3: Queue with pre-populated data
- * const priorityTasks = createQueue<string>([
- *   "Initialize system",
- *   "Load configuration",
- *   "Start services",
- *   "Begin processing"
- * ]);
- *
- * console.log(priorityTasks.size); // Output: 4
- *
- * // Execute tasks in initialization order
- * while (!priorityTasks.isEmpty) {
- *   const task = priorityTasks.dequeue().unwrap();
- *   console.log(`Executing: ${task}`);
- * }
- *
- * // Example 4: Producer-Consumer pattern
- * const workQueue = createQueue<() => Promise<void>>();
- *
- * // Producer: Add work items
- * const addWork = (workFn: () => Promise<void>) => {
- *   workQueue.enqueue(workFn);
- * };
- *
- * // Consumer: Process work items
- * const processWork = async () => {
- *   while (!workQueue.isEmpty) {
- *     const workItem = workQueue.dequeue().unwrap();
- *     await workItem();
- *   }
- * };
- *
- * // Add some work
- * addWork(async () => console.log("Work item 1"));
- * addWork(async () => console.log("Work item 2"));
- *
- * // Process the work
- * await processWork();
  * ```
+ *
+ * @example
+ * ```ts
+ * const queue = createQueue<string>();
+ * queue.enqueue('first');
+ * queue.enqueue('second');
+ *
+ * const first = queue.dequeue();
+ * assert(Optional.isSome(first));
+ * assert(Optional.unwrap(first) === 'first');
+ *
+ * const empty = createQueue<number>();
+ * assert(Optional.isNone(empty.dequeue()));
+ * ```
+ *
+ * @example
+ * ```ts
+ * const queue = createQueue<string>();
+ * queue.enqueue('first');
+ * queue.enqueue('second');
+ *
+ * assert(queue.size === 2);
+ * assert(Optional.unwrap(queue.dequeue()) === 'first'); // First in, first out
+ * ```
+ *
+ * @example
+ * ```ts
+ * const queue = createQueue<string>();
+ * queue.enqueue('first');
+ * queue.enqueue('second');
+ * assert(Optional.unwrap(queue.dequeue()) === 'first');
+ *
+ * // With initial values
+ * const prePopulated = createQueue(['a', 'b', 'c']);
+ * assert(prePopulated.size === 3);
+ * assert(Optional.unwrap(prePopulated.dequeue()) === 'a'); // First element first
+ * ```
+ *
  */
 export const createQueue = <T,>(initialValues?: readonly T[]): Queue<T> =>
   new QueueClass<T>(initialValues);

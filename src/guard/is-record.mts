@@ -22,48 +22,41 @@ import { isNonNullObject } from './is-non-null-object.mjs';
  *
  * @example
  * Basic usage with different value types:
- * ```typescript
- * isRecord({});                    // true (empty object)
- * isRecord({ name: 'John' });      // true (object literal)
- * isRecord(Object.create(null));   // true (object created with Object.create)
- * isRecord(new Object());          // true (object constructor)
+ * ```ts
+ * assert(isRecord({}) === true);                    // empty object
+ * assert(isRecord({ name: 'John' }) === true);      // object literal
+ * assert(isRecord(Object.create(null)) === true);   // object created with Object.create
+ * assert(isRecord(new Object()) === true);          // object constructor
  *
- * isRecord([]);                    // false (array)
- * isRecord([1, 2, 3]);            // false (array with elements)
- * isRecord(null);                  // false (null)
- * isRecord(undefined);             // false (undefined)
- * isRecord("string");              // false (primitive)
- * isRecord(42);                    // false (primitive)
- * isRecord(() => {});              // false (function)
- * isRecord(new Date());            // false (Date object - not a plain record)
- * isRecord(/regex/);               // false (RegExp object)
+ * assert(isRecord([]) === false);                    // array
+ * assert(isRecord([1, 2, 3]) === false);            // array with elements
+ * assert(isRecord(null) === false);                  // null
+ * assert(isRecord(undefined) === false);             // undefined
+ * assert(isRecord("string") === false);              // primitive
+ * assert(isRecord(42) === false);                    // primitive
+ * assert(isRecord(() => {}) === false);              // function
+ * assert(isRecord(new Date()) === true);             // Date object - is an object but not a plain record
+ * assert(isRecord(/regex/) === true);                // RegExp object - is an object but not a plain record
  * ```
  *
  * @example
  * Type guard usage for safe property access:
- * ```typescript
- * const apiResponse: unknown = await fetchUserData();
+ * ```ts
+ * const obj = { id: 'user123', name: 'John' };
  *
- * if (isRecord(apiResponse)) {
- *   // apiResponse is now typed as UnknownRecord
- *   console.log('Response keys:', Object.keys(apiResponse));
- *
- *   // Safe to access properties (though values are still unknown)
- *   const userId = apiResponse.id;        // Type: unknown
- *   const userName = apiResponse.name;    // Type: unknown
- *
- *   // You can combine with other type guards for further narrowing
- *   if (hasKey(apiResponse, 'id') && isString(apiResponse.id)) {
- *     console.log('User ID:', apiResponse.id); // Now safely typed as string
- *   }
- * } else {
- *   console.log('API response is not a valid object');
+ * if (isRecord(obj)) {
+ *   // obj is now typed as UnknownRecord
+ *   expectType<typeof obj, UnknownRecord>('=');
+ *   assert(Object.keys(obj).length === 2);
  * }
+ *
+ * assert(isRecord({ a: 1, b: 2 }) === true);
+ * assert(isRecord([1, 2, 3]) === false);
  * ```
  *
  * @example
  * Filtering mixed arrays to find plain objects:
- * ```typescript
+ * ```ts
  * const mixedData: unknown[] = [
  *   { type: 'user', name: 'Alice' },
  *   [1, 2, 3],
@@ -75,61 +68,47 @@ import { isNonNullObject } from './is-non-null-object.mjs';
  * ];
  *
  * const records = mixedData.filter(isRecord);
- * // records contains only the plain objects:
- * // [{ type: 'user', name: 'Alice' }, { type: 'admin', permissions: [...] }, { id: 123 }]
+ * expectType<typeof records, UnknownRecord[]>('=');
+ * assert(records.length === 4); // Objects: user, admin, Date, and id objects
  *
- * records.forEach(record => {
- *   // Each record is guaranteed to be UnknownRecord
- *   const keys = Object.keys(record);
- *   console.log('Object keys:', keys);
- * });
+ * // Verify the records are valid
+ * assert(records.every(record => typeof record === 'object' && record !== null));
  * ```
  *
  * @example
  * Progressive validation of nested structures:
- * ```typescript
- * interface User {
- *   id: string;
+ * ```ts
+ * const userData: unknown = {
+ *   id: 'user123',
  *   profile: {
- *     name: string;
- *     email: string;
- *   };
+ *     name: 'John',
+ *     email: 'john@example.com'
+ *   }
+ * };
+ *
+ * // First check if it's a record
+ * if (isRecord(userData)) {
+ *   expectType<typeof userData, UnknownRecord>('=');
+ *   assert('id' in userData);
+ *   assert('profile' in userData);
+ *
+ *   // Check nested structure
+ *   if (isRecord(userData.profile)) {
+ *     expectType<typeof userData.profile, UnknownRecord>('=');
+ *     assert('name' in userData.profile);
+ *     assert('email' in userData.profile);
+ *   }
  * }
  *
- * function validateUser(data: unknown): User | null {
- *   if (!isRecord(data)) {
- *     return null;
- *   }
- *
- *   // data is now UnknownRecord
- *   if (!hasKey(data, 'id') || !isString(data.id)) {
- *     return null;
- *   }
- *
- *   if (!hasKey(data, 'profile') || !isRecord(data.profile)) {
- *     return null;
- *   }
- *
- *   const profile = data.profile;
- *   if (!hasKey(profile, 'name') || !isString(profile.name) ||
- *       !hasKey(profile, 'email') || !isString(profile.email)) {
- *     return null;
- *   }
- *
- *   return {
- *     id: data.id,
- *     profile: {
- *       name: profile.name,
- *       email: profile.email
- *     }
- *   };
- * }
+ * // Test with invalid data
+ * const invalidData: unknown = [1, 2, 3];
+ * assert(isRecord(invalidData) === false);
  * ```
  *
  * @example
  * Object transformation and mapping:
- * ```typescript
- * function transformRecords(data: unknown[]): Record<string, unknown>[] {
+ * ```ts
+ * function transformRecords(data: readonly unknown[]): Record<string, unknown>[] {
  *   return data
  *     .filter(isRecord)  // Keep only plain objects
  *     .map(record => {
@@ -144,6 +123,12 @@ import { isNonNullObject } from './is-non-null-object.mjs';
  *       return transformed;
  *     });
  * }
+ *
+ * const testData = [{ Name: 'John', AGE: 30 }, 'string', { TYPE: 'user' }];
+ * const result = transformRecords(testData);
+ * assert(Arr.isArrayOfLength(result, 2));
+ * assert(result[0]['name'] === 'John');
+ * assert(result[0]['age'] === 30);
  * ```
  *
  * @see {@link isNonNullObject} - For checking any object type (includes arrays)

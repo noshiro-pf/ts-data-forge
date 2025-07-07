@@ -10,34 +10,40 @@
  * @returns The same value with readonly modifiers removed from its type
  *
  * @example Basic usage with arrays and objects
- * ```typescript
+ * ```ts
  * const readonlyArr: readonly number[] = [1, 2, 3];
  * const mutableArr = castMutable(readonlyArr);
  * mutableArr.push(4); // Now allowed by TypeScript
+ * assert(mutableArr.length === 4);
  *
  * const readonlyObj: { readonly x: number } = { x: 1 };
  * const mutableObj = castMutable(readonlyObj);
  * mutableObj.x = 2; // Now allowed by TypeScript
+ * assert(mutableObj.x === 2);
  * ```
  *
  * @example When to use - Working with third-party APIs
- * ```typescript
+ * ```ts
  * // Some APIs require mutable arrays but you have readonly data
  * const readonlyData: readonly string[] = ['a', 'b', 'c'];
  * const sortedData = castMutable([...readonlyData]); // Create a copy first!
- * legacyApi.sort(sortedData); // API mutates the array
+ * sortedData.sort(); // API mutates the array
+ * assert(sortedData[0] === 'a');
  * ```
  *
  * @example Anti-pattern - Avoid mutating shared data
- * ```typescript
+ * ```ts
  * // ❌ Bad: Mutating data that other code expects to be immutable
- * const sharedConfig: Readonly<Config> = getConfig();
+ * type Config = { readonly apiKey: string };
+ * const sharedConfig: Readonly<Config> = { apiKey: 'original-key' };
  * const mutable = castMutable(sharedConfig);
  * mutable.apiKey = 'new-key'; // Dangerous! Other code expects this to be immutable
+ * assert(mutable.apiKey === 'new-key');
  *
  * // ✅ Good: Create a copy if you need to mutate
  * const configCopy = castMutable({ ...sharedConfig });
- * configCopy.apiKey = 'new-key'; // Safe - operating on a copy
+ * configCopy.apiKey = 'newer-key'; // Safe - operating on a copy
+ * assert(configCopy.apiKey === 'newer-key');
  * ```
  *
  * @see castDeepMutable - For deeply nested readonly structures
@@ -58,7 +64,7 @@ export const castMutable = <T,>(readonlyValue: T): Mutable<T> =>
  * @returns The same value with all readonly modifiers recursively removed from its type
  *
  * @example Basic usage with nested structures
- * ```typescript
+ * ```ts
  * const readonlyNested: {
  *   readonly a: { readonly b: readonly number[] }
  * } = { a: { b: [1, 2, 3] } };
@@ -70,23 +76,21 @@ export const castMutable = <T,>(readonlyValue: T): Mutable<T> =>
  * ```
  *
  * @example Practical use case - Working with immutable state updates
- * ```typescript
+ * ```ts
  * // When you need to perform multiple mutations before creating new immutable state
- * const currentState: DeepReadonly<AppState> = getState();
+ * type AppState = { readonly users: readonly string[]; readonly settings: { readonly theme: string } };
+ * const currentState: DeepReadonly<AppState> = { users: ['alice'], settings: { theme: 'light' } };
  * const draft = castDeepMutable(structuredClone(currentState)); // Clone first!
  *
  * // Perform multiple mutations on the draft
- * draft.users.push(newUser);
+ * draft.users.push('bob');
  * draft.settings.theme = 'dark';
- * draft.data.items[0].completed = true;
- *
- * // Create new immutable state from the mutated draft
- * const newState = castDeepReadonly(draft);
- * setState(newState);
+ * assert(draft.users.length === 2);
+ * assert(draft.settings.theme === 'dark');
  * ```
  *
  * @example Type complexity with generics
- * ```typescript
+ * ```ts
  * type DeepReadonlyUser = DeepReadonly<{
  *   id: number;
  *   profile: {
@@ -96,12 +100,21 @@ export const castMutable = <T,>(readonlyValue: T): Mutable<T> =>
  *   };
  * }>;
  *
- * function updateUserPreferences(user: DeepReadonlyUser, newPref: string) {
+ * function updateUserPreferences(user: DeepReadonlyUser, newPref: string): DeepReadonlyUser {
  *   // Create a mutable copy to work with
  *   const mutableUser = castDeepMutable(structuredClone(user));
  *   mutableUser.profile.settings.preferences.push(newPref);
  *   return castDeepReadonly(mutableUser);
  * }
+ *
+ * // Test the function
+ * const testUser: DeepReadonlyUser = {
+ *   id: 1,
+ *   profile: { settings: { preferences: ['dark-mode'] } }
+ * };
+ * const updatedUser = updateUserPreferences(testUser, 'notifications');
+ * assert(updatedUser.profile.settings.preferences.length === 2);
+ * assert(updatedUser.profile.settings.preferences[1] === 'notifications');
  * ```
  *
  * @see castMutable - For shallow mutability casting
