@@ -15,7 +15,7 @@
  * @returns `true` if the implication holds, `false` otherwise
  *
  * @example Basic truth table demonstration
- * ```typescript
+ * ```ts
  * ifThen(true, true);   // true  (if true then true = true)
  * ifThen(true, false);  // false (if true then false = false)
  * ifThen(false, true);  // true  (if false then true = true - vacuously true)
@@ -23,7 +23,7 @@
  * ```
  *
  * @example Validation logic - "if required then must have value"
- * ```typescript
+ * ```ts
  * function validateField(value: string, isRequired: boolean): boolean {
  *   const hasValue = value.trim().length > 0;
  *   return ifThen(isRequired, hasValue);
@@ -36,7 +36,7 @@
  * ```
  *
  * @example Access control - "if admin then has all permissions"
- * ```typescript
+ * ```ts
  * function checkPermission(user: User, permission: string): boolean {
  *   const isAdmin = user.role === 'admin';
  *   const hasPermission = user.permissions.includes(permission);
@@ -53,7 +53,7 @@
  * ```
  *
  * @example Contract validation - "if premium then features enabled"
- * ```typescript
+ * ```ts
  * interface Subscription {
  *   isPremium: boolean;
  *   features: {
@@ -74,7 +74,7 @@
  * ```
  *
  * @example Chaining multiple implications
- * ```typescript
+ * ```ts
  * // "If A then B" AND "If B then C"
  * function validateChain(a: boolean, b: boolean, c: boolean): boolean {
  *   return ifThen(a, b) && ifThen(b, c);
@@ -86,13 +86,15 @@
  * ```
  *
  * @example Negation patterns
- * ```typescript
+ * ```ts
  * // "If not expired then valid" is equivalent to "expired OR valid"
+ * const expiryDate = Date.now() + 86400000; // 1 day from now
  * const isExpired = Date.now() > expiryDate;
- * const isValid = checkValidity();
+ * const isValid = true; // checkValidity();
  * const result = ifThen(!isExpired, isValid);
- * // Same as: isExpired || isValid
+ * assert(result === true); // not expired and valid
  * ```
+ *
  */
 export const ifThen = (antecedent: boolean, consequent: boolean): boolean =>
   !antecedent || consequent;

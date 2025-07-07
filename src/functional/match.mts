@@ -2,43 +2,6 @@ import { expectType } from '../expect-type.mjs';
 import { keyIsIn } from '../guard/index.mjs';
 
 /**
- * @internal
- * Utility type to extract the union of all values from a record type.
- * @template T The record type to extract values from.
- */
-type ValueOf<T> = T[keyof T];
-
-/**
- * @internal
- * Represents a record with unknown value types.
- */
-type UnknownRecord = Record<PropertyKey, unknown>;
-
-/**
- * @internal
- * Represents a readonly record mapping keys of type K to values of type V.
- * @template K The type of keys.
- * @template V The type of values.
- */
-type ReadonlyRecord<K extends PropertyKey, V> = Readonly<Record<K, V>>;
-
-/**
- * @internal
- * A relaxed version of Exclude that handles edge cases with property keys.
- * @template T The type to exclude from.
- * @template U The type to exclude.
- */
-type RelaxedExclude<T, U> = T extends U ? never : T;
-
-/**
- * @internal
- * Checks if two types are exactly equal.
- * @template T First type to compare.
- * @template U Second type to compare.
- */
-type TypeEq<T, U> = [T] extends [U] ? ([U] extends [T] ? true : false) : false;
-
-/**
  * Type-safe pattern matching function for string-based discriminated unions.
  *
  * Provides compile-time guarantees for exhaustive case handling when working with
@@ -58,37 +21,37 @@ type TypeEq<T, U> = [T] extends [U] ? ([U] extends [T] ? true : false) : false;
  *
  * @example
  * Exhaustive matching (no default needed):
- * ```typescript
+ * ```ts
  * type Status = 'loading' | 'success' | 'error';
  * const status: Status = 'loading';
  *
  * const message = match(status, {
  *   loading: 'Please wait...',
  *   success: 'Operation completed!',
- *   error: 'Something went wrong'
- * });
+ *   error: 'Something went wrong',
+ * } as const);
  * // Type: string
- * // Result: 'Please wait...'
+ * assert(message === 'Please wait...');
  * ```
  *
  * @example
  * Partial matching (default required):
- * ```typescript
+ * ```ts
  * type Priority = 'low' | 'medium' | 'high' | 'critical';
  * const priority: Priority = 'medium';
  *
  * const color = match(priority, {
  *   high: 'red',
- *   critical: 'darkred'
- * }, 'gray'); // Default required for uncovered cases
+ *   critical: 'darkred',
+ * } as const, 'gray'); // Default required for uncovered cases
  * // Type: 'red' | 'darkred' | 'gray'
- * // Result: 'gray'
+ * assert(color === 'gray');
  * ```
  *
  * @example
  * Working with general string types:
- * ```typescript
- * const userInput: string = getUserInput();
+ * ```ts
+ * const userInput: string = 'unknown';
  *
  * const route = match(userInput, {
  *   'home': '/',
@@ -96,11 +59,12 @@ type TypeEq<T, U> = [T] extends [U] ? ([U] extends [T] ? true : false) : false;
  *   'contact': '/contact'
  * }, '/404'); // Default required for string type
  * // Type: '/' | '/about' | '/contact' | '/404'
+ * assert(route === '/404');
  * ```
  *
  * @example
  * HTTP status code handling:
- * ```typescript
+ * ```ts
  * type HttpStatus = 200 | 404 | 500;
  * const status: HttpStatus = 404;
  *
@@ -110,37 +74,40 @@ type TypeEq<T, U> = [T] extends [U] ? ([U] extends [T] ? true : false) : false;
  *   '500': { ok: false, message: 'Server Error' }
  * });
  * // All cases covered, no default needed
- * // Result: { ok: false, message: 'Not Found' }
+ * assert.deepStrictEqual(response, { ok: false, message: 'Not Found' });
  * ```
  *
  * @example
  * Complex discriminated union handling:
- * ```typescript
+ * ```ts
  * type ApiResponse =
  *   | { status: 'loading' }
  *   | { status: 'success'; data: string }
  *   | { status: 'error'; error: string };
  *
- * const handleResponse = (response: ApiResponse) =>
+ * const handleResponse = (response: ApiResponse): string =>
  *   match(response.status, {
  *     loading: 'Please wait...',
  *     success: 'Data loaded successfully!',
  *     error: 'Failed to load data'
  *   });
+ *
+ * const response: ApiResponse = { status: 'loading' };
+ * assert(handleResponse(response) === 'Please wait...');
  * ```
  *
  * @example
  * Advanced usage with functional composition:
- * ```typescript
+ * ```ts
  * // Creating reusable matchers
- * const logLevelToColor = (level: string) => match(level, {
+ * const logLevelToColor = (level: string): string => match(level, {
  *   'debug': 'gray',
  *   'info': 'blue',
  *   'warn': 'yellow',
  *   'error': 'red'
  * }, 'black'); // Default for unknown levels
  *
- * const logLevelToIcon = (level: string) => match(level, {
+ * const logLevelToIcon = (level: string): string => match(level, {
  *   'debug': '🐛',
  *   'info': 'ℹ️',
  *   'warn': '⚠️',
@@ -148,12 +115,18 @@ type TypeEq<T, U> = [T] extends [U] ? ([U] extends [T] ? true : false) : false;
  * }, '📝');
  *
  * // Combining matchers
- * const formatLogEntry = (level: string, message: string) => ({
+ * const formatLogEntry = (level: string, message: string): { color: string; icon: string; text: string } => ({
  *   color: logLevelToColor(level),
  *   icon: logLevelToIcon(level),
  *   text: `${logLevelToIcon(level)} ${message}`
  * });
+ *
+ * assert(logLevelToColor('error') === 'red');
+ * assert(logLevelToIcon('info') === 'ℹ️');
+ * assert(logLevelToColor('unknown') === 'black');
+ * assert(formatLogEntry('error', 'Test').color === 'red');
  * ```
+ *
  */
 export function match<
   const Case extends string,

@@ -39,14 +39,15 @@ const {
  * @returns `true` if the value is an integer, `false` otherwise
  *
  * @example
- * ```typescript
- * isInt(5);        // true
- * isInt(-10);      // true
- * isInt(0);        // true
- * isInt(5.5);      // false
- * isInt(NaN);      // false
- * isInt(Infinity); // false
+ * ```ts
+ * assert(isInt(5));
+ * assert(isInt(-10));
+ * assert(isInt(0));
+ * assert(!isInt(5.5));
+ * assert(!isInt(Number.NaN));
+ * assert(!isInt(Number.POSITIVE_INFINITY));
  * ```
+ *
  */
 export const isInt = is;
 
@@ -62,16 +63,21 @@ export const isInt = is;
  * @throws {TypeError} If the value is not an integer
  *
  * @example
- * ```typescript
- * const x = asInt(5);    // Int
- * const y = asInt(-10);  // Int
- * const z = asInt(0);    // Int
+ * ```ts
+ * const x = asInt(5); // Int
+ * const y = asInt(-10); // Int
+ * const z = asInt(0); // Int
+ *
+ * assert(x === 5);
+ * assert(y === -10);
+ * assert(z === 0);
  *
  * // These throw TypeError:
  * // asInt(5.5);         // Not an integer
- * // asInt(NaN);         // Not a number
- * // asInt(Infinity);    // Not finite
+ * // asInt(Number.NaN);         // Not a number
+ * // asInt(Number.POSITIVE_INFINITY);    // Not finite
  * ```
+ *
  */
 export const asInt = castType;
 
@@ -87,30 +93,45 @@ export const asInt = castType;
  * in JavaScript's number type.
  *
  * @example
- * ```typescript
+ * ```ts
  * // Type validation
- * Int.is(42);      // true
- * Int.is(3.14);    // false
- * Int.is(-0);      // true (negative zero is an integer)
+ * assert(Int.is(42));
+ * assert(!Int.is(3.14));
+ * assert(Int.is(-0)); // negative zero is an integer
  *
  * // Basic arithmetic
  * const a = asInt(10);
  * const b = asInt(3);
  *
- * const sum = Int.add(a, b);      // Int (13)
- * const diff = Int.sub(a, b);     // Int (7)
- * const product = Int.mul(a, b);  // Int (30)
+ * assert(a === 10);
+ * assert(b === 3);
+ *
+ * const sum = Int.add(a, b); // Int (13)
+ * const diff = Int.sub(a, b); // Int (7)
+ * const product = Int.mul(a, b); // Int (30)
  * const quotient = Int.div(a, b); // Int (3) - floor division
- * const power = Int.pow(a, b);    // Int (1000)
+ * const power = Int.pow(a, b); // Int (1000)
+ *
+ * assert(sum === 13);
+ * assert(diff === 7);
+ * assert(product === 30);
+ * assert(quotient === 3);
+ * assert(power === 1000);
  *
  * // Utility operations
- * const absolute = Int.abs(asInt(-42));    // Int (42)
+ * const absolute = Int.abs(asInt(-42)); // Int (42)
  * const minimum = Int.min(a, b, asInt(5)); // Int (3)
  * const maximum = Int.max(a, b, asInt(5)); // Int (10)
  *
+ * assert(absolute === 42);
+ * assert(minimum === 3);
+ * assert(maximum === 10);
+ *
  * // Random generation
  * const die = Int.random(asInt(1), asInt(6)); // Random Int in [1, 6]
+ * assert(die >= 1 && die <= 6);
  * ```
+ *
  */
 export const Int = {
   /**
@@ -134,11 +155,16 @@ export const Int = {
    * @returns The absolute value as a non-negative Int
    *
    * @example
-   * ```typescript
-   * Int.abs(asInt(-5));  // Int (5)
-   * Int.abs(asInt(3));   // Int (3)
-   * Int.abs(asInt(-0));  // Int (0)
+   * ```ts
+   * const abs1 = Int.abs(asInt(-5));  // Int (5)
+   * const abs2 = Int.abs(asInt(3));   // Int (3)
+   * const abs3 = Int.abs(asInt(-0));  // Int (0)
+   *
+   * assert(abs1 === 5);
+   * assert(abs2 === 3);
+   * assert(abs3 === 0);
    * ```
+   *
    */
   abs,
 
@@ -149,10 +175,14 @@ export const Int = {
    * @returns The smallest value as an Int
    *
    * @example
-   * ```typescript
-   * Int.min(asInt(5), asInt(3));           // Int (3)
-   * Int.min(asInt(-10), asInt(0), asInt(10)); // Int (-10)
+   * ```ts
+   * const min1 = Int.min(asInt(5), asInt(3));           // Int (3)
+   * const min2 = Int.min(asInt(-10), asInt(0), asInt(10)); // Int (-10)
+   *
+   * assert(min1 === 3);
+   * assert(min2 === -10);
    * ```
+   *
    */
   min: min_,
 
@@ -163,10 +193,14 @@ export const Int = {
    * @returns The largest value as an Int
    *
    * @example
-   * ```typescript
-   * Int.max(asInt(5), asInt(3));           // Int (5)
-   * Int.max(asInt(-10), asInt(0), asInt(10)); // Int (10)
+   * ```ts
+   * const max1 = Int.max(asInt(5), asInt(3));           // Int (5)
+   * const max2 = Int.max(asInt(-10), asInt(0), asInt(10)); // Int (10)
+   *
+   * assert(max1 === 5);
+   * assert(max2 === 10);
    * ```
+   *
    */
   max: max_,
 
@@ -181,16 +215,21 @@ export const Int = {
    * @returns A random Int in the range [min, max]
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Dice roll
    * const d6 = Int.random(asInt(1), asInt(6));
+   * assert(d6 >= 1 && d6 <= 6);
    *
-   * // Random array index
+   * // Random array index (example with array of length 5)
+   * const array = [1, 2, 3, 4, 5];
    * const index = Int.random(asInt(0), asInt(array.length - 1));
+   * assert(index >= 0 && index <= 4);
    *
    * // Can generate negative values
    * const temp = Int.random(asInt(-10), asInt(10));
+   * assert(temp >= -10 && temp <= 10);
    * ```
+   *
    */
   random,
 
@@ -199,10 +238,13 @@ export const Int = {
    * @param a - The base integer
    * @param b - The exponent integer
    * @returns `a ** b` as an Int
+   *
    * @example
-   * ```typescript
-   * Int.pow(asInt(2), asInt(3)); // Int (8)
+   * ```ts
+   * const result = Int.pow(asInt(2), asInt(3)); // Int (8)
+   * assert(result === 8);
    * ```
+   *
    */
   pow,
 
@@ -211,10 +253,13 @@ export const Int = {
    * @param a - First integer
    * @param b - Second integer
    * @returns `a + b` as an Int
+   *
    * @example
-   * ```typescript
-   * Int.add(asInt(5), asInt(3)); // Int (8)
+   * ```ts
+   * const result = Int.add(asInt(5), asInt(3)); // Int (8)
+   * assert(result === 8);
    * ```
+   *
    */
   add,
 
@@ -223,10 +268,13 @@ export const Int = {
    * @param a - First integer
    * @param b - Second integer
    * @returns `a - b` as an Int
+   *
    * @example
-   * ```typescript
-   * Int.sub(asInt(8), asInt(3)); // Int (5)
+   * ```ts
+   * const result = Int.sub(asInt(8), asInt(3)); // Int (5)
+   * assert(result === 5);
    * ```
+   *
    */
   sub,
 
@@ -235,10 +283,13 @@ export const Int = {
    * @param a - First integer
    * @param b - Second integer
    * @returns `a * b` as an Int
+   *
    * @example
-   * ```typescript
-   * Int.mul(asInt(4), asInt(3)); // Int (12)
+   * ```ts
+   * const result = Int.mul(asInt(4), asInt(3)); // Int (12)
+   * assert(result === 12);
    * ```
+   *
    */
   mul,
 
@@ -253,16 +304,24 @@ export const Int = {
    * @returns The integer quotient as an Int
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Positive division
-   * Int.div(asInt(10), asInt(3));   // Int (3)
-   * Int.div(asInt(9), asInt(3));    // Int (3)
+   * const div1 = Int.div(asInt(10), asInt(3));   // Int (3)
+   * const div2 = Int.div(asInt(9), asInt(3));    // Int (3)
+   *
+   * assert(div1 === 3);
+   * assert(div2 === 3);
    *
    * // Negative division (rounds toward -∞)
-   * Int.div(asInt(-10), asInt(3));  // Int (-4)
-   * Int.div(asInt(10), asInt(-3));  // Int (-4)
-   * Int.div(asInt(-10), asInt(-3)); // Int (3)
+   * const div3 = Int.div(asInt(-10), asInt(3));  // Int (-4)
+   * const div4 = Int.div(asInt(10), asInt(-3));  // Int (-4)
+   * const div5 = Int.div(asInt(-10), asInt(-3)); // Int (3)
+   *
+   * assert(div3 === -4);
+   * assert(div4 === -4);
+   * assert(div5 === 3);
    * ```
+   *
    */
   div,
 } as const;

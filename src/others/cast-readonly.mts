@@ -10,34 +10,33 @@
  * @returns The same value with readonly modifiers added to its type
  *
  * @example Basic usage with arrays and objects
- * ```typescript
+ * ```ts
  * const mutableArr: number[] = [1, 2, 3];
  * const readonlyArr = castReadonly(mutableArr);
  * // readonlyArr.push(4); // ❌ TypeScript Error: no 'push' on readonly array
+ * assert(readonlyArr.length === 3);
  *
  * const mutableObj = { x: 1, y: 2 };
  * const readonlyObj = castReadonly(mutableObj);
  * // readonlyObj.x = 5; // ❌ TypeScript Error: cannot assign to readonly property
+ * assert(readonlyObj.x === 1);
  * ```
  *
  * @example Protecting function return values
- * ```typescript
+ * ```ts
  * // Prevent callers from mutating internal state
- * class UserService {
- *   private users: User[] = [];
+ * const internalUsers = [{ id: 1, name: 'John' }];
+ * const getUsers = (): readonly typeof internalUsers => {
+ *   return castReadonly(internalUsers); // Callers can't mutate the array
+ * };
  *
- *   getUsers(): readonly User[] {
- *     return castReadonly(this.users); // Callers can't mutate the array
- *   }
- * }
- *
- * const service = new UserService();
- * const users = service.getUsers();
+ * const users = getUsers();
  * // users.push(newUser); // ❌ TypeScript prevents this
+ * assert(users.length === 1);
  * ```
  *
  * @example Creating immutable configurations
- * ```typescript
+ * ```ts
  * // Start with mutable object for initialization
  * const config = {
  *   apiUrl: 'https://api.example.com',
@@ -48,12 +47,13 @@
  * // Validate and process config...
  *
  * // Export as readonly to prevent modifications
- * export const APP_CONFIG = castReadonly(config);
+ * const APP_CONFIG = castReadonly(config);
  * // APP_CONFIG.timeout = 10000; // ❌ TypeScript Error
+ * assert(APP_CONFIG.timeout === 5000);
  * ```
  *
  * @example Working with array methods
- * ```typescript
+ * ```ts
  * const numbers: number[] = [1, 2, 3, 4, 5];
  * const readonlyNumbers = castReadonly(numbers);
  *
@@ -61,6 +61,12 @@
  * const doubled = readonlyNumbers.map(n => n * 2); // ✅ Returns new array
  * const sum = readonlyNumbers.reduce((a, b) => a + b, 0); // ✅ Works
  * const first = readonlyNumbers[0]; // ✅ Reading is allowed
+ *
+ * // Test the computed values
+ * assert(doubled.length === 5);
+ * assert(doubled[0] === 2);
+ * assert(sum === 15);
+ * assert(first === 1);
  *
  * // Mutations are prevented
  * // readonlyNumbers[0] = 10; // ❌ TypeScript Error
@@ -85,7 +91,7 @@ export const castReadonly = <T,>(mutable: T): Readonly<T> =>
  * @returns The same value with readonly modifiers recursively added to all properties
  *
  * @example Basic usage with nested structures
- * ```typescript
+ * ```ts
  * const mutableNested = {
  *   a: { b: [1, 2, 3] },
  *   c: { d: { e: 'value' } }
@@ -98,7 +104,7 @@ export const castReadonly = <T,>(mutable: T): Readonly<T> =>
  * ```
  *
  * @example Protecting complex state objects
- * ```typescript
+ * ```ts
  * interface AppState {
  *   user: {
  *     id: number;
@@ -130,7 +136,7 @@ export const castReadonly = <T,>(mutable: T): Readonly<T> =>
  * ```
  *
  * @example Creating immutable API responses
- * ```typescript
+ * ```ts
  * async function fetchUserData(): Promise<DeepReadonly<UserData>> {
  *   const response = await api.get<UserData>('/user');
  *
@@ -146,7 +152,7 @@ export const castReadonly = <T,>(mutable: T): Readonly<T> =>
  * ```
  *
  * @example Working with Redux or state management
- * ```typescript
+ * ```ts
  * // Redux reducer example
  * type State = DeepReadonly<AppState>;
  *
@@ -171,7 +177,7 @@ export const castReadonly = <T,>(mutable: T): Readonly<T> =>
  * ```
  *
  * @example Type inference with generics
- * ```typescript
+ * ```ts
  * function processData<T>(data: T): DeepReadonly<T> {
  *   // Perform processing...
  *   console.log('Processing:', data);
@@ -182,6 +188,8 @@ export const castReadonly = <T,>(mutable: T): Readonly<T> =>
  *
  * const result = processData({ nested: { value: [1, 2, 3] } });
  * // Type of result is DeepReadonly<{ nested: { value: number[] } }>
+ * assert(result.nested.value.length === 3);
+ * assert(result.nested.value[0] === 1);
  * ```
  *
  * @see castReadonly - For shallow readonly casting

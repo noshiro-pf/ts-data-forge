@@ -21,22 +21,25 @@
  *
  * @example
  * Basic usage with known object structure:
- * ```typescript
+ * ```ts
  * const obj = { a: 1, b: 2, c: 3 };
- * const userInput: string = getUserInput(); // Could be any string
+ * const userInput: string = 'a'; // Could be any string
  *
  * if (keyIsIn(userInput, obj)) {
  *   // userInput is now narrowed to 'a' | 'b' | 'c'
  *   const value = obj[userInput]; // Type-safe access, value is number
- *   console.log(`Value for ${userInput}:`, value);
+ *   assert(value === 1);
  * } else {
- *   console.log(`Key '${userInput}' not found in object`);
+ *   assert(false); // should not reach here
  * }
+ *
+ * assert(keyIsIn('a', obj) === true);
+ * assert(keyIsIn('invalid', obj) === false);
  * ```
  *
  * @example
  * Dynamic key validation for safe property access:
- * ```typescript
+ * ```ts
  * const config = {
  *   apiUrl: 'https://api.example.com',
  *   timeout: 5000,
@@ -60,14 +63,14 @@
  *
  * @example
  * Form field validation:
- * ```typescript
+ * ```ts
  * interface FormData {
  *   name: string;
  *   email: string;
  *   age: number;
  * }
  *
- * const formData: FormData = getFormData();
+ * const formData: FormData = { name: 'John', email: 'john@example.com', age: 30 };
  * const requiredFields: readonly string[] = ['name', 'email'] as const;
  *
  * function validateRequiredFields(data: FormData): string[] {
@@ -90,14 +93,14 @@
  *
  * @example
  * Safe object property iteration:
- * ```typescript
+ * ```ts
  * const userPreferences = {
  *   theme: 'dark',
  *   language: 'en',
  *   notifications: true
  * };
  *
- * const settingsToUpdate: string[] = getSettingsFromUser();
+ * const settingsToUpdate: string[] = ['theme', 'language'];
  *
  * function updatePreferences(updates: Record<string, unknown>) {
  *   const validUpdates: Partial<typeof userPreferences> = {};
@@ -117,7 +120,7 @@
  *
  * @example
  * Comparison with hasKey() - different narrowing behavior:
- * ```typescript
+ * ```ts
  * const obj = { x: 10, y: 20 };
  * const key: string = 'x';
  *
@@ -127,20 +130,21 @@
  *   const value = obj[key]; // Safe access
  * }
  *
- * // Using hasKey - narrows the object type
- * if (hasKey(obj, key)) {
- *   // obj type is narrowed to guarantee the key exists
- *   const value = obj.x; // Direct access
- * }
+ * // For comparison: hasKey would narrow the object type
+ * // if (hasKey(obj, key)) {
+ * //   // obj type is narrowed to guarantee the key exists
+ * //   const value = obj.x; // Direct access
+ * // }
  * ```
  *
  * @example
  * Working with union types:
- * ```typescript
- * type Config =
+ * ```ts
+ * type Config = Readonly<
  *   | { type: 'database'; host: string; port: number }
  *   | { type: 'file'; path: string }
- *   | { type: 'memory'; maxSize: number };
+ *   | { type: 'memory'; maxSize: number }
+ * >;
  *
  * function getConfigProperty(config: Config, propName: string): unknown {
  *   if (keyIsIn(propName, config)) {
@@ -150,6 +154,10 @@
  *
  *   return undefined;
  * }
+ *
+ * const dbConfig: Config = { type: 'database', host: 'localhost', port: 5432 };
+ * assert(getConfigProperty(dbConfig, 'host') === 'localhost');
+ * assert(getConfigProperty(dbConfig, 'invalid') === undefined);
  * ```
  *
  * @see {@link hasKey} - Similar function that narrows the object type instead of the key type

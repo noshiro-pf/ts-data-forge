@@ -35,60 +35,51 @@ import { SafeInt, asSafeInt } from '../number/index.mjs';
  * @returns A Generator object that yields safe integers in the specified range.
  *
  * @example
- * ```typescript
+ * ```ts
  * // Basic ascending range
+ * const result1: number[] = [];
  * for (const n of range(0, 5)) {
- *   console.log(n); // Outputs: 0, 1, 2, 3, 4
+ *   result1.push(n);
  * }
+ * assert.deepStrictEqual(result1, [0, 1, 2, 3, 4]);
  *
  * // Range with custom step
+ * const result2: number[] = [];
  * for (const n of range(0, 10, 2)) {
- *   console.log(n); // Outputs: 0, 2, 4, 6, 8
+ *   result2.push(n);
  * }
+ * assert.deepStrictEqual(result2, [0, 2, 4, 6, 8]);
  *
  * // Descending range with negative step
+ * const result3: number[] = [];
  * for (const n of range(10, 0, -1)) {
- *   console.log(n); // Outputs: 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+ *   result3.push(n);
  * }
- *
- * // Negative numbers with negative step
- * for (const n of range(0, -10, -1)) {
- *   console.log(n); // Outputs: 0, -1, -2, -3, -4, -5, -6, -7, -8, -9
- * }
+ * assert.deepStrictEqual(result3, [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]);
  *
  * // Convert generator to array
- * const numbers = Array.from(range(1, 4)); // [1, 2, 3]
- * const evens = [...range(0, 11, 2)]; // [0, 2, 4, 6, 8, 10]
+ * const numbers = Array.from(range(1, 4));
+ * assert.deepStrictEqual(numbers, [1, 2, 3]);
+ * const evens = [...range(0, 11, 2)];
+ * assert.deepStrictEqual(evens, [0, 2, 4, 6, 8, 10]);
  *
  * // Empty ranges
- * Array.from(range(5, 5)); // [] (start equals end)
- * Array.from(range(5, 3)); // [] (positive step, start > end)
- * Array.from(range(3, 5, -1)); // [] (negative step, start < end)
+ * assert.deepStrictEqual(Array.from(range(5, 5)), []); // start equals end
+ * assert.deepStrictEqual(Array.from(range(5, 3)), []); // positive step, start > end
+ * assert.deepStrictEqual(Array.from(range(3, 5, -1)), []); // negative step, start < end
  *
  * // Using with iterator protocol manually
  * const gen = range(1, 4);
- * console.log(gen.next()); // { value: 1, done: false }
- * console.log(gen.next()); // { value: 2, done: false }
- * console.log(gen.next()); // { value: 3, done: false }
- * console.log(gen.next()); // { value: undefined, done: true }
- *
- * // Practical usage patterns
- * // Create index sequences
- * const indices = Array.from(range(0, items.length));
+ * assert.deepStrictEqual(gen.next(), { value: 1, done: false });
+ * assert.deepStrictEqual(gen.next(), { value: 2, done: false });
+ * assert.deepStrictEqual(gen.next(), { value: 3, done: false });
+ * assert.deepStrictEqual(gen.next(), { value: undefined, done: true });
  *
  * // Generate test data
- * const testIds = [...range(1, 101)]; // [1, 2, ..., 100]
- *
- * // Iterate with step intervals
- * for (const minute of range(0, 60, 5)) {
- *   scheduleTask(minute); // Every 5 minutes
- * }
- *
- * // Countdown sequences
- * for (const count of range(10, 0, -1)) {
- *   console.log(`T-minus ${count}`);
- * }
+ * const testIds = [...range(1, 6)];
+ * assert.deepStrictEqual(testIds, [1, 2, 3, 4, 5]);
  * ```
+ *
  */
 export function range(
   start: SafeUintWithSmallInt,

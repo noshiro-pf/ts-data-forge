@@ -20,45 +20,47 @@
  *
  * @example
  * Basic usage with different value types:
- * ```typescript
- * isNonNullObject({});           // true (plain object)
- * isNonNullObject([]);           // true (arrays are objects)
- * isNonNullObject(new Date());   // true (Date instance)
- * isNonNullObject(/regex/);      // true (RegExp instance)
- * isNonNullObject(new Map());    // true (Map instance)
- * isNonNullObject(null);         // false (null is not considered object here)
- * isNonNullObject(undefined);    // false (primitive)
- * isNonNullObject("string");     // false (primitive)
- * isNonNullObject(42);           // false (primitive)
- * isNonNullObject(true);         // false (primitive)
- * isNonNullObject(() => {});     // false (functions are not objects in this context)
+ * ```ts
+ * assert(isNonNullObject({}) === true);           // true (plain object)
+ * assert(isNonNullObject([]) === true);           // true (arrays are objects)
+ * assert(isNonNullObject(new Date()) === true);   // true (Date instance)
+ * assert(isNonNullObject(/regex/) === true);      // true (RegExp instance)
+ * assert(isNonNullObject(new Map()) === true);    // true (Map instance)
+ * assert(isNonNullObject(null) === false);        // false (null is not considered object here)
+ * assert(isNonNullObject(undefined) === false);   // false (primitive)
+ * assert(isNonNullObject("string") === false);    // false (primitive)
+ * assert(isNonNullObject(42) === false);          // false (primitive)
+ * assert(isNonNullObject(true) === false);        // false (primitive)
+ * assert(isNonNullObject(() => {}) === false);    // false (functions are not objects in this context)
  * ```
  *
  * @example
  * Type guard usage with unknown values:
- * ```typescript
- * const value: unknown = parseJsonData();
+ * ```ts
+ * const value: unknown = { name: 'John', age: 30 };
  *
  * if (isNonNullObject(value)) {
  *   // value is now typed as object
- *   console.log('Value is an object');
+ *   assert(typeof value === 'object');
  *
  *   // You can now safely use object-specific operations
- *   console.log(Object.keys(value));      // Safe to call Object.keys
- *   console.log(value.toString());        // Safe to call methods
+ *   const keys = Object.keys(value);
+ *   assert(keys.length >= 0);
+ *   const str = value.toString();
+ *   assert(typeof str === 'string');
  *
  *   // But you may need additional checks for specific object types
  *   if (Array.isArray(value)) {
- *     console.log('It\'s an array with length:', value.length);
+ *     assert(false); // This won't execute for this example
  *   }
  * } else {
- *   console.log('Value is not an object');
+ *   assert(false); // should not reach here
  * }
  * ```
  *
  * @example
  * Filtering arrays to find objects:
- * ```typescript
+ * ```ts
  * const mixedArray: unknown[] = [
  *   { name: 'John' },
  *   'string',
@@ -81,20 +83,20 @@
  *
  * @example
  * Progressive type narrowing with other guards:
- * ```typescript
- * const apiResponse: unknown = await fetchData();
+ * ```ts
+ * const apiResponse: unknown = { status: 'success', data: [1, 2, 3] };
  *
  * if (isNonNullObject(apiResponse)) {
  *   // apiResponse is now object
+ *   assert(typeof apiResponse === 'object');
  *
- *   if (isRecord(apiResponse)) {
- *     // Further narrowed to UnknownRecord (plain object, not array)
- *
- *     if (hasKey(apiResponse, 'status')) {
- *       console.log('API status:', apiResponse.status);
- *     }
- *   } else if (Array.isArray(apiResponse)) {
- *     console.log('Response is an array with length:', apiResponse.length);
+ *   // Simplified check without external function dependencies
+ *   if (!Array.isArray(apiResponse)) {
+ *     // Plain object, not array
+ *     const keys = Object.keys(apiResponse);
+ *     assert(keys.length > 0);
+ *   } else {
+ *     assert(false); // This won't execute for this example
  *   }
  * }
  * ```

@@ -43,69 +43,41 @@ export namespace Arr {
    *   - `IntersectBrand<PositiveNumber, SizeType.Arr>` for known non-empty arrays
    *   - `SizeType.Arr` for general arrays (branded Uint32, may be 0)
    *
+   * @see {@link length} - Alias for this function
+   * @see {@link isEmpty} for checking if size is 0
+   * @see {@link isNonEmpty} for checking if size > 0
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Known non-empty arrays get positive branded type
    * const tuple = [1, 2, 3] as const;
    * const tupleSize = Arr.size(tuple);
-   * // Type: IntersectBrand<PositiveNumber, SizeType.Arr>
-   * // Value: 3 (branded, guaranteed positive)
+   * expectType<typeof tupleSize, IntersectBrand<PositiveNumber, SizeType.Arr>>(
+   *   '=',
+   * );
+   * assert(tupleSize === 3);
    *
    * const nonEmpty: NonEmptyArray<string> = ['a', 'b'];
    * const nonEmptySize = Arr.size(nonEmpty);
-   * // Type: IntersectBrand<PositiveNumber, SizeType.Arr>
-   * // Guaranteed to be > 0
+   * expectType<
+   *   typeof nonEmptySize,
+   *   IntersectBrand<PositiveNumber, SizeType.Arr>
+   * >('=');
+   * assert(nonEmptySize === 2);
    *
    * // General arrays may be empty, get regular branded type
    * const generalArray: number[] = [1, 2, 3];
    * const generalSize = Arr.size(generalArray);
-   * // Type: SizeType.Arr (branded Uint32)
-   * // May be 0 or positive
+   * expectType<typeof generalSize, SizeType.Arr>('=');
+   * assert(generalSize === 3);
    *
    * // Empty arrays
    * const emptyArray = [] as const;
    * const emptySize = Arr.size(emptyArray);
-   * // Type: SizeType.Arr
-   * // Value: 0 (branded)
-   *
-   * // Runtime arrays with unknown content
-   * const dynamicArray = Array.from({ length: Math.random() * 10 }, (_, i) => i);
-   * const dynamicSize = Arr.size(dynamicArray);
-   * // Type: SizeType.Arr (may be 0)
-   *
-   * // Using size for safe operations
-   * const data = [10, 20, 30];
-   * const dataSize = Arr.size(data);
-   *
-   * // Safe for array creation
-   * const indices = Arr.seq(dataSize); // Creates [0, 1, 2]
-   * const zeros = Arr.zeros(dataSize); // Creates [0, 0, 0]
-   *
-   * // Functional composition
-   * const arrays = [
-   *   [1, 2],
-   *   [3, 4, 5],
-   *   [],
-   *   [6]
-   * ];
-   * const sizes = arrays.map(Arr.size); // [2, 3, 0, 1] (all branded)
-   * const totalElements = sizes.reduce(Uint32.add, 0); // 6
-   *
-   * // Type guards work with size
-   * if (Arr.size(data) > 0) {
-   *   // TypeScript knows data is non-empty here
-   *   const firstElement = data[0]; // Safe access
-   * }
-   *
-   * // Type inference examples
-   * expectType<typeof tupleSize, IntersectBrand<PositiveNumber, SizeType.Arr>>('=');
-   * expectType<typeof generalSize, SizeType.Arr>('=');
    * expectType<typeof emptySize, SizeType.Arr>('=');
+   * assert(emptySize === 0);
    * ```
    *
-   * @see {@link length} - Alias for this function
-   * @see {@link isEmpty} for checking if size is 0
-   * @see {@link isNonEmpty} for checking if size > 0
    */
   export const size = <Ar extends readonly unknown[]>(
     array: Ar,
@@ -123,19 +95,23 @@ export namespace Arr {
    * @template E The input type that may or may not be an array.
    * @param value The value to check.
    * @returns `true` if the value is an array, `false` otherwise.
+   *
    * @example
    * ```ts
-   * function processValue(value: string | number[] | null) {
+   * const processValue = (value: string | readonly number[] | null): number => {
    *   if (Arr.isArray(value)) {
-   *     // value is now typed as number[]
-   *     console.log(value.length);
+   *     expectType<typeof value, readonly number[]>('=');
+   *     return value.length;
    *   }
-   * }
+   *   return -1;
+   * };
    *
-   * Arr.isArray([1, 2, 3]); // true
-   * Arr.isArray("hello"); // false
-   * Arr.isArray(null); // false
+   * assert(Arr.isArray([1, 2, 3]) === true);
+   * assert(Arr.isArray('hello') === false);
+   * assert(Arr.isArray(null) === false);
+   * assert(processValue([1, 2, 3]) === 3);
    * ```
+   *
    */
   export const isArray = <E,>(value: E): value is FilterArray<E> =>
     Array.isArray(value);
@@ -165,38 +141,42 @@ export namespace Arr {
    * @returns `true` if the array has length 0, `false` otherwise.
    *   When `true`, TypeScript narrows the type to `readonly []`.
    *
+   * @see {@link isNonEmpty} for the opposite check (non-empty arrays)
+   * @see {@link size} for getting the exact length
+   * @see {@link isArrayOfLength} for checking specific lengths
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic emptiness checking
    * const emptyArray: number[] = [];
    * const nonEmptyArray = [1, 2, 3];
    *
-   * console.log(Arr.isEmpty(emptyArray)); // true
-   * console.log(Arr.isEmpty(nonEmptyArray)); // false
+   * assert(Arr.isEmpty(emptyArray) === true);
+   * assert(Arr.isEmpty(nonEmptyArray) === false);
    *
    * // Type guard behavior
-   * function processArray(arr: readonly number[]) {
+   * const processArray = (arr: readonly number[]) => {
    *   if (Arr.isEmpty(arr)) {
-   *     // arr is now typed as readonly []
-   *     console.log('Array is empty');
-   *     // arr[0]; // type error!
+   *     expectType<typeof arr, readonly []>('=');
    *     return 0;
    *   }
-   * }
+   *   return arr.length;
+   * };
    *
    * // Early returns
-   * function sumArray(numbers: readonly number[]): number {
+   * const sumArray = (numbers: readonly number[]): number => {
    *   if (Arr.isEmpty(numbers)) {
    *     return 0; // Handle empty case early
    *   }
    *   return numbers.reduce((sum, n) => sum + n, 0);
-   * }
+   * };
    *
+   * assert(processArray([]) === 0);
+   * assert(processArray([1, 2]) === 2);
+   * assert(sumArray([]) === 0);
+   * assert(sumArray([1, 2, 3]) === 6);
    * ```
    *
-   * @see {@link isNonEmpty} for the opposite check (non-empty arrays)
-   * @see {@link size} for getting the exact length
-   * @see {@link isArrayOfLength} for checking specific lengths
    */
   export const isEmpty = <E,>(array: readonly E[]): array is readonly [] =>
     array.length === 0;
@@ -214,8 +194,13 @@ export namespace Arr {
    * @returns `true` if the array has length > 0, `false` otherwise.
    *   When `true`, TypeScript narrows the type to `NonEmptyArray<E>`.
    *
+   * @see {@link isEmpty} for the opposite check (empty arrays)
+   * @see {@link size} for getting the exact length
+   * @see {@link head} for safely getting the first element
+   * @see {@link last} for safely getting the last element
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic non-emptiness checking
    * const emptyArray: number[] = [];
    * const nonEmptyArray = [1, 2, 3];
@@ -231,33 +216,41 @@ export namespace Arr {
    *   }
    *   return undefined;
    * }
+   * assert(getFirstElement([1, 2, 3]) === 1);
+   * assert(getFirstElement([]) === undefined);
    *
    * // Safe operations on non-empty arrays
-   * function processData(data: readonly string[]) {
-   *   if (!Arr.isNonEmpty(data)) return;  // early return pattern
+   * function processData(data: readonly string[]): void {
+   *   if (!Arr.isNonEmpty(data)) return; // early return pattern
    *
    *   // This is now safe without undefined checks
    *   const first = data[0];
+   *   assert(typeof first === 'string');
    *
    *   // Can safely use non-empty array methods
    *   const lastElement = Arr.last(data);
-   *
+   *   assert(lastElement !== undefined);
    * }
+   * processData(['a', 'b', 'c']);
    *
    * // Filtering and working with arrays
    * const possiblyEmptyArrays: readonly number[][] = [
    *   [1, 2, 3],
    *   [],
    *   [4, 5],
-   *   []
+   *   [],
    * ];
    *
    * // Get only non-empty arrays with proper typing
    * const definitelyNonEmpty = possiblyEmptyArrays.filter(Arr.isNonEmpty);
    * // Type: NonEmptyArray<number>[]
+   * assert(definitelyNonEmpty.length === 2);
    *
    * // Now safe to access elements
-   * const firstElements = definitelyNonEmpty.map(arr => arr[0]); // [1, 4]
+   * const firstElements = definitelyNonEmpty.map((arr) => arr[0]); // [1, 4]
+   * assert(firstElements.length === 2);
+   * assert(firstElements[0] === 1);
+   * assert(firstElements[1] === 4);
    *
    * // Early validation
    * function calculateAverage(numbers: readonly number[]): number {
@@ -268,35 +261,36 @@ export namespace Arr {
    *   // numbers is now NonEmptyArray<number>
    *   return Arr.sum(numbers) / Arr.size(numbers);
    * }
+   * assert(calculateAverage([1, 2, 3]) === 2);
    *
    * // Functional composition
-   * const arrayGroups = [
-   *   [1, 2],
-   *   [],
-   *   [3, 4, 5],
-   *   []
-   * ];
+   * const arrayGroups = [[1, 2], [], [3, 4, 5], []];
    *
    * const nonEmptyGroups = arrayGroups
    *   .filter(Arr.isNonEmpty) // Filter to NonEmptyArray<number>[]
-   *   .map(group => group[0]); // Safe access to first element: [1, 3]
+   *   .map((group) => group[0]); // Safe access to first element: [1, 3]
+   * assert(nonEmptyGroups.length === 2);
+   * assert(nonEmptyGroups[0] === 1);
+   * assert(nonEmptyGroups[1] === 3);
    *
    * // Combined with other array operations
    * function processArraySafely<T>(
    *   arr: readonly T[],
-   *   processor: (item: T) => string
+   *   processor: (item: T) => string,
    * ): string {
    *   if (Arr.isNonEmpty(arr)) {
    *     return arr.map(processor).join(' -> ');
    *   }
    *   return 'No items to process';
    * }
+   * assert(processArraySafely([1, 2, 3], String) === '1 -> 2 -> 3');
    *
    * // Type inference examples
-   * const testArray = [1, 2, 3];
+   * const testArray: readonly number[] = [1, 2, 3];
    * const isNonEmptyResult = Arr.isNonEmpty(testArray);
+   * assert(isNonEmptyResult === true);
    *
-   * expectType<typeof isNonEmptyResult, boolean>('=');
+   * expectType<typeof isNonEmptyResult, true>('=');
    * expectType<Parameters<typeof Arr.isNonEmpty>[0], readonly unknown[]>('=');
    *
    * // Type narrowing in conditional
@@ -305,10 +299,6 @@ export namespace Arr {
    * }
    * ```
    *
-   * @see {@link isEmpty} for the opposite check (empty arrays)
-   * @see {@link size} for getting the exact length
-   * @see {@link head} for safely getting the first element
-   * @see {@link last} for safely getting the last element
    */
   export const isNonEmpty = <E,>(
     array: readonly E[],
@@ -321,6 +311,7 @@ export namespace Arr {
    * @param array The array to check.
    * @param len The expected length.
    * @returns `true` if the array has the specified length, `false` otherwise.
+   *
    * @example
    * ```ts
    * const arr: readonly number[] = [1, 2, 3];
@@ -329,6 +320,7 @@ export namespace Arr {
    * }
    * Arr.isArrayOfLength([1, 2], 3); // false
    * ```
+   *
    */
   export const isArrayOfLength = <E, N extends SizeType.ArgArr>(
     array: readonly E[],
@@ -342,6 +334,7 @@ export namespace Arr {
    * @param array The array to check.
    * @param len The minimum expected length.
    * @returns `true` if the array has at least the specified length, `false` otherwise.
+   *
    * @example
    * ```ts
    * const arr: readonly number[] = [1, 2, 3];
@@ -350,6 +343,7 @@ export namespace Arr {
    * }
    * Arr.isArrayAtLeastLength([1], 2); // false
    * ```
+   *
    */
   export const isArrayAtLeastLength = <E, N extends SizeType.ArgArr>(
     array: readonly E[],
@@ -362,6 +356,7 @@ export namespace Arr {
    * @param array The input array.
    * @param index The index to check.
    * @returns `true` if the index is within the array bounds, `false` otherwise.
+   *
    * @example
    * ```ts
    * Arr.indexIsInRange([10, 20], 0); // true
@@ -370,6 +365,7 @@ export namespace Arr {
    * Arr.indexIsInRange([10, 20], -1); // false
    * Arr.indexIsInRange([], 0); // false
    * ```
+   *
    */
   export const indexIsInRange = <E,>(
     array: readonly E[],
@@ -395,24 +391,31 @@ export namespace Arr {
    *   - `readonly 0[]` for general non-negative values
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Compile-time known lengths produce precise tuple types
    * const exactLength = Arr.zeros(3); // readonly [0, 0, 0]
    * const empty = Arr.zeros(0); // readonly []
    *
    * // Runtime positive values produce non-empty arrays
-   * const count = Math.floor(Math.random() * 5) + 1;
-   * const nonEmpty = Arr.zeros(count); // NonEmptyArray<0>
+   * const count = asPositiveUint32(Math.floor(Math.random() * 5) + 1);
+   * const nonEmpty: NonEmptyArray<0> = Arr.zeros(count);
    *
    * // General runtime values may be empty
-   * const maybeEmpty = Arr.zeros(Math.floor(Math.random() * 5)); // readonly 0[]
+   * const maybeEmpty = Arr.zeros(asUint32(Math.floor(Math.random() * 5))); // readonly 0[]
    *
    * // Type inference examples
    * expectType<typeof exactLength, readonly [0, 0, 0]>('=');
    * expectType<typeof empty, readonly []>('=');
    * expectType<typeof nonEmpty, NonEmptyArray<0>>('=');
    * expectType<typeof maybeEmpty, readonly 0[]>('=');
+   *
+   * // Runtime assertions
+   * assert(exactLength.length === 3);
+   * assert(empty.length === 0);
+   * assert(nonEmpty.length > 0);
+   * assert(maybeEmpty.length >= 0);
    * ```
+   *
    */
   export const zeros = <N extends SizeType.ArgArr>(
     len: N,
@@ -442,28 +445,44 @@ export namespace Arr {
    *   - `readonly SizeType.Arr[]` for general non-negative values
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Compile-time known lengths produce precise tuple types
-   * const indices = Arr.seq(4); // readonly [0, 1, 2, 3]
-   * const empty = Arr.seq(0); // readonly []
-   * const single = Arr.seq(1); // readonly [0]
+   * const indices: readonly [0, 1, 2, 3] = Arr.seq(4);
+   * const empty: readonly [] = Arr.seq(0);
+   * const single: readonly [0] = Arr.seq(1);
    *
    * // Runtime positive values produce non-empty arrays
-   * const count = Math.floor(Math.random() * 5) + 1;
-   * const nonEmpty = Arr.seq(count); // NonEmptyArray<SizeType.Arr>
+   * const count = asPositiveUint32(Math.floor(Math.random() * 5) + 1);
+   * const nonEmpty: NonEmptyArray<SizeType.Arr> = Arr.seq(count);
    *
    * // General runtime values may be empty
-   * const maybeEmpty = Arr.seq(Math.floor(Math.random() * 5)); // readonly SizeType.Arr[]
+   * const maybeEmpty: readonly SizeType.Arr[] = Arr.seq(
+   *   asUint32(Math.floor(Math.random() * 5)),
+   * );
    *
    * // Useful for generating array indices
-   * const data = ['a', 'b', 'c', 'd'];
-   * const indexSequence = Arr.seq(data.length); // [0, 1, 2, 3]
+   * const data = ['a', 'b', 'c', 'd'] as const;
+   * const indexSequence: readonly [0, 1, 2, 3] = Arr.seq(data.length); // [0, 1, 2, 3]
+   * assert(indexSequence.length === 4);
+   * assert(indexSequence[0] === 0);
+   * assert(indexSequence[3] === 3);
    *
    * // Type inference examples
    * expectType<typeof indices, readonly [0, 1, 2, 3]>('=');
    * expectType<typeof empty, readonly []>('=');
+   * expectType<typeof nonEmpty, NonEmptyArray<SizeType.Arr>>('=');
+   * expectType<typeof maybeEmpty, readonly SizeType.Arr[]>('=');
+   *
+   * // Runtime assertions
+   * assert(indices.length === 4);
+   * assert(empty.length === 0);
+   * assert(nonEmpty.length > 0);
+   * assert(maybeEmpty.length >= 0);
    * expectType<typeof single, readonly [0]>('=');
+   * assert(single.length === 1);
+   * assert(single[0] === 0);
    * ```
+   *
    */
   export const seq = <N extends SizeType.ArgArr>(
     len: N,
@@ -493,8 +512,11 @@ export namespace Arr {
    *   - `NonEmptyArray<V>` when `len` is a positive runtime value
    *   - `readonly V[]` for general non-negative values
    *
+   * @see {@link zeros} for creating arrays filled with zeros
+   * @see {@link seq} for creating sequences of consecutive integers
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Compile-time known lengths produce precise tuple types
    * const strings = Arr.create(3, 'hello'); // readonly ['hello', 'hello', 'hello']
    * const numbers = Arr.create(2, 42); // readonly [42, 42]
@@ -503,25 +525,33 @@ export namespace Arr {
    * // Object references are shared (shallow copy behavior)
    * const obj = { id: 1, name: 'test' };
    * const objects = Arr.create(3, obj); // readonly [obj, obj, obj]
-   * objects[0] === objects[1]; // true - same reference
+   * assert(objects[0] === objects[1]); // true - same reference
    * objects[0].id = 999; // Mutates the shared object
-   * console.log(objects[1].id); // 999 - all positions affected
+   * assert(objects[1].id === 999); // all positions affected
    *
    * // Runtime positive values produce non-empty arrays
    * const count = Math.floor(Math.random() * 5) + 1;
    * const nonEmpty = Arr.create(count, 'item'); // NonEmptyArray<string>
+   * assert(nonEmpty.length > 0);
    *
    * // Literal type preservation with const assertion
    * const literals = Arr.create(2, 'success' as const); // readonly ['success', 'success']
+   * assert(literals.length === 2);
+   * assert(literals[0] === 'success');
    *
    * // Type inference examples
    * expectType<typeof strings, readonly ['hello', 'hello', 'hello']>('=');
    * expectType<typeof numbers, readonly [42, 42]>('=');
    * expectType<typeof empty, readonly []>('=');
+   * expectType<typeof nonEmpty, NonEmptyArray<string>>('=');
+   * expectType<typeof literals, readonly ['success', 'success']>('=');
+   *
+   * // Runtime assertions
+   * assert(strings.length === 3);
+   * assert(numbers.length === 2);
+   * assert(empty.length === 0);
    * ```
    *
-   * @see {@link zeros} for creating arrays filled with zeros
-   * @see {@link seq} for creating sequences of consecutive integers
    */
   export const create = <const V, N extends SizeType.ArgArr>(
     len: N,
@@ -546,8 +576,8 @@ export namespace Arr {
    * @returns A readonly array containing all yielded values from the generator
    *
    * @example
-   * ```typescript
-   * const nums:readonly number[] = Arr.generate<number>(function* () {
+   * ```ts
+   * const nums: readonly number[] = Arr.generate<number>(function* () {
    *   yield 1;
    *   yield* [2, 3];
    * });
@@ -557,13 +587,16 @@ export namespace Arr {
    * // Type safety - prevents incorrect returns:
    * const nums2 = Arr.generate<number>(function* () {
    *   yield 1;
+   *   const someCondition = Math.random() > 0.5;
    *   if (someCondition) {
    *     return; // OK - returning is allowed, but must be void
    *   }
    *   yield* [2, 3];
    *   // return 1; // NG - TypeScript error, cannot return T
    * });
+   * assert(nums2.length >= 1);
    * ```
+   *
    */
   export const generate = <T,>(
     generatorFn: () => Generator<T, void, unknown>,
@@ -581,8 +614,11 @@ export namespace Arr {
    * @returns A new array that is a shallow copy of the input. The return type exactly matches the input type,
    *   preserving readonly status, tuple structure, and element types.
    *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice | Array.prototype.slice}
+   *   The underlying implementation uses `slice()` for efficient shallow copying
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Mutable arrays remain mutable
    * const mutableOriginal = [1, 2, 3];
    * const mutableCopy = Arr.copy(mutableOriginal); // number[]
@@ -599,7 +635,10 @@ export namespace Arr {
    * const tupleCopy = Arr.copy(tupleOriginal); // [string, number, boolean]
    *
    * // Shallow copy behavior with objects
-   * const objectArray = [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }];
+   * const objectArray = [
+   *   { id: 1, name: 'Alice' },
+   *   { id: 2, name: 'Bob' },
+   * ];
    * const objectCopy = Arr.copy(objectArray);
    * objectCopy[0].name = 'Charlie'; // Mutates the shared object reference
    * console.log(objectArray[0].name); // 'Charlie' - original affected
@@ -618,8 +657,6 @@ export namespace Arr {
    * expectType<typeof tupleCopy, [string, number, boolean]>('=');
    * ```
    *
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice | Array.prototype.slice}
-   *   The underlying implementation uses `slice()` for efficient shallow copying
    */
   export const copy = <Ar extends readonly unknown[]>(array: Ar): Ar =>
     // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
@@ -698,8 +735,13 @@ export namespace Arr {
    *   - `readonly SafeUint[]` when all parameters are non-negative
    *   - `readonly SafeInt[]` for general integer ranges including negative values
    *
+   * @throws Never throws - invalid ranges simply return empty arrays
+   * @see {@link seq} for creating sequences starting from 0
+   * @see {@link SmallUint} for understanding the constraint that enables precise typing
+   * @see {@link SafeInt} and {@link SafeUint} for the safe integer types used
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Compile-time known ranges with step=1 produce precise tuple types
    * const range1to4 = Arr.range(1, 5); // readonly [1, 2, 3, 4]
    * const range0to2 = Arr.range(0, 3); // readonly [0, 1, 2]
@@ -737,10 +779,10 @@ export namespace Arr {
    * const reversedIndices = Arr.range(9, -1, -1); // readonly SafeInt[] -> [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
    *
    * // Functional programming patterns
-   * const squares = Arr.range(1, 6).map(x => x * x); // [1, 4, 9, 16, 25]
+   * const squares = Arr.range(1, 6).map((x) => x * x); // [1, 4, 9, 16, 25]
    * const fibonacci = Arr.range(0, 10).reduce((acc, _, i) => {
    *   if (i <= 1) return [...acc, i];
-   *   return [...acc, acc[i-1] + acc[i-2]];
+   *   return [...acc, acc[i - 1] + acc[i - 2]];
    * }, [] as number[]); // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
    *
    * // Type inference examples showing precise vs general types
@@ -753,10 +795,6 @@ export namespace Arr {
    * expectType<typeof beyondSmall, readonly SafeUint[]>('='); // General array (beyond SmallUint)
    * ```
    *
-   * @throws Never throws - invalid ranges simply return empty arrays
-   * @see {@link seq} for creating sequences starting from 0
-   * @see {@link SmallUint} for understanding the constraint that enables precise typing
-   * @see {@link SafeInt} and {@link SafeUint} for the safe integer types used
    */
   export function range<S extends SmallUint, E extends SmallUint>(
     start: S,
@@ -816,8 +854,14 @@ export namespace Arr {
    *   - {@link Optional.Some}<E> with the element if the index is valid
    *   - {@link Optional.None} if the index is out of bounds (including empty arrays)
    *
+   * @see {@link head} for getting the first element specifically
+   * @see {@link last} for getting the last element specifically
+   * @see {@link Optional} for working with the returned Optional values
+   * @see {@link Optional.unwrapOr} for safe unwrapping with defaults
+   * @see {@link Optional.map} for transforming Optional values
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage with positive indices
    * const fruits = ['apple', 'banana', 'cherry', 'date', 'elderberry'];
    * const first = Arr.at(fruits, 0); // Optional.Some('apple')
@@ -844,7 +888,10 @@ export namespace Arr {
    * }
    *
    * // Alternative unwrapping with default
-   * const elementOrDefault = Optional.unwrapOr(Arr.at(fruits, 100), 'not found');
+   * const elementOrDefault = Optional.unwrapOr(
+   *   Arr.at(fruits, 100),
+   *   'not found',
+   * );
    * console.log(elementOrDefault); // 'not found'
    *
    * // Curried usage for functional composition
@@ -852,11 +899,7 @@ export namespace Arr {
    * const getLastElement = Arr.at(-1);
    * const getMiddleElement = Arr.at(2);
    *
-   * const nestedArrays = [
-   *   [10, 20, 30, 40],
-   *   [50, 60],
-   *   [70]
-   * ];
+   * const nestedArrays = [[10, 20, 30, 40], [50, 60], [70]];
    * const secondElements = nestedArrays.map(getSecondElement);
    * // [Optional.Some(20), Optional.None, Optional.None]
    *
@@ -864,11 +907,11 @@ export namespace Arr {
    * // [Optional.Some(40), Optional.Some(60), Optional.Some(70)]
    *
    * // Pipe composition for data processing
-   * const processArray = (arr: readonly string[]) => pipe(arr)
-   *   .map(getSecondElement)
-   *   .map(opt => Optional.map(opt, s => s.toUpperCase()))
-   *   .map(opt => Optional.unwrapOr(opt, 'MISSING'))
-   *   .value;
+   * const processArray = (arr: readonly string[]) =>
+   *   pipe(arr)
+   *     .map(getSecondElement)
+   *     .map((opt) => Optional.map(opt, (s) => s.toUpperCase()))
+   *     .map((opt) => Optional.unwrapOr(opt, 'MISSING')).value;
    *
    * console.log(processArray(['a', 'b', 'c'])); // 'B'
    * console.log(processArray(['x'])); // 'MISSING'
@@ -877,24 +920,23 @@ export namespace Arr {
    * const extractAndProcess = pipe([
    *   ['hello', 'world', 'typescript'],
    *   ['functional', 'programming'],
-   *   ['type', 'safety', 'matters', 'most']
+   *   ['type', 'safety', 'matters', 'most'],
    * ])
-   *   .map(arr => arr.map(getSecondElement))
-   *   .map(opts => opts.map(opt => Optional.unwrapOr(opt, '[missing]')))
-   *   .value;
+   *   .map((arr) => arr.map(getSecondElement))
+   *   .map((opts) =>
+   *     opts.map((opt) => Optional.unwrapOr(opt, '[missing]')),
+   *   ).value;
    * // [['world'], ['[missing]'], ['safety']]
    *
    * // Type inference examples
    * expectType<typeof first, Optional<string>>('=');
-   * expectType<typeof getSecondElement, <T>(array: readonly T[]) => Optional<T>>('=');
+   * expectType<
+   *   typeof getSecondElement,
+   *   <T>(array: readonly T[]) => Optional<T>
+   * >('=');
    * expectType<typeof negativeOutOfBounds, Optional<string>>('=');
    * ```
    *
-   * @see {@link head} for getting the first element specifically
-   * @see {@link last} for getting the last element specifically
-   * @see {@link Optional} for working with the returned Optional values
-   * @see {@link Optional.unwrapOr} for safe unwrapping with defaults
-   * @see {@link Optional.map} for transforming Optional values
    */
   export function at<Ar extends readonly unknown[]>(
     array: Ar,
@@ -948,8 +990,12 @@ export namespace Arr {
    *   - `Optional.None` if the array is empty
    *   - `Optional.Some<E>` containing the first element if the array is non-empty
    *
+   * @see {@link last} for getting the last element
+   * @see {@link at} for accessing elements at specific indices
+   * @see {@link tail} for getting all elements except the first
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Empty array - precise None type
    * const emptyResult = Arr.head([]); // Optional.None
    * console.log(Optional.isNone(emptyResult)); // true
@@ -962,7 +1008,9 @@ export namespace Arr {
    * }
    *
    * // Non-empty array - guaranteed Some type
-   * const nonEmpty: NonEmptyArray<number> = [10, 20, 30] as NonEmptyArray<number>;
+   * const nonEmpty: NonEmptyArray<number> = [
+   *   10, 20, 30,
+   * ] as NonEmptyArray<number>;
    * const guaranteedResult = Arr.head(nonEmpty); // Optional.Some<number>
    * // No need to check - always Some for NonEmptyArray
    *
@@ -979,7 +1027,10 @@ export namespace Arr {
    * const strings = ['hello', 'world'];
    * const firstString = Arr.head(strings); // Optional<string>
    *
-   * const objects = [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }];
+   * const objects = [
+   *   { id: 1, name: 'Alice' },
+   *   { id: 2, name: 'Bob' },
+   * ];
    * const firstObject = Arr.head(objects); // Optional<{id: number, name: string}>
    *
    * // Functional composition
@@ -997,9 +1048,6 @@ export namespace Arr {
    * expectType<typeof maybeResult, Optional<number>>('=');
    * ```
    *
-   * @see {@link last} for getting the last element
-   * @see {@link at} for accessing elements at specific indices
-   * @see {@link tail} for getting all elements except the first
    */
   export const head = <Ar extends readonly unknown[]>(
     array: Ar,
@@ -1031,8 +1079,12 @@ export namespace Arr {
    *   - `Optional.None` if the array is empty
    *   - `Optional.Some<E>` containing the last element if the array is non-empty
    *
+   * @see {@link head} for getting the first element
+   * @see {@link at} for accessing elements at specific indices with negative indexing support
+   * @see {@link butLast} for getting all elements except the last
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Empty array - precise None type
    * const emptyResult = Arr.last([]); // Optional.None
    * console.log(Optional.isNone(emptyResult)); // true
@@ -1045,7 +1097,9 @@ export namespace Arr {
    * }
    *
    * // Non-empty array - guaranteed Some type
-   * const nonEmpty: NonEmptyArray<number> = [10, 20, 30] as NonEmptyArray<number>;
+   * const nonEmpty: NonEmptyArray<number> = [
+   *   10, 20, 30,
+   * ] as NonEmptyArray<number>;
    * const guaranteedResult = Arr.last(nonEmpty); // Optional.Some<number>
    * // No need to check - always Some for NonEmptyArray
    *
@@ -1062,7 +1116,11 @@ export namespace Arr {
    * const strings = ['hello', 'world', 'example'];
    * const lastString = Arr.last(strings); // Optional<string>
    *
-   * const coordinates = [{x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2}];
+   * const coordinates = [
+   *   { x: 0, y: 0 },
+   *   { x: 1, y: 1 },
+   *   { x: 2, y: 2 },
+   * ];
    * const lastCoordinate = Arr.last(coordinates); // Optional<{x: number, y: number}>
    *
    * // Single element arrays
@@ -1089,9 +1147,6 @@ export namespace Arr {
    * expectType<typeof maybeResult, Optional<number>>('=');
    * ```
    *
-   * @see {@link head} for getting the first element
-   * @see {@link at} for accessing elements at specific indices with negative indexing support
-   * @see {@link butLast} for getting all elements except the last
    */
   export const last = <Ar extends readonly unknown[]>(
     array: Ar,
@@ -1130,8 +1185,12 @@ export namespace Arr {
    * @returns A new immutable array containing the sliced elements. Always returns a valid array,
    *   never throws for out-of-bounds indices.
    *
+   * @see {@link take} for taking the first N elements
+   * @see {@link skip} for skipping the first N elements
+   * @see {@link takeLast} for taking the last N elements
+   *
    * @example
-   * ```typescript
+   * ```ts
    * const data = [10, 20, 30, 40, 50];
    *
    * // Normal slicing
@@ -1160,7 +1219,7 @@ export namespace Arr {
    * const arrays = [
    *   [1, 2, 3, 4, 5],
    *   [10, 20],
-   *   [100, 200, 300, 400, 500, 600]
+   *   [100, 200, 300, 400, 500, 600],
    * ];
    *
    * const first3Elements = arrays.map(takeFirst3);
@@ -1170,10 +1229,7 @@ export namespace Arr {
    * // [[2, 3], [20], [200, 300]]
    *
    * // Pipe composition
-   * const result = pipe([1, 2, 3, 4, 5, 6])
-   *   .map(takeFirst3)
-   *   .map(Arr.sum)
-   *   .value; // 6 (sum of [1, 2, 3])
+   * const result = pipe([1, 2, 3, 4, 5, 6]).map(takeFirst3).map(Arr.sum).value; // 6 (sum of [1, 2, 3])
    *
    * // Comparison with regular Array.slice (which can throw or behave unexpectedly)
    * try {
@@ -1186,9 +1242,6 @@ export namespace Arr {
    * }
    * ```
    *
-   * @see {@link take} for taking the first N elements
-   * @see {@link skip} for skipping the first N elements
-   * @see {@link takeLast} for taking the last N elements
    */
   export function sliceClamped<Ar extends readonly unknown[]>(
     array: Ar,
@@ -1230,12 +1283,14 @@ export namespace Arr {
    * @template E The type of the array (can be a tuple for more precise typing).
    * @param array The input array.
    * @returns A new array containing all elements except the first. The type is inferred as `List.Tail<T>`.
+   *
    * @example
    * ```ts
    * Arr.tail([1, 2, 3] as const); // [2, 3]
    * Arr.tail([1] as const); // []
    * Arr.tail([]); // []
    * ```
+   *
    */
   export const tail = <Ar extends readonly unknown[]>(
     array: Ar,
@@ -1248,12 +1303,14 @@ export namespace Arr {
    * @template E The type of the array (can be a tuple for more precise typing).
    * @param array The input array.
    * @returns A new array containing all elements except the last. The type is inferred as `List.ButLast<T>`.
+   *
    * @example
    * ```ts
    * Arr.butLast([1, 2, 3] as const); // [1, 2]
    * Arr.butLast([1] as const); // []
    * Arr.butLast([]); // []
    * ```
+   *
    */
   export const butLast = <Ar extends readonly unknown[]>(
     array: Ar,
@@ -1273,6 +1330,7 @@ export namespace Arr {
    * @param array The input array.
    * @param num The number of elements to take.
    * @returns A new array containing the first N elements.
+   *
    * @example
    * ```ts
    * // Regular usage
@@ -1283,6 +1341,7 @@ export namespace Arr {
    * const result = pipe([1, 2, 3, 4, 5]).map(takeFirst3).value;
    * console.log(result); // [1, 2, 3]
    * ```
+   *
    */
   export function take<
     Ar extends readonly unknown[],
@@ -1339,6 +1398,7 @@ export namespace Arr {
    * @param array The input array.
    * @param num The number of elements to take.
    * @returns A new array containing the last N elements.
+   *
    * @example
    * ```ts
    * // Regular usage
@@ -1349,6 +1409,7 @@ export namespace Arr {
    * const result = pipe([1, 2, 3, 4, 5]).map(takeLast2).value;
    * console.log(result); // [4, 5]
    * ```
+   *
    */
   export function takeLast<
     Ar extends readonly unknown[],
@@ -1405,6 +1466,7 @@ export namespace Arr {
    * @param array The input array.
    * @param num The number of elements to skip.
    * @returns A new array containing the elements after skipping the first N.
+   *
    * @example
    * ```ts
    * // Regular usage
@@ -1415,6 +1477,7 @@ export namespace Arr {
    * const result = pipe([1, 2, 3, 4, 5]).map(skipFirst2).value;
    * console.log(result); // [3, 4, 5]
    * ```
+   *
    */
   export function skip<
     Ar extends readonly unknown[],
@@ -1460,6 +1523,7 @@ export namespace Arr {
    * @param array The input array.
    * @param num The number of elements to skip from the end.
    * @returns A new array containing the elements after skipping the last N.
+   *
    * @example
    * ```ts
    * // Regular usage
@@ -1470,6 +1534,7 @@ export namespace Arr {
    * const result = pipe([1, 2, 3, 4, 5]).map(skipLast2).value;
    * console.log(result); // [1, 2, 3]
    * ```
+   *
    */
   export function skipLast<
     Ar extends readonly unknown[],
@@ -1520,7 +1585,7 @@ export namespace Arr {
    * @returns A new tuple with the updated element
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic usage
    * const tpl = ['a', 'b', 'c'] as const;
    * const updated = Arr.set(tpl, 1, 'B'); // readonly ['a', 'B', 'c']
@@ -1539,6 +1604,7 @@ export namespace Arr {
    * const withString = Arr.set(nums, 0, 'first');
    * // readonly ['first' | 1, 2, 3]
    * ```
+   *
    */
   export function set<
     const Ar extends readonly unknown[],
@@ -1619,47 +1685,51 @@ export namespace Arr {
    *   - Type union `E | U` accommodates both original and updated element types
    *   - If index is out of bounds, returns the original array unchanged
    *
+   * @see {@link Array.prototype.with} for the native method with different error handling
+   * @see {@link SizeType.ArgArr} for the index type constraint
+   * @see Immutable update patterns for functional programming approaches
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic usage with same type transformation
    * const numbers = [1, 2, 3, 4, 5];
-   * const doubled = Arr.toUpdated(numbers, 2, x => x * 2);
+   * const doubled = Arr.toUpdated(numbers, 2, (x) => x * 2);
    * // readonly number[] -> [1, 2, 6, 4, 5]
    *
    * // Type union when updater returns different type
-   * const mixed = Arr.toUpdated(numbers, 1, x => `value: ${x}`);
+   * const mixed = Arr.toUpdated(numbers, 1, (x) => `value: ${x}`);
    * // readonly (number | string)[] -> [1, 'value: 2', 3, 4, 5]
    *
    * // Complex object updates
    * const users = [
    *   { id: 1, name: 'Alice', active: true },
    *   { id: 2, name: 'Bob', active: false },
-   *   { id: 3, name: 'Charlie', active: true }
+   *   { id: 3, name: 'Charlie', active: true },
    * ];
    *
-   * const activatedUser = Arr.toUpdated(users, 1, user => ({
+   * const activatedUser = Arr.toUpdated(users, 1, (user) => ({
    *   ...user,
    *   active: true,
-   *   lastUpdated: new Date()
+   *   lastUpdated: new Date(),
    * }));
    * // Bob is now active with lastUpdated field
    *
    * // Bounds checking behavior
-   * const safe1 = Arr.toUpdated([1, 2, 3], 10, x => x * 2); // [1, 2, 3] (index out of bounds)
-   * const safe2 = Arr.toUpdated([1, 2, 3], 0, x => x * 2); // [2, 2, 3] (valid index)
-   * const safe3 = Arr.toUpdated([], 0, x => x); // [] (empty array, index out of bounds)
+   * const safe1 = Arr.toUpdated([1, 2, 3], 10, (x) => x * 2); // [1, 2, 3] (index out of bounds)
+   * const safe2 = Arr.toUpdated([1, 2, 3], 0, (x) => x * 2); // [2, 2, 3] (valid index)
+   * const safe3 = Arr.toUpdated([], 0, (x) => x); // [] (empty array, index out of bounds)
    *
    * // Functional transformations
    * const products = [
    *   { name: 'laptop', price: 1000 },
    *   { name: 'mouse', price: 25 },
-   *   { name: 'keyboard', price: 75 }
+   *   { name: 'keyboard', price: 75 },
    * ];
    *
-   * const discounted = Arr.toUpdated(products, 0, product => ({
+   * const discounted = Arr.toUpdated(products, 0, (product) => ({
    *   ...product,
    *   price: Math.round(product.price * 0.8), // 20% discount
-   *   onSale: true
+   *   onSale: true,
    * }));
    * // First product now has discounted price and onSale flag
    *
@@ -1667,30 +1737,44 @@ export namespace Arr {
    * const doubleAtIndex2 = Arr.toUpdated(2, (x: number) => x * 2);
    * const capitalizeAtIndex0 = Arr.toUpdated(0, (s: string) => s.toUpperCase());
    * const markCompleteAtIndex = (index: number) =>
-   *   Arr.toUpdated(index, (task: {done: boolean}) => ({...task, done: true}));
+   *   Arr.toUpdated(index, (task: { done: boolean }) => ({
+   *     ...task,
+   *     done: true,
+   *   }));
    *
-   * const numberArrays = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+   * const numberArrays = [
+   *   [1, 2, 3],
+   *   [4, 5, 6],
+   *   [7, 8, 9],
+   * ];
    * const allDoubled = numberArrays.map(doubleAtIndex2);
    * // [[1, 2, 6], [4, 5, 12], [7, 8, 18]]
    *
-   * const words = [['hello', 'world'], ['foo', 'bar'], ['type', 'script']];
+   * const words = [
+   *   ['hello', 'world'],
+   *   ['foo', 'bar'],
+   *   ['type', 'script'],
+   * ];
    * const capitalized = words.map(capitalizeAtIndex0);
    * // [['HELLO', 'world'], ['FOO', 'bar'], ['TYPE', 'script']]
    *
    * // Pipe composition for data processing
-   * const processArray = (arr: readonly number[]) => pipe(arr)
-   *   .map(Arr.toUpdated(0, x => x * 10)) // Scale first element
-   *   .map(Arr.toUpdated(1, x => typeof x === 'number' ? x + 100 : x)) // Add to second if number
-   *   .value;
+   * const processArray = (arr: readonly number[]) =>
+   *   pipe(arr)
+   *     .map(Arr.toUpdated(0, (x) => x * 10)) // Scale first element
+   *     .map(Arr.toUpdated(1, (x) => (typeof x === 'number' ? x + 100 : x))) // Add to second if number
+   *     .value;
    *
    * console.log(processArray([1, 2, 3])); // [10, 102, 3]
    *
    * // Multiple sequential updates
-   * const pipeline = (data: readonly number[]) => pipe(data)
-   *   .map(Arr.toUpdated(0, x => x * 2))
-   *   .map(Arr.toUpdated(1, x => typeof x === 'number' ? x + 10 : x))
-   *   .map(Arr.toUpdated(2, x => typeof x === 'number' ? x.toString() : x))
-   *   .value;
+   * const pipeline = (data: readonly number[]) =>
+   *   pipe(data)
+   *     .map(Arr.toUpdated(0, (x) => x * 2))
+   *     .map(Arr.toUpdated(1, (x) => (typeof x === 'number' ? x + 10 : x)))
+   *     .map(
+   *       Arr.toUpdated(2, (x) => (typeof x === 'number' ? x.toString() : x)),
+   *     ).value;
    *
    * console.log(pipeline([1, 2, 3])); // [2, 12, '3'] - readonly (number | string)[]
    *
@@ -1698,10 +1782,12 @@ export namespace Arr {
    * const safeUpdate = <T, U>(
    *   array: readonly T[],
    *   index: number,
-   *   updater: (value: T) => U
+   *   updater: (value: T) => U,
    * ) => {
    *   if (index < 0 || index >= array.length) {
-   *     console.warn(`Index ${index} out of bounds for array of length ${array.length}`);
+   *     console.warn(
+   *       `Index ${index} out of bounds for array of length ${array.length}`,
+   *     );
    *     return array;
    *   }
    *   return Arr.toUpdated(array, index as SizeType.ArgArrNonNegative, updater);
@@ -1709,33 +1795,41 @@ export namespace Arr {
    *
    * // Advanced: State management pattern
    * type AppState = {
-   *   users: Array<{id: number, name: string}>;
+   *   users: Array<{ id: number; name: string }>;
    *   currentUserId: number;
    * };
    *
-   * const updateUserName = (state: AppState, userId: number, newName: string): AppState => {
-   *   const userIndex = state.users.findIndex(u => u.id === userId);
+   * const updateUserName = (
+   *   state: AppState,
+   *   userId: number,
+   *   newName: string,
+   * ): AppState => {
+   *   const userIndex = state.users.findIndex((u) => u.id === userId);
    *   if (userIndex === -1) return state;
    *
    *   return {
    *     ...state,
-   *     users: Arr.toUpdated(state.users, userIndex as SizeType.ArgArrNonNegative, user => ({
-   *       ...user,
-   *       name: newName
-   *     }))
+   *     users: Arr.toUpdated(
+   *       state.users,
+   *       userIndex as SizeType.ArgArrNonNegative,
+   *       (user) => ({
+   *         ...user,
+   *         name: newName,
+   *       }),
+   *     ),
    *   };
    * };
    *
    * // Type inference examples showing union types
    * expectType<typeof doubled, readonly number[]>('='); // Same type
    * expectType<typeof mixed, readonly (number | string)[]>('='); // Union type
-   * expectType<typeof doubleAtIndex2, <T extends readonly number[]>(array: T) => readonly (number | number)[]>('=');
+   * expectType<
+   *   typeof doubleAtIndex2,
+   *   <T extends readonly number[]>(array: T) => readonly (number | number)[]
+   * >('=');
    * expectType<typeof safe1, readonly number[]>('='); // Bounds check preserves type
    * ```
    *
-   * @see {@link Array.prototype.with} for the native method with different error handling
-   * @see {@link SizeType.ArgArr} for the index type constraint
-   * @see Immutable update patterns for functional programming approaches
    */
   export function toUpdated<
     const Ar extends readonly unknown[],
@@ -1792,6 +1886,7 @@ export namespace Arr {
    * @param index The index at which to insert the new value.
    * @param newValue The value to insert.
    * @returns A new array with the value inserted.
+   *
    * @example
    * ```ts
    * // Regular usage
@@ -1802,6 +1897,7 @@ export namespace Arr {
    * const result = pipe([1, 2, 3]).map(insertAtStart).value;
    * console.log(result); // [99, 1, 2, 3]
    * ```
+   *
    */
   export function toInserted<
     Ar extends readonly unknown[],
@@ -1859,6 +1955,7 @@ export namespace Arr {
    * @param array The input array.
    * @param index The index of the element to remove.
    * @returns A new array with the element removed.
+   *
    * @example
    * ```ts
    * // Regular usage
@@ -1869,6 +1966,7 @@ export namespace Arr {
    * const result = pipe([10, 20, 30]).map(removeFirst).value;
    * console.log(result); // [20, 30]
    * ```
+   *
    */
   export function toRemoved<Ar extends readonly unknown[]>(
     array: Ar,
@@ -1903,6 +2001,7 @@ export namespace Arr {
    * @param array The input array.
    * @param newValue The value to add.
    * @returns A new array with the value added to the end. Type is `readonly [...E, V]`.
+   *
    * @example
    * ```ts
    * // Regular usage
@@ -1913,6 +2012,7 @@ export namespace Arr {
    * const result = pipe([1, 2, 3]).map(addZero).value;
    * console.log(result); // [1, 2, 3, 0]
    * ```
+   *
    */
   export function toPushed<Ar extends readonly unknown[], const V>(
     array: Ar,
@@ -1950,6 +2050,7 @@ export namespace Arr {
    * @param array The input array.
    * @param newValue The value to add.
    * @returns A new array with the value added to the beginning. Type is `readonly [V, ...E]`.
+   *
    * @example
    * ```ts
    * // Regular usage
@@ -1960,6 +2061,7 @@ export namespace Arr {
    * const result = pipe([1, 2, 3]).map(prependZero).value;
    * console.log(result); // [0, 1, 2, 3]
    * ```
+   *
    */
   export function toUnshifted<Ar extends readonly unknown[], const V>(
     array: Ar,
@@ -2005,8 +2107,11 @@ export namespace Arr {
    *   - For non-empty arrays: returns `NonEmptyArray<V>`
    *   - For general arrays: returns `readonly V[]`
    *
+   * @see {@link toRangeFilled} for filling only a specific range
+   * @see {@link create} for creating new arrays filled with a value
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Regular usage
    * const numbers = [1, 2, 3, 4, 5];
    * const zeros = Arr.toFilled(numbers, 0); // [0, 0, 0, 0, 0]
@@ -2016,8 +2121,6 @@ export namespace Arr {
    * const result = pipe(['a', 'b', 'c']).map(fillWithX).value; // ['X', 'X', 'X']
    * ```
    *
-   * @see {@link toRangeFilled} for filling only a specific range
-   * @see {@link create} for creating new arrays filled with a value
    */
   export function toFilled<Ar extends readonly unknown[], const V>(
     array: Ar,
@@ -2071,8 +2174,10 @@ export namespace Arr {
    *   - For non-empty arrays: returns `NonEmptyArray<V | Ar[number]>`
    *   - For general arrays: returns `readonly (V | Ar[number])[]`
    *
+   * @see {@link toFilled} for filling the entire array
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Regular usage
    * const numbers = [1, 2, 3, 4, 5];
    * const result = Arr.toRangeFilled(numbers, 0, [1, 4]); // [1, 0, 0, 0, 5]
@@ -2082,7 +2187,6 @@ export namespace Arr {
    * const result2 = pipe(['a', 'b', 'c', 'd']).map(fillMiddleWithX).value; // ['a', 'X', 'X', 'd']
    * ```
    *
-   * @see {@link toFilled} for filling the entire array
    */
   export function toRangeFilled<Ar extends readonly unknown[], const V>(
     array: Ar,
@@ -2166,22 +2270,26 @@ export namespace Arr {
    *   - `Optional.Some<E>` with the first matching element if found
    *   - `Optional.None` if no element satisfies the predicate
    *
+   * @see {@link findIndex} for finding the index instead of the element
+   * @see {@link indexOf} for finding elements by equality
+   * @see {@link Optional} for working with the returned Optional values
+   *
    * @example
-   * ```typescript
+   * ```ts
    * const numbers = [1, 2, 3, 4, 5];
-   * const firstEven = Arr.find(numbers, x => x % 2 === 0);
+   * const firstEven = Arr.find(numbers, (x) => x % 2 === 0);
    * if (Optional.isSome(firstEven)) {
    *   console.log(firstEven.value); // 2
    * }
    *
-   * const users = [{ id: 1, name: 'Alice', age: 25 }, { id: 2, name: 'Bob', age: 30 }];
-   * const adult = Arr.find(users, user => user.age >= 30);
+   * const users = [
+   *   { id: 1, name: 'Alice', age: 25 },
+   *   { id: 2, name: 'Bob', age: 30 },
+   * ];
+   * const adult = Arr.find(users, (user) => user.age >= 30);
    * // Optional.Some({ id: 2, name: 'Bob', age: 30 })
    * ```
    *
-   * @see {@link findIndex} for finding the index instead of the element
-   * @see {@link indexOf} for finding elements by equality
-   * @see {@link Optional} for working with the returned Optional values
    */
   export function find<E, F extends E>(
     array: readonly E[],
@@ -2264,10 +2372,10 @@ export namespace Arr {
    * @returns An Optional containing the found element, or None if no element satisfies the predicate.
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage
    * const numbers = [1, 2, 3, 4, 5];
-   * const lastEven = Arr.findLast(numbers, n => n % 2 === 0); // Optional.some(4)
+   * const lastEven = Arr.findLast(numbers, (n) => n % 2 === 0); // Optional.some(4)
    *
    * // Curried usage
    * const isPositive = (n: number) => n > 0;
@@ -2275,8 +2383,9 @@ export namespace Arr {
    * const result = findLastPositive([-1, 2, -3, 4]); // Optional.some(4)
    *
    * // No match
-   * const noMatch = Arr.findLast([1, 3, 5], n => n % 2 === 0); // Optional.none
+   * const noMatch = Arr.findLast([1, 3, 5], (n) => n % 2 === 0); // Optional.none
    * ```
+   *
    */
   export function findLast<E, F extends E>(
     array: readonly E[],
@@ -2365,19 +2474,25 @@ export namespace Arr {
    *   - `Optional.Some<SizeType.Arr>` with the index of the first matching element if found
    *   - `Optional.None` if no element satisfies the predicate
    *
+   * @see {@link find} for finding the element instead of its index
+   * @see {@link indexOf} for finding elements by equality (not predicate)
+   * @see {@link lastIndexOf} for finding the last occurrence
+   * @see {@link Optional} for working with the returned Optional values
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic index finding
    * const fruits = ['apple', 'banana', 'cherry', 'banana'];
-   * const bananaIndex = Arr.findIndex(fruits, fruit => fruit === 'banana');
+   * const bananaIndex = Arr.findIndex(fruits, (fruit) => fruit === 'banana');
    * if (Optional.isSome(bananaIndex)) {
    *   console.log(bananaIndex.value); // 1 - index of first 'banana'
    * }
    *
    * // Finding with complex conditions
    * const numbers = [1, 5, 10, 15, 20];
-   * const firstLargeIndex = Arr.findIndex(numbers, (value, index) =>
-   *   value > 10 && index > 1
+   * const firstLargeIndex = Arr.findIndex(
+   *   numbers,
+   *   (value, index) => value > 10 && index > 1,
    * );
    * // Optional.Some(3) - index of 15 (first value > 10 after index 1)
    *
@@ -2385,26 +2500,29 @@ export namespace Arr {
    * const users = [
    *   { id: 1, active: false },
    *   { id: 2, active: true },
-   *   { id: 3, active: true }
+   *   { id: 3, active: true },
    * ];
    *
-   * const firstActiveIndex = Arr.findIndex(users, user => user.active);
+   * const firstActiveIndex = Arr.findIndex(users, (user) => user.active);
    * // Optional.Some(1) - index of first active user
    *
-   * const inactiveAdminIndex = Arr.findIndex(users, user => !user.active && user.id > 5);
+   * const inactiveAdminIndex = Arr.findIndex(
+   *   users,
+   *   (user) => !user.active && user.id > 5,
+   * );
    * // Optional.None - no inactive user with id > 5
    *
    * // Empty array handling
-   * const emptyResult = Arr.findIndex([], x => x > 0); // Optional.None
+   * const emptyResult = Arr.findIndex([], (x) => x > 0); // Optional.None
    *
    * // Curried usage for functional composition
    * const findNegativeIndex = Arr.findIndex((x: number) => x < 0);
    * const findLongStringIndex = Arr.findIndex((s: string) => s.length > 5);
    *
    * const datasets = [
-   *   [1, 2, -3, 4],    // index 2 has negative
-   *   [5, 6, 7, 8],     // no negative
-   *   [-1, 0, 1]        // index 0 has negative
+   *   [1, 2, -3, 4], // index 2 has negative
+   *   [5, 6, 7, 8], // no negative
+   *   [-1, 0, 1], // index 0 has negative
    * ];
    *
    * const negativeIndices = datasets.map(findNegativeIndex);
@@ -2412,7 +2530,7 @@ export namespace Arr {
    *
    * // Using found indices for further operations
    * const data = ['short', 'medium', 'very long string', 'tiny'];
-   * const longStringIndex = Arr.findIndex(data, s => s.length > 8);
+   * const longStringIndex = Arr.findIndex(data, (s) => s.length > 8);
    *
    * if (Optional.isSome(longStringIndex)) {
    *   const index = longStringIndex.value;
@@ -2423,19 +2541,18 @@ export namespace Arr {
    * // Pipe composition
    * const result = pipe(['a', 'bb', 'ccc'])
    *   .map(findLongStringIndex)
-   *   .map(opt => Optional.unwrapOr(opt, -1))
-   *   .value; // 2 (index of 'ccc')
+   *   .map((opt) => Optional.unwrapOr(opt, -1)).value; // 2 (index of 'ccc')
    *
    * // Comparing with native findIndex (which returns -1)
-   * const nativeResult = fruits.findIndex(fruit => fruit === 'grape'); // -1
-   * const safeResult = Arr.findIndex(fruits, fruit => fruit === 'grape'); // Optional.None
+   * const nativeResult = fruits.findIndex((fruit) => fruit === 'grape'); // -1
+   * const safeResult = Arr.findIndex(fruits, (fruit) => fruit === 'grape'); // Optional.None
    *
    * // Safe index usage patterns
-   * const maybeIndex = Arr.findIndex(numbers, x => x > 100);
+   * const maybeIndex = Arr.findIndex(numbers, (x) => x > 100);
    * const indexOrDefault = Optional.unwrapOr(maybeIndex, 0); // 0 (not found)
    *
    * // Using index for array access
-   * const foundIndex = Arr.findIndex(fruits, f => f.startsWith('c'));
+   * const foundIndex = Arr.findIndex(fruits, (f) => f.startsWith('c'));
    * const foundElement = Optional.isSome(foundIndex)
    *   ? fruits[foundIndex.value]
    *   : 'not found';
@@ -2443,13 +2560,12 @@ export namespace Arr {
    *
    * // Type inference examples
    * expectType<typeof bananaIndex, Optional<SizeType.Arr>>('=');
-   * expectType<typeof findNegativeIndex, (array: readonly number[]) => Optional<SizeType.Arr>>('=');
+   * expectType<
+   *   typeof findNegativeIndex,
+   *   (array: readonly number[]) => Optional<SizeType.Arr>
+   * >('=');
    * ```
    *
-   * @see {@link find} for finding the element instead of its index
-   * @see {@link indexOf} for finding elements by equality (not predicate)
-   * @see {@link lastIndexOf} for finding the last occurrence
-   * @see {@link Optional} for working with the returned Optional values
    */
   export function findIndex<Ar extends readonly unknown[]>(
     array: Ar,
@@ -2515,17 +2631,25 @@ export namespace Arr {
    *   - `arr`: The array being searched
    * @returns The index of the last matching element as `SizeType.Arr`, or -1 if no element satisfies the predicate.
    *
+   * @see {@link findLast} for finding the element instead of its index
+   * @see {@link findIndex} for finding the first occurrence
+   * @see {@link lastIndexOf} for finding elements by equality (not predicate)
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic last index finding
    * const fruits = ['apple', 'banana', 'cherry', 'banana'];
-   * const lastBananaIndex = Arr.findLastIndex(fruits, fruit => fruit === 'banana');
+   * const lastBananaIndex = Arr.findLastIndex(
+   *   fruits,
+   *   (fruit) => fruit === 'banana',
+   * );
    * console.log(lastBananaIndex); // 3 - index of last 'banana'
    *
    * // Finding with complex conditions
    * const numbers = [1, 5, 10, 15, 20, 10, 5];
-   * const lastLargeIndex = Arr.findLastIndex(numbers, (value, index) =>
-   *   value > 8 && index < 5
+   * const lastLargeIndex = Arr.findLastIndex(
+   *   numbers,
+   *   (value, index) => value > 8 && index < 5,
    * );
    * console.log(lastLargeIndex); // 3 - index of last value > 8 before index 5 (15)
    *
@@ -2534,13 +2658,13 @@ export namespace Arr {
    *   { id: 1, active: true },
    *   { id: 2, active: false },
    *   { id: 3, active: true },
-   *   { id: 4, active: false }
+   *   { id: 4, active: false },
    * ];
    *
-   * const lastActiveIndex = Arr.findLastIndex(users, user => user.active);
+   * const lastActiveIndex = Arr.findLastIndex(users, (user) => user.active);
    * console.log(lastActiveIndex); // 2 - index of last active user
    *
-   * const lastInactiveIndex = Arr.findLastIndex(users, user => !user.active);
+   * const lastInactiveIndex = Arr.findLastIndex(users, (user) => !user.active);
    * console.log(lastInactiveIndex); // 3 - index of last inactive user
    *
    * // Empty array handling
@@ -2548,42 +2672,47 @@ export namespace Arr {
    *
    * // Curried usage for functional composition
    * const findLastNegativeIndex = Arr.findLastIndex((x: number) => x < 0);
-   * const findLastLongStringIndex = Arr.findLastIndex((s: string) => s.length > 5);
+   * const findLastLongStringIndex = Arr.findLastIndex(
+   *   (s: string) => s.length > 5,
+   * );
    *
    * const datasets = [
-   *   [1, 2, -3, 4, -5],    // last negative at index 4
-   *   [5, 6, 7, 8],         // no negative
-   *   [-1, 0, 1, -2]        // last negative at index 3
+   *   [1, 2, -3, 4, -5], // last negative at index 4
+   *   [5, 6, 7, 8], // no negative
+   *   [-1, 0, 1, -2], // last negative at index 3
    * ];
    *
    * const lastNegativeIndices = datasets.map(findLastNegativeIndex);
    * // [4, -1, 3]
    *
    * // Functional composition
-   * const data = ['short', 'medium', 'very long string', 'tiny', 'another long one'];
-   * const lastLongIndex = Arr.findLastIndex(data, s => s.length > 8);
+   * const data = [
+   *   'short',
+   *   'medium',
+   *   'very long string',
+   *   'tiny',
+   *   'another long one',
+   * ];
+   * const lastLongIndex = Arr.findLastIndex(data, (s) => s.length > 8);
    * console.log(lastLongIndex); // 4 - index of 'another long one'
    *
    * // Using with pipe
-   * const result = pipe(['a', 'bb', 'ccc', 'bb'])
-   *   .map(Arr.findLastIndex((s: string) => s.length === 2))
-   *   .value; // 3 (last occurrence of 'bb')
+   * const result = pipe(['a', 'bb', 'ccc', 'bb']).map(
+   *   Arr.findLastIndex((s: string) => s.length === 2),
+   * ).value; // 3 (last occurrence of 'bb')
    *
    * // Comparing with findIndex
    * const values = [1, 2, 3, 2, 4];
-   * const firstTwo = Arr.findIndex(values, x => x === 2);   // 1
-   * const lastTwo = Arr.findLastIndex(values, x => x === 2); // 3
+   * const firstTwo = Arr.findIndex(values, (x) => x === 2); // 1
+   * const lastTwo = Arr.findLastIndex(values, (x) => x === 2); // 3
    *
    * // Type safety with tuples
    * const tuple = [10, 20, 30, 20] as const;
-   * const lastTwentyIndex = Arr.findLastIndex(tuple, x => x === 20);
+   * const lastTwentyIndex = Arr.findLastIndex(tuple, (x) => x === 20);
    * // Type: ArrayIndex<readonly [10, 20, 30, 20]> | -1
    * // Value: 3
    * ```
    *
-   * @see {@link findLast} for finding the element instead of its index
-   * @see {@link findIndex} for finding the first occurrence
-   * @see {@link lastIndexOf} for finding elements by equality (not predicate)
    */
   export function findLastIndex<Ar extends readonly unknown[]>(
     array: Ar,
@@ -2635,8 +2764,9 @@ export namespace Arr {
    * @param searchElement The element to search for.
    * @param fromIndex The index to start searching from.
    * @returns The index if found, -1 otherwise.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Regular usage
    * const arr = ['a', 'b', 'c', 'b'];
    * const result = Arr.indexOf(arr, 'b');
@@ -2649,6 +2779,7 @@ export namespace Arr {
    * const result2 = pipe(['a', 'b', 'c']).map(findB).value;
    * console.log(Optional.unwrapOr(result2, -1)); // 1
    * ```
+   *
    */
   export function indexOf<Ar extends readonly unknown[]>(
     array: Ar,
@@ -2717,8 +2848,9 @@ export namespace Arr {
    * @param searchElement The element to search for.
    * @param fromIndex The index to start searching from (searches backwards).
    * @returns Optional.Some with the index if found, Optional.None otherwise.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Regular usage
    * const arr = ['a', 'b', 'c', 'b'];
    * const result = Arr.lastIndexOf(arr, 'b');
@@ -2731,6 +2863,7 @@ export namespace Arr {
    * const result2 = pipe(['a', 'b', 'c', 'b']).map(findLastB).value;
    * console.log(Optional.unwrapOr(result2, -1)); // 3
    * ```
+   *
    */
   export function lastIndexOf<Ar extends readonly unknown[]>(
     array: Ar,
@@ -2809,16 +2942,16 @@ export namespace Arr {
    * @returns `true` if all elements pass the test, `false` otherwise.
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage
    * const numbers = [2, 4, 6, 8];
-   * const allEven = Arr.every(numbers, n => n % 2 === 0); // true
+   * const allEven = Arr.every(numbers, (n) => n % 2 === 0); // true
    *
    * // Type guard usage - narrows entire array type
    * const mixed: (string | number)[] = ['hello', 'world'];
    * if (Arr.every(mixed, (x): x is string => typeof x === 'string')) {
    *   // TypeScript knows mixed is string[] here
-   *   console.log(mixed.map(s => s.toUpperCase()));
+   *   console.log(mixed.map((s) => s.toUpperCase()));
    * }
    *
    * // Curried usage with type guards
@@ -2832,8 +2965,9 @@ export namespace Arr {
    *
    * // Empty array
    * const empty: number[] = [];
-   * const result2 = Arr.every(empty, n => n > 0); // true
+   * const result2 = Arr.every(empty, (n) => n > 0); // true
    * ```
+   *
    */
   // Type guard overloads - narrow the entire array type
   export function every<E, S extends E>(
@@ -2888,10 +3022,10 @@ export namespace Arr {
    * @returns `true` if at least one element passes the test, `false` otherwise.
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage
    * const numbers = [1, 3, 5, 8];
-   * const hasEven = Arr.some(numbers, n => n % 2 === 0); // true
+   * const hasEven = Arr.some(numbers, (n) => n % 2 === 0); // true
    *
    * // Curried usage
    * const isNegative = (n: number) => n < 0;
@@ -2900,8 +3034,9 @@ export namespace Arr {
    *
    * // Empty array
    * const empty: number[] = [];
-   * const result2 = Arr.some(empty, n => n > 0); // false
+   * const result2 = Arr.some(empty, (n) => n > 0); // false
    * ```
+   *
    */
   export function some<Ar extends readonly unknown[]>(
     array: Ar,
@@ -2943,11 +3078,13 @@ export namespace Arr {
    * @param callbackfn A function to execute on each element in the array: `(previousValue: S, currentValue: A, currentIndex: SizeType.Arr) => S`.
    * @param initialValue The initial value of the accumulator.
    * @returns The single value that results from the reduction.
+   *
    * @example
    * ```ts
    * Arr.foldl([1, 2, 3], (sum, n) => sum + n, 0); // 6
    * Arr.foldl(['a', 'b', 'c'], (acc, str) => acc + str.toUpperCase(), ''); // 'ABC'
    * ```
+   *
    */
   export function foldl<Ar extends readonly unknown[], P>(
     array: Ar,
@@ -3012,16 +3149,21 @@ export namespace Arr {
    * @param callbackfn A function to execute on each element in the array: `(previousValue: S, currentValue: A, currentIndex: SizeType.Arr) => S`.
    * @param initialValue The initial value of the accumulator.
    * @returns The single value that results from the reduction.
+   *
    * @example
    * ```ts
    * // Regular usage
    * Arr.foldr([1, 2, 3], (sum, n) => sum + n, 0); // 6
    *
    * // Curried usage for pipe composition
-   * const concatRight = Arr.foldr((acc: string, curr: string) => curr + acc, '');
+   * const concatRight = Arr.foldr(
+   *   (acc: string, curr: string) => curr + acc,
+   *   '',
+   * );
    * const result = pipe(['a', 'b', 'c']).map(concatRight).value;
    * console.log(result); // "abc"
    * ```
+   *
    */
   export function foldr<Ar extends readonly unknown[], P>(
     array: Ar,
@@ -3083,12 +3225,14 @@ export namespace Arr {
    * @param array The input array.
    * @param comparator An optional custom comparator function `(x: N, y: N) => number`. Should return < 0 if x is smaller, 0 if equal, > 0 if x is larger. Defaults to `x - y`.
    * @returns The minimum value in the array wrapped in Optional.
+   *
    * @example
    * ```ts
    * Arr.min([3, 1, 4, 1, 5] as const); // Optional.some(1)
-   * Arr.min([{v:3}, {v:1}], (a,b) => a.v - b.v) // Optional.some({v:1})
+   * Arr.min([{ v: 3 }, { v: 1 }], (a, b) => a.v - b.v); // Optional.some({v:1})
    * Arr.min([]); // Optional.none
    * ```
+   *
    */
   export function min<Ar extends readonly number[]>(
     array: Ar,
@@ -3134,12 +3278,14 @@ export namespace Arr {
    * @param array The input array.
    * @param comparator An optional custom comparator function `(x: A, y: A) => number`. Should return < 0 if x is smaller, 0 if equal, > 0 if x is larger. Defaults to numeric comparison.
    * @returns The maximum value in the array wrapped in Optional.
+   *
    * @example
    * ```ts
    * Arr.max([3, 1, 4, 1, 5] as const); // Optional.some(5)
-   * Arr.max([{v:3}, {v:1}], (a,b) => a.v - b.v) // Optional.some({v:3})
+   * Arr.max([{ v: 3 }, { v: 1 }], (a, b) => a.v - b.v); // Optional.some({v:3})
    * Arr.max([]); // Optional.none
    * ```
+   *
    */
   export function max<Ar extends readonly number[]>(
     array: Ar,
@@ -3178,12 +3324,17 @@ export namespace Arr {
    * @param comparatorValueMapper A function that maps an element to a value for comparison.
    * @param comparator An optional custom comparator function for the mapped values.
    * @returns The element with the minimum mapped value wrapped in Optional.
+   *
    * @example
    * ```ts
-   * const people = [{ name: 'Alice', age: 30 }, { name: 'Bob', age: 20 }] as const;
-   * Arr.minBy(people, p => p.age); // Optional.some({ name: 'Bob', age: 20 })
-   * Arr.minBy([], p => p.age); // Optional.none
+   * const people = [
+   *   { name: 'Alice', age: 30 },
+   *   { name: 'Bob', age: 20 },
+   * ] as const;
+   * Arr.minBy(people, (p) => p.age); // Optional.some({ name: 'Bob', age: 20 })
+   * Arr.minBy([], (p) => p.age); // Optional.none
    * ```
+   *
    */
   export function minBy<Ar extends readonly unknown[]>(
     array: Ar,
@@ -3227,12 +3378,17 @@ export namespace Arr {
    * @param comparatorValueMapper A function that maps an element to a value for comparison.
    * @param comparator An optional custom comparator function for the mapped values.
    * @returns The element with the maximum mapped value wrapped in Optional.
+   *
    * @example
    * ```ts
-   * const people = [{ name: 'Alice', age: 30 }, { name: 'Bob', age: 20 }] as const;
-   * Arr.maxBy(people, p => p.age); // Optional.some({ name: 'Alice', age: 30 })
-   * Arr.maxBy([], p => p.age); // Optional.none
+   * const people = [
+   *   { name: 'Alice', age: 30 },
+   *   { name: 'Bob', age: 20 },
+   * ] as const;
+   * Arr.maxBy(people, (p) => p.age); // Optional.some({ name: 'Alice', age: 30 })
+   * Arr.maxBy([], (p) => p.age); // Optional.none
    * ```
+   *
    */
   export function maxBy<Ar extends readonly unknown[]>(
     array: Ar,
@@ -3269,6 +3425,7 @@ export namespace Arr {
    * @param array The input array.
    * @param predicate A function `(value: A, index: number) => boolean` to test each element for a condition.
    * @returns The number of elements that satisfy the predicate.
+   *
    * @example
    * ```ts
    * // Regular usage
@@ -3279,6 +3436,7 @@ export namespace Arr {
    * const result = pipe([1, 2, 3, 4, 5, 6]).map(countEvens).value;
    * console.log(result); // 3
    * ```
+   *
    */
   export function count<Ar extends readonly unknown[]>(
     array: Ar,
@@ -3320,6 +3478,7 @@ export namespace Arr {
    * @param array The input array.
    * @param grouper A function `(value: A, index: number) => G` that maps an element and its index to a group key.
    * @returns An `IMap` where keys are group keys and values are the counts of elements in each group.
+   *
    * @example
    * ```ts
    * // Regular usage
@@ -3327,11 +3486,12 @@ export namespace Arr {
    * // IMap { 1 => 3, 2 => 2, 3 => 1 }
    *
    * // Curried usage for pipe composition
-   * const countByType = Arr.countBy((x: {type: string}) => x.type);
-   * const data = [{type: 'a'}, {type: 'b'}, {type: 'a'}];
+   * const countByType = Arr.countBy((x: { type: string }) => x.type);
+   * const data = [{ type: 'a' }, { type: 'b' }, { type: 'a' }];
    * const result = pipe(data).map(countByType).value;
    * // IMap { 'a' => 2, 'b' => 1 }
    * ```
+   *
    */
   export function countBy<
     Ar extends readonly unknown[],
@@ -3378,12 +3538,14 @@ export namespace Arr {
    * Calculates the sum of numbers in an array.
    * @param array The input array of numbers.
    * @returns The sum of the numbers. Returns 0 for an empty array.
+   *
    * @example
    * ```ts
    * Arr.sum([1, 2, 3]); // 6
    * Arr.sum([]); // 0
    * Arr.sum([-1, 0, 1]); // 0
    * ```
+   *
    */
   export function sum(array: readonly []): 0;
 
@@ -3404,8 +3566,9 @@ export namespace Arr {
    * @param array The array to join.
    * @param separator The separator string.
    * @returns Result.Ok with the joined string, Result.Err if the operation throws.
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Regular usage
    * const arr = ['Hello', 'World'];
    * const result = Arr.join(arr, ' ');
@@ -3418,6 +3581,7 @@ export namespace Arr {
    * const result2 = pipe(['a', 'b', 'c']).map(joinWithComma).value;
    * console.log(Result.unwrapOr(result2, '')); // "a,b,c"
    * ```
+   *
    */
   export function join<E>(
     array: readonly E[],
@@ -3479,6 +3643,7 @@ export namespace Arr {
    * @param array1 The first array.
    * @param array2 The second array.
    * @returns An array of tuples where each tuple contains corresponding elements from both arrays.
+   *
    * @example
    * ```ts
    * Arr.zip([1, 2, 3] as const, ['a', 'b', 'c'] as const); // [[1, 'a'], [2, 'b'], [3, 'c']]
@@ -3486,6 +3651,7 @@ export namespace Arr {
    * Arr.zip([1, 2, 3], ['a']); // [[1, 'a']]
    * Arr.zip([], ['a']); // []
    * ```
+   *
    */
   export const zip = <
     Ar1 extends readonly unknown[],
@@ -3514,7 +3680,7 @@ export namespace Arr {
    * @returns A new tuple with transformed elements, preserving the original length
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic transformation
    * const nums = [1, 2, 3] as const;
    * const doubled = Arr.map(nums, (x) => x * 2); // readonly [2, 4, 6]
@@ -3529,6 +3695,7 @@ export namespace Arr {
    * const descriptions = Arr.map(mixed, (x) => `Value: ${x}`);
    * // readonly ['Value: 1', 'Value: hello', 'Value: true']
    * ```
+   *
    */
   export function map<const Ar extends readonly unknown[], B>(
     array: Ar,
@@ -3572,16 +3739,27 @@ export namespace Arr {
    * @param predicate A function that tests each element. Returns `true` to keep the element, `false` to filter it out.
    * @returns A new array containing only the elements that satisfy the predicate.
    *
+   * @see {@link filterNot} for filtering with negated predicate
+   * @see {@link every} for testing if all elements satisfy a predicate
+   * @see {@link some} for testing if any elements satisfy a predicate
+   * @see {@link find} for finding the first element that satisfies a predicate
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage
    * const numbers = [1, 2, 3, 4, 5];
-   * const evens = Arr.filter(numbers, n => n % 2 === 0); // [2, 4]
+   * const evens = Arr.filter(numbers, (n) => n % 2 === 0); // [2, 4]
    *
    * // Type guard usage
    * const mixed: (string | number | null)[] = ['hello', 42, null, 'world'];
-   * const strings = Arr.filter(mixed, (x): x is string => typeof x === 'string'); // string[]
-   * const notNull = Arr.filter(mixed, (x): x is NonNullable<typeof x> => x != null); // (string | number)[]
+   * const strings = Arr.filter(
+   *   mixed,
+   *   (x): x is string => typeof x === 'string',
+   * ); // string[]
+   * const notNull = Arr.filter(
+   *   mixed,
+   *   (x): x is NonNullable<typeof x> => x != null,
+   * ); // (string | number)[]
    *
    * // Curried usage with type guards
    * const isString = (x: unknown): x is string => typeof x === 'string';
@@ -3591,14 +3769,10 @@ export namespace Arr {
    * // Functional composition
    * const processNumbers = pipe(
    *   Arr.filter((n: number) => n > 0),
-   *   Arr.map(n => n * 2)
+   *   Arr.map((n) => n * 2),
    * );
    * ```
    *
-   * @see {@link filterNot} for filtering with negated predicate
-   * @see {@link every} for testing if all elements satisfy a predicate
-   * @see {@link some} for testing if any elements satisfy a predicate
-   * @see {@link find} for finding the first element that satisfies a predicate
    */
   // Type guard overloads
   export function filter<Ar extends readonly unknown[], S extends Ar[number]>(
@@ -3647,6 +3821,7 @@ export namespace Arr {
    * @param array The input array.
    * @param predicate A function `(a: A, index: number) => boolean` that returns `true` for elements to be excluded.
    * @returns A new array with elements for which the predicate returned `false`.
+   *
    * @example
    * ```ts
    * // Regular usage
@@ -3657,6 +3832,7 @@ export namespace Arr {
    * const result = pipe([1, 2, 3, 4, 5, 6]).map(excludeEvens).value;
    * console.log(result); // [1, 3, 5]
    * ```
+   *
    */
   export function filterNot<Ar extends readonly unknown[]>(
     array: Ar,
@@ -3700,7 +3876,7 @@ export namespace Arr {
    * @returns A new array with the sub-array elements concatenated.
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage
    * const nested = [1, [2, [3, 4]], 5];
    * const flat1 = Arr.flat(nested, 1); // [1, 2, [3, 4], 5]
@@ -3708,12 +3884,16 @@ export namespace Arr {
    *
    * // Curried usage
    * const flattenOnceLevel = Arr.flat(1);
-   * const result = flattenOnceLevel([[1, 2], [3, 4]]); // [1, 2, 3, 4]
+   * const result = flattenOnceLevel([
+   *   [1, 2],
+   *   [3, 4],
+   * ]); // [1, 2, 3, 4]
    *
    * // Flatten all levels
    * const deepNested = [1, [2, [3, [4, 5]]]];
    * const allFlat = Arr.flat(deepNested, SafeUint.MAX_VALUE); // [1, 2, 3, 4, 5]
    * ```
+   *
    */
   export function flat<
     Ar extends readonly unknown[],
@@ -3764,10 +3944,10 @@ export namespace Arr {
    * @returns A new array with mapped elements flattened.
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage
    * const words = ['hello', 'world'];
-   * const chars = Arr.flatMap(words, word => word.split('')); // ['h','e','l','l','o','w','o','r','l','d']
+   * const chars = Arr.flatMap(words, (word) => word.split('')); // ['h','e','l','l','o','w','o','r','l','d']
    *
    * // Curried usage
    * const splitWords = Arr.flatMap((word: string) => word.split(''));
@@ -3775,8 +3955,9 @@ export namespace Arr {
    *
    * // With numbers
    * const numbers = [1, 2, 3];
-   * const doubled = Arr.flatMap(numbers, n => [n, n * 2]); // [1, 2, 2, 4, 3, 6]
+   * const doubled = Arr.flatMap(numbers, (n) => [n, n * 2]); // [1, 2, 2, 4, 3, 6]
    * ```
+   *
    */
   export function flatMap<const Ar extends readonly unknown[], B>(
     array: Ar,
@@ -3814,12 +3995,14 @@ export namespace Arr {
    * @param array1 The first array.
    * @param array2 The second array.
    * @returns A new array that is the concatenation of the two input arrays. Type is `readonly [...E1, ...E2]`.
+   *
    * @example
    * ```ts
    * Arr.concat([1, 2] as const, [3, 4] as const); // [1, 2, 3, 4]
    * Arr.concat([], [1, 2]); // [1, 2]
    * Arr.concat([1, 2], []); // [1, 2]
    * ```
+   *
    */
   export const concat = <
     Ar1 extends readonly unknown[],
@@ -3838,11 +4021,13 @@ export namespace Arr {
    * @param array The input array.
    * @param chunkSize The size of each partition.
    * @returns An array of arrays, where each inner array has up to `chunkSize` elements.
+   *
    * @example
    * ```ts
    * Arr.partition([1, 2, 3, 4, 5, 6], 2); // [[1, 2], [3, 4], [5, 6]]
    * Arr.partition([1, 2, 3, 4, 5, 6, 7], 3); // [[1, 2, 3], [4, 5, 6], [7]]
    * ```
+   *
    */
   export function partition<
     N extends WithSmallInt<PositiveInt & SizeType.Arr>,
@@ -3891,7 +4076,7 @@ export namespace Arr {
    * @returns A new tuple with elements in reverse order and precise typing
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic reversal
    * const nums = [1, 2, 3] as const;
    * const reversed = Arr.toReversed(nums); // readonly [3, 2, 1]
@@ -3907,6 +4092,7 @@ export namespace Arr {
    * const single = [42] as const;
    * const revSingle = Arr.toReversed(single); // readonly [42]
    * ```
+   *
    */
   export const toReversed = <const Ar extends readonly unknown[]>(
     array: Ar,
@@ -3921,14 +4107,24 @@ export namespace Arr {
    * @param comparatorValueMapper A function `(value: A) => number` that maps an element to a number for comparison.
    * @param comparator An optional custom comparator function `(x: number, y: number) => number` for the mapped numbers. Defaults to ascending sort (x - y).
    * @returns A new array sorted by the mapped values.
+   *
    * @example
    * ```ts
-   * const items = [{ name: 'Eve', score: 70 }, { name: 'Adam', score: 90 }, { name: 'Bob', score: 80 }];
-   * Arr.toSortedBy(items, item => item.score);
+   * const items = [
+   *   { name: 'Eve', score: 70 },
+   *   { name: 'Adam', score: 90 },
+   *   { name: 'Bob', score: 80 },
+   * ];
+   * Arr.toSortedBy(items, (item) => item.score);
    * // [{ name: 'Eve', score: 70 }, { name: 'Bob', score: 80 }, { name: 'Adam', score: 90 }]
-   * Arr.toSortedBy(items, item => item.score, (a, b) => b - a); // Sort descending
+   * Arr.toSortedBy(
+   *   items,
+   *   (item) => item.score,
+   *   (a, b) => b - a,
+   * ); // Sort descending
    * // [{ name: 'Adam', score: 90 }, { name: 'Bob', score: 80 }, { name: 'Eve', score: 70 }]
    * ```
+   *
    */
   export const toSorted = <Ar extends readonly unknown[]>(
     ...[array, comparator]: Ar extends readonly number[]
@@ -3961,14 +4157,24 @@ export namespace Arr {
    * @param comparatorValueMapper A function `(value: A) => number` that maps an element to a number for comparison.
    * @param comparator An optional custom comparator function `(x: number, y: number) => number` for the mapped numbers. Defaults to ascending sort (x - y).
    * @returns A new array sorted by the mapped values.
+   *
    * @example
    * ```ts
-   * const items = [{ name: 'Eve', score: 70 }, { name: 'Adam', score: 90 }, { name: 'Bob', score: 80 }];
-   * Arr.toSortedBy(items, item => item.score);
+   * const items = [
+   *   { name: 'Eve', score: 70 },
+   *   { name: 'Adam', score: 90 },
+   *   { name: 'Bob', score: 80 },
+   * ];
+   * Arr.toSortedBy(items, (item) => item.score);
    * // [{ name: 'Eve', score: 70 }, { name: 'Bob', score: 80 }, { name: 'Adam', score: 90 }]
-   * Arr.toSortedBy(items, item => item.score, (a, b) => b - a); // Sort descending
+   * Arr.toSortedBy(
+   *   items,
+   *   (item) => item.score,
+   *   (a, b) => b - a,
+   * ); // Sort descending
    * // [{ name: 'Adam', score: 90 }, { name: 'Bob', score: 80 }, { name: 'Eve', score: 70 }]
    * ```
+   *
    */
   export function toSortedBy<Ar extends readonly unknown[]>(
     array: Ar,
@@ -4042,8 +4248,13 @@ export namespace Arr {
    *   - `result[i+1]` is the result of applying the reducer to `result[i]` and `array[i]`
    *   - Guaranteed to be non-empty regardless of input array length
    *
+   * @see {@link reduce} for getting only the final accumulated value
+   * @see {@link NonEmptyArray} for understanding the guaranteed non-empty return type
+   * @see {@link SizeType.Arr} for the index parameter type
+   * @see Array.prototype.reduce for the standard reduce function
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic running sum example
    * const numbers = [1, 2, 3, 4];
    * const runningSum = Arr.scan(numbers, (acc, curr) => acc + curr, 0);
@@ -4065,27 +4276,47 @@ export namespace Arr {
    *
    * // Running maximum
    * const temperatures = [20, 25, 18, 30, 22];
-   * const runningMax = Arr.scan(temperatures, (max, temp) => Math.max(max, temp), Number.NEGATIVE_INFINITY);
+   * const runningMax = Arr.scan(
+   *   temperatures,
+   *   (max, temp) => Math.max(max, temp),
+   *   Number.NEGATIVE_INFINITY,
+   * );
    * // [Number.NEGATIVE_INFINITY, 20, 25, 25, 30, 30]
    *
    * // Building strings incrementally
    * const words = ['Hello', 'beautiful', 'world'];
-   * const sentences = Arr.scan(words, (sentence, word) => sentence + ' ' + word, '');
+   * const sentences = Arr.scan(
+   *   words,
+   *   (sentence, word) => sentence + ' ' + word,
+   *   '',
+   * );
    * // ['', ' Hello', ' Hello beautiful', ' Hello beautiful world']
    *
    * // Array accumulation (collecting elements)
    * const items = ['a', 'b', 'c'];
-   * const growing = Arr.scan(items, (acc, item) => [...acc, item], [] as string[]);
+   * const growing = Arr.scan(
+   *   items,
+   *   (acc, item) => [...acc, item],
+   *   [] as string[],
+   * );
    * // [[], ['a'], ['a', 'b'], ['a', 'b', 'c']]
    *
    * // Financial running balance
    * const transactions = [100, -20, 50, -30];
-   * const balances = Arr.scan(transactions, (balance, transaction) => balance + transaction, 1000);
+   * const balances = Arr.scan(
+   *   transactions,
+   *   (balance, transaction) => balance + transaction,
+   *   1000,
+   * );
    * // [1000, 1100, 1080, 1130, 1100] - account balance after each transaction
    *
    * // Using index information
    * const letters = ['a', 'b', 'c'];
-   * const indexed = Arr.scan(letters, (acc, letter, index) => acc + `${index}:${letter} `, '');
+   * const indexed = Arr.scan(
+   *   letters,
+   *   (acc, letter, index) => acc + `${index}:${letter} `,
+   *   '',
+   * );
    * // ['', '0:a ', '0:a 1:b ', '0:a 1:b 2:c ']
    *
    * // Edge cases
@@ -4100,13 +4331,17 @@ export namespace Arr {
    * const sales = [
    *   { product: 'A', amount: 100 },
    *   { product: 'B', amount: 200 },
-   *   { product: 'A', amount: 150 }
+   *   { product: 'A', amount: 150 },
    * ];
    *
-   * const runningSales = Arr.scan(sales, (totals, sale) => ({
-   *   ...totals,
-   *   [sale.product]: (totals[sale.product] || 0) + sale.amount
-   * }), {} as Record<string, number>);
+   * const runningSales = Arr.scan(
+   *   sales,
+   *   (totals, sale) => ({
+   *     ...totals,
+   *     [sale.product]: (totals[sale.product] || 0) + sale.amount,
+   *   }),
+   *   {} as Record<string, number>,
+   * );
    * // [
    * //   {},
    * //   { A: 100 },
@@ -4116,10 +4351,20 @@ export namespace Arr {
    *
    * // Curried usage for functional composition
    * const runningSumFn = Arr.scan((acc: number, curr: number) => acc + curr, 0);
-   * const runningProductFn = Arr.scan((acc: number, curr: number) => acc * curr, 1);
-   * const collectingFn = Arr.scan((acc: string[], curr: string) => [...acc, curr], [] as string[]);
+   * const runningProductFn = Arr.scan(
+   *   (acc: number, curr: number) => acc * curr,
+   *   1,
+   * );
+   * const collectingFn = Arr.scan(
+   *   (acc: string[], curr: string) => [...acc, curr],
+   *   [] as string[],
+   * );
    *
-   * const datasets = [[1, 2, 3], [4, 5], [6, 7, 8, 9]];
+   * const datasets = [
+   *   [1, 2, 3],
+   *   [4, 5],
+   *   [6, 7, 8, 9],
+   * ];
    * const allSums = datasets.map(runningSumFn);
    * // [
    * //   [0, 1, 3, 6],
@@ -4130,9 +4375,8 @@ export namespace Arr {
    * // Pipe composition for data analysis
    * const analysisResult = pipe([10, 20, 30, 40])
    *   .map(runningSumFn)
-   *   .map(sums => sums.slice(1)) // Remove initial value to get pure running sums
-   *   .map(sums => sums.map((sum, i) => ({ step: i + 1, total: sum })))
-   *   .value;
+   *   .map((sums) => sums.slice(1)) // Remove initial value to get pure running sums
+   *   .map((sums) => sums.map((sum, i) => ({ step: i + 1, total: sum }))).value;
    * // [{ step: 1, total: 10 }, { step: 2, total: 30 }, { step: 3, total: 60 }, { step: 4, total: 100 }]
    *
    * // Advanced: State machine simulation
@@ -4142,10 +4386,18 @@ export namespace Arr {
    * const events: Event[] = ['start', 'complete', 'reset', 'start', 'fail'];
    * const stateTransition = (state: State, event: Event): State => {
    *   switch (state) {
-   *     case 'idle': return event === 'start' ? 'loading' : state;
-   *     case 'loading': return event === 'complete' ? 'success' : event === 'fail' ? 'error' : state;
-   *     case 'success': return event === 'reset' ? 'idle' : state;
-   *     case 'error': return event === 'reset' ? 'idle' : state;
+   *     case 'idle':
+   *       return event === 'start' ? 'loading' : state;
+   *     case 'loading':
+   *       return event === 'complete'
+   *         ? 'success'
+   *         : event === 'fail'
+   *           ? 'error'
+   *           : state;
+   *     case 'success':
+   *       return event === 'reset' ? 'idle' : state;
+   *     case 'error':
+   *       return event === 'reset' ? 'idle' : state;
    *   }
    * };
    *
@@ -4155,14 +4407,13 @@ export namespace Arr {
    * // Type inference examples
    * expectType<typeof runningSum, NonEmptyArray<number>>('=');
    * expectType<typeof emptyResult, NonEmptyArray<number>>('=');
-   * expectType<typeof runningSumFn, <T extends readonly number[]>(array: T) => NonEmptyArray<number>>('=');
+   * expectType<
+   *   typeof runningSumFn,
+   *   <T extends readonly number[]>(array: T) => NonEmptyArray<number>
+   * >('=');
    * expectType<typeof stateHistory, NonEmptyArray<State>>('=');
    * ```
    *
-   * @see {@link reduce} for getting only the final accumulated value
-   * @see {@link NonEmptyArray} for understanding the guaranteed non-empty return type
-   * @see {@link SizeType.Arr} for the index parameter type
-   * @see Array.prototype.reduce for the standard reduce function
    */
   export function scan<Ar extends readonly unknown[], S>(
     array: Ar,
@@ -4256,18 +4507,24 @@ export namespace Arr {
    *   - Empty groups are not included (only groups with at least one element)
    *   - Insertion order is preserved based on first occurrence of each group key
    *
+   * @see {@link IMap} for working with the returned immutable map
+   * @see {@link MapSetKeyType} for understanding valid key types
+   * @see {@link IMap.get} for safely accessing grouped results
+   * @see {@link IMap.map} for transforming grouped data
+   * @see {@link Optional} for handling potentially missing groups
+   *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic grouping by object property
    * const products = [
    *   { type: 'fruit', name: 'apple', price: 1.2 },
    *   { type: 'vegetable', name: 'carrot', price: 0.8 },
    *   { type: 'fruit', name: 'banana', price: 0.9 },
    *   { type: 'vegetable', name: 'broccoli', price: 2.1 },
-   *   { type: 'fruit', name: 'orange', price: 1.5 }
+   *   { type: 'fruit', name: 'orange', price: 1.5 },
    * ];
    *
-   * const byType = Arr.groupBy(products, item => item.type);
+   * const byType = Arr.groupBy(products, (item) => item.type);
    * // IMap<string, readonly Product[]> {
    * //   'fruit' => [
    * //     { type: 'fruit', name: 'apple', price: 1.2 },
@@ -4282,12 +4539,14 @@ export namespace Arr {
    *
    * // Access grouped results with IMap methods
    * const fruits = IMap.get(byType, 'fruit'); // Optional<readonly Product[]>
-   * const fruitCount = Optional.map(fruits, arr => arr.length); // Optional<number>
-   * const fruitNames = Optional.map(fruits, arr => arr.map(p => p.name)); // Optional<string[]>
+   * const fruitCount = Optional.map(fruits, (arr) => arr.length); // Optional<number>
+   * const fruitNames = Optional.map(fruits, (arr) => arr.map((p) => p.name)); // Optional<string[]>
    *
    * // Grouping by computed values
    * const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-   * const byParity = Arr.groupBy(numbers, n => n % 2 === 0 ? 'even' : 'odd');
+   * const byParity = Arr.groupBy(numbers, (n) =>
+   *   n % 2 === 0 ? 'even' : 'odd',
+   * );
    * // IMap<string, readonly number[]> {
    * //   'odd' => [1, 3, 5, 7, 9],
    * //   'even' => [2, 4, 6, 8, 10]
@@ -4295,47 +4554,61 @@ export namespace Arr {
    *
    * // Grouping by price ranges using index information
    * const byPriceRange = Arr.groupBy(products, (product, index) => {
-   *   const category = product.price < 1.0 ? 'cheap' :
-   *                   product.price < 2.0 ? 'moderate' : 'expensive';
+   *   const category =
+   *     product.price < 1.0
+   *       ? 'cheap'
+   *       : product.price < 2.0
+   *         ? 'moderate'
+   *         : 'expensive';
    *   return `${category}_${index < 2 ? 'early' : 'late'}`;
    * });
    *
    * // MapSetKeyType constraint examples (valid key types)
-   * const byStringKey = Arr.groupBy([1, 2, 3], n => `group_${n}`); // string keys
+   * const byStringKey = Arr.groupBy([1, 2, 3], (n) => `group_${n}`); // string keys
    * const byNumberKey = Arr.groupBy(['a', 'b', 'c'], (_, i) => i); // number keys
-   * const byBooleanKey = Arr.groupBy([1, 2, 3, 4], n => n > 2); // boolean keys
-   * const bySymbolKey = Arr.groupBy([1, 2], n => Symbol(n.toString())); // symbol keys
+   * const byBooleanKey = Arr.groupBy([1, 2, 3, 4], (n) => n > 2); // boolean keys
+   * const bySymbolKey = Arr.groupBy([1, 2], (n) => Symbol(n.toString())); // symbol keys
    *
    * // Edge cases
-   * const emptyGroup = Arr.groupBy([], x => x); // IMap<never, readonly never[]> (empty)
+   * const emptyGroup = Arr.groupBy([], (x) => x); // IMap<never, readonly never[]> (empty)
    * const singleGroup = Arr.groupBy([1, 2, 3], () => 'all'); // All elements in one group
-   * const uniqueGroups = Arr.groupBy([1, 2, 3], x => x); // Each element in its own group
+   * const uniqueGroups = Arr.groupBy([1, 2, 3], (x) => x); // Each element in its own group
    *
    * // Curried usage for functional composition
    * const groupByType = Arr.groupBy((item: { type: string }) => item.type);
    * const groupByLength = Arr.groupBy((str: string) => str.length);
-   * const groupByFirstChar = Arr.groupBy((str: string) => str.charAt(0).toLowerCase());
+   * const groupByFirstChar = Arr.groupBy((str: string) =>
+   *   str.charAt(0).toLowerCase(),
+   * );
    *
    * const datasets = [
    *   [{ type: 'A' }, { type: 'B' }, { type: 'A' }],
    *   [{ type: 'C' }, { type: 'A' }],
-   *   [{ type: 'B' }, { type: 'B' }, { type: 'C' }]
+   *   [{ type: 'B' }, { type: 'B' }, { type: 'C' }],
    * ];
    * const allGrouped = datasets.map(groupByType);
    * // Array of IMap instances, each grouped by type
    *
    * // Pipe composition for complex data processing
-   * const words = ['apple', 'banana', 'apricot', 'blueberry', 'avocado', 'blackberry'];
+   * const words = [
+   *   'apple',
+   *   'banana',
+   *   'apricot',
+   *   'blueberry',
+   *   'avocado',
+   *   'blackberry',
+   * ];
    * const processedGroups = pipe(words)
    *   .map(groupByFirstChar)
-   *   .map(groupMap => IMap.map(groupMap, (wordsInGroup, firstLetter) => ({
-   *     letter: firstLetter,
-   *     count: wordsInGroup.length,
-   *     longest: wordsInGroup.reduce((longest, word) =>
-   *       word.length > longest.length ? word : longest
-   *     )
-   *   })))
-   *   .value;
+   *   .map((groupMap) =>
+   *     IMap.map(groupMap, (wordsInGroup, firstLetter) => ({
+   *       letter: firstLetter,
+   *       count: wordsInGroup.length,
+   *       longest: wordsInGroup.reduce((longest, word) =>
+   *         word.length > longest.length ? word : longest,
+   *       ),
+   *     })),
+   *   ).value;
    * // IMap<string, {letter: string, count: number, longest: string}>
    *
    * // Advanced: Grouping with complex transformations
@@ -4343,10 +4616,10 @@ export namespace Arr {
    *   { name: 'Alice', grade: 85, subject: 'Math' },
    *   { name: 'Bob', grade: 92, subject: 'Science' },
    *   { name: 'Charlie', grade: 78, subject: 'Math' },
-   *   { name: 'Diana', grade: 96, subject: 'Science' }
+   *   { name: 'Diana', grade: 96, subject: 'Science' },
    * ];
    *
-   * const byGradeLevel = Arr.groupBy(students, student => {
+   * const byGradeLevel = Arr.groupBy(students, (student) => {
    *   if (student.grade >= 90) return 'A';
    *   if (student.grade >= 80) return 'B';
    *   return 'C';
@@ -4354,22 +4627,26 @@ export namespace Arr {
    *
    * // Working with the grouped results
    * const aStudents = Optional.unwrapOr(IMap.get(byGradeLevel, 'A'), []);
-   * const averageAGrade = aStudents.length > 0
-   *   ? aStudents.reduce((sum, s) => sum + s.grade, 0) / aStudents.length
-   *   : 0;
+   * const averageAGrade =
+   *   aStudents.length > 0
+   *     ? aStudents.reduce((sum, s) => sum + s.grade, 0) / aStudents.length
+   *     : 0;
    *
    * // Type inference examples
-   * expectType<typeof byType, IMap<string, readonly typeof products[number][]>>('=');
+   * expectType<
+   *   typeof byType,
+   *   IMap<string, readonly (typeof products)[number][]>
+   * >('=');
    * expectType<typeof byParity, IMap<string, readonly number[]>>('=');
-   * expectType<typeof groupByType, <T extends {type: string}>(array: readonly T[]) => IMap<string, readonly T[]>>('=');
+   * expectType<
+   *   typeof groupByType,
+   *   <T extends { type: string }>(
+   *     array: readonly T[],
+   *   ) => IMap<string, readonly T[]>
+   * >('=');
    * expectType<typeof emptyGroup, IMap<never, readonly never[]>>('=');
    * ```
    *
-   * @see {@link IMap} for working with the returned immutable map
-   * @see {@link MapSetKeyType} for understanding valid key types
-   * @see {@link IMap.get} for safely accessing grouped results
-   * @see {@link IMap.map} for transforming grouped data
-   * @see {@link Optional} for handling potentially missing groups
    */
   export function groupBy<
     Ar extends readonly unknown[],
@@ -4421,10 +4698,12 @@ export namespace Arr {
    * @template P The type of elements in the array.
    * @param array The input array.
    * @returns A new array with unique elements from the input array. Returns `[]` for an empty input.
+   *
    * @example
    * ```ts
    * Arr.uniq([1, 2, 2, 3, 1, 4]); // [1, 2, 3, 4]
    * ```
+   *
    */
   export const uniq = <Ar extends readonly Primitive[]>(
     array: Ar,
@@ -4445,6 +4724,7 @@ export namespace Arr {
    * @param array The input array.
    * @param mapFn A function `(value: A) => P` to map elements to values for uniqueness comparison.
    * @returns A new array with unique elements based on the mapped values.
+   *
    * @example
    * ```ts
    * const users = [
@@ -4452,8 +4732,9 @@ export namespace Arr {
    *   { id: 2, name: 'Bob' },
    *   { id: 1, name: 'Alicia' }, // Duplicate id
    * ];
-   * Arr.uniqBy(users, user => user.id); // [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
+   * Arr.uniqBy(users, (user) => user.id); // [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
    * ```
+   *
    */
   export const uniqBy = <Ar extends readonly unknown[], P extends Primitive>(
     array: Ar,
@@ -4483,14 +4764,16 @@ export namespace Arr {
    * @param array2 The second array.
    * @param equality An optional function `(a: T, b: T) => boolean` to compare elements. Defaults to `Object.is`.
    * @returns `true` if the arrays have the same length and all corresponding elements are equal according to the `equality` function, `false` otherwise.
+   *
    * @example
    * ```ts
    * Arr.eq([1, 2, 3], [1, 2, 3]); // true
    * Arr.eq([1, 2, 3], [1, 2, 4]); // false
    * Arr.eq([1, 2], [1, 2, 3]); // false
-   * Arr.eq([{a:1}], [{a:1}]); // false (different object references)
-   * Arr.eq([{a:1}], [{a:1}], (o1, o2) => o1.a === o2.a); // true
+   * Arr.eq([{ a: 1 }], [{ a: 1 }]); // false (different object references)
+   * Arr.eq([{ a: 1 }], [{ a: 1 }], (o1, o2) => o1.a === o2.a); // true
    * ```
+   *
    */
   export const eq = <E,>(
     array1: readonly E[],
@@ -4516,6 +4799,7 @@ export namespace Arr {
    * @param array2 The second array.
    * @returns `true` if `array1` is a subset of `array2`, `false` otherwise.
    * @remarks `array1` ⊂ `array2`
+   *
    * @example
    * ```ts
    * Arr.isSubset([1, 2], [1, 2, 3]); // true
@@ -4523,6 +4807,7 @@ export namespace Arr {
    * Arr.isSubset([], [1, 2, 3]); // true
    * Arr.isSubset([1, 5], [1, 2, 3]); // false
    * ```
+   *
    */
   export const isSubset = <E1 extends Primitive, E2 extends Primitive = E1>(
     array1: readonly E1[],
@@ -4543,12 +4828,14 @@ export namespace Arr {
    * @param array2 The second array.
    * @returns `true` if `array1` is a superset of `array2`, `false` otherwise.
    * @remarks `array1` ⊃ `array2`
+   *
    * @example
    * ```ts
    * Arr.isSuperset([1, 2, 3], [1, 2]); // true
    * Arr.isSuperset([1, 2], [1, 2, 3]); // false
    * Arr.isSuperset([1, 2, 3], []); // true
    * ```
+   *
    */
   export const isSuperset = <E1 extends Primitive, E2 extends Primitive = E1>(
     array1: readonly E1[],
@@ -4563,12 +4850,14 @@ export namespace Arr {
    * @param array1 The first array.
    * @param array2 The second array.
    * @returns A new array containing elements that are in both `array1` and `array2`.
+   *
    * @example
    * ```ts
    * Arr.setIntersection([1, 2, 3], [2, 3, 4]); // [2, 3]
    * Arr.setIntersection(['a', 'b'], ['b', 'c']); // ['b']
    * Arr.setIntersection([1, 2], [3, 4]); // []
    * ```
+   *
    */
   export const setIntersection = <
     E1 extends Primitive,
@@ -4588,12 +4877,14 @@ export namespace Arr {
    * @param array1 The first array.
    * @param array2 The second array.
    * @returns A new array containing elements from `array1` that are not in `array2`.
+   *
    * @example
    * ```ts
    * Arr.setDifference([1, 2, 3], [2, 3, 4]); // [1]
    * Arr.setDifference([1, 2, 3], [1, 2, 3]); // []
    * Arr.setDifference([1, 2], [3, 4]); // [1, 2]
    * ```
+   *
    */
   export const setDifference = <E extends Primitive>(
     array1: readonly E[],
@@ -4608,12 +4899,14 @@ export namespace Arr {
    * @param sortedList1 The first sorted array of numbers.
    * @param sortedList2 The second sorted array of numbers.
    * @returns A new sorted array containing numbers from `sortedList1` that are not in `sortedList2`.
+   *
    * @example
    * ```ts
    * Arr.sortedNumSetDifference([1, 2, 3, 5], [2, 4, 5]); // [1, 3]
    * Arr.sortedNumSetDifference([1, 2, 3], [1, 2, 3]); // []
    * Arr.sortedNumSetDifference([1, 2], [3, 4]); // [1, 2]
    * ```
+   *
    */
   export const sortedNumSetDifference = <E extends number>(
     sortedList1: readonly E[],
@@ -4663,7 +4956,7 @@ export namespace Arr {
    * @returns An array of `[index, value]` pairs.
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage
    * const fruits = ['apple', 'banana', 'cherry'];
    * const entries = Arr.entries(fruits); // [[0, 'apple'], [1, 'banana'], [2, 'cherry']]
@@ -4676,6 +4969,7 @@ export namespace Arr {
    * const tuple = [10, 20, 30] as const;
    * const tupleEntries = Arr.entries(tuple); // [[0, 10], [1, 20], [2, 30]]
    * ```
+   *
    */
   export function* entries<E>(
     array: readonly E[],
@@ -4696,7 +4990,7 @@ export namespace Arr {
    * @returns A copy of the input array.
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage
    * const numbers = [1, 2, 3];
    * const values = Arr.values(numbers); // [1, 2, 3]
@@ -4705,6 +4999,7 @@ export namespace Arr {
    * const getValues = Arr.values;
    * const result = getValues(['a', 'b']); // ['a', 'b']
    * ```
+   *
    */
   export function* values<E>(array: readonly E[]): ArrayIterator<E> {
     for (const value of array.values()) {
@@ -4722,7 +5017,7 @@ export namespace Arr {
    * @returns An array of indices.
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage
    * const fruits = ['apple', 'banana', 'cherry'];
    * const indices = Arr.indices(fruits); // [0, 1, 2]
@@ -4735,6 +5030,7 @@ export namespace Arr {
    * const empty: string[] = [];
    * const emptyIndices = Arr.indices(empty); // []
    * ```
+   *
    */
   export function* indices<E>(
     array: readonly E[],

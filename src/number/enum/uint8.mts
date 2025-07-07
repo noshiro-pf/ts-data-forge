@@ -19,58 +19,12 @@ const {
   } as const,
 );
 
-/**
- * Type guard that checks if a value is an 8-bit unsigned integer.
- *
- * A Uint8 is an unsigned integer in the range [0, 255], representing
- * values that fit in exactly 8 bits of memory (1 byte).
- *
- * @param x - The number to check
- * @returns `true` if x is a valid Uint8, `false` otherwise
- *
- * @example
- * ```typescript
- * is(100);   // true
- * is(0);     // true (minimum value)
- * is(255);   // true (maximum value)
- * is(256);   // false (exceeds max)
- * is(-1);    // false (negative)
- * is(5.5);   // false (not integer)
- * ```
- */
 const is = (x: number): x is Uint8 => isImpl(x);
 
-/**
- * Casts a number to a Uint8 branded type.
- *
- * This function validates that the input is within the Uint8 range [0, 255]
- * and is an integer, then returns it with the Uint8 brand.
- *
- * @param x - The number to convert
- * @returns The number as a Uint8 branded type
- * @throws {TypeError} If x is not a valid 8-bit unsigned integer
- *
- * @example
- * ```typescript
- * const byte = castType(200);    // Uint8
- * const zero = castType(0);      // Uint8 (minimum)
- * const max = castType(255);     // Uint8 (maximum)
- *
- * // These throw TypeError:
- * // castType(256);              // Exceeds maximum
- * // castType(-1);               // Negative value
- * // castType(1.5);              // Not an integer
- * ```
- */
 const castType = (x: number): Uint8 =>
   // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   castTypeImpl(x) as Uint8;
 
-/**
- * Clamps a number to the Uint8 range [0, 255].
- * @param a - The number to clamp
- * @returns The clamped value as Uint8
- */
 const clamp = (a: number): Uint8 => castType(clampImpl(a));
 
 /**
@@ -80,10 +34,11 @@ const clamp = (a: number): Uint8 => castType(clampImpl(a));
  * @returns The smallest value as a Uint8
  *
  * @example
- * ```typescript
+ * ```ts
  * min_(asUint8(50), asUint8(30), asUint8(100)); // Uint8 (30)
  * min_(asUint8(0), asUint8(255));               // Uint8 (0)
  * ```
+ *
  */
 const min_ = (...values: readonly Uint8[]): Uint8 =>
   castType(Math.min(...values));
@@ -149,6 +104,39 @@ const random = (min: Uint8, max: Uint8): Uint8 =>
  * Checks if a number is a Uint8 (8-bit unsigned integer in the range [0, 255]).
  * @param value The value to check.
  * @returns `true` if the value is a Uint8, `false` otherwise.
+ *
+ * @example
+ * ```ts
+ * assert(isUint8(100)); // true
+ * assert(isUint8(0)); // true (minimum value)
+ * assert(isUint8(255)); // true (maximum value)
+ * assert(!isUint8(256)); // false (exceeds max)
+ * assert(!isUint8(-1)); // false (negative)
+ * assert(!isUint8(5.5)); // false (not integer)
+ * ```
+ *
+ * @example
+ * ```ts
+ * const byte = asUint8(200); // Uint8
+ * const zero = asUint8(0); // Uint8 (minimum)
+ * const max = asUint8(255); // Uint8 (maximum)
+ *
+ * assert(byte === 200);
+ * assert(zero === 0);
+ * assert(max === 255);
+ *
+ * // These throw TypeError:
+ * expect(() => asUint8(256)).toThrow(TypeError); // Exceeds maximum
+ * expect(() => asUint8(-1)).toThrow(TypeError); // Negative value
+ * expect(() => asUint8(1.5)).toThrow(TypeError); // Not an integer
+ * ```
+ *
+ * @example
+ * ```ts
+ * Uint8.min(asUint8(50), asUint8(30), asUint8(100)); // Uint8 (30)
+ * Uint8.min(asUint8(0), asUint8(255)); // Uint8 (0)
+ * ```
+ *
  */
 export const isUint8 = is;
 
@@ -157,14 +145,21 @@ export const isUint8 = is;
  * @param value The value to cast.
  * @returns The value as a Uint8 type.
  * @throws {TypeError} If the value is not a valid 8-bit unsigned integer.
+ *
  * @example
- * ```typescript
+ * ```ts
  * const x = asUint8(255); // Uint8
  * const y = asUint8(0); // Uint8
- * // asUint8(-1); // throws TypeError
- * // asUint8(256); // throws TypeError
- * // asUint8(1.5); // throws TypeError
+ *
+ * assert(x === 255);
+ * assert(y === 0);
+ *
+ * // These throw TypeError:
+ * expect(() => asUint8(-1)).toThrow(TypeError);
+ * expect(() => asUint8(256)).toThrow(TypeError);
+ * expect(() => asUint8(1.5)).toThrow(TypeError);
  * ```
+ *
  */
 export const asUint8 = castType;
 
@@ -176,25 +171,41 @@ export const asUint8 = castType;
  * with negative results clamped to 0 and overflow results clamped to MAX_VALUE.
  *
  * @example
- * ```typescript
+ * ```ts
  * const a = asUint8(200);
  * const b = asUint8(100);
  *
+ * assert(a === 200);
+ * assert(b === 100);
+ *
  * // Arithmetic operations with automatic clamping
- * const sum = Uint8.add(a, b);       // Uint8 (255 - clamped to MAX_VALUE)
- * const diff = Uint8.sub(a, b);      // Uint8 (100)
+ * const sum = Uint8.add(a, b); // Uint8 (255 - clamped to MAX_VALUE)
+ * const diff = Uint8.sub(a, b); // Uint8 (100)
  * const reverseDiff = Uint8.sub(b, a); // Uint8 (0 - clamped to MIN_VALUE)
- * const product = Uint8.mul(a, b);   // Uint8 (255 - clamped due to overflow)
+ * const product = Uint8.mul(a, b); // Uint8 (255 - clamped due to overflow)
+ *
+ * assert(sum === 255);
+ * assert(diff === 100);
+ * assert(reverseDiff === 0);
+ * assert(product === 255);
  *
  * // Range operations
- * const clamped = Uint8.clamp(-10);     // Uint8 (0)
- * const minimum = Uint8.min(a, b);      // Uint8 (100)
- * const maximum = Uint8.max(a, b);      // Uint8 (200)
+ * const clamped = Uint8.clamp(-10); // Uint8 (0)
+ * const minimum = Uint8.min(a, b); // Uint8 (100)
+ * const maximum = Uint8.max(a, b); // Uint8 (200)
+ *
+ * assert(clamped === 0);
+ * assert(minimum === 100);
+ * assert(maximum === 200);
  *
  * // Utility operations
  * const random = Uint8.random(asUint8(50), asUint8(150)); // Uint8 (random value in [50, 150])
  * const power = Uint8.pow(asUint8(2), asUint8(7)); // Uint8 (128)
+ *
+ * assert(random >= 50 && random <= 150);
+ * assert(power === 128);
  * ```
+ *
  */
 export const Uint8 = {
   /**

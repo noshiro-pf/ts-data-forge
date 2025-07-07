@@ -43,13 +43,14 @@ const {
  * @returns `true` if the value is a safe integer, `false` otherwise
  *
  * @example
- * ```typescript
- * isSafeInt(42);                    // true
+ * ```ts
+ * isSafeInt(42); // true
  * isSafeInt(Number.MAX_SAFE_INTEGER); // true
  * isSafeInt(Number.MAX_SAFE_INTEGER + 1); // false
- * isSafeInt(3.14);                  // false
- * isSafeInt(NaN);                   // false
+ * isSafeInt(3.14); // false
+ * isSafeInt(Number.NaN); // false
  * ```
+ *
  */
 export const isSafeInt = is;
 
@@ -65,16 +66,21 @@ export const isSafeInt = is;
  * @throws {TypeError} If the value is not a safe integer
  *
  * @example
- * ```typescript
- * const x = asSafeInt(5);          // SafeInt
- * const y = asSafeInt(-1000);      // SafeInt
- * const z = asSafeInt(2**50);      // SafeInt (within range)
+ * ```ts
+ * const x = asSafeInt(5); // SafeInt
+ * const y = asSafeInt(-1000); // SafeInt
+ * const z = asSafeInt(2 ** 50); // SafeInt (within range)
+ *
+ * assert(x === 5);
+ * assert(y === -1000);
+ * assert(z === 2 ** 50);
  *
  * // These throw TypeError:
- * // asSafeInt(1.5);                      // Not an integer
- * // asSafeInt(Number.MAX_SAFE_INTEGER + 1); // Exceeds safe range
- * // asSafeInt(2**53);                    // Loss of precision
+ * expect(() => asSafeInt(1.5)).toThrow(TypeError); // Not an integer
+ * expect(() => asSafeInt(Number.MAX_SAFE_INTEGER + 1)).toThrow(TypeError); // Exceeds safe range
+ * expect(() => asSafeInt(2 ** 53)).toThrow(TypeError); // Loss of precision
  * ```
+ *
  */
 export const asSafeInt = castType;
 
@@ -94,30 +100,43 @@ export const asSafeInt = castType;
  * - Any integer arithmetic requiring precision guarantees
  *
  * @example
- * ```typescript
+ * ```ts
  * // Near the boundary
  * const nearMax = asSafeInt(9007199254740990);
  * const increment = asSafeInt(10);
  *
  * // Automatic clamping prevents precision loss
- * const sum = SafeInt.add(nearMax, increment);    // Clamped to MAX_SAFE_INTEGER
+ * const sum = SafeInt.add(nearMax, increment); // Clamped to MAX_SAFE_INTEGER
  * const product = SafeInt.mul(nearMax, increment); // Clamped to MAX_SAFE_INTEGER
+ *
+ * assert(sum === SafeInt.MAX_SAFE_INTEGER);
+ * assert(product === SafeInt.MAX_SAFE_INTEGER);
  *
  * // Safe operations
  * const a = asSafeInt(1000000);
  * const b = asSafeInt(500);
  *
- * const diff = SafeInt.sub(a, b);        // SafeInt (999500)
- * const quotient = SafeInt.div(a, b);    // SafeInt (2000)
+ * const diff = SafeInt.sub(a, b); // SafeInt (999500)
+ * const quotient = SafeInt.div(a, b); // SafeInt (2000)
  * const power = SafeInt.pow(b, asSafeInt(2)); // SafeInt (250000)
+ *
+ * assert(diff === 999500);
+ * assert(quotient === 2000);
+ * assert(power === 250000);
  *
  * // Utility operations
  * const absolute = SafeInt.abs(asSafeInt(-42)); // SafeInt (42)
- * const clamped = SafeInt.clamp(2**60);         // SafeInt (MAX_SAFE_INTEGER)
+ * const clamped = SafeInt.clamp(2 ** 60); // SafeInt (MAX_SAFE_INTEGER)
+ *
+ * assert(absolute === 42);
+ * assert(clamped === SafeInt.MAX_SAFE_INTEGER);
  *
  * // Random generation
  * const die = SafeInt.random(asSafeInt(1), asSafeInt(6)); // Random 1-6
+ *
+ * assert(die >= 1 && die <= 6);
  * ```
+ *
  */
 export const SafeInt = {
   /**
@@ -152,11 +171,12 @@ export const SafeInt = {
    * @returns The absolute value as a SafeInt, clamped if necessary
    *
    * @example
-   * ```typescript
+   * ```ts
    * SafeInt.abs(asSafeInt(-42));    // SafeInt (42)
    * SafeInt.abs(asSafeInt(42));     // SafeInt (42)
    * SafeInt.abs(SafeInt.MIN_VALUE); // SafeInt (MAX_SAFE_INTEGER)
    * ```
+   *
    */
   abs,
 
@@ -167,10 +187,11 @@ export const SafeInt = {
    * @returns The smallest value as a SafeInt
    *
    * @example
-   * ```typescript
+   * ```ts
    * SafeInt.min(asSafeInt(5), asSafeInt(3));        // SafeInt (3)
    * SafeInt.min(asSafeInt(-10), asSafeInt(0), asSafeInt(10)); // SafeInt (-10)
    * ```
+   *
    */
   min: min_,
 
@@ -181,10 +202,11 @@ export const SafeInt = {
    * @returns The largest value as a SafeInt
    *
    * @example
-   * ```typescript
+   * ```ts
    * SafeInt.max(asSafeInt(5), asSafeInt(3));        // SafeInt (5)
    * SafeInt.max(asSafeInt(-10), asSafeInt(0), asSafeInt(10)); // SafeInt (10)
    * ```
+   *
    */
   max: max_,
 
@@ -205,7 +227,7 @@ export const SafeInt = {
    * @returns A random SafeInt in the range [min, max]
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Dice roll
    * const d20 = SafeInt.random(asSafeInt(1), asSafeInt(20));
    *
@@ -215,6 +237,7 @@ export const SafeInt = {
    * // Can use full safe range
    * const any = SafeInt.random(SafeInt.MIN_VALUE, SafeInt.MAX_VALUE);
    * ```
+   *
    */
   random,
 
@@ -261,7 +284,7 @@ export const SafeInt = {
    * @returns The integer quotient as a SafeInt
    *
    * @example
-   * ```typescript
+   * ```ts
    * SafeInt.div(asSafeInt(10), asSafeInt(3));   // SafeInt (3)
    * SafeInt.div(asSafeInt(-10), asSafeInt(3));  // SafeInt (-4)
    *
@@ -270,6 +293,7 @@ export const SafeInt = {
    * const divisor = asSafeInt(1000000);
    * SafeInt.div(large, divisor); // SafeInt (1000000)
    * ```
+   *
    */
   div,
 } as const;

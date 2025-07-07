@@ -10,17 +10,22 @@
  *          When `true`, TypeScript narrows the type to `undefined`.
  *
  * @example
- * ```typescript
- * const value: string | undefined = getValue();
+ * ```ts
+ * const value = undefined as string | undefined;
  *
  * if (isUndefined(value)) {
- *   // value is now typed as undefined
- *   console.log('Value is undefined');
+ *   expectType<typeof value, undefined>('=');
+ *   assert(value === undefined);
  * } else {
- *   // value is now typed as string
- *   console.log('Value length:', value.length);
+ *   expectType<typeof value, string>('=');
+ *   assert(value.length > 0);
  * }
+ *
+ * const definedValue: string | undefined = 'hello';
+ * assert(!isUndefined(definedValue));
+ * assert(isUndefined(undefined));
  * ```
+ *
  */
 export const isUndefined = (u: unknown): u is undefined => u === undefined;
 
@@ -38,17 +43,26 @@ export const isUndefined = (u: unknown): u is undefined => u === undefined;
  *          When `true`, TypeScript excludes `undefined` from the type.
  *
  * @example
- * ```typescript
- * const items: (string | undefined)[] = ['a', undefined, 'b', undefined, 'c'];
+ * ```ts
+ * const items: readonly (string | undefined)[] = [
+ *   'a',
+ *   undefined,
+ *   'b',
+ *   undefined,
+ *   'c',
+ * ];
  *
  * const definedItems = items.filter(isNotUndefined);
- * // definedItems is now string[] - undefined values are filtered out
+ * expectType<typeof definedItems, string[]>('=');
+ * assert(definedItems.length === 3);
+ * assert(definedItems.every((item) => typeof item === 'string'));
  *
- * definedItems.forEach(item => {
- *   // item is guaranteed to be string, not undefined
- *   console.log(item.toUpperCase());
+ * definedItems.forEach((item) => {
+ *   expectType<typeof item, string>('=');
+ *   assert(item.toUpperCase().length > 0);
  * });
  * ```
+ *
  */
 export const isNotUndefined = <T,>(u: T): u is RelaxedExclude<T, undefined> =>
   u !== undefined;
@@ -65,14 +79,20 @@ export const isNotUndefined = <T,>(u: T): u is RelaxedExclude<T, undefined> =>
  *          When `true`, TypeScript narrows the type to `boolean`.
  *
  * @example
- * ```typescript
- * const userInput: unknown = parseInput();
+ * ```ts
+ * const userInput: unknown = true;
  *
  * if (isBoolean(userInput)) {
- *   // userInput is now typed as boolean
- *   console.log('Boolean value:', userInput ? 'true' : 'false');
+ *   expectType<typeof userInput, boolean>('=');
+ *   assert(typeof userInput === 'boolean');
  * }
+ *
+ * assert(isBoolean(true));
+ * assert(isBoolean(false));
+ * assert(!isBoolean('true'));
+ * assert(!isBoolean(1));
  * ```
+ *
  */
 export const isBoolean = (u: unknown): u is boolean => typeof u === 'boolean';
 
@@ -89,15 +109,20 @@ export const isBoolean = (u: unknown): u is boolean => typeof u === 'boolean';
  *          When `true`, TypeScript excludes `boolean` from the type.
  *
  * @example
- * ```typescript
+ * ```ts
  * type MixedValue = string | number | boolean;
- * const value: MixedValue = getValue();
+ * const value = 'hello' as MixedValue;
  *
  * if (isNotBoolean(value)) {
- *   // value is now string | number
- *   console.log('Non-boolean value:', value);
+ *   expectType<typeof value, string | number>('=');
+ *   assert(typeof value === 'string' || typeof value === 'number');
  * }
+ *
+ * assert(isNotBoolean('hello'));
+ * assert(isNotBoolean(42));
+ * assert(!isNotBoolean(true));
  * ```
+ *
  */
 export const isNotBoolean = <T,>(u: T): u is RelaxedExclude<T, boolean> =>
   typeof u !== 'boolean';
@@ -115,19 +140,25 @@ export const isNotBoolean = <T,>(u: T): u is RelaxedExclude<T, boolean> =>
  *          When `true`, TypeScript narrows the type to `number`.
  *
  * @example
- * ```typescript
- * const userInput: unknown = parseInput();
+ * ```ts
+ * const userInput: unknown = 42;
  *
  * if (isNumber(userInput)) {
- *   // userInput is now typed as number
- *   console.log('Number value:', userInput.toFixed(2));
+ *   expectType<typeof userInput, number>('=');
+ *   assert(userInput.toFixed(2) === '42.00');
  *
  *   // Note: this includes NaN and Infinity
  *   if (Number.isFinite(userInput)) {
- *     console.log('Finite number:', userInput);
+ *     assert(userInput === 42);
  *   }
  * }
+ *
+ * assert(isNumber(42));
+ * assert(isNumber(Number.NaN));
+ * assert(isNumber(Number.POSITIVE_INFINITY));
+ * assert(!isNumber('42'));
  * ```
+ *
  */
 export const isNumber = (u: unknown): u is number => typeof u === 'number';
 
@@ -144,13 +175,16 @@ export const isNumber = (u: unknown): u is number => typeof u === 'number';
  *          When `true`, TypeScript excludes `number` from the type.
  *
  * @example
- * ```typescript
+ * ```ts
  * type Value = string | number | boolean;
- * const values: Value[] = ['hello', 42, true, 3.14, false];
+ * const values: readonly Value[] = ['hello', 42, true, 3.14, false];
  *
  * const nonNumbers = values.filter(isNotNumber);
- * // nonNumbers is now (string | boolean)[] - numbers are filtered out
+ * expectType<typeof nonNumbers, (string | boolean)[]>('=');
+ * assert(nonNumbers.length === 3);
+ * assert(nonNumbers.every((val) => typeof val !== 'number'));
  * ```
+ *
  */
 export const isNotNumber = <T,>(u: T): u is RelaxedExclude<T, number> =>
   typeof u !== 'number';
@@ -167,15 +201,21 @@ export const isNotNumber = <T,>(u: T): u is RelaxedExclude<T, number> =>
  *          When `true`, TypeScript narrows the type to `bigint`.
  *
  * @example
- * ```typescript
- * const userInput: unknown = parseInput();
+ * ```ts
+ * const userInput: unknown = 123n;
  *
  * if (isBigint(userInput)) {
- *   // userInput is now typed as bigint
- *   console.log('BigInt value:', userInput.toString());
+ *   expectType<typeof userInput, bigint>('=');
+ *   assert(userInput.toString() === '123');
  *   const doubled = userInput * 2n; // Safe bigint operations
+ *   assert(doubled === 246n);
  * }
+ *
+ * assert(isBigint(123n));
+ * assert(!isBigint(123));
+ * assert(!isBigint('123'));
  * ```
+ *
  */
 export const isBigint = (u: unknown): u is bigint => typeof u === 'bigint';
 
@@ -192,15 +232,19 @@ export const isBigint = (u: unknown): u is bigint => typeof u === 'bigint';
  *          When `true`, TypeScript excludes `bigint` from the type.
  *
  * @example
- * ```typescript
+ * ```ts
  * type NumericValue = number | bigint;
- * const value: NumericValue = getValue();
+ * const value: NumericValue = 42;
  *
  * if (isNotBigint(value)) {
- *   // value is now number
- *   console.log('Regular number:', value.toFixed(2));
+ *   expectType<typeof value, number>('=');
+ *   assert(value.toFixed(2) === '42.00');
  * }
+ *
+ * assert(isNotBigint(42));
+ * assert(!isNotBigint(42n));
  * ```
+ *
  */
 export const isNotBigint = <T,>(u: T): u is RelaxedExclude<T, bigint> =>
   typeof u !== 'bigint';
@@ -218,20 +262,25 @@ export const isNotBigint = <T,>(u: T): u is RelaxedExclude<T, bigint> =>
  *          When `true`, TypeScript narrows the type to `string`.
  *
  * @example
- * ```typescript
- * const userInput: unknown = parseInput();
+ * ```ts
+ * const userInput: unknown = 'hello';
  *
  * if (isString(userInput)) {
- *   // userInput is now typed as string
- *   console.log('String length:', userInput.length);
- *   console.log('Uppercase:', userInput.toUpperCase());
+ *   expectType<typeof userInput, string>('=');
+ *   assert(userInput.length === 5);
+ *   assert(userInput.toUpperCase() === 'HELLO');
  *
  *   // You can further check for non-empty strings
  *   if (userInput.length > 0) {
- *     console.log('Non-empty string:', userInput);
+ *     assert(userInput === 'hello');
  *   }
  * }
+ *
+ * assert(isString('hello'));
+ * assert(isString(''));
+ * assert(!isString(123));
  * ```
+ *
  */
 export const isString = (u: unknown): u is string => typeof u === 'string';
 
@@ -248,13 +297,16 @@ export const isString = (u: unknown): u is string => typeof u === 'string';
  *          When `true`, TypeScript excludes `string` from the type.
  *
  * @example
- * ```typescript
+ * ```ts
  * type Value = string | number | boolean;
- * const mixedValues: Value[] = ['hello', 42, true, 'world', 3.14];
+ * const mixedValues: readonly Value[] = ['hello', 42, true, 'world', 3.14];
  *
  * const nonStrings = mixedValues.filter(isNotString);
- * // nonStrings is now (number | boolean)[] - strings are filtered out
+ * expectType<typeof nonStrings, (number | boolean)[]>('=');
+ * assert(nonStrings.length === 3);
+ * assert(nonStrings.every((val) => typeof val !== 'string'));
  * ```
+ *
  */
 export const isNotString = <T,>(u: T): u is RelaxedExclude<T, string> =>
   typeof u !== 'string';
@@ -271,15 +323,21 @@ export const isNotString = <T,>(u: T): u is RelaxedExclude<T, string> =>
  *          When `true`, TypeScript narrows the type to `symbol`.
  *
  * @example
- * ```typescript
- * const userInput: unknown = parseInput();
+ * ```ts
+ * const userInput: unknown = Symbol('test');
  *
  * if (isSymbol(userInput)) {
- *   // userInput is now typed as symbol
- *   console.log('Symbol description:', userInput.description);
- *   console.log('Symbol string:', userInput.toString());
+ *   expectType<typeof userInput, symbol>('=');
+ *   assert(userInput.description === 'test');
+ *   assert(userInput.toString() === 'Symbol(test)');
  * }
+ *
+ * assert(isSymbol(Symbol()));
+ * assert(isSymbol(Symbol('key')));
+ * assert(!isSymbol('string'));
+ * assert(!isSymbol(42));
  * ```
+ *
  */
 export const isSymbol = (u: unknown): u is symbol => typeof u === 'symbol';
 
@@ -296,15 +354,20 @@ export const isSymbol = (u: unknown): u is symbol => typeof u === 'symbol';
  *          When `true`, TypeScript excludes `symbol` from the type.
  *
  * @example
- * ```typescript
+ * ```ts
  * type PropertyKey = string | number | symbol;
- * const key: PropertyKey = getPropertyKey();
+ * const key = 'name' as PropertyKey;
  *
  * if (isNotSymbol(key)) {
- *   // key is now string | number
- *   console.log('Non-symbol key:', key);
+ *   expectType<typeof key, string | number>('=');
+ *   assert(typeof key === 'string' || typeof key === 'number');
  * }
+ *
+ * assert(isNotSymbol('key'));
+ * assert(isNotSymbol(42));
+ * assert(!isNotSymbol(Symbol('test')));
  * ```
+ *
  */
 export const isNotSymbol = <T,>(u: T): u is RelaxedExclude<T, symbol> =>
   typeof u !== 'symbol';
@@ -321,17 +384,30 @@ export const isNotSymbol = <T,>(u: T): u is RelaxedExclude<T, symbol> =>
  *          When `true`, TypeScript narrows the type to `null`.
  *
  * @example
- * ```typescript
- * const value: string | null = getValue();
+ * ```ts
+ * const value = null as string | null;
  *
  * if (isNull(value)) {
- *   // value is now typed as null
- *   console.log('Value is null');
+ *   expectType<typeof value, null>('=');
+ *   assert(value === null);
  * } else {
- *   // value is now typed as string
- *   console.log('Value length:', value.length);
+ *   expectType<typeof value, string>('=');
+ *   assert(value.length >= 0);
  * }
+ *
+ * const stringValue: string | null = 'hello';
+ * if (isNull(stringValue)) {
+ *   assert(false); // should not reach here
+ * } else {
+ *   expectType<typeof stringValue, string>('=');
+ *   assert(stringValue.length === 5);
+ * }
+ *
+ * assert(isNull(null));
+ * assert(!isNull(undefined));
+ * assert(!isNull('string'));
  * ```
+ *
  */
 export const isNull = (u: unknown): u is null => u === null;
 
@@ -349,17 +425,20 @@ export const isNull = (u: unknown): u is null => u === null;
  *          When `true`, TypeScript excludes `null` from the type.
  *
  * @example
- * ```typescript
- * const items: (string | null)[] = ['a', null, 'b', null, 'c'];
+ * ```ts
+ * const items: readonly (string | null)[] = ['a', null, 'b', null, 'c'];
  *
  * const nonNullItems = items.filter(isNotNull);
- * // nonNullItems is now string[] - null values are filtered out
+ * expectType<typeof nonNullItems, string[]>('=');
+ * assert(nonNullItems.length === 3);
+ * assert(nonNullItems.every((item) => typeof item === 'string'));
  *
- * nonNullItems.forEach(item => {
- *   // item is guaranteed to be string, not null
- *   console.log(item.toUpperCase());
+ * nonNullItems.forEach((item) => {
+ *   expectType<typeof item, string>('=');
+ *   assert(item.toUpperCase().length > 0);
  * });
  * ```
+ *
  */
 export const isNotNull = <T,>(u: T | null): u is T => u !== null;
 
@@ -378,17 +457,23 @@ export const isNotNull = <T,>(u: T | null): u is T => u !== null;
  *          When `true`, TypeScript narrows the type to `null | undefined`.
  *
  * @example
- * ```typescript
- * const value: string | null | undefined = getValue();
+ * ```ts
+ * const value = null as string | null | undefined;
  *
  * if (isNullish(value)) {
- *   // value is now typed as null | undefined
- *   console.log('Value is nullish');
+ *   expectType<typeof value, null | undefined>('=');
+ *   assert(value === null || value === undefined);
  * } else {
- *   // value is now typed as string
- *   console.log('Value length:', value.length);
+ *   expectType<typeof value, string>('=');
+ *   assert(value.length >= 0);
  * }
+ *
+ * const undefinedValue: string | null | undefined = undefined;
+ * assert(isNullish(undefinedValue));
+ * assert(isNullish(null));
+ * assert(!isNullish('hello'));
  * ```
+ *
  */
 export const isNullish = (u: unknown): u is null | undefined => u == null;
 
@@ -410,41 +495,49 @@ export const isNullish = (u: unknown): u is null | undefined => u == null;
  *          When `true`, TypeScript narrows the type to `NonNullable<T>`.
  *
  * @example
- * ```typescript
- * const items: (string | null | undefined)[] = [
+ * ```ts
+ * const items: readonly (string | null | undefined)[] = [
  *   'hello',
  *   null,
  *   'world',
  *   undefined,
- *   'test'
+ *   'test',
  * ];
  *
  * const definedItems = items.filter(isNonNullish);
- * // definedItems is now string[] - both null and undefined values are filtered out
+ * expectType<typeof definedItems, string[]>('=');
+ * assert(definedItems.length === 3);
+ * assert(definedItems.every((item) => typeof item === 'string'));
  *
- * definedItems.forEach(item => {
- *   // item is guaranteed to be string, never null or undefined
- *   console.log(item.toUpperCase());
+ * definedItems.forEach((item) => {
+ *   expectType<typeof item, string>('=');
+ *   assert(item.toUpperCase().length > 0);
  * });
  * ```
  *
  * @example
- * Progressive validation with optional chaining alternative:
- * ```typescript
- * interface User {
+ * ```ts
+ * // Progressive validation with optional chaining alternative
+ * type User = DeepReadonly<{
  *   profile?: {
  *     name?: string;
  *     email?: string;
  *   };
- * }
+ * }>;
  *
- * const user: User = getUser();
+ * const user: User = { profile: { name: 'John', email: 'john@example.com' } };
  *
  * // Instead of optional chaining: user.profile?.name
  * if (isNonNullish(user.profile) && isNonNullish(user.profile.name)) {
- *   // user.profile.name is now guaranteed to be string
- *   console.log('User name:', user.profile.name.toUpperCase());
+ *   expectType<typeof user.profile.name, string>('=');
+ *   assert(user.profile.name.toUpperCase() === 'JOHN');
  * }
+ *
+ * assert(isNonNullish('hello'));
+ * assert(isNonNullish(42));
+ * assert(!isNonNullish(null));
+ * assert(!isNonNullish(undefined));
  * ```
+ *
  */
 export const isNonNullish = <T,>(u: T): u is NonNullable<T> => u != null;

@@ -10,21 +10,19 @@ import { unknownToString } from '../others/unknown-to-string.mjs';
  * types to handle errors without throwing exceptions.
  *
  * @example Basic usage
- * ```typescript
- * import { Json, Result } from 'ts-data-forge';
- *
+ * ```ts
  * // Parse JSON safely
  * const parseResult = Json.parse('{"name": "Alice", "age": 30}');
- * if (Result.isOk(parseResult)) {
- *   console.log(parseResult.value); // { name: 'Alice', age: 30 }
- * }
+ * assert(Result.isOk(parseResult));
+ * assert(Result.unwrapOk(parseResult).name === 'Alice');
+ * assert(Result.unwrapOk(parseResult).age === 30);
  *
  * // Stringify with error handling
  * const stringifyResult = Json.stringify({ name: 'Bob', age: 25 });
- * if (Result.isOk(stringifyResult)) {
- *   console.log(stringifyResult.value); // '{"name":"Bob","age":25}'
- * }
+ * assert(Result.isOk(stringifyResult));
+ * assert(Result.unwrapOk(stringifyResult) === '{"name":"Bob","age":25}');
  * ```
+ *
  */
 export namespace Json {
   /**
@@ -45,20 +43,21 @@ export namespace Json {
    *   - On failure: `Result.err(errorMessage)` where `errorMessage` describes the parsing error
    *
    * @example
-   * ```typescript
+   * ```ts
    * const result = Json.parse('{"name": "John", "age": 30}');
-   * if (Result.isOk(result)) {
-   *   console.log(result.value.name); // 'John'
-   * }
+   * assert(Result.isOk(result));
+   * assert(isRecord(result.value));
+   * assert(result.value?.['name'] === 'John');
+   * assert(result.value?.['age'] === 30);
    * ```
    *
    * @example
-   * ```typescript
+   * ```ts
    * const invalid = Json.parse('invalid json');
-   * if (Result.isErr(invalid)) {
-   *   console.log('Parse failed:', invalid.value);
-   * }
+   * assert(Result.isErr(invalid));
+   * assert(Result.unwrapErr(invalid)?.includes('JSON') === true);
    * ```
+   *
    */
   export const parse = (
     text: string,
@@ -102,7 +101,7 @@ export namespace Json {
    *   - On failure: `Result.err(errorMessage)` where `errorMessage` describes the error
    *
    * @example
-   * ```typescript
+   * ```ts
    * const obj = { name: 'John', age: 30 };
    * const result = Json.stringify(obj);
    * if (Result.isOk(result)) {
@@ -110,8 +109,9 @@ export namespace Json {
    * }
    * ```
    *
-   * @example Error handling
-   * ```typescript
+   * @example
+   * ```ts
+   * // Error handling
    * const circular: any = { name: 'test' };
    * circular.self = circular;
    * const error = Json.stringify(circular);
@@ -119,6 +119,7 @@ export namespace Json {
    *   console.log('Stringify failed:', error.value);
    * }
    * ```
+   *
    */
   export const stringify = (
     value: unknown,
@@ -156,12 +157,12 @@ export namespace Json {
    *   - On failure: `Result.err(errorMessage)` describing the serialization error
    *
    * @example
-   * ```typescript
+   * ```ts
    * const user = {
    *   id: 1,
    *   name: 'Alice',
    *   email: 'alice@example.com',
-   *   password: 'secret123'
+   *   password: 'secret123',
    * };
    *
    * const publicFields = Json.stringifySelected(user, ['id', 'name', 'email']);
@@ -170,6 +171,7 @@ export namespace Json {
    *   // '{"id":1,"name":"Alice","email":"alice@example.com"}'
    * }
    * ```
+   *
    */
   export const stringifySelected = (
     value: unknown,
@@ -208,11 +210,11 @@ export namespace Json {
    *   - On failure: `Result.err(errorMessage)` describing the serialization error
    *
    * @example
-   * ```typescript
+   * ```ts
    * const unsortedObj = {
    *   zebra: 'animal',
    *   apple: 'fruit',
-   *   banana: 'fruit'
+   *   banana: 'fruit',
    * };
    *
    * const sorted = Json.stringifySortedKey(unsortedObj);
@@ -221,6 +223,7 @@ export namespace Json {
    *   // '{"apple":"fruit","banana":"fruit","zebra":"animal"}'
    * }
    * ```
+   *
    */
   export const stringifySortedKey = (
     value: UnknownRecord,

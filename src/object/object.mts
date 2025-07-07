@@ -17,7 +17,7 @@ export namespace Obj {
    * @returns `true` if the records are shallowly equal according to the equality function, `false` otherwise
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Basic usage with default Object.is equality
    * Obj.shallowEq({ x: 1, y: 2 }, { x: 1, y: 2 }); // true
    * Obj.shallowEq({ x: 1 }, { x: 1, y: 2 }); // false (different number of keys)
@@ -25,8 +25,8 @@ export namespace Obj {
    * Obj.shallowEq({}, {}); // true (both empty)
    *
    * // String comparisons
-   * Obj.shallowEq({ a: "hello" }, { a: "hello" }); // true
-   * Obj.shallowEq({ a: "hello" }, { a: "world" }); // false
+   * Obj.shallowEq({ a: 'hello' }, { a: 'hello' }); // true
+   * Obj.shallowEq({ a: 'hello' }, { a: 'world' }); // false
    *
    * // Using custom equality function
    * const caseInsensitiveEq = (a: unknown, b: unknown) =>
@@ -34,12 +34,13 @@ export namespace Obj {
    *     ? a.toLowerCase() === b.toLowerCase()
    *     : a === b;
    *
-   * Obj.shallowEq({ name: "ALICE" }, { name: "alice" }, caseInsensitiveEq); // true
+   * Obj.shallowEq({ name: 'ALICE' }, { name: 'alice' }, caseInsensitiveEq); // true
    *
    * // Handling special values
    * Obj.shallowEq({ x: NaN }, { x: NaN }); // true (Object.is treats NaN === NaN)
    * Obj.shallowEq({ x: +0 }, { x: -0 }); // false (Object.is distinguishes +0 and -0)
    * ```
+   *
    */
   export const shallowEq = (
     a: UnknownRecord,
@@ -69,7 +70,7 @@ export namespace Obj {
    * @returns A new record containing only the specified keys and their values
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage
    * const original = { a: 1, b: 2, c: 3, d: 4 };
    * Obj.pick(original, ['a', 'c']); // { a: 1, c: 3 }
@@ -79,10 +80,10 @@ export namespace Obj {
    * // Real-world example with user data
    * const user = {
    *   id: 1,
-   *   name: "Alice",
-   *   email: "alice@example.com",
-   *   password: "secret123",
-   *   age: 30
+   *   name: 'Alice',
+   *   email: 'alice@example.com',
+   *   password: 'secret123',
+   *   age: 30,
    * };
    *
    * // Extract public user information
@@ -91,16 +92,17 @@ export namespace Obj {
    *
    * // Curried usage for functional composition
    * const pickIdAndName = Obj.pick(['id', 'name'] as const);
-   * const users = [user, { id: 2, name: "Bob", email: "bob@example.com", age: 25 }];
+   * const users = [
+   *   user,
+   *   { id: 2, name: 'Bob', email: 'bob@example.com', age: 25 },
+   * ];
    * const publicUsers = users.map(pickIdAndName);
    * // Result: [{ id: 1, name: "Alice" }, { id: 2, name: "Bob" }]
    *
    * // Using with pipe for data transformation
-   * import { pipe } from '../functional/pipe.mjs';
    * const result = pipe(user)
    *   .map(Obj.pick(['id', 'name']))
-   *   .map(u => ({ ...u, displayName: u.name.toUpperCase() }))
-   *   .value;
+   *   .map((u) => ({ ...u, displayName: u.name.toUpperCase() })).value;
    * // Result: { id: 1, name: "Alice", displayName: "ALICE" }
    *
    * // Type safety prevents invalid keys
@@ -108,10 +110,11 @@ export namespace Obj {
    * // Obj.pick(user, ['id', 'nonExistentField']); // ❌ TypeScript error
    *
    * // Partial key selection (when some keys might not exist)
-   * const partialUser = { id: 1, name: "Alice" } as const;
+   * const partialUser = { id: 1, name: 'Alice' } as const;
    * const pickVisible = Obj.pick(['name', 'age']); // age might not exist
    * const visible = pickVisible(partialUser); // { name: "Alice" } (age omitted)
    * ```
+   *
    */
   export function pick<
     const R extends UnknownRecord,
@@ -168,7 +171,7 @@ export namespace Obj {
    * @returns A new record containing all properties except the specified keys
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Direct usage
    * const original = { a: 1, b: 2, c: 3, d: 4 };
    * Obj.omit(original, ['a', 'c']); // { b: 2, d: 4 }
@@ -178,11 +181,11 @@ export namespace Obj {
    * // Real-world example: removing sensitive data
    * const user = {
    *   id: 1,
-   *   name: "Alice",
-   *   email: "alice@example.com",
-   *   password: "secret123",
-   *   apiKey: "abc-def-ghi",
-   *   lastLogin: new Date()
+   *   name: 'Alice',
+   *   email: 'alice@example.com',
+   *   password: 'secret123',
+   *   apiKey: 'abc-def-ghi',
+   *   lastLogin: new Date(),
    * };
    *
    * // Create safe user object for client-side
@@ -195,22 +198,27 @@ export namespace Obj {
    * const safeUsers = users.map(removeSensitive);
    *
    * // Using with pipe for complex transformations
-   * import { pipe } from '../functional/pipe.mjs';
    * const publicProfile = pipe(user)
    *   .map(Obj.omit(['password', 'apiKey']))
-   *   .map(u => ({ ...u, displayName: u.name.toUpperCase() }))
-   *   .value;
-   * // Result: { id: 1, name: "Alice", email: "...", lastLogin: Date, displayName: "ALICE" }
+   *   .map((u) => ({ ...u, displayName: u.name.toUpperCase() })).value;
+   *
+   * assert.deepStrictEqual(publicProfile, {
+   *   id: 1,
+   *   name: 'Alice',
+   *   email: '...',
+   *   lastLogin: user.lastLogin,
+   *   displayName: 'ALICE',
+   * });
    *
    * // Database queries: exclude computed fields
    * const dbUser = {
    *   id: 1,
-   *   name: "Alice",
-   *   email: "alice@example.com",
+   *   name: 'Alice',
+   *   email: 'alice@example.com',
    *   createdAt: new Date(),
    *   updatedAt: new Date(),
-   *   fullName: "Alice Johnson", // computed field
-   *   isActive: true // computed field
+   *   fullName: 'Alice Johnson', // computed field
+   *   isActive: true, // computed field
    * };
    *
    * const storableData = Obj.omit(dbUser, ['fullName', 'isActive']);
@@ -221,10 +229,11 @@ export namespace Obj {
    * // Obj.omit(user, ['id', 'nonExistentField']); // ❌ TypeScript error
    *
    * // Handling partial omission (when some keys might not exist)
-   * const partialUser = { id: 1, name: "Alice", password: "secret" } as const;
+   * const partialUser = { id: 1, name: 'Alice', password: 'secret' } as const;
    * const omitCredentials = Obj.omit(['password', 'apiKey']); // apiKey might not exist
    * const cleaned = omitCredentials(partialUser); // { id: 1, name: "Alice" }
    * ```
+   *
    */
   export function omit<
     const R extends UnknownRecord,
@@ -288,12 +297,12 @@ export namespace Obj {
    * @returns An object created from the entries with precise typing
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Fixed entries with precise typing
    * const fixedEntries = [
    *   ['name', 'Alice'],
    *   ['age', 30],
-   *   ['active', true]
+   *   ['active', true],
    * ] as const;
    *
    * const user = Obj.fromEntries(fixedEntries);
@@ -301,14 +310,17 @@ export namespace Obj {
    * // Value: { name: "Alice", age: 30, active: true }
    *
    * // Simple coordinate example
-   * const coordEntries = [['x', 1], ['y', 3]] as const;
+   * const coordEntries = [
+   *   ['x', 1],
+   *   ['y', 3],
+   * ] as const;
    * const point = Obj.fromEntries(coordEntries);
    * // Type: { readonly x: 1; readonly y: 3 }
    * // Value: { x: 1, y: 3 }
    *
    * // Dynamic entries with union keys
    * const dynamicEntries: Array<['name' | 'email', string]> = [
-   *   ['name', 'Alice']
+   *   ['name', 'Alice'],
    *   // email might or might not be present
    * ];
    * const partialUser = Obj.fromEntries(dynamicEntries);
@@ -320,7 +332,7 @@ export namespace Obj {
    *   ['apiUrl', 'https://api.example.com'],
    *   ['timeout', 5000],
    *   ['retries', 3],
-   *   ['debug', false]
+   *   ['debug', false],
    * ] as const;
    * const config = Obj.fromEntries(configEntries);
    * // Precise types for each configuration value
@@ -329,7 +341,7 @@ export namespace Obj {
    * const settingsMap = new Map([
    *   ['theme', 'dark'],
    *   ['language', 'en'],
-   *   ['notifications', true]
+   *   ['notifications', true],
    * ] as const);
    * const settings = Obj.fromEntries([...settingsMap]);
    *
@@ -341,7 +353,9 @@ export namespace Obj {
    * // Type reflects the specific key-value associations
    *
    * // Error handling with validation
-   * function createUserFromEntries(entries: ReadonlyArray<readonly [string, unknown]>) {
+   * function createUserFromEntries(
+   *   entries: ReadonlyArray<readonly [string, unknown]>,
+   * ) {
    *   const user = Obj.fromEntries(entries);
    *   // Type is Partial<Record<string, unknown>> - safe for dynamic data
    *
@@ -352,6 +366,7 @@ export namespace Obj {
    *   throw new Error('Invalid user data');
    * }
    * ```
+   *
    */
   export const fromEntries = <
     const Entries extends readonly (readonly [PropertyKey, unknown])[],

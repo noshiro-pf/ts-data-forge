@@ -11,7 +11,7 @@ import { Result } from '../functional/index.mjs';
  * @returns A Promise that resolves to a Result containing either success or error
  *
  * @example
- * ```typescript
+ * ```ts
  * const result = await createPromise<string, Error>((resolve, reject) => {
  *   setTimeout(() => {
  *     if (Math.random() > 0.5) {
@@ -22,12 +22,13 @@ import { Result } from '../functional/index.mjs';
  *   }, 1000);
  * });
  *
- * if (result.isOk()) {
- *   console.log(result.value); // "Success!"
+ * if (Result.isOk(result)) {
+ *   console.log(Result.unwrapOk(result)); // "Success!"
  * } else {
- *   console.log(result.error); // Error: Failed
+ *   console.log(Result.unwrapErr(result)); // Error: Failed
  * }
  * ```
+ *
  */
 export const createPromise = <S, E>(
   executor: (resolve: (value: S) => void, reject: (reason?: E) => void) => void,

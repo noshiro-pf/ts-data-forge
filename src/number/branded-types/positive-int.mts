@@ -39,14 +39,15 @@ const {
  * @returns `true` if the value is a positive integer, `false` otherwise
  *
  * @example
- * ```typescript
- * isPositiveInt(5);    // true
- * isPositiveInt(1);    // true
- * isPositiveInt(0);    // false (zero is not positive)
- * isPositiveInt(-1);   // false (negative)
- * isPositiveInt(5.5);  // false (not an integer)
- * isPositiveInt(NaN);  // false
+ * ```ts
+ * isPositiveInt(5); // true
+ * isPositiveInt(1); // true
+ * isPositiveInt(0); // false (zero is not positive)
+ * isPositiveInt(-1); // false (negative)
+ * isPositiveInt(5.5); // false (not an integer)
+ * isPositiveInt(Number.NaN); // false
  * ```
+ *
  */
 export const isPositiveInt = is;
 
@@ -62,17 +63,22 @@ export const isPositiveInt = is;
  * @throws {TypeError} If the value is not a positive integer
  *
  * @example
- * ```typescript
- * const count = asPositiveInt(5);      // PositiveInt
- * const length = asPositiveInt(100);   // PositiveInt
- * const one = asPositiveInt(1);        // PositiveInt (minimum valid)
+ * ```ts
+ * const count = asPositiveInt(5); // PositiveInt
+ * const length = asPositiveInt(100); // PositiveInt
+ * const one = asPositiveInt(1); // PositiveInt (minimum valid)
+ *
+ * assert(count === 5);
+ * assert(length === 100);
+ * assert(one === 1);
  *
  * // These throw TypeError:
- * // asPositiveInt(0);                 // Zero is not positive
- * // asPositiveInt(-1);                // Negative numbers not allowed
- * // asPositiveInt(5.5);               // Not an integer
- * // asPositiveInt(Infinity);          // Not finite
+ * expect(() => asPositiveInt(0)).toThrow(TypeError); // Zero is not positive
+ * expect(() => asPositiveInt(-1)).toThrow(TypeError); // Negative numbers not allowed
+ * expect(() => asPositiveInt(5.5)).toThrow(TypeError); // Not an integer
+ * expect(() => asPositiveInt(Number.POSITIVE_INFINITY)).toThrow(TypeError); // Not finite
  * ```
+ *
  */
 export const asPositiveInt = castType;
 
@@ -91,34 +97,54 @@ export const asPositiveInt = castType;
  * - Database primary keys and IDs
  *
  * @example
- * ```typescript
+ * ```ts
  * // Type validation
- * PositiveInt.is(5);    // true
- * PositiveInt.is(1);    // true (minimum value)
- * PositiveInt.is(0);    // false
- * PositiveInt.is(-1);   // false
+ * const isValid1 = PositiveInt.is(5); // true
+ * const isValid2 = PositiveInt.is(1); // true (minimum value)
+ * const isValid3 = PositiveInt.is(0); // false
+ * const isValid4 = PositiveInt.is(-1); // false
+ *
+ * assert(isValid1);
+ * assert(isValid2);
+ * assert(!isValid3);
+ * assert(!isValid4);
  *
  * // Automatic clamping in operations
  * const a = asPositiveInt(10);
  * const b = asPositiveInt(3);
  *
- * const sum = PositiveInt.add(a, b);          // PositiveInt (13)
- * const diff1 = PositiveInt.sub(a, b);        // PositiveInt (7)
- * const diff2 = PositiveInt.sub(b, a);        // PositiveInt (1) - clamped!
- * const product = PositiveInt.mul(a, b);      // PositiveInt (30)
- * const quotient = PositiveInt.div(a, b);     // PositiveInt (3)
+ * const sum = PositiveInt.add(a, b); // PositiveInt (13)
+ * const diff1 = PositiveInt.sub(a, b); // PositiveInt (7)
+ * const diff2 = PositiveInt.sub(b, a); // PositiveInt (1) - clamped!
+ * const product = PositiveInt.mul(a, b); // PositiveInt (30)
+ * const quotient = PositiveInt.div(a, b); // PositiveInt (3)
+ *
+ * assert(sum === 13);
+ * assert(diff1 === 7);
+ * assert(diff2 === 1);
+ * assert(product === 30);
+ * assert(quotient === 3);
  *
  * // Edge case: division that would be < 1
  * const small = PositiveInt.div(asPositiveInt(2), asPositiveInt(3)); // PositiveInt (1)
  *
+ * assert(small === 1);
+ *
  * // Range operations
- * const minimum = PositiveInt.min(a, b);      // PositiveInt (3)
- * const maximum = PositiveInt.max(a, b);      // PositiveInt (10)
+ * const minimum = PositiveInt.min(a, b); // PositiveInt (3)
+ * const maximum = PositiveInt.max(a, b); // PositiveInt (10)
+ *
+ * assert(minimum === 3);
+ * assert(maximum === 10);
  *
  * // Random generation
  * const dice = PositiveInt.random(asPositiveInt(1), asPositiveInt(6)); // 1-6
  * const id = PositiveInt.random(asPositiveInt(1000), asPositiveInt(9999)); // 4-digit ID
+ *
+ * assert(dice >= 1 && dice <= 6);
+ * assert(id >= 1000 && id <= 9999);
  * ```
+ *
  */
 export const PositiveInt = {
   /**
@@ -147,10 +173,14 @@ export const PositiveInt = {
    * @returns The smallest value as a PositiveInt
    *
    * @example
-   * ```typescript
-   * PositiveInt.min(asPositiveInt(5), asPositiveInt(3));    // PositiveInt (3)
-   * PositiveInt.min(asPositiveInt(10), asPositiveInt(1), asPositiveInt(7)); // PositiveInt (1)
+   * ```ts
+   * const min1 = PositiveInt.min(asPositiveInt(5), asPositiveInt(3));    // PositiveInt (3)
+   * const min2 = PositiveInt.min(asPositiveInt(10), asPositiveInt(1), asPositiveInt(7)); // PositiveInt (1)
+   *
+   * assert(min1 === 3);
+   * assert(min2 === 1);
    * ```
+   *
    */
   min: min_,
 
@@ -161,10 +191,14 @@ export const PositiveInt = {
    * @returns The largest value as a PositiveInt
    *
    * @example
-   * ```typescript
-   * PositiveInt.max(asPositiveInt(5), asPositiveInt(3));    // PositiveInt (5)
-   * PositiveInt.max(asPositiveInt(10), asPositiveInt(1), asPositiveInt(7)); // PositiveInt (10)
+   * ```ts
+   * const max1 = PositiveInt.max(asPositiveInt(5), asPositiveInt(3));    // PositiveInt (5)
+   * const max2 = PositiveInt.max(asPositiveInt(10), asPositiveInt(1), asPositiveInt(7)); // PositiveInt (10)
+   *
+   * assert(max1 === 5);
+   * assert(max2 === 10);
    * ```
+   *
    */
   max: max_,
 
@@ -178,12 +212,18 @@ export const PositiveInt = {
    * @returns The value clamped to >= 1 as a PositiveInt
    *
    * @example
-   * ```typescript
-   * PositiveInt.clamp(5);    // PositiveInt (5)
-   * PositiveInt.clamp(0);    // PositiveInt (1) - clamped to minimum
-   * PositiveInt.clamp(-10);  // PositiveInt (1) - clamped to minimum
-   * PositiveInt.clamp(100);  // PositiveInt (100)
+   * ```ts
+   * const clamp1 = PositiveInt.clamp(5);    // PositiveInt (5)
+   * const clamp2 = PositiveInt.clamp(0);    // PositiveInt (1) - clamped to minimum
+   * const clamp3 = PositiveInt.clamp(-10);  // PositiveInt (1) - clamped to minimum
+   * const clamp4 = PositiveInt.clamp(100);  // PositiveInt (100)
+   *
+   * assert(clamp1 === 5);
+   * assert(clamp2 === 1);
+   * assert(clamp3 === 1);
+   * assert(clamp4 === 100);
    * ```
+   *
    */
   clamp,
 
@@ -198,7 +238,7 @@ export const PositiveInt = {
    * @returns A random PositiveInt in the range [min, max]
    *
    * @example
-   * ```typescript
+   * ```ts
    * // Dice roll
    * const d6 = PositiveInt.random(asPositiveInt(1), asPositiveInt(6));
    *
@@ -207,7 +247,12 @@ export const PositiveInt = {
    *
    * // Random page count
    * const pages = PositiveInt.random(asPositiveInt(50), asPositiveInt(500));
+   *
+   * assert(d6 >= 1 && d6 <= 6);
+   * assert(userId >= 1000 && userId <= 9999);
+   * assert(pages >= 50 && pages <= 500);
    * ```
+   *
    */
   random,
 
@@ -216,10 +261,14 @@ export const PositiveInt = {
    * @param a - The base positive integer
    * @param b - The exponent positive integer
    * @returns `a ** b` as a PositiveInt, but never less than 1
+   *
    * @example
-   * ```typescript
-   * PositiveInt.pow(asPositiveInt(2), asPositiveInt(3)); // PositiveInt (8)
+   * ```ts
+   * const power = PositiveInt.pow(asPositiveInt(2), asPositiveInt(3)); // PositiveInt (8)
+   *
+   * assert(power === 8);
    * ```
+   *
    */
   pow,
 
@@ -228,10 +277,14 @@ export const PositiveInt = {
    * @param a - First positive integer
    * @param b - Second positive integer
    * @returns `a + b` as a PositiveInt, but never less than 1
+   *
    * @example
-   * ```typescript
-   * PositiveInt.add(asPositiveInt(5), asPositiveInt(3)); // PositiveInt (8)
+   * ```ts
+   * const sum = PositiveInt.add(asPositiveInt(5), asPositiveInt(3)); // PositiveInt (8)
+   *
+   * assert(sum === 8);
    * ```
+   *
    */
   add,
 
@@ -246,11 +299,16 @@ export const PositiveInt = {
    * @returns `max(1, a - b)` as a PositiveInt
    *
    * @example
-   * ```typescript
-   * PositiveInt.sub(asPositiveInt(8), asPositiveInt(3));  // PositiveInt (5)
-   * PositiveInt.sub(asPositiveInt(3), asPositiveInt(8));  // PositiveInt (1) - clamped
-   * PositiveInt.sub(asPositiveInt(5), asPositiveInt(5));  // PositiveInt (1) - clamped
+   * ```ts
+   * const sub1 = PositiveInt.sub(asPositiveInt(8), asPositiveInt(3));  // PositiveInt (5)
+   * const sub2 = PositiveInt.sub(asPositiveInt(3), asPositiveInt(8));  // PositiveInt (1) - clamped
+   * const sub3 = PositiveInt.sub(asPositiveInt(5), asPositiveInt(5));  // PositiveInt (1) - clamped
+   *
+   * assert(sub1 === 5);
+   * assert(sub2 === 1);
+   * assert(sub3 === 1);
    * ```
+   *
    */
   sub,
 
@@ -259,10 +317,14 @@ export const PositiveInt = {
    * @param a - First positive integer
    * @param b - Second positive integer
    * @returns `a * b` as a PositiveInt, but never less than 1
+   *
    * @example
-   * ```typescript
-   * PositiveInt.mul(asPositiveInt(4), asPositiveInt(3)); // PositiveInt (12)
+   * ```ts
+   * const product = PositiveInt.mul(asPositiveInt(4), asPositiveInt(3)); // PositiveInt (12)
+   *
+   * assert(product === 12);
    * ```
+   *
    */
   mul,
 
@@ -277,12 +339,18 @@ export const PositiveInt = {
    * @returns `max(1, ⌊a / b⌋)` as a PositiveInt
    *
    * @example
-   * ```typescript
-   * PositiveInt.div(asPositiveInt(10), asPositiveInt(3)); // PositiveInt (3)
-   * PositiveInt.div(asPositiveInt(9), asPositiveInt(3));  // PositiveInt (3)
-   * PositiveInt.div(asPositiveInt(2), asPositiveInt(3));  // PositiveInt (1) - clamped
-   * PositiveInt.div(asPositiveInt(1), asPositiveInt(5));  // PositiveInt (1) - clamped
+   * ```ts
+   * const div1 = PositiveInt.div(asPositiveInt(10), asPositiveInt(3)); // PositiveInt (3)
+   * const div2 = PositiveInt.div(asPositiveInt(9), asPositiveInt(3));  // PositiveInt (3)
+   * const div3 = PositiveInt.div(asPositiveInt(2), asPositiveInt(3));  // PositiveInt (1) - clamped
+   * const div4 = PositiveInt.div(asPositiveInt(1), asPositiveInt(5));  // PositiveInt (1) - clamped
+   *
+   * assert(div1 === 3);
+   * assert(div2 === 3);
+   * assert(div3 === 1);
+   * assert(div4 === 1);
    * ```
+   *
    */
   div,
 } as const;
