@@ -1,4 +1,5 @@
 import 'ts-repo-utils';
+import { Result } from '../../dist/index.mjs';
 import { projectRootPath } from '../project-root-path.mjs';
 
 /**
@@ -56,7 +57,7 @@ const SAMPLE_MAPPINGS = {
 /**
  * Embeds sample code from ./samples directory into README.md
  */
-const embedSamples = async (): Promise<void> => {
+export const embedSamples = async (): Promise<Result.Base> => {
   console.log('Embedding sample code into README...\n');
 
   const readmePath = path.resolve(projectRootPath, 'README.md');
@@ -70,68 +71,56 @@ const embedSamples = async (): Promise<void> => {
     for (const [sampleFile, mapping] of Object.entries(SAMPLE_MAPPINGS)) {
       const samplePath = path.resolve(samplesDir, sampleFile);
 
-      try {
-        // Read sample file content
-        // eslint-disable-next-line no-await-in-loop
-        const sampleContent = await fs.readFile(samplePath, 'utf8');
+      // Read sample file content
+      // eslint-disable-next-line no-await-in-loop
+      const sampleContent = await fs.readFile(samplePath, 'utf8');
 
-        // Find the section in README
-        const sectionStartIndex = mut_readmeContent.indexOf(mapping.start);
-        if (sectionStartIndex === -1) {
-          console.warn(
-            `⚠️  Section not found for ${sampleFile}: ${mapping.start}`,
-          );
-          continue;
-        }
-
-        // Find the code block within that section
-        const searchStart = sectionStartIndex;
-        const codeBlockStartIndex = mut_readmeContent.indexOf(
-          mapping.codeBlockStart,
-          searchStart,
+      // Find the section in README
+      const sectionStartIndex = mut_readmeContent.indexOf(mapping.start);
+      if (sectionStartIndex === -1) {
+        return Result.err(
+          `⚠️  Section not found for ${sampleFile}: ${mapping.start}`,
         );
-        if (codeBlockStartIndex === -1) {
-          console.warn(`⚠️  Code block start not found for ${sampleFile}`);
-          continue;
-        }
-
-        // Find the end of the code block
-        const codeBlockEndIndex = mut_readmeContent.indexOf(
-          mapping.codeBlockEnd,
-          codeBlockStartIndex + mapping.codeBlockStart.length,
-        );
-        if (codeBlockEndIndex === -1) {
-          console.warn(`⚠️  Code block end not found for ${sampleFile}`);
-          continue;
-        }
-
-        // Replace the code block content
-        const beforeBlock = mut_readmeContent.slice(
-          0,
-          Math.max(0, codeBlockStartIndex + mapping.codeBlockStart.length),
-        );
-        const afterBlock = mut_readmeContent.slice(
-          Math.max(0, codeBlockEndIndex),
-        );
-
-        mut_readmeContent = `${beforeBlock}\n${sampleContent}\n${afterBlock}`;
-
-        console.log(`✓ Updated code block for ${sampleFile}`);
-      } catch (error) {
-        console.error(
-          `⚠️  Could not read sample file ${sampleFile}: ${String(error)}`,
-        );
-        process.exit(1);
       }
+
+      // Find the code block within that section
+      const searchStart = sectionStartIndex;
+      const codeBlockStartIndex = mut_readmeContent.indexOf(
+        mapping.codeBlockStart,
+        searchStart,
+      );
+      if (codeBlockStartIndex === -1) {
+        return Result.err(`⚠️  Code block start not found for ${sampleFile}`);
+      }
+
+      // Find the end of the code block
+      const codeBlockEndIndex = mut_readmeContent.indexOf(
+        mapping.codeBlockEnd,
+        codeBlockStartIndex + mapping.codeBlockStart.length,
+      );
+      if (codeBlockEndIndex === -1) {
+        return Result.err(`⚠️  Code block end not found for ${sampleFile}`);
+      }
+
+      // Replace the code block content
+      const beforeBlock = mut_readmeContent.slice(
+        0,
+        Math.max(0, codeBlockStartIndex + mapping.codeBlockStart.length),
+      );
+      const afterBlock = mut_readmeContent.slice(
+        Math.max(0, codeBlockEndIndex),
+      );
+
+      mut_readmeContent = `${beforeBlock}\n${sampleContent}\n${afterBlock}`;
+
+      console.log(`✓ Updated code block for ${sampleFile}`);
     }
 
     // Write updated README
     await fs.writeFile(readmePath, mut_readmeContent, 'utf8');
-    console.log('\n✅ Successfully embedded all sample code into README.md!');
+
+    return Result.ok(undefined);
   } catch (error) {
-    console.error(`❌ Failed to embed samples: ${String(error)}`);
-    process.exit(1);
+    return Result.err(`❌ Failed to embed samples: ${String(error)}`);
   }
 };
-
-await embedSamples();
