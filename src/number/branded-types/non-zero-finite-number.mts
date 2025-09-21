@@ -72,13 +72,7 @@ export const isNonZeroFiniteNumber = is;
  * @param value The value to cast.
  * @returns The value as a NonZeroFiniteNumber type.
  * @throws {TypeError} If the value is not a non-zero finite number.
- * @example
- * ```typescript
- * const x = asNonZeroFiniteNumber(5.5); // NonZeroFiniteNumber
- * const y = asNonZeroFiniteNumber(-3.2); // NonZeroFiniteNumber
- * // asNonZeroFiniteNumber(0); // throws TypeError
- * // asNonZeroFiniteNumber(Infinity); // throws TypeError
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/non-zero-finite-number/asnonzerofinitenumber-example-1.mts|Sample code}.
  */
 export const asNonZeroFiniteNumber = castType;
 
@@ -89,30 +83,7 @@ export const asNonZeroFiniteNumber = castType;
  * (excluding NaN and Infinity). This type is useful for values that must never be zero,
  * such as denominators, scaling factors, and ratios.
  *
- * @example
- * ```typescript
- * const factor = asNonZeroFiniteNumber(2.5);
- * const multiplier = asNonZeroFiniteNumber(-1.5);
- *
- * // Arithmetic operations that preserve non-zero constraint
- * const result = NonZeroFiniteNumber.add(factor, multiplier);        // NonZeroFiniteNumber (1.0)
- * const difference = NonZeroFiniteNumber.sub(factor, multiplier);    // NonZeroFiniteNumber (4.0)
- * const product = NonZeroFiniteNumber.mul(factor, multiplier);       // NonZeroFiniteNumber (-3.75)
- * const quotient = NonZeroFiniteNumber.div(factor, multiplier);      // NonZeroFiniteNumber (-1.666...)
- *
- * // Utility operations
- * const absolute = NonZeroFiniteNumber.abs(multiplier);              // NonZeroFiniteNumber (1.5)
- * const minimum = NonZeroFiniteNumber.min(factor, multiplier);       // NonZeroFiniteNumber (-1.5)
- * const maximum = NonZeroFiniteNumber.max(factor, multiplier);       // NonZeroFiniteNumber (2.5)
- *
- * // Rounding operations (return NonZeroInt)
- * const rounded = NonZeroFiniteNumber.round(factor);                 // NonZeroInt (3)
- * const floored = NonZeroFiniteNumber.floor(factor);                 // NonZeroInt (2)
- * const ceiled = NonZeroFiniteNumber.ceil(factor);                   // NonZeroInt (3)
- *
- * // Random generation
- * const randomValue = NonZeroFiniteNumber.random();                  // NonZeroFiniteNumber (random non-zero value)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/non-zero-finite-number/nonzerofinitenumber-example-1.mts|Sample code}.
  */
 export const NonZeroFiniteNumber = {
   /**

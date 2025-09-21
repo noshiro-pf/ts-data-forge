@@ -30,37 +30,7 @@ import { asUint32, Uint32 } from '../number/index.mjs';
  *
  * @template T The type of elements stored in the stack.
  *
- * @example
- * ```typescript
- * import { createStack, Stack } from './stack';
- *
- * // Example 1: Basic LIFO operations
- * const operationStack: Stack<string> = createStack<string>();
- *
- * operationStack.push("operation1");  // Add to top
- * operationStack.push("operation2");  // Add to top
- * operationStack.push("operation3");  // Add to top
- *
- * console.log(operationStack.size); // Output: 3
- *
- * // Process operations in LIFO order
- * console.log(operationStack.pop().unwrap()); // "operation3" (last in, first out)
- * console.log(operationStack.pop().unwrap()); // "operation2"
- * console.log(operationStack.size); // Output: 1
- *
- * // Example 2: Undo functionality
- * type Action = { type: string; data: any; timestamp: number };
- * const undoStack: Stack<Action> = createStack<Action>();
- *
- * undoStack.push({ type: "delete", data: { id: 123 }, timestamp: Date.now() });
- * undoStack.push({ type: "edit", data: { field: "name", oldValue: "old" }, timestamp: Date.now() });
- *
- * // Undo last action
- * if (!undoStack.isEmpty) {
- *   const lastAction = undoStack.pop().unwrap();
- *   console.log(`Undoing: ${lastAction.type}`);
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/stack/stack-example-1.mts|Sample code}.
  */
 export type Stack<T> = Readonly<{
   /** Checks if the stack is empty. */
@@ -150,41 +120,7 @@ class StackClass<T> implements Stack<T> {
    *
    * @returns An Optional containing the removed element, or `Optional.none` if the stack is empty.
    *
-   * @example
-   * ```typescript
-   * const stack = createStack<string>();
-   *
-   * // Add some elements
-   * stack.push("bottom");
-   * stack.push("middle");
-   * stack.push("top");
-   *
-   * // Remove elements in LIFO order
-   * const top = stack.pop();
-   * if (top.isSome) {
-   *   console.log(top.value); // "top" (last pushed, first popped)
-   * }
-   *
-   * const middle = stack.pop().unwrap(); // "middle"
-   * console.log(stack.size); // 1
-   *
-   * // Safe handling of empty stack
-   * const emptyStack = createStack<number>();
-   * const result = emptyStack.pop();
-   * if (result.isNone) {
-   *   console.log("Stack is empty");
-   * }
-   *
-   * // Typical usage in algorithms
-   * const pathStack = createStack<string>();
-   * pathStack.push("/home");
-   * pathStack.push("/users");
-   * pathStack.push("/documents");
-   *
-   * // Backtrack one level
-   * const currentDir = pathStack.pop().unwrap(); // "/documents"
-   * const parentDir = pathStack.pop().unwrap();  // "/users"
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/stack/stack-example-2.mts|Sample code 2}.
    */
   pop(): Optional<T> {
     if (this.isEmpty) {
@@ -214,48 +150,7 @@ class StackClass<T> implements Stack<T> {
    *
    * @param value The element to add to the top of the stack.
    *
-   * @example
-   * ```typescript
-   * const actionStack = createStack<string>();
-   *
-   * // Add actions in chronological order
-   * actionStack.push("open file");        // O(1)
-   * actionStack.push("edit content");     // O(1)
-   * actionStack.push("save file");        // O(1)
-   *
-   * console.log(actionStack.size); // 3
-   *
-   * // Actions will be undone in reverse order (LIFO)
-   * while (!actionStack.isEmpty) {
-   *   const action = actionStack.pop().unwrap();
-   *   console.log(`Undoing: ${action}`);
-   * }
-   * // Output:
-   * // Undoing: save file
-   * // Undoing: edit content
-   * // Undoing: open file
-   *
-   * // High-volume pushing (demonstrates amortized O(1) performance)
-   * const dataStack = createStack<number>();
-   *
-   * for (const i of range(1000000)) {
-   *   dataStack.push(i); // Each operation is O(1) amortized
-   * }
-   *
-   * console.log(dataStack.size); // 1000000
-   *
-   * // Function call stack simulation
-   * type StackFrame = { function: string; variables: Record<string, any> };
-   * const callStack = createStack<StackFrame>();
-   *
-   * callStack.push({ function: "main", variables: { argc: 1, argv: ["program"] } });
-   * callStack.push({ function: "process", variables: { data: [1, 2, 3] } });
-   * callStack.push({ function: "validate", variables: { input: "test" } });
-   *
-   * // Current function context is at the top
-   * const currentFrame = callStack.pop().unwrap();
-   * console.log(`Current function: ${currentFrame.function}`);
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/stack/stack-example-3.mts|Sample code 3}.
    */
   push(value: T): void {
     // Resize if buffer is full
@@ -316,109 +211,7 @@ class StackClass<T> implements Stack<T> {
  *                      If provided, the initial buffer capacity will be at least twice the array length.
  * @returns A new Stack instance optimized for high-performance LIFO operations.
  *
- * @example
- * ```typescript
- * import { createStack } from './stack';
- *
- * // Example 1: Function call simulation
- * type FunctionCall = { name: string; args: any[]; context: any };
- * const callStack = createStack<FunctionCall>();
- *
- * // Simulate function calls (push onto stack)
- * callStack.push({ name: "main", args: [], context: {} });              // O(1)
- * callStack.push({ name: "processData", args: [data], context: {} });   // O(1)
- * callStack.push({ name: "validateInput", args: [input], context: {} }); // O(1)
- *
- * // Simulate function returns (pop from stack)
- * while (!callStack.isEmpty) {
- *   const call = callStack.pop().unwrap(); // O(1)
- *   console.log(`Returning from: ${call.name}`);
- * }
- * // Output:
- * // Returning from: validateInput
- * // Returning from: processData
- * // Returning from: main
- *
- * // Example 2: Expression evaluation with operator precedence
- * const operatorStack = createStack<string>();
- * const operandStack = createStack<number>();
- *
- * // Simulate parsing "3 + 4 * 2"
- * operandStack.push(3);
- * operatorStack.push("+");
- * operandStack.push(4);
- * operatorStack.push("*");  // Higher precedence
- * operandStack.push(2);
- *
- * // Process higher precedence first (LIFO)
- * const op = operatorStack.pop().unwrap(); // "*"
- * const b = operandStack.pop().unwrap();   // 2
- * const a = operandStack.pop().unwrap();   // 4
- * operandStack.push(a * b); // Push result: 8
- *
- * // Example 3: Undo/Redo functionality
- * type EditAction = {
- *   type: 'insert' | 'delete' | 'modify';
- *   position: number;
- *   oldValue: string;
- *   newValue: string;
- * };
- *
- * const undoStack = createStack<EditAction>();
- * const redoStack = createStack<EditAction>();
- *
- * // Perform edits (push to undo stack)
- * const edit1: EditAction = { type: 'insert', position: 0, oldValue: '', newValue: 'Hello' };
- * const edit2: EditAction = { type: 'insert', position: 5, oldValue: '', newValue: ' World' };
- *
- * undoStack.push(edit1);
- * undoStack.push(edit2);
- *
- * // Undo last edit
- * if (!undoStack.isEmpty) {
- *   const lastEdit = undoStack.pop().unwrap();
- *   redoStack.push(lastEdit);
- *   console.log(`Undid: ${lastEdit.type} at position ${lastEdit.position}`);
- * }
- *
- * // Example 4: High-throughput data processing
- * const processingStack = createStack<number>();
- *
- * // Add large amount of data (demonstrates amortized O(1) performance)
- * for (const i of range(100000)) {
- *   processingStack.push(i); // Each push is O(1) amortized
- * }
- *
- * // Process data in LIFO order
- * let processedCount = 0;
- * while (!processingStack.isEmpty) {
- *   const value = processingStack.pop().unwrap(); // O(1)
- *   // Process value...
- *   processedCount++;
- * }
- * console.log(`Processed ${processedCount} items`); // 100000
- *
- * // Example 5: Stack with pre-populated data
- * const historyStack = createStack<string>([
- *   "page1.html",
- *   "page2.html",
- *   "page3.html",
- *   "page4.html"
- * ]);
- *
- * console.log(historyStack.size); // Output: 4
- *
- * // Navigate back through history (LIFO order)
- * while (!historyStack.isEmpty) {
- *   const page = historyStack.pop().unwrap();
- *   console.log(`Going back to: ${page}`);
- * }
- * // Output:
- * // Going back to: page4.html (last added, first removed)
- * // Going back to: page3.html
- * // Going back to: page2.html
- * // Going back to: page1.html
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/stack/createstack-example-1.mts|Sample code}.
  */
 export const createStack = <T,>(initialValues?: readonly T[]): Stack<T> =>
   new StackClass<T>(initialValues);

@@ -30,38 +30,7 @@ import { asSafeUint, asUint32 } from '../number/index.mjs';
  *
  * @template T The type of elements stored in the queue.
  *
- * @example
- * ```typescript
- * import { createQueue, Queue } from './queue';
- *
- * // Example 1: Basic FIFO operations
- * const messageQueue: Queue<string> = createQueue<string>();
- *
- * messageQueue.enqueue("first message");   // Add to back
- * messageQueue.enqueue("second message");  // Add to back
- * messageQueue.enqueue("third message");   // Add to back
- *
- * console.log(messageQueue.size); // Output: 3
- *
- * // Process messages in FIFO order
- * console.log(messageQueue.dequeue().unwrap()); // "first message" (first in, first out)
- * console.log(messageQueue.dequeue().unwrap()); // "second message"
- * console.log(messageQueue.size); // Output: 1
- *
- * // Example 2: Task processing system
- * type Task = { id: number; priority: string; action: () => void };
- * const taskQueue: Queue<Task> = createQueue<Task>();
- *
- * taskQueue.enqueue({ id: 1, priority: "high", action: () => console.log("Task 1") });
- * taskQueue.enqueue({ id: 2, priority: "low", action: () => console.log("Task 2") });
- *
- * // Process tasks in order
- * while (!taskQueue.isEmpty) {
- *   const task = taskQueue.dequeue().unwrap();
- *   console.log(`Processing task ${task.id} with ${task.priority} priority`);
- *   task.action();
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/queue/queue-example-1.mts|Sample code}.
  */
 export type Queue<T> = Readonly<{
   /** Checks if the queue is empty. */
@@ -160,31 +129,7 @@ class QueueClass<T> implements Queue<T> {
    *
    * @returns An Optional containing the removed element, or `Optional.none` if the queue is empty.
    *
-   * @example
-   * ```typescript
-   * const queue = createQueue<string>();
-   *
-   * // Add some elements
-   * queue.enqueue("first");
-   * queue.enqueue("second");
-   * queue.enqueue("third");
-   *
-   * // Remove elements in FIFO order
-   * const first = queue.dequeue();
-   * if (first.isSome) {
-   *   console.log(first.value); // "first"
-   * }
-   *
-   * const second = queue.dequeue().unwrap(); // "second"
-   * console.log(queue.size); // 1
-   *
-   * // Safe handling of empty queue
-   * const emptyQueue = createQueue<number>();
-   * const result = emptyQueue.dequeue();
-   * if (result.isNone) {
-   *   console.log("Queue is empty");
-   * }
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/queue/queue-example-2.mts|Sample code 2}.
    */
   dequeue(): Optional<T> {
     if (this.isEmpty) {
@@ -215,32 +160,7 @@ class QueueClass<T> implements Queue<T> {
    *
    * @param value The element to add to the back of the queue.
    *
-   * @example
-   * ```typescript
-   * const taskQueue = createQueue<string>();
-   *
-   * // Add tasks in order of arrival
-   * taskQueue.enqueue("Process order #1001");  // O(1)
-   * taskQueue.enqueue("Send notification");    // O(1)
-   * taskQueue.enqueue("Update inventory");     // O(1)
-   *
-   * console.log(taskQueue.size); // 3
-   *
-   * // Tasks will be processed in the order they were added
-   * while (!taskQueue.isEmpty) {
-   *   const task = taskQueue.dequeue().unwrap();
-   *   console.log(`Executing: ${task}`);
-   * }
-   *
-   * // High-volume enqueueing (demonstrates amortized O(1) performance)
-   * const dataQueue = createQueue<number>();
-   *
-   * for (const i of range(1000000)) {
-   *   dataQueue.enqueue(i); // Each operation is O(1) amortized
-   * }
-   *
-   * console.log(dataQueue.size); // 1000000
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/queue/queue-example-3.mts|Sample code 3}.
    */
   enqueue(value: T): void {
     // Resize if buffer is full
@@ -304,89 +224,7 @@ class QueueClass<T> implements Queue<T> {
  *                      If provided, the initial buffer capacity will be at least twice the array length.
  * @returns A new Queue instance optimized for high-performance FIFO operations.
  *
- * @example
- * ```typescript
- * import { createQueue } from './queue';
- *
- * // Example 1: Basic FIFO workflow
- * const requestQueue = createQueue<string>();
- *
- * // Add requests to the queue
- * requestQueue.enqueue("GET /api/users");     // O(1)
- * requestQueue.enqueue("POST /api/orders");   // O(1)
- * requestQueue.enqueue("DELETE /api/cache");  // O(1)
- *
- * // Process requests in order
- * while (!requestQueue.isEmpty) {
- *   const request = requestQueue.dequeue().unwrap(); // O(1)
- *   console.log(`Processing: ${request}`);
- * }
- * // Output:
- * // Processing: GET /api/users
- * // Processing: POST /api/orders
- * // Processing: DELETE /api/cache
- *
- * // Example 2: High-throughput event processing
- * type Event = { timestamp: number; type: string; data: any };
- * const eventQueue = createQueue<Event>();
- *
- * // Simulate high-volume event ingestion
- * for (const i of range(10000)) {
- *   eventQueue.enqueue({
- *     timestamp: Date.now(),
- *     type: `event-${i % 5}`,
- *     data: { value: i }
- *   }); // Each enqueue is O(1) amortized
- * }
- *
- * // Process events efficiently
- * let processedCount = 0;
- * while (!eventQueue.isEmpty) {
- *   const event = eventQueue.dequeue().unwrap(); // O(1)
- *   // Process event...
- *   processedCount++;
- * }
- * console.log(`Processed ${processedCount} events`); // 10000
- *
- * // Example 3: Queue with pre-populated data
- * const priorityTasks = createQueue<string>([
- *   "Initialize system",
- *   "Load configuration",
- *   "Start services",
- *   "Begin processing"
- * ]);
- *
- * console.log(priorityTasks.size); // Output: 4
- *
- * // Execute tasks in initialization order
- * while (!priorityTasks.isEmpty) {
- *   const task = priorityTasks.dequeue().unwrap();
- *   console.log(`Executing: ${task}`);
- * }
- *
- * // Example 4: Producer-Consumer pattern
- * const workQueue = createQueue<() => Promise<void>>();
- *
- * // Producer: Add work items
- * const addWork = (workFn: () => Promise<void>) => {
- *   workQueue.enqueue(workFn);
- * };
- *
- * // Consumer: Process work items
- * const processWork = async () => {
- *   while (!workQueue.isEmpty) {
- *     const workItem = workQueue.dequeue().unwrap();
- *     await workItem();
- *   }
- * };
- *
- * // Add some work
- * addWork(async () => console.log("Work item 1"));
- * addWork(async () => console.log("Work item 2"));
- *
- * // Process the work
- * await processWork();
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/queue/createqueue-example-1.mts|Sample code}.
  */
 export const createQueue = <T,>(initialValues?: readonly T[]): Queue<T> =>
   new QueueClass<T>(initialValues);

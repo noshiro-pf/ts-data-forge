@@ -28,15 +28,7 @@ const {
  * @param x - The number to check
  * @returns `true` if x is a valid Uint8, `false` otherwise
  *
- * @example
- * ```typescript
- * is(100);   // true
- * is(0);     // true (minimum value)
- * is(255);   // true (maximum value)
- * is(256);   // false (exceeds max)
- * is(-1);    // false (negative)
- * is(5.5);   // false (not integer)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/enum/uint8/uint8-example-1.mts|Sample code}.
  */
 const is = (x: number): x is Uint8 => isImpl(x);
 
@@ -50,17 +42,7 @@ const is = (x: number): x is Uint8 => isImpl(x);
  * @returns The number as a Uint8 branded type
  * @throws {TypeError} If x is not a valid 8-bit unsigned integer
  *
- * @example
- * ```typescript
- * const byte = castType(200);    // Uint8
- * const zero = castType(0);      // Uint8 (minimum)
- * const max = castType(255);     // Uint8 (maximum)
- *
- * // These throw TypeError:
- * // castType(256);              // Exceeds maximum
- * // castType(-1);               // Negative value
- * // castType(1.5);              // Not an integer
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/enum/uint8/uint8-example-2.mts|Sample code 2}.
  */
 const castType = (x: number): Uint8 =>
   // eslint-disable-next-line total-functions/no-unsafe-type-assertion
@@ -79,11 +61,7 @@ const clamp = (a: number): Uint8 => castType(clampImpl(a));
  * @param values - The Uint8 values to compare (at least one required)
  * @returns The smallest value as a Uint8
  *
- * @example
- * ```typescript
- * min_(asUint8(50), asUint8(30), asUint8(100)); // Uint8 (30)
- * min_(asUint8(0), asUint8(255));               // Uint8 (0)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/enum/uint8/uint8-example-3.mts|Sample code 3}.
  */
 const min_ = (...values: readonly Uint8[]): Uint8 =>
   castType(Math.min(...values));
@@ -157,14 +135,7 @@ export const isUint8 = is;
  * @param value The value to cast.
  * @returns The value as a Uint8 type.
  * @throws {TypeError} If the value is not a valid 8-bit unsigned integer.
- * @example
- * ```typescript
- * const x = asUint8(255); // Uint8
- * const y = asUint8(0); // Uint8
- * // asUint8(-1); // throws TypeError
- * // asUint8(256); // throws TypeError
- * // asUint8(1.5); // throws TypeError
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/enum/uint8/asuint8-example-1.mts|Sample code}.
  */
 export const asUint8 = castType;
 
@@ -175,26 +146,7 @@ export const asUint8 = castType;
  * This ensures that all arithmetic maintains the 8-bit unsigned integer constraint,
  * with negative results clamped to 0 and overflow results clamped to MAX_VALUE.
  *
- * @example
- * ```typescript
- * const a = asUint8(200);
- * const b = asUint8(100);
- *
- * // Arithmetic operations with automatic clamping
- * const sum = Uint8.add(a, b);       // Uint8 (255 - clamped to MAX_VALUE)
- * const diff = Uint8.sub(a, b);      // Uint8 (100)
- * const reverseDiff = Uint8.sub(b, a); // Uint8 (0 - clamped to MIN_VALUE)
- * const product = Uint8.mul(a, b);   // Uint8 (255 - clamped due to overflow)
- *
- * // Range operations
- * const clamped = Uint8.clamp(-10);     // Uint8 (0)
- * const minimum = Uint8.min(a, b);      // Uint8 (100)
- * const maximum = Uint8.max(a, b);      // Uint8 (200)
- *
- * // Utility operations
- * const random = Uint8.random(asUint8(50), asUint8(150)); // Uint8 (random value in [50, 150])
- * const power = Uint8.pow(asUint8(2), asUint8(7)); // Uint8 (128)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/enum/uint8/uint8-example-4.mts|Sample code 4}.
  */
 export const Uint8 = {
   /**

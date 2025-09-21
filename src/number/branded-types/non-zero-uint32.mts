@@ -43,14 +43,7 @@ export const isNonZeroUint32 = is;
  * @param value The value to cast.
  * @returns The value as a NonZeroUint32 type.
  * @throws {TypeError} If the value is not a non-zero integer in [1, 2^32).
- * @example
- * ```typescript
- * const x = asNonZeroUint32(1000); // NonZeroUint32
- * const y = asNonZeroUint32(4294967295); // NonZeroUint32
- * // asNonZeroUint32(0); // throws TypeError
- * // asNonZeroUint32(-1); // throws TypeError
- * // asNonZeroUint32(4294967296); // throws TypeError
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/non-zero-uint32/asnonzerouint32-example-1.mts|Sample code}.
  */
 export const asNonZeroUint32 = castType;
 
@@ -61,26 +54,7 @@ export const asNonZeroUint32 = castType;
  * This ensures that all arithmetic maintains the 32-bit non-zero unsigned integer constraint,
  * with results below 1 clamped to MIN_VALUE and overflow results clamped to MAX_VALUE.
  *
- * @example
- * ```typescript
- * const a = asNonZeroUint32(4000000000);
- * const b = asNonZeroUint32(1000000000);
- *
- * // Arithmetic operations with automatic clamping and non-zero constraint
- * const sum = NonZeroUint32.add(a, b);       // NonZeroUint32 (4294967295 - clamped to MAX_VALUE)
- * const diff = NonZeroUint32.sub(a, b);      // NonZeroUint32 (3000000000)
- * const reverseDiff = NonZeroUint32.sub(b, a); // NonZeroUint32 (1 - clamped to MIN_VALUE)
- * const product = NonZeroUint32.mul(a, b);   // NonZeroUint32 (4294967295 - clamped due to overflow)
- *
- * // Range operations (maintaining non-zero constraint)
- * const clamped = NonZeroUint32.clamp(-100);     // NonZeroUint32 (1)
- * const minimum = NonZeroUint32.min(a, b);       // NonZeroUint32 (1000000000)
- * const maximum = NonZeroUint32.max(a, b);       // NonZeroUint32 (4000000000)
- *
- * // Utility operations
- * const random = NonZeroUint32.random();         // NonZeroUint32 (random value in [1, 4294967295])
- * const power = NonZeroUint32.pow(asNonZeroUint32(2), asNonZeroUint32(20)); // NonZeroUint32 (1048576)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/non-zero-uint32/nonzerouint32-example-1.mts|Sample code}.
  */
 export const NonZeroUint32 = {
   /**

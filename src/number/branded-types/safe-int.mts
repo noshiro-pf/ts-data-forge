@@ -42,14 +42,7 @@ const {
  * @param value - The value to check
  * @returns `true` if the value is a safe integer, `false` otherwise
  *
- * @example
- * ```typescript
- * isSafeInt(42);                    // true
- * isSafeInt(Number.MAX_SAFE_INTEGER); // true
- * isSafeInt(Number.MAX_SAFE_INTEGER + 1); // false
- * isSafeInt(3.14);                  // false
- * isSafeInt(NaN);                   // false
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/safe-int/issafeint-example-1.mts|Sample code}.
  */
 export const isSafeInt = is;
 
@@ -64,17 +57,7 @@ export const isSafeInt = is;
  * @returns The value as a SafeInt branded type
  * @throws {TypeError} If the value is not a safe integer
  *
- * @example
- * ```typescript
- * const x = asSafeInt(5);          // SafeInt
- * const y = asSafeInt(-1000);      // SafeInt
- * const z = asSafeInt(2**50);      // SafeInt (within range)
- *
- * // These throw TypeError:
- * // asSafeInt(1.5);                      // Not an integer
- * // asSafeInt(Number.MAX_SAFE_INTEGER + 1); // Exceeds safe range
- * // asSafeInt(2**53);                    // Loss of precision
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/safe-int/assafeint-example-1.mts|Sample code}.
  */
 export const asSafeInt = castType;
 
@@ -93,31 +76,7 @@ export const asSafeInt = castType;
  * - Array indices and sizes
  * - Any integer arithmetic requiring precision guarantees
  *
- * @example
- * ```typescript
- * // Near the boundary
- * const nearMax = asSafeInt(9007199254740990);
- * const increment = asSafeInt(10);
- *
- * // Automatic clamping prevents precision loss
- * const sum = SafeInt.add(nearMax, increment);    // Clamped to MAX_SAFE_INTEGER
- * const product = SafeInt.mul(nearMax, increment); // Clamped to MAX_SAFE_INTEGER
- *
- * // Safe operations
- * const a = asSafeInt(1000000);
- * const b = asSafeInt(500);
- *
- * const diff = SafeInt.sub(a, b);        // SafeInt (999500)
- * const quotient = SafeInt.div(a, b);    // SafeInt (2000)
- * const power = SafeInt.pow(b, asSafeInt(2)); // SafeInt (250000)
- *
- * // Utility operations
- * const absolute = SafeInt.abs(asSafeInt(-42)); // SafeInt (42)
- * const clamped = SafeInt.clamp(2**60);         // SafeInt (MAX_SAFE_INTEGER)
- *
- * // Random generation
- * const die = SafeInt.random(asSafeInt(1), asSafeInt(6)); // Random 1-6
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/safe-int/safeint-example-1.mts|Sample code}.
  */
 export const SafeInt = {
   /**
@@ -151,12 +110,7 @@ export const SafeInt = {
    * @param a - The safe integer value
    * @returns The absolute value as a SafeInt, clamped if necessary
    *
-   * @example
-   * ```typescript
-   * SafeInt.abs(asSafeInt(-42));    // SafeInt (42)
-   * SafeInt.abs(asSafeInt(42));     // SafeInt (42)
-   * SafeInt.abs(SafeInt.MIN_VALUE); // SafeInt (MAX_SAFE_INTEGER)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/safe-int/safe-int-example-1.mts|Sample code}.
    */
   abs,
 
@@ -166,11 +120,7 @@ export const SafeInt = {
    * @param values - The safe integers to compare (at least one required)
    * @returns The smallest value as a SafeInt
    *
-   * @example
-   * ```typescript
-   * SafeInt.min(asSafeInt(5), asSafeInt(3));        // SafeInt (3)
-   * SafeInt.min(asSafeInt(-10), asSafeInt(0), asSafeInt(10)); // SafeInt (-10)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/safe-int/safe-int-example-2.mts|Sample code 2}.
    */
   min: min_,
 
@@ -180,11 +130,7 @@ export const SafeInt = {
    * @param values - The safe integers to compare (at least one required)
    * @returns The largest value as a SafeInt
    *
-   * @example
-   * ```typescript
-   * SafeInt.max(asSafeInt(5), asSafeInt(3));        // SafeInt (5)
-   * SafeInt.max(asSafeInt(-10), asSafeInt(0), asSafeInt(10)); // SafeInt (10)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/safe-int/safe-int-example-3.mts|Sample code 3}.
    */
   max: max_,
 
@@ -204,17 +150,7 @@ export const SafeInt = {
    * @param max - The maximum value (inclusive)
    * @returns A random SafeInt in the range [min, max]
    *
-   * @example
-   * ```typescript
-   * // Dice roll
-   * const d20 = SafeInt.random(asSafeInt(1), asSafeInt(20));
-   *
-   * // Random index for large array
-   * const index = SafeInt.random(asSafeInt(0), asSafeInt(1000000));
-   *
-   * // Can use full safe range
-   * const any = SafeInt.random(SafeInt.MIN_VALUE, SafeInt.MAX_VALUE);
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/safe-int/safe-int-example-4.mts|Sample code 4}.
    */
   random,
 
@@ -260,16 +196,7 @@ export const SafeInt = {
    * @param b - The divisor (must be non-zero)
    * @returns The integer quotient as a SafeInt
    *
-   * @example
-   * ```typescript
-   * SafeInt.div(asSafeInt(10), asSafeInt(3));   // SafeInt (3)
-   * SafeInt.div(asSafeInt(-10), asSafeInt(3));  // SafeInt (-4)
-   *
-   * // Large number division
-   * const large = asSafeInt(1000000000000);
-   * const divisor = asSafeInt(1000000);
-   * SafeInt.div(large, divisor); // SafeInt (1000000)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/safe-int/safe-int-example-5.mts|Sample code 5}.
    */
   div,
 } as const;

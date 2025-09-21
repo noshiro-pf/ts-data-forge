@@ -19,138 +19,17 @@
  * @returns `true` if `key` is an own property of `obj`, `false` otherwise.
  *          When `true`, TypeScript narrows the key type to be a valid key of the object.
  *
- * @example
- * Basic usage with known object structure:
- * ```typescript
- * const obj = { a: 1, b: 2, c: 3 };
- * const userInput: string = getUserInput(); // Could be any string
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/key-is-in/keyisin-example-1.mts|Sample code}.
  *
- * if (keyIsIn(userInput, obj)) {
- *   // userInput is now narrowed to 'a' | 'b' | 'c'
- *   const value = obj[userInput]; // Type-safe access, value is number
- *   console.log(`Value for ${userInput}:`, value);
- * } else {
- *   console.log(`Key '${userInput}' not found in object`);
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/key-is-in/keyisin-example-2.mts|Sample code 2}.
  *
- * @example
- * Dynamic key validation for safe property access:
- * ```typescript
- * const config = {
- *   apiUrl: 'https://api.example.com',
- *   timeout: 5000,
- *   retries: 3
- * } as const;
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/key-is-in/keyisin-example-3.mts|Sample code 3}.
  *
- * function getConfigValue(key: string): unknown {
- *   if (keyIsIn(key, config)) {
- *     // key is now narrowed to 'apiUrl' | 'timeout' | 'retries'
- *     return config[key]; // Safe access with proper typing
- *   }
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/key-is-in/keyisin-example-4.mts|Sample code 4}.
  *
- *   throw new Error(`Invalid config key: ${key}`);
- * }
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/key-is-in/keyisin-example-5.mts|Sample code 5}.
  *
- * // Usage
- * const apiUrl = getConfigValue('apiUrl');    // Returns string
- * const timeout = getConfigValue('timeout');  // Returns number
- * // getConfigValue('invalid') would throw an error
- * ```
- *
- * @example
- * Form field validation:
- * ```typescript
- * interface FormData {
- *   name: string;
- *   email: string;
- *   age: number;
- * }
- *
- * const formData: FormData = getFormData();
- * const requiredFields: readonly string[] = ['name', 'email'] as const;
- *
- * function validateRequiredFields(data: FormData): string[] {
- *   const errors: string[] = [];
- *
- *   for (const field of requiredFields) {
- *     if (keyIsIn(field, data)) {
- *       // field is now narrowed to keyof FormData
- *       const value = data[field];
- *
- *       if (typeof value === 'string' && value.trim() === '') {
- *         errors.push(`${field} is required`);
- *       }
- *     }
- *   }
- *
- *   return errors;
- * }
- * ```
- *
- * @example
- * Safe object property iteration:
- * ```typescript
- * const userPreferences = {
- *   theme: 'dark',
- *   language: 'en',
- *   notifications: true
- * };
- *
- * const settingsToUpdate: string[] = getSettingsFromUser();
- *
- * function updatePreferences(updates: Record<string, unknown>) {
- *   const validUpdates: Partial<typeof userPreferences> = {};
- *
- *   for (const [key, value] of Object.entries(updates)) {
- *     if (keyIsIn(key, userPreferences)) {
- *       // key is now narrowed to valid preference keys
- *       validUpdates[key] = value as typeof userPreferences[typeof key];
- *     } else {
- *       console.warn(`Unknown preference key: ${key}`);
- *     }
- *   }
- *
- *   return { ...userPreferences, ...validUpdates };
- * }
- * ```
- *
- * @example
- * Comparison with hasKey() - different narrowing behavior:
- * ```typescript
- * const obj = { x: 10, y: 20 };
- * const key: string = 'x';
- *
- * // Using keyIsIn - narrows the key type
- * if (keyIsIn(key, obj)) {
- *   // key is now 'x' | 'y'
- *   const value = obj[key]; // Safe access
- * }
- *
- * // Using hasKey - narrows the object type
- * if (hasKey(obj, key)) {
- *   // obj type is narrowed to guarantee the key exists
- *   const value = obj.x; // Direct access
- * }
- * ```
- *
- * @example
- * Working with union types:
- * ```typescript
- * type Config =
- *   | { type: 'database'; host: string; port: number }
- *   | { type: 'file'; path: string }
- *   | { type: 'memory'; maxSize: number };
- *
- * function getConfigProperty(config: Config, propName: string): unknown {
- *   if (keyIsIn(propName, config)) {
- *     // propName is narrowed to valid keys for the specific config type
- *     return config[propName];
- *   }
- *
- *   return undefined;
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/key-is-in/keyisin-example-6.mts|Sample code 6}.
  *
  * @see {@link hasKey} - Similar function that narrows the object type instead of the key type
  */
