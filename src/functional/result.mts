@@ -121,24 +121,7 @@ export namespace Result {
    * @template S The type of the success value.
    * @param value The success value.
    * @returns A `Result.Ok<S>` containing the value.
-   * @example
-   * ```typescript
-   * // Basic success case
-   * const success = Result.ok(42);
-   * console.log(Result.isOk(success)); // true
-   * console.log(Result.unwrapOk(success)); // 42
-   *
-   * // Function that returns a Result
-   * function divide(a: number, b: number): Result<number, string> {
-   *   if (b === 0) {
-   *     return Result.err("Division by zero");
-   *   }
-   *   return Result.ok(a / b);
-   * }
-   *
-   * const result = divide(10, 2);
-   * console.log(Result.unwrapOk(result)); // 5
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/ok-example-1.mts|Sample code}.
    */
   export const ok = <S,>(value: S): Ok<S> => ({
     $$tag: OkTypeTagName,
@@ -154,36 +137,7 @@ export namespace Result {
    * @template E The type of the error value.
    * @param value The error value.
    * @returns A `Result.Err<E>` containing the value.
-   * @example
-   * ```typescript
-   * // Basic error case
-   * const failure = Result.err("Something went wrong");
-   * console.log(Result.isErr(failure)); // true
-   * console.log(Result.unwrapErr(failure)); // "Something went wrong"
-   *
-   * // Function that can fail
-   * function parseInteger(input: string): Result<number, string> {
-   *   const num = parseInt(input, 10);
-   *   if (isNaN(num)) {
-   *     return Result.err(`Invalid number format: ${input}`);
-   *   }
-   *   return Result.ok(num);
-   * }
-   *
-   * const result = parseInteger("abc");
-   * console.log(Result.unwrapErr(result)); // "Invalid number format: abc"
-   *
-   * // Using custom error types
-   * interface ValidationError {
-   *   field: string;
-   *   message: string;
-   * }
-   *
-   * const validationError = Result.err<ValidationError>({
-   *   field: "email",
-   *   message: "Invalid email format"
-   * });
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/err-example-1.mts|Sample code}.
    */
   export const err = <E,>(value: E): Err<E> => ({
     $$tag: ErrTypeTagName,
@@ -207,36 +161,7 @@ export namespace Result {
    * @template R The `Result.Base` type to check.
    * @param result The `Result` to check.
    * @returns `true` if the `Result` is `Result.Ok`, otherwise `false`.
-   * @example
-   * ```typescript
-   * // Basic type guard usage
-   * const result: Result<number, string> = divide(10, 2);
-   *
-   * if (Result.isOk(result)) {
-   *   // TypeScript knows result is Result.Ok<number>
-   *   console.log(result.value); // Safe to access .value
-   *   console.log(Result.unwrapOk(result)); // 5
-   * } else {
-   *   // TypeScript knows result is Result.Err<string>
-   *   console.log(result.value); // Error message
-   * }
-   *
-   * // Using in conditional logic
-   * const processResult = (r: Result<string, Error>) => {
-   *   return Result.isOk(r)
-   *     ? r.value.toUpperCase() // Safe string operations
-   *     : "Error occurred";
-   * };
-   *
-   * // Filtering arrays of Results
-   * const results: Result<number, string>[] = [
-   *   Result.ok(1),
-   *   Result.err("error"),
-   *   Result.ok(2)
-   * ];
-   * const successes = results.filter(Result.isOk);
-   * // successes is Result.Ok<number>[]
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/isok-example-1.mts|Sample code}.
    */
   export const isOk = <R extends Base>(result: R): result is NarrowToOk<R> =>
     result.$$tag === OkTypeTagName;
@@ -252,35 +177,7 @@ export namespace Result {
    * @template R The `Result.Base` type to check.
    * @param result The `Result` to check.
    * @returns `true` if the `Result` is `Result.Err`, otherwise `false`.
-   * @example
-   * ```typescript
-   * // Basic type guard usage
-   * const result: Result<number, string> = divide(10, 0);
-   *
-   * if (Result.isErr(result)) {
-   *   // TypeScript knows result is Result.Err<string>
-   *   console.log(result.value); // Safe to access error .value
-   *   console.log(Result.unwrapErr(result)); // "Division by zero"
-   * } else {
-   *   // TypeScript knows result is Result.Ok<number>
-   *   console.log(result.value); // Success value
-   * }
-   *
-   * // Error handling patterns
-   * const handleResult = (r: Result<Data, ApiError>) => {
-   *   if (Result.isErr(r)) {
-   *     logError(r.value); // Safe error operations
-   *     return null;
-   *   }
-   *   return processData(r.value);
-   * };
-   *
-   * // Collecting errors from multiple Results
-   * const results: Result<string, ValidationError>[] = validateForm();
-   * const errors = results
-   *   .filter(Result.isErr)
-   *   .map(err => err.value); // ValidationError[]
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/iserr-example-1.mts|Sample code}.
    */
   export const isErr = <R extends Base>(result: R): result is NarrowToErr<R> =>
     result.$$tag === ErrTypeTagName;
@@ -298,18 +195,7 @@ export namespace Result {
    * @param toStr An optional function to convert the error value to a string for the error message. Defaults to `String`.
    * @returns The success value if `Result.Ok`.
    * @throws {Error} Error with the stringified error value if the `Result` is `Result.Err`.
-   * @example
-   * ```typescript
-   * const success = Result.ok(42);
-   * console.log(Result.unwrapThrow(success)); // 42
-   *
-   * const failure = Result.err("Network error");
-   * try {
-   *   Result.unwrapThrow(failure); // throws Error: "Network error"
-   * } catch (error) {
-   *   console.log(error.message); // "Network error"
-   * }
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/unwrapthrow-example-1.mts|Sample code}.
    */
   export const unwrapThrow = <R extends Base>(
     result: R,
@@ -335,29 +221,7 @@ export namespace Result {
    * @template R The `Result.Base` type to unwrap.
    * @param result The `Result` to unwrap.
    * @returns The success value if `Result.Ok`, otherwise `undefined`.
-   * @example
-   * ```typescript
-   * // With guaranteed Ok - returns the value
-   * const success = Result.ok(42);
-   * const value = Result.unwrapOk(success); // Type: number, Value: 42
-   *
-   * // With general Result - may return undefined
-   * const maybeResult: Result<string, Error> = fetchData();
-   * const data = Result.unwrapOk(maybeResult); // Type: string | undefined
-   *
-   * // Safe pattern for handling both cases
-   * const result = Result.ok("hello");
-   * const unwrapped = Result.unwrapOk(result);
-   * if (unwrapped !== undefined) {
-   *   console.log(unwrapped.toUpperCase()); // "HELLO"
-   * }
-   *
-   * // Useful in conditional chains
-   * const processResult = (r: Result<number, string>) => {
-   *   const value = Result.unwrapOk(r);
-   *   return value !== undefined ? value * 2 : 0;
-   * };
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/unwrapok-example-1.mts|Sample code}.
    */
   export function unwrapOk<R extends Ok<unknown>>(result: R): UnwrapOk<R>;
 
@@ -377,12 +241,7 @@ export namespace Result {
    * @param result The `Result` to unwrap.
    * @param defaultValue The value to return if `result` is `Result.Err`.
    * @returns The success value if `Result.Ok`, otherwise `defaultValue`.
-   * @example
-   * ```typescript
-   * const result = Result.ok(42);
-   * const value = Result.unwrapOkOr(result, 0);
-   * console.log(value); // 42
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/unwrapokor-example-1.mts|Sample code}.
    */
   export function unwrapOkOr<R extends Base, D>(
     result: R,
@@ -430,18 +289,7 @@ export namespace Result {
    * @param toStr An optional function to convert the success value to a string for the error message when the Result is unexpectedly Ok. Defaults to `String`.
    * @returns The error value if `Result.Err`.
    * @throws {Error} Error with message "Expected Err but got Ok: {value}" if the `Result` is `Result.Ok`.
-   * @example
-   * ```typescript
-   * const failure = Result.err("Network timeout");
-   * console.log(Result.unwrapErrThrow(failure)); // "Network timeout"
-   *
-   * const success = Result.ok(42);
-   * try {
-   *   Result.unwrapErrThrow(success); // throws Error: "Expected Err but got Ok: 42"
-   * } catch (error) {
-   *   console.log(error.message); // "Expected Err but got Ok: 42"
-   * }
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/unwraperrthrow-example-1.mts|Sample code}.
    */
   export const unwrapErrThrow = <R extends Base>(
     result: R,
@@ -468,14 +316,7 @@ export namespace Result {
    * @template R The `Result.Base` type to unwrap.
    * @param result The `Result` to unwrap.
    * @returns The error value if `Result.Err`, otherwise `undefined`.
-   * @example
-   * ```typescript
-   * const failure = Result.err("Connection failed");
-   * console.log(Result.unwrapErr(failure)); // "Connection failed"
-   *
-   * const success = Result.ok(42);
-   * console.log(Result.unwrapErr(success)); // undefined
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/unwraperr-example-1.mts|Sample code}.
    */
   export const unwrapErr = <R extends Base>(
     result: R,
@@ -490,12 +331,7 @@ export namespace Result {
    * @param result The `Result` to unwrap.
    * @param defaultValue The value to return if `result` is `Result.Ok`.
    * @returns The error value if `Result.Err`, otherwise `defaultValue`.
-   * @example
-   * ```typescript
-   * const result = Result.err("failed");
-   * const error = Result.unwrapErrOr(result, "default");
-   * console.log(error); // "failed"
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/unwraperror-example-1.mts|Sample code}.
    */
   export function unwrapErrOr<R extends Base, D>(
     result: R,
@@ -538,18 +374,7 @@ export namespace Result {
    * @param result The `Result` to map.
    * @param mapFn The function to apply to the success value if present.
    * @returns A new `Result<S2, UnwrapErr<R>>`.
-   * @example
-   * ```typescript
-   * // Regular usage
-   * const result = Result.ok(5);
-   * const mapped = Result.map(result, x => x * 2);
-   * console.log(Result.unwrap(mapped)); // 10
-   *
-   * // Curried version for use with pipe
-   * const doubler = Result.map((x: number) => x * 2);
-   * const result2 = pipe(Result.ok(5)).map(doubler).value;
-   * console.log(Result.unwrap(result2)); // 10
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/map-example-1.mts|Sample code}.
    */
   export function map<R extends Base, S2>(
     result: R,
@@ -592,12 +417,7 @@ export namespace Result {
    * @param result The `Result` to map.
    * @param mapFn The function to apply to the error value if present.
    * @returns A new `Result<UnwrapOk<R>, E2>`.
-   * @example
-   * ```typescript
-   * const result = Result.err("error");
-   * const mapped = Result.mapErr(result, e => e.toUpperCase());
-   * console.log(Result.unwrapErr(mapped)); // "ERROR"
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/maperr-example-1.mts|Sample code}.
    */
   export function mapErr<R extends Base, E2>(
     result: R,
@@ -641,12 +461,7 @@ export namespace Result {
    * @param mapFn The function to apply if `result` is `Ok`.
    * @param mapErrFn The function to apply if `result` is `Err`.
    * @returns A new `Result<S2, E2>` based on the applied function.
-   * @example
-   * ```typescript
-   * const result = Result.ok(42);
-   * const folded = Result.fold(result, x => x * 2, () => 0);
-   * console.log(Result.unwrapOk(folded)); // 84
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/fold-example-1.mts|Sample code}.
    */
   export function fold<R extends Base, S2, E2>(
     result: R,
@@ -702,14 +517,7 @@ export namespace Result {
    * @param result The `Result` to flat map.
    * @param flatMapFn The function to apply that returns a `Result`.
    * @returns The result of applying the function, or the original `Err`.
-   * @example
-   * ```typescript
-   * const divide = (a: number, b: number): Result<number, string> =>
-   *   b === 0 ? Result.err("Division by zero") : Result.ok(a / b);
-   *
-   * const result = Result.flatMap(Result.ok(10), x => divide(x, 2));
-   * console.log(Result.unwrapOk(result)); // 5
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/flatmap-example-1.mts|Sample code}.
    */
   export function flatMap<R extends Base, S2, E2>(
     result: R,
@@ -753,12 +561,7 @@ export namespace Result {
    * @param message The error message to throw if the `Result` is `Result.Err`.
    * @returns The success value if `Result.Ok`.
    * @throws Error with the provided message if the `Result` is `Result.Err`.
-   * @example
-   * ```typescript
-   * const result = Result.ok(42);
-   * const value = Result.expectToBe(result, "Operation must succeed");
-   * console.log(value); // 42
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/expecttobe-example-1.mts|Sample code}.
    */
   export function expectToBe<R extends Base>(
     result: R,
@@ -797,9 +600,7 @@ export namespace Result {
    * @internal
    * Utility type to extract the resolved value type from a Promise.
    * @template P The Promise type.
-   * @example
-   * UnwrapPromise<Promise<string>> // string
-   * UnwrapPromise<Promise<number>> // number
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/result-example-1.mts|Sample code}.
    */
   type UnwrapPromise<P extends Promise<unknown>> =
     P extends Promise<infer V> ? V : never;
@@ -831,18 +632,7 @@ export namespace Result {
    * @template T The return type of the function.
    * @param fn The function to execute that may throw.
    * @returns A `Result<T, Error>` containing either the successful result or the caught error.
-   * @example
-   * ```typescript
-   * // Wrapping JSON.parse which can throw
-   * const parseJson = <T>(text: string): Result<T, Error> =>
-   *   Result.fromThrowable(() => JSON.parse(text) as T);
-   *
-   * const validJson = parseJson<{valid: boolean}>('{"valid": true}');
-   * if (Result.isOk(validJson)) {
-   *   console.log(validJson.value.valid); // true
-   * }
-   *
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/fromthrowable-example-1.mts|Sample code}.
    */
   export const fromThrowable = <T,>(fn: () => T): Result<T, Error> => {
     try {
@@ -861,13 +651,7 @@ export namespace Result {
    * @template R The input `Result.Base` type.
    * @param result The `Result` to swap.
    * @returns A new `Result` with success and error swapped.
-   * @example
-   * ```typescript
-   * const okResult = Result.ok(42);
-   * const swapped = Result.swap(okResult);
-   * console.log(Result.isErr(swapped)); // true
-   * console.log(Result.unwrapErr(swapped)); // 42
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/swap-example-1.mts|Sample code}.
    */
   export const swap = <R extends Base>(
     result: R,
@@ -888,19 +672,7 @@ export namespace Result {
    * @template R The input `Result.Base` type.
    * @param result The `Result` to convert.
    * @returns An `Optional<UnwrapOk<R>>` containing the success value or representing `None`.
-   * @example
-   * ```typescript
-   * // Basic conversion
-   * const okResult = Result.ok(42);
-   * const optional = Result.toOptional(okResult);
-   * console.log(Optional.isSome(optional)); // true
-   * console.log(Optional.unwrap(optional)); // 42
-   *
-   * const errResult = Result.err("Network error");
-   * const none = Result.toOptional(errResult);
-   * console.log(Optional.isNone(none)); // true
-   *
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/tooptional-example-1.mts|Sample code}.
    */
   export const toOptional = <R extends Base>(
     result: R,
@@ -913,13 +685,7 @@ export namespace Result {
    * @param result The `Result` to check.
    * @param alternative The alternative `Result` to return if the first is `Err`.
    * @returns The first `Result` if `Ok`, otherwise the alternative.
-   * @example
-   * ```typescript
-   * const primary = Result.err("error");
-   * const fallback = Result.ok("default");
-   * const result = Result.orElse(primary, fallback);
-   * console.log(Result.unwrapOk(result)); // "default"
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/orelse-example-1.mts|Sample code}.
    */
   export function orElse<R extends Base, R2 extends Base>(
     result: R,
@@ -963,16 +729,7 @@ export namespace Result {
    * @param resultA The first `Result`.
    * @param resultB The second `Result`.
    * @returns A `Result` containing a tuple of both values, or the first `Err`.
-   * @example
-   * ```typescript
-   * const a = Result.ok(1);
-   * const b = Result.ok("hello");
-   * const zipped = Result.zip(a, b);
-   * console.log(Result.unwrapOk(zipped)); // [1, "hello"]
-   *
-   * const withErr = Result.zip(a, Result.err("error"));
-   * console.log(Result.unwrapErr(withErr)); // "error"
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/result/zip-example-1.mts|Sample code}.
    */
   export const zip = <S1, E1, S2, E2>(
     resultA: Result<S1, E1>,

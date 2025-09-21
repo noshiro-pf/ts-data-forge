@@ -14,85 +14,17 @@
  * @param consequent - The result that should hold if the condition is true (then part)
  * @returns `true` if the implication holds, `false` otherwise
  *
- * @example Basic truth table demonstration
- * ```typescript
- * ifThen(true, true);   // true  (if true then true = true)
- * ifThen(true, false);  // false (if true then false = false)
- * ifThen(false, true);  // true  (if false then true = true - vacuously true)
- * ifThen(false, false); // true  (if false then false = true - vacuously true)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/if-then/ifthen-example-1.mts|Sample code}.
  *
- * @example Validation logic - "if required then must have value"
- * ```typescript
- * function validateField(value: string, isRequired: boolean): boolean {
- *   const hasValue = value.trim().length > 0;
- *   return ifThen(isRequired, hasValue);
- * }
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/if-then/ifthen-example-2.mts|Sample code 2}.
  *
- * validateField('hello', true);  // true (required and has value)
- * validateField('', true);       // false (required but no value)
- * validateField('', false);      // true (not required, so valid)
- * validateField('hello', false); // true (not required, but has value is fine)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/if-then/ifthen-example-3.mts|Sample code 3}.
  *
- * @example Access control - "if admin then has all permissions"
- * ```typescript
- * function checkPermission(user: User, permission: string): boolean {
- *   const isAdmin = user.role === 'admin';
- *   const hasPermission = user.permissions.includes(permission);
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/if-then/ifthen-example-4.mts|Sample code 4}.
  *
- *   // Admin must have all permissions
- *   return ifThen(isAdmin, hasPermission);
- * }
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/if-then/ifthen-example-5.mts|Sample code 5}.
  *
- * const adminUser = { role: 'admin', permissions: ['read', 'write'] };
- * checkPermission(adminUser, 'delete'); // false (admin without delete permission = invalid)
- *
- * const regularUser = { role: 'user', permissions: ['read'] };
- * checkPermission(regularUser, 'delete'); // true (non-admin without permission is valid)
- * ```
- *
- * @example Contract validation - "if premium then features enabled"
- * ```typescript
- * interface Subscription {
- *   isPremium: boolean;
- *   features: {
- *     advancedAnalytics: boolean;
- *     unlimitedStorage: boolean;
- *     prioritySupport: boolean;
- *   };
- * }
- *
- * function validateSubscription(sub: Subscription): boolean {
- *   // If premium, then all premium features must be enabled
- *   return ifThen(sub.isPremium,
- *     sub.features.advancedAnalytics &&
- *     sub.features.unlimitedStorage &&
- *     sub.features.prioritySupport
- *   );
- * }
- * ```
- *
- * @example Chaining multiple implications
- * ```typescript
- * // "If A then B" AND "If B then C"
- * function validateChain(a: boolean, b: boolean, c: boolean): boolean {
- *   return ifThen(a, b) && ifThen(b, c);
- * }
- *
- * validateChain(true, true, true);   // true (valid chain)
- * validateChain(true, false, true);  // false (breaks at first implication)
- * validateChain(false, false, false); // true (vacuously true chain)
- * ```
- *
- * @example Negation patterns
- * ```typescript
- * // "If not expired then valid" is equivalent to "expired OR valid"
- * const isExpired = Date.now() > expiryDate;
- * const isValid = checkValidity();
- * const result = ifThen(!isExpired, isValid);
- * // Same as: isExpired || isValid
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/if-then/ifthen-example-6.mts|Sample code 6}.
  */
 export const ifThen = (antecedent: boolean, consequent: boolean): boolean =>
   !antecedent || consequent;

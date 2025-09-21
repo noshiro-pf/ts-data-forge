@@ -18,86 +18,13 @@
  * @returns `true` if `u` is an object and not `null`, `false` otherwise.
  *          When `true`, TypeScript narrows the type to `object`.
  *
- * @example
- * Basic usage with different value types:
- * ```typescript
- * isNonNullObject({});           // true (plain object)
- * isNonNullObject([]);           // true (arrays are objects)
- * isNonNullObject(new Date());   // true (Date instance)
- * isNonNullObject(/regex/);      // true (RegExp instance)
- * isNonNullObject(new Map());    // true (Map instance)
- * isNonNullObject(null);         // false (null is not considered object here)
- * isNonNullObject(undefined);    // false (primitive)
- * isNonNullObject("string");     // false (primitive)
- * isNonNullObject(42);           // false (primitive)
- * isNonNullObject(true);         // false (primitive)
- * isNonNullObject(() => {});     // false (functions are not objects in this context)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-non-null-object/isnonnullobject-example-1.mts|Sample code}.
  *
- * @example
- * Type guard usage with unknown values:
- * ```typescript
- * const value: unknown = parseJsonData();
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-non-null-object/isnonnullobject-example-2.mts|Sample code 2}.
  *
- * if (isNonNullObject(value)) {
- *   // value is now typed as object
- *   console.log('Value is an object');
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-non-null-object/isnonnullobject-example-3.mts|Sample code 3}.
  *
- *   // You can now safely use object-specific operations
- *   console.log(Object.keys(value));      // Safe to call Object.keys
- *   console.log(value.toString());        // Safe to call methods
- *
- *   // But you may need additional checks for specific object types
- *   if (Array.isArray(value)) {
- *     console.log('It\'s an array with length:', value.length);
- *   }
- * } else {
- *   console.log('Value is not an object');
- * }
- * ```
- *
- * @example
- * Filtering arrays to find objects:
- * ```typescript
- * const mixedArray: unknown[] = [
- *   { name: 'John' },
- *   'string',
- *   [1, 2, 3],
- *   42,
- *   null,
- *   new Date(),
- *   () => 'function'
- * ];
- *
- * const objects = mixedArray.filter(isNonNullObject);
- * // objects contains: [{ name: 'John' }, [1, 2, 3], Date instance]
- * // Note: includes both plain objects and arrays
- *
- * objects.forEach(obj => {
- *   // Each obj is guaranteed to be an object
- *   console.log('Object type:', obj.constructor.name);
- * });
- * ```
- *
- * @example
- * Progressive type narrowing with other guards:
- * ```typescript
- * const apiResponse: unknown = await fetchData();
- *
- * if (isNonNullObject(apiResponse)) {
- *   // apiResponse is now object
- *
- *   if (isRecord(apiResponse)) {
- *     // Further narrowed to UnknownRecord (plain object, not array)
- *
- *     if (hasKey(apiResponse, 'status')) {
- *       console.log('API status:', apiResponse.status);
- *     }
- *   } else if (Array.isArray(apiResponse)) {
- *     console.log('Response is an array with length:', apiResponse.length);
- *   }
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-non-null-object/isnonnullobject-example-4.mts|Sample code 4}.
  *
  * @see {@link isRecord} - For checking plain objects specifically (excludes arrays)
  */

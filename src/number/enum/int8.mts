@@ -128,16 +128,7 @@ const random = (min: Int8, max: Int8): Int8 =>
  * @param value - The value to check
  * @returns `true` if the value is an Int8, `false` otherwise
  *
- * @example
- * ```typescript
- * isInt8(100);   // true
- * isInt8(-50);   // true
- * isInt8(127);   // true (max value)
- * isInt8(-128);  // true (min value)
- * isInt8(128);   // false (exceeds max)
- * isInt8(-129);  // false (below min)
- * isInt8(5.5);   // false (not integer)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/enum/int8/isint8-example-1.mts|Sample code}.
  */
 export const isInt8 = is;
 
@@ -151,19 +142,7 @@ export const isInt8 = is;
  * @returns The value as an Int8 branded type
  * @throws {TypeError} If the value is not a valid 8-bit signed integer
  *
- * @example
- * ```typescript
- * const byte = asInt8(100);     // Int8
- * const max = asInt8(127);      // Int8 (maximum value)
- * const min = asInt8(-128);     // Int8 (minimum value)
- * const zero = asInt8(0);       // Int8
- *
- * // These throw TypeError:
- * // asInt8(128);               // Exceeds maximum (127)
- * // asInt8(-129);              // Below minimum (-128)
- * // asInt8(1.5);               // Not an integer
- * // asInt8(NaN);               // Not a number
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/enum/int8/asint8-example-1.mts|Sample code}.
  */
 export const asInt8 = castType;
 
@@ -181,32 +160,7 @@ export const asInt8 = castType;
  * - Memory-efficient integer storage
  * - Image processing (signed pixel offsets)
  *
- * @example
- * ```typescript
- * // Basic usage
- * const a = asInt8(100);
- * const b = asInt8(50);
- *
- * // Arithmetic with automatic clamping
- * const sum = Int8.add(a, b);        // Int8 (127) - clamped to maximum
- * const diff = Int8.sub(a, b);       // Int8 (50)
- * const product = Int8.mul(a, b);    // Int8 (127) - clamped due to overflow
- * const quotient = Int8.div(a, b);   // Int8 (2)
- *
- * // Boundary handling
- * const overflow = Int8.add(asInt8(127), asInt8(10));  // Int8 (127) - clamped
- * const underflow = Int8.sub(asInt8(-128), asInt8(10)); // Int8 (-128) - clamped
- *
- * // Utility operations
- * const clamped = Int8.clamp(200);          // Int8 (127)
- * const absolute = Int8.abs(asInt8(-100));  // Int8 (100)
- * const minimum = Int8.min(a, b);           // Int8 (50)
- * const maximum = Int8.max(a, b);           // Int8 (100)
- *
- * // Random generation
- * const die = Int8.random(asInt8(1), asInt8(6));        // Random 1-6
- * const offset = Int8.random(asInt8(-10), asInt8(10));  // Random ±10
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/enum/int8/int8-example-1.mts|Sample code}.
  */
 export const Int8 = {
   /**
@@ -237,10 +191,7 @@ export const Int8 = {
    * @param values - The Int8 values to compare (at least one required)
    * @returns The smallest value as an Int8
    *
-   * @example
-   * ```typescript
-   * Int8.min(asInt8(50), asInt8(-30), asInt8(100)); // Int8 (-30)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/enum/int8/int8-example-2.mts|Sample code 2}.
    */
   min: min_,
 
@@ -250,10 +201,7 @@ export const Int8 = {
    * @param values - The Int8 values to compare (at least one required)
    * @returns The largest value as an Int8
    *
-   * @example
-   * ```typescript
-   * Int8.max(asInt8(50), asInt8(-30), asInt8(100)); // Int8 (100)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/enum/int8/int8-example-3.mts|Sample code 3}.
    */
   max: max_,
 
@@ -280,17 +228,7 @@ export const Int8 = {
    * @param max - The maximum value (inclusive)
    * @returns A random Int8 in the range [min, max]
    *
-   * @example
-   * ```typescript
-   * // Random signed byte
-   * const randomByte = Int8.random(Int8.MIN_VALUE, Int8.MAX_VALUE);
-   *
-   * // Random small range
-   * const dice = Int8.random(asInt8(1), asInt8(6));  // 1-6
-   *
-   * // Random offset
-   * const offset = Int8.random(asInt8(-10), asInt8(10)); // -10 to 10
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/enum/int8/int8-example-4.mts|Sample code 4}.
    */
   random,
 

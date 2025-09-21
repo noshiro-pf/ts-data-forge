@@ -41,13 +41,7 @@ export const isNonZeroInt = is;
  * @param value The value to cast.
  * @returns The value as a NonZeroInt type.
  * @throws {TypeError} If the value is not a non-zero integer.
- * @example
- * ```typescript
- * const x = asNonZeroInt(5); // NonZeroInt
- * const y = asNonZeroInt(-3); // NonZeroInt
- * // asNonZeroInt(0); // throws TypeError
- * // asNonZeroInt(1.5); // throws TypeError
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/non-zero-int/asnonzeroint-example-1.mts|Sample code}.
  */
 export const asNonZeroInt = castType;
 
@@ -57,26 +51,7 @@ export const asNonZeroInt = castType;
  * All operations maintain the non-zero constraint, ensuring that results are always valid NonZeroInt values.
  * Division operations return floor division results, and all arithmetic maintains integer precision.
  *
- * @example
- * ```typescript
- * const a = asNonZeroInt(10);
- * const b = asNonZeroInt(-5);
- *
- * // Arithmetic operations
- * const sum = NonZeroInt.add(a, b);     // NonZeroInt (5)
- * const diff = NonZeroInt.sub(a, b);    // NonZeroInt (15)
- * const product = NonZeroInt.mul(a, b); // NonZeroInt (-50)
- * const quotient = NonZeroInt.div(a, b); // NonZeroInt (-2)
- *
- * // Utility operations
- * const absolute = NonZeroInt.abs(b);   // NonZeroInt (5)
- * const power = NonZeroInt.pow(a, asNonZeroInt(2)); // NonZeroInt (100)
- * const minimum = NonZeroInt.min(a, b); // NonZeroInt (-5)
- * const maximum = NonZeroInt(a, b); // NonZeroInt (10)
- *
- * // Random generation
- * const randomInt = NonZeroInt.random(); // NonZeroInt (random non-zero integer)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/non-zero-int/nonzeroint-example-1.mts|Sample code}.
  */
 export const NonZeroInt = {
   /**

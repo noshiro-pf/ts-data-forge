@@ -62,13 +62,7 @@ export const isNonNegativeFiniteNumber = is;
  * @param value The value to cast.
  * @returns The value as a NonNegativeFiniteNumber type.
  * @throws {TypeError} If the value is not a non-negative finite number.
- * @example
- * ```typescript
- * const x = asNonNegativeFiniteNumber(5.5); // NonNegativeFiniteNumber
- * const y = asNonNegativeFiniteNumber(0); // NonNegativeFiniteNumber
- * // asNonNegativeFiniteNumber(-1); // throws TypeError
- * // asNonNegativeFiniteNumber(Infinity); // throws TypeError
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/non-negative-finite-number/asnonnegativefinitenumber-example-1.mts|Sample code}.
  */
 export const asNonNegativeFiniteNumber = castType;
 
@@ -79,27 +73,7 @@ export const asNonNegativeFiniteNumber = castType;
  * while ensuring results remain finite (excluding NaN and Infinity). This type is useful
  * for representing measurements, distances, weights, and other inherently non-negative values.
  *
- * @example
- * ```typescript
- * const distance = asNonNegativeFiniteNumber(5.5);
- * const speed = asNonNegativeFiniteNumber(2.2);
- *
- * // Arithmetic operations with non-negative clamping
- * const total = NonNegativeFiniteNumber.add(distance, speed);        // NonNegativeFiniteNumber (7.7)
- * const diff = NonNegativeFiniteNumber.sub(speed, distance);        // NonNegativeFiniteNumber (0 - clamped)
- * const area = NonNegativeFiniteNumber.mul(distance, speed);        // NonNegativeFiniteNumber (12.1)
- * const ratio = NonNegativeFiniteNumber.div(distance, speed);       // NonNegativeFiniteNumber (2.5)
- *
- * // Range operations
- * const clamped = NonNegativeFiniteNumber.clamp(-10.5);             // NonNegativeFiniteNumber (0)
- * const minimum = NonNegativeFiniteNumber.min(distance, speed);     // NonNegativeFiniteNumber (2.2)
- * const maximum = NonNegativeFiniteNumber.max(distance, speed);     // NonNegativeFiniteNumber (5.5)
- *
- * // Rounding operations (return Uint)
- * const pixels = NonNegativeFiniteNumber.round(distance);           // Uint (6)
- * const floorValue = NonNegativeFiniteNumber.floor(distance);       // Uint (5)
- * const ceilValue = NonNegativeFiniteNumber.ceil(distance);         // Uint (6)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/non-negative-finite-number/nonnegativefinitenumber-example-1.mts|Sample code}.
  */
 export const NonNegativeFiniteNumber = {
   /**

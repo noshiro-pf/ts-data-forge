@@ -42,13 +42,7 @@ export const isNonNegativeInt16 = is;
  * @param value The value to cast.
  * @returns The value as a NonNegativeInt16 type.
  * @throws {TypeError} If the value is not a non-negative integer in [0, 2^15).
- * @example
- * ```typescript
- * const x = asNonNegativeInt16(1000); // NonNegativeInt16
- * const y = asNonNegativeInt16(0); // NonNegativeInt16
- * // asNonNegativeInt16(-1); // throws TypeError
- * // asNonNegativeInt16(32768); // throws TypeError
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/non-negative-int16/asnonnegativeint16-example-1.mts|Sample code}.
  */
 export const asNonNegativeInt16 = castType;
 
@@ -59,26 +53,7 @@ export const asNonNegativeInt16 = castType;
  * This ensures that all arithmetic maintains the 16-bit non-negative integer constraint,
  * with negative results clamped to 0 and overflow results clamped to MAX_VALUE.
  *
- * @example
- * ```typescript
- * const a = asNonNegativeInt16(30000);
- * const b = asNonNegativeInt16(5000);
- *
- * // Arithmetic operations with automatic clamping
- * const sum = NonNegativeInt16.add(a, b);       // NonNegativeInt16 (32767 - clamped to MAX_VALUE)
- * const diff = NonNegativeInt16.sub(a, b);      // NonNegativeInt16 (25000)
- * const reverseDiff = NonNegativeInt16.sub(b, a); // NonNegativeInt16 (0 - clamped to MIN_VALUE)
- * const product = NonNegativeInt16.mul(a, b);   // NonNegativeInt16 (32767 - clamped due to overflow)
- *
- * // Range operations
- * const clamped = NonNegativeInt16.clamp(-100);     // NonNegativeInt16 (0)
- * const minimum = NonNegativeInt16.min(a, b);       // NonNegativeInt16 (5000)
- * const maximum = NonNegativeInt16.max(a, b);       // NonNegativeInt16 (30000)
- *
- * // Utility operations
- * const random = NonNegativeInt16.random();         // NonNegativeInt16 (random value in [0, 32767])
- * const power = NonNegativeInt16.pow(asNonNegativeInt16(2), asNonNegativeInt16(10)); // NonNegativeInt16 (1024)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/non-negative-int16/nonnegativeint16-example-1.mts|Sample code}.
  */
 export const NonNegativeInt16 = {
   /**

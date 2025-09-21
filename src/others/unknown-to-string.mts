@@ -21,54 +21,11 @@ import { isNonNullish } from '../guard/index.mjs';
  * @param options.prettyPrintObject - If true, objects are formatted with 2-space indentation
  * @returns The string representation of the value. For circular references or non-serializable objects, returns an error message string
  *
- * @example Basic type conversions
- * ```typescript
- * // Primitive types
- * unknownToString('hello');        // 'hello'
- * unknownToString(123);            // '123'
- * unknownToString(true);           // 'true'
- * unknownToString(null);           // 'null'
- * unknownToString(undefined);      // 'undefined'
- * unknownToString(Symbol('test')); // 'Symbol(test)'
- * unknownToString(123n);           // '123'
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-1.mts|Sample code}.
  *
- * // Function conversion
- * const fn = () => 'test';
- * unknownToString(fn); // "() => 'test'"
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-2.mts|Sample code 2}.
  *
- * @example Object stringification
- * ```typescript
- * // Simple object
- * const obj = { a: 1, b: 'hello', c: [1, 2, 3] };
- * const result = unknownToString(obj);
- * console.log(result); // '{"a":1,"b":"hello","c":[1,2,3]}'
- *
- * // Pretty printing
- * const prettyResult = unknownToString(obj, { prettyPrintObject: true });
- * console.log(prettyResult);
- * // {
- * //   "a": 1,
- * //   "b": "hello",
- * //   "c": [
- * //     1,
- * //     2,
- * //     3
- * //   ]
- * // }
- * ```
- *
- * @example Error handling for circular references
- * ```typescript
- * // Circular reference
- * const circular: any = { name: 'parent' };
- * circular.self = circular;
- *
- * const result = unknownToString(circular);
- * console.log(result); // "Converting circular structure to JSON"
- *
- * @example Logging and debugging utilities
- * ```typescript
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-3.mts|Sample code 3}.
  * // Type-safe logger
  * class Logger {
  *   log(message: string, data?: unknown): void {
@@ -85,59 +42,11 @@ import { isNonNullish } from '../guard/index.mjs';
  * logger.log('User data:', { id: 123, name: 'John' });
  * ```
  *
- * @example API response formatting
- * ```typescript
- * // Safe error response formatting
- * function formatErrorResponse(error: unknown): string {
- *   const errorStr = unknownToString(error, { prettyPrintObject: true });
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-4.mts|Sample code 4}.
  *
- *   return JSON.stringify({
- *     success: false,
- *     error: errorStr
- *   });
- * }
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-5.mts|Sample code 5}.
  *
- * try {
- *   // some operation
- * } catch (error) {
- *   const response = formatErrorResponse(error);
- *   res.status(500).send(response);
- * }
- * ```
- *
- * @example Working with special objects
- * ```typescript
- * // Date objects
- * unknownToString(new Date('2023-01-01'));
- * // '"2023-01-01T00:00:00.000Z"' - JSON stringified
- *
- * // Regular expressions
- * unknownToString(/test/gi);
- * // '{}' - RegExp has no enumerable properties
- *
- * // Arrays
- * unknownToString([1, 'two', { three: 3 }]);
- * // '[1,"two",{"three":3}]'
- *
- * // Map and Set (converted to empty objects by JSON.stringify)
- * unknownToString(new Map([['a', 1]])); // '{}'
- * unknownToString(new Set([1, 2, 3]));   // '{}'
- * ```
- *
- * @example Using with validation
- * ```typescript
- * // Simple validation helper
- * function validateAndStringify(input: unknown): string {
- *   const str = unknownToString(input);
- *   const trimmed = str.trim();
- *
- *   if (trimmed.length === 0) {
- *     throw new Error('Empty string');
- *   }
- *
- *   return trimmed;
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-6.mts|Sample code 6}.
  *
  * **Error Handling:**
  * Circular references and non-serializable objects return descriptive error messages instead of throwing

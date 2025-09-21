@@ -38,15 +38,7 @@ const {
  * @param value - The value to check
  * @returns `true` if the value is an integer, `false` otherwise
  *
- * @example
- * ```typescript
- * isInt(5);        // true
- * isInt(-10);      // true
- * isInt(0);        // true
- * isInt(5.5);      // false
- * isInt(NaN);      // false
- * isInt(Infinity); // false
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/isint-example-1.mts|Sample code}.
  */
 export const isInt = is;
 
@@ -61,17 +53,7 @@ export const isInt = is;
  * @returns The value as an Int branded type
  * @throws {TypeError} If the value is not an integer
  *
- * @example
- * ```typescript
- * const x = asInt(5);    // Int
- * const y = asInt(-10);  // Int
- * const z = asInt(0);    // Int
- *
- * // These throw TypeError:
- * // asInt(5.5);         // Not an integer
- * // asInt(NaN);         // Not a number
- * // asInt(Infinity);    // Not finite
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/asint-example-1.mts|Sample code}.
  */
 export const asInt = castType;
 
@@ -86,31 +68,7 @@ export const asInt = castType;
  * (±2^53 - 1), but be aware that very large integers may lose precision
  * in JavaScript's number type.
  *
- * @example
- * ```typescript
- * // Type validation
- * Int.is(42);      // true
- * Int.is(3.14);    // false
- * Int.is(-0);      // true (negative zero is an integer)
- *
- * // Basic arithmetic
- * const a = asInt(10);
- * const b = asInt(3);
- *
- * const sum = Int.add(a, b);      // Int (13)
- * const diff = Int.sub(a, b);     // Int (7)
- * const product = Int.mul(a, b);  // Int (30)
- * const quotient = Int.div(a, b); // Int (3) - floor division
- * const power = Int.pow(a, b);    // Int (1000)
- *
- * // Utility operations
- * const absolute = Int.abs(asInt(-42));    // Int (42)
- * const minimum = Int.min(a, b, asInt(5)); // Int (3)
- * const maximum = Int.max(a, b, asInt(5)); // Int (10)
- *
- * // Random generation
- * const die = Int.random(asInt(1), asInt(6)); // Random Int in [1, 6]
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/int-example-1.mts|Sample code}.
  */
 export const Int = {
   /**
@@ -133,12 +91,7 @@ export const Int = {
    * @param a - The integer value
    * @returns The absolute value as a non-negative Int
    *
-   * @example
-   * ```typescript
-   * Int.abs(asInt(-5));  // Int (5)
-   * Int.abs(asInt(3));   // Int (3)
-   * Int.abs(asInt(-0));  // Int (0)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/int-example-2.mts|Sample code 2}.
    */
   abs,
 
@@ -148,11 +101,7 @@ export const Int = {
    * @param values - The integers to compare (at least one required)
    * @returns The smallest value as an Int
    *
-   * @example
-   * ```typescript
-   * Int.min(asInt(5), asInt(3));           // Int (3)
-   * Int.min(asInt(-10), asInt(0), asInt(10)); // Int (-10)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/int-example-3.mts|Sample code 3}.
    */
   min: min_,
 
@@ -162,11 +111,7 @@ export const Int = {
    * @param values - The integers to compare (at least one required)
    * @returns The largest value as an Int
    *
-   * @example
-   * ```typescript
-   * Int.max(asInt(5), asInt(3));           // Int (5)
-   * Int.max(asInt(-10), asInt(0), asInt(10)); // Int (10)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/int-example-4.mts|Sample code 4}.
    */
   max: max_,
 
@@ -180,17 +125,7 @@ export const Int = {
    * @param max - The maximum value (inclusive)
    * @returns A random Int in the range [min, max]
    *
-   * @example
-   * ```typescript
-   * // Dice roll
-   * const d6 = Int.random(asInt(1), asInt(6));
-   *
-   * // Random array index
-   * const index = Int.random(asInt(0), asInt(array.length - 1));
-   *
-   * // Can generate negative values
-   * const temp = Int.random(asInt(-10), asInt(10));
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/int-example-5.mts|Sample code 5}.
    */
   random,
 
@@ -199,10 +134,7 @@ export const Int = {
    * @param a - The base integer
    * @param b - The exponent integer
    * @returns `a ** b` as an Int
-   * @example
-   * ```typescript
-   * Int.pow(asInt(2), asInt(3)); // Int (8)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/int-example-6.mts|Sample code 6}.
    */
   pow,
 
@@ -211,10 +143,7 @@ export const Int = {
    * @param a - First integer
    * @param b - Second integer
    * @returns `a + b` as an Int
-   * @example
-   * ```typescript
-   * Int.add(asInt(5), asInt(3)); // Int (8)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/int-example-7.mts|Sample code 7}.
    */
   add,
 
@@ -223,10 +152,7 @@ export const Int = {
    * @param a - First integer
    * @param b - Second integer
    * @returns `a - b` as an Int
-   * @example
-   * ```typescript
-   * Int.sub(asInt(8), asInt(3)); // Int (5)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/int-example-8.mts|Sample code 8}.
    */
   sub,
 
@@ -235,10 +161,7 @@ export const Int = {
    * @param a - First integer
    * @param b - Second integer
    * @returns `a * b` as an Int
-   * @example
-   * ```typescript
-   * Int.mul(asInt(4), asInt(3)); // Int (12)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/int-example-9.mts|Sample code 9}.
    */
   mul,
 
@@ -252,17 +175,7 @@ export const Int = {
    * @param b - The divisor (must be non-zero)
    * @returns The integer quotient as an Int
    *
-   * @example
-   * ```typescript
-   * // Positive division
-   * Int.div(asInt(10), asInt(3));   // Int (3)
-   * Int.div(asInt(9), asInt(3));    // Int (3)
-   *
-   * // Negative division (rounds toward -∞)
-   * Int.div(asInt(-10), asInt(3));  // Int (-4)
-   * Int.div(asInt(10), asInt(-3));  // Int (-4)
-   * Int.div(asInt(-10), asInt(-3)); // Int (3)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/int/int-example-10.mts|Sample code 10}.
    */
   div,
 } as const;

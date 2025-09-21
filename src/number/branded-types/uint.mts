@@ -41,13 +41,7 @@ export const isUint = is;
  * @param value The value to cast.
  * @returns The value as a Uint type.
  * @throws {TypeError} If the value is not a non-negative integer.
- * @example
- * ```typescript
- * const x = asUint(5); // Uint
- * const y = asUint(0); // Uint
- * // asUint(-1); // throws TypeError
- * // asUint(1.5); // throws TypeError
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/asuint-example-1.mts|Sample code}.
  */
 export const asUint = castType;
 
@@ -57,26 +51,7 @@ export const asUint = castType;
  * All operations maintain the non-negative constraint by clamping negative results to 0.
  * This ensures that all arithmetic preserves the unsigned integer property.
  *
- * @example
- * ```typescript
- * const a = asUint(100);
- * const b = asUint(150);
- *
- * // Arithmetic operations with non-negative clamping
- * const sum = Uint.add(a, b);       // Uint (250)
- * const diff = Uint.sub(a, b);      // Uint (0 - clamped to MIN_VALUE)
- * const product = Uint.mul(a, b);   // Uint (15000)
- * const quotient = Uint.div(b, a);  // Uint (1)
- *
- * // Range operations
- * const clamped = Uint.clamp(-50);      // Uint (0)
- * const minimum = Uint.min(a, b);       // Uint (100)
- * const maximum = Uint.max(a, b);       // Uint (150)
- *
- * // Utility operations
- * const random = Uint.random();         // Uint (random non-negative integer)
- * const power = Uint.pow(asUint(2), asUint(8)); // Uint (256)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/uint-example-1.mts|Sample code}.
  */
 export const Uint = {
   /**

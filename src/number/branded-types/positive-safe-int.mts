@@ -43,13 +43,7 @@ export const isPositiveSafeInt = is;
  * @param value The value to cast.
  * @returns The value as a PositiveSafeInt type.
  * @throws {TypeError} If the value is not a positive safe integer.
- * @example
- * ```typescript
- * const x = asPositiveSafeInt(5); // PositiveSafeInt
- * const y = asPositiveSafeInt(1000); // PositiveSafeInt
- * // asPositiveSafeInt(0); // throws TypeError
- * // asPositiveSafeInt(-1); // throws TypeError
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-safe-int/aspositivesafeint-example-1.mts|Sample code}.
  */
 export const asPositiveSafeInt = castType;
 
@@ -60,25 +54,7 @@ export const asPositiveSafeInt = castType;
  * This ensures that all arithmetic maintains both the positive constraint and IEEE 754 precision guarantees,
  * preventing precision loss and ensuring results are always positive.
  *
- * @example
- * ```typescript
- * const a = asPositiveSafeInt(1000000);
- * const b = asPositiveSafeInt(2000000);
- *
- * // Arithmetic operations with positive safe range clamping
- * const sum = PositiveSafeInt.add(a, b);          // PositiveSafeInt (3000000)
- * const diff = PositiveSafeInt.sub(a, b);         // PositiveSafeInt (1 - clamped to MIN_VALUE)
- * const product = PositiveSafeInt.mul(a, b);      // PositiveSafeInt (2000000000000)
- *
- * // Range operations
- * const clamped = PositiveSafeInt.clamp(0);           // PositiveSafeInt (1)
- * const minimum = PositiveSafeInt.min(a, b);          // PositiveSafeInt (1000000)
- * const maximum = PositiveSafeInt.max(a, b);          // PositiveSafeInt (2000000)
- *
- * // Utility operations
- * const random = PositiveSafeInt.random();            // PositiveSafeInt (random positive safe integer)
- * const power = PositiveSafeInt.pow(asPositiveSafeInt(2), asPositiveSafeInt(10)); // PositiveSafeInt (1024)
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-safe-int/positivesafeint-example-1.mts|Sample code}.
  */
 export const PositiveSafeInt = {
   /**

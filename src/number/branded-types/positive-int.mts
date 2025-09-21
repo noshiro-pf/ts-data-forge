@@ -38,15 +38,7 @@ const {
  * @param value - The value to check
  * @returns `true` if the value is a positive integer, `false` otherwise
  *
- * @example
- * ```typescript
- * isPositiveInt(5);    // true
- * isPositiveInt(1);    // true
- * isPositiveInt(0);    // false (zero is not positive)
- * isPositiveInt(-1);   // false (negative)
- * isPositiveInt(5.5);  // false (not an integer)
- * isPositiveInt(NaN);  // false
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/ispositiveint-example-1.mts|Sample code}.
  */
 export const isPositiveInt = is;
 
@@ -61,18 +53,7 @@ export const isPositiveInt = is;
  * @returns The value as a PositiveInt branded type
  * @throws {TypeError} If the value is not a positive integer
  *
- * @example
- * ```typescript
- * const count = asPositiveInt(5);      // PositiveInt
- * const length = asPositiveInt(100);   // PositiveInt
- * const one = asPositiveInt(1);        // PositiveInt (minimum valid)
- *
- * // These throw TypeError:
- * // asPositiveInt(0);                 // Zero is not positive
- * // asPositiveInt(-1);                // Negative numbers not allowed
- * // asPositiveInt(5.5);               // Not an integer
- * // asPositiveInt(Infinity);          // Not finite
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/aspositiveint-example-1.mts|Sample code}.
  */
 export const asPositiveInt = castType;
 
@@ -90,35 +71,7 @@ export const asPositiveInt = castType;
  * - Loop counters and iteration counts
  * - Database primary keys and IDs
  *
- * @example
- * ```typescript
- * // Type validation
- * PositiveInt.is(5);    // true
- * PositiveInt.is(1);    // true (minimum value)
- * PositiveInt.is(0);    // false
- * PositiveInt.is(-1);   // false
- *
- * // Automatic clamping in operations
- * const a = asPositiveInt(10);
- * const b = asPositiveInt(3);
- *
- * const sum = PositiveInt.add(a, b);          // PositiveInt (13)
- * const diff1 = PositiveInt.sub(a, b);        // PositiveInt (7)
- * const diff2 = PositiveInt.sub(b, a);        // PositiveInt (1) - clamped!
- * const product = PositiveInt.mul(a, b);      // PositiveInt (30)
- * const quotient = PositiveInt.div(a, b);     // PositiveInt (3)
- *
- * // Edge case: division that would be < 1
- * const small = PositiveInt.div(asPositiveInt(2), asPositiveInt(3)); // PositiveInt (1)
- *
- * // Range operations
- * const minimum = PositiveInt.min(a, b);      // PositiveInt (3)
- * const maximum = PositiveInt.max(a, b);      // PositiveInt (10)
- *
- * // Random generation
- * const dice = PositiveInt.random(asPositiveInt(1), asPositiveInt(6)); // 1-6
- * const id = PositiveInt.random(asPositiveInt(1000), asPositiveInt(9999)); // 4-digit ID
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/positiveint-example-1.mts|Sample code}.
  */
 export const PositiveInt = {
   /**
@@ -146,11 +99,7 @@ export const PositiveInt = {
    * @param values - The positive integers to compare (at least one required)
    * @returns The smallest value as a PositiveInt
    *
-   * @example
-   * ```typescript
-   * PositiveInt.min(asPositiveInt(5), asPositiveInt(3));    // PositiveInt (3)
-   * PositiveInt.min(asPositiveInt(10), asPositiveInt(1), asPositiveInt(7)); // PositiveInt (1)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/positiveint-example-2.mts|Sample code 2}.
    */
   min: min_,
 
@@ -160,11 +109,7 @@ export const PositiveInt = {
    * @param values - The positive integers to compare (at least one required)
    * @returns The largest value as a PositiveInt
    *
-   * @example
-   * ```typescript
-   * PositiveInt.max(asPositiveInt(5), asPositiveInt(3));    // PositiveInt (5)
-   * PositiveInt.max(asPositiveInt(10), asPositiveInt(1), asPositiveInt(7)); // PositiveInt (10)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/positive-int-example-1.mts|Sample code}.
    */
   max: max_,
 
@@ -177,13 +122,7 @@ export const PositiveInt = {
    * @param value - The number to clamp
    * @returns The value clamped to >= 1 as a PositiveInt
    *
-   * @example
-   * ```typescript
-   * PositiveInt.clamp(5);    // PositiveInt (5)
-   * PositiveInt.clamp(0);    // PositiveInt (1) - clamped to minimum
-   * PositiveInt.clamp(-10);  // PositiveInt (1) - clamped to minimum
-   * PositiveInt.clamp(100);  // PositiveInt (100)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/positive-int-example-2.mts|Sample code 2}.
    */
   clamp,
 
@@ -197,17 +136,7 @@ export const PositiveInt = {
    * @param max - The maximum value (inclusive, must be >= min)
    * @returns A random PositiveInt in the range [min, max]
    *
-   * @example
-   * ```typescript
-   * // Dice roll
-   * const d6 = PositiveInt.random(asPositiveInt(1), asPositiveInt(6));
-   *
-   * // Random user ID
-   * const userId = PositiveInt.random(asPositiveInt(1000), asPositiveInt(9999));
-   *
-   * // Random page count
-   * const pages = PositiveInt.random(asPositiveInt(50), asPositiveInt(500));
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/positive-int-example-3.mts|Sample code 3}.
    */
   random,
 
@@ -216,10 +145,7 @@ export const PositiveInt = {
    * @param a - The base positive integer
    * @param b - The exponent positive integer
    * @returns `a ** b` as a PositiveInt, but never less than 1
-   * @example
-   * ```typescript
-   * PositiveInt.pow(asPositiveInt(2), asPositiveInt(3)); // PositiveInt (8)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/positive-int-example-4.mts|Sample code 4}.
    */
   pow,
 
@@ -228,10 +154,7 @@ export const PositiveInt = {
    * @param a - First positive integer
    * @param b - Second positive integer
    * @returns `a + b` as a PositiveInt, but never less than 1
-   * @example
-   * ```typescript
-   * PositiveInt.add(asPositiveInt(5), asPositiveInt(3)); // PositiveInt (8)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/positive-int-example-5.mts|Sample code 5}.
    */
   add,
 
@@ -245,12 +168,7 @@ export const PositiveInt = {
    * @param b - The subtrahend (positive integer)
    * @returns `max(1, a - b)` as a PositiveInt
    *
-   * @example
-   * ```typescript
-   * PositiveInt.sub(asPositiveInt(8), asPositiveInt(3));  // PositiveInt (5)
-   * PositiveInt.sub(asPositiveInt(3), asPositiveInt(8));  // PositiveInt (1) - clamped
-   * PositiveInt.sub(asPositiveInt(5), asPositiveInt(5));  // PositiveInt (1) - clamped
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/positive-int-example-6.mts|Sample code 6}.
    */
   sub,
 
@@ -259,10 +177,7 @@ export const PositiveInt = {
    * @param a - First positive integer
    * @param b - Second positive integer
    * @returns `a * b` as a PositiveInt, but never less than 1
-   * @example
-   * ```typescript
-   * PositiveInt.mul(asPositiveInt(4), asPositiveInt(3)); // PositiveInt (12)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/positive-int-example-7.mts|Sample code 7}.
    */
   mul,
 
@@ -276,13 +191,7 @@ export const PositiveInt = {
    * @param b - The divisor (positive integer, guaranteed non-zero)
    * @returns `max(1, ⌊a / b⌋)` as a PositiveInt
    *
-   * @example
-   * ```typescript
-   * PositiveInt.div(asPositiveInt(10), asPositiveInt(3)); // PositiveInt (3)
-   * PositiveInt.div(asPositiveInt(9), asPositiveInt(3));  // PositiveInt (3)
-   * PositiveInt.div(asPositiveInt(2), asPositiveInt(3));  // PositiveInt (1) - clamped
-   * PositiveInt.div(asPositiveInt(1), asPositiveInt(5));  // PositiveInt (1) - clamped
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/positive-int/positive-int-example-8.mts|Sample code 8}.
    */
   div,
 } as const;

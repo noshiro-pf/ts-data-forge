@@ -16,91 +16,15 @@
  * @returns `true` if `s` is a string with length > 0, `false` otherwise.
  *          When `true`, TypeScript narrows the type to exclude empty strings and nullish values.
  *
- * @example
- * Basic usage with different string types:
- * ```typescript
- * isNonEmptyString("hello");    // true
- * isNonEmptyString(" ");        // true (whitespace is considered non-empty)
- * isNonEmptyString("\t\n");     // true (whitespace characters are non-empty)
- * isNonEmptyString("");         // false
- * isNonEmptyString(null);       // false
- * isNonEmptyString(undefined);  // false
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-non-empty-string/isnonemptystring-example-1.mts|Sample code}.
  *
- * @example
- * Type guard usage with nullable strings:
- * ```typescript
- * const userInput: string | null | undefined = getUserInput();
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-non-empty-string/isnonemptystring-example-2.mts|Sample code 2}.
  *
- * if (isNonEmptyString(userInput)) {
- *   // userInput is now typed as non-empty string
- *   console.log(userInput.charAt(0));     // Safe to access string methods
- *   console.log(userInput.toUpperCase()); // No need for null checks
- *   const length = userInput.length;      // Guaranteed to be > 0
- * } else {
- *   console.log('No valid input provided');
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-non-empty-string/isnonemptystring-example-3.mts|Sample code 3}.
  *
- * @example
- * Working with literal string types:
- * ```typescript
- * type Status = "active" | "inactive" | "" | null;
- * const status: Status = getStatus();
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-non-empty-string/isnonemptystring-example-4.mts|Sample code 4}.
  *
- * if (isNonEmptyString(status)) {
- *   // status is now typed as "active" | "inactive"
- *   console.log(`Status is: ${status}`);
- * }
- * ```
- *
- * @example
- * Form validation patterns:
- * ```typescript
- * interface FormData {
- *   name?: string;
- *   email?: string;
- *   phone?: string;
- * }
- *
- * function validateForm(data: FormData): string[] {
- *   const errors: string[] = [];
- *
- *   if (!isNonEmptyString(data.name)) {
- *     errors.push('Name is required');
- *   }
- *
- *   if (!isNonEmptyString(data.email)) {
- *     errors.push('Email is required');
- *   } else if (!data.email.includes('@')) {
- *     // Safe to access string methods after guard
- *     errors.push('Invalid email format');
- *   }
- *
- *   return errors;
- * }
- * ```
- *
- * @example
- * Filtering arrays of potentially empty strings:
- * ```typescript
- * const responses: (string | null | undefined)[] = [
- *   "hello",
- *   "",
- *   "world",
- *   null,
- *   undefined,
- *   " "
- * ];
- *
- * const validResponses = responses.filter(isNonEmptyString);
- * // validResponses is now string[] containing ["hello", "world", " "]
- *
- * validResponses.forEach(response => {
- *   // Each response is guaranteed to be a non-empty string
- *   console.log(response.trim().toUpperCase());
- * });
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-non-empty-string/isnonemptystring-example-5.mts|Sample code 5}.
  */
 export const isNonEmptyString = <S extends string | null | undefined>(
   s: S,

@@ -10,24 +10,7 @@ import { Result } from '../functional/index.mjs';
  * @param executor - Function that takes resolve and reject callbacks
  * @returns A Promise that resolves to a Result containing either success or error
  *
- * @example
- * ```typescript
- * const result = await createPromise<string, Error>((resolve, reject) => {
- *   setTimeout(() => {
- *     if (Math.random() > 0.5) {
- *       resolve("Success!");
- *     } else {
- *       reject(new Error("Failed"));
- *     }
- *   }, 1000);
- * });
- *
- * if (result.isOk()) {
- *   console.log(result.value); // "Success!"
- * } else {
- *   console.log(result.error); // Error: Failed
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/promise/promise/createpromise-example-1.mts|Sample code}.
  */
 export const createPromise = <S, E>(
   executor: (resolve: (value: S) => void, reject: (reason?: E) => void) => void,
