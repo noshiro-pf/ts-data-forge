@@ -10,3 +10,5 @@ type A = { a: number };
 type B = { b: string };
 expectType<A & B, A>('>='); // intersection extends component
 expectType<A, A & B>('<='); // component extends intersection
+
+export type { A, B };

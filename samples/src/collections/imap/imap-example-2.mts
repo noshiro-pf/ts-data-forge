@@ -37,3 +37,5 @@ const stringKeys = IMap.create<number | string, any>([
 const onlyStringKeys = stringKeys.mapKeys((key) =>
   typeof key === 'string' ? key : key.toString(),
 );
+
+export { onlyStringKeys, stringKeys, updated, userPreferences, withTimestamps };

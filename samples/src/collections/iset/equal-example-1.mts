@@ -29,3 +29,5 @@ const single3 = ISet.create(['different']);
 
 console.log(ISet.equal(single1, single2)); // true
 console.log(ISet.equal(single1, single3)); // false
+
+export { empty1, empty2, numbers1, numbers2, numbers3, permissions1, permissions2, permissions3, single1, single2, single3 };

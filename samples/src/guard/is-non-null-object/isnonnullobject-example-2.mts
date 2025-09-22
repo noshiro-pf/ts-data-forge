@@ -20,3 +20,5 @@ if (isNonNullObject(value)) {
 } else {
   console.log('Value is not an object');
 }
+
+export { value };

@@ -14,3 +14,6 @@ const colorMap = [
 // Type-safe event system
 type EventTuple = readonly ['click', MouseEvent] | readonly ['change', Event];
 const event = tp('click', new MouseEvent('click')) as EventTuple;
+
+export { colorMap, event };
+export type { EventTuple };

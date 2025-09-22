@@ -6,3 +6,5 @@ if (Arr.isArrayOfLength(arr, 3)) {
   // arr is now typed as readonly [number, number, number]
 }
 Arr.isArrayOfLength([1, 2], 3); // false
+
+export { arr };

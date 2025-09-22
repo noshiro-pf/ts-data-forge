@@ -5,3 +5,5 @@ const x = asNonZeroFiniteNumber(5.5); // NonZeroFiniteNumber
 const y = asNonZeroFiniteNumber(-3.2); // NonZeroFiniteNumber
 // asNonZeroFiniteNumber(0); // throws TypeError
 // asNonZeroFiniteNumber(Infinity); // throws TypeError
+
+export { x, y };

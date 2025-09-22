@@ -7,3 +7,5 @@ if (isBoolean(userInput)) {
   // userInput is now typed as boolean
   console.log('Boolean value:', userInput ? 'true' : 'false');
 }
+
+export { userInput };

@@ -16,3 +16,5 @@ assert(result === 'Result: 20');
 const nullValue: number | null = null;
 const nullResult = pipe(nullValue).mapNullable((x) => x * 2).value;
 assert(nullResult === undefined);
+
+export { maybeNumber, nullResult, nullValue, result };

@@ -8,3 +8,5 @@ Arr.filterNot([1, 2, 3, 4], (x) => x % 2 === 0); // [1, 3] (excludes even number
 const excludeEvens = Arr.filterNot((x: number) => x % 2 === 0);
 const result = pipe([1, 2, 3, 4, 5, 6]).map(excludeEvens).value;
 console.log(result); // [1, 3, 5]
+
+export { excludeEvens, result };

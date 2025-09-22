@@ -18,3 +18,5 @@ const short = [1, 2] as const;
 const nums = [1, 2, 3] as const;
 const withString = Arr.set(nums, 0, 'first');
 // readonly ['first' | 1, 2, 3]
+
+export { mixed, nums, short, tpl, updated, withNumber, withString };

@@ -11,3 +11,5 @@ const divisor = asFiniteNumber(userInput);
 if (Num.isNonZero(divisor)) {
   const result = FiniteNumber.div(a, divisor);
 }
+
+export { a, b, divisor };

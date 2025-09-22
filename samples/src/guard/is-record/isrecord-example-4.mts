@@ -43,3 +43,6 @@ function validateUser(data: unknown): User | null {
     },
   };
 }
+
+export { validateUser };
+export type { User };

@@ -7,3 +7,5 @@ import { castMutable } from 'ts-data-forge';
 const readonlyData: readonly string[] = ['a', 'b', 'c'];
 const sortedData = castMutable([...readonlyData]); // Create a copy first!
 legacyApi.sort(sortedData); // API mutates the array
+
+export { readonlyData, sortedData };

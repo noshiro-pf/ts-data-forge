@@ -12,3 +12,5 @@ if (isNumber(userInput)) {
     console.log('Finite number:', userInput);
   }
 }
+
+export { userInput };

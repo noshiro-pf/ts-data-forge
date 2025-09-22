@@ -8,3 +8,5 @@ if (isSymbol(userInput)) {
   console.log('Symbol description:', userInput.description);
   console.log('Symbol string:', userInput.toString());
 }
+
+export { userInput };

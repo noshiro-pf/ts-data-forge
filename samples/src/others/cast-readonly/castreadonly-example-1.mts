@@ -10,3 +10,5 @@ const readonlyArr = castReadonly(mutableArr);
 const mutableObj = { x: 1, y: 2 };
 const readonlyObj = castReadonly(mutableObj);
 // readonlyObj.x = 5; // ❌ TypeScript Error: cannot assign to readonly property
+
+export { mutableArr, mutableObj, readonlyArr, readonlyObj };

@@ -17,3 +17,5 @@ const maximum = SafeUint.max(a, b); // SafeUint (a)
 // Utility operations
 const random = SafeUint.random(); // SafeUint (random safe unsigned integer)
 const power = SafeUint.pow(asSafeUint(2), asSafeUint(20)); // SafeUint (1048576)
+
+export { a, b, clamped, diff, maximum, minimum, power, product, random, sum };

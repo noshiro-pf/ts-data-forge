@@ -21,3 +21,5 @@ const indexSequence = Arr.seq(data.length); // [0, 1, 2, 3]
 expectType<typeof indices, readonly [0, 1, 2, 3]>('=');
 expectType<typeof empty, readonly []>('=');
 expectType<typeof single, readonly [0]>('=');
+
+export { count, data, empty, indexSequence, indices, maybeEmpty, nonEmpty, single };

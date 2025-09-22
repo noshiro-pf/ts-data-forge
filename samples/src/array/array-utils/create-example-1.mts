@@ -24,3 +24,5 @@ const literals = Arr.create(2, 'success' as const); // readonly ['success', 'suc
 expectType<typeof strings, readonly ['hello', 'hello', 'hello']>('=');
 expectType<typeof numbers, readonly [42, 42]>('=');
 expectType<typeof empty, readonly []>('=');
+
+export { count, empty, literals, nonEmpty, numbers, obj, objects, strings };

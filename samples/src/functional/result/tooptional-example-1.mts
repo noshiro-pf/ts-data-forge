@@ -10,3 +10,5 @@ console.log(Optional.unwrap(optional)); // 42
 const errResult = Result.err('Network error');
 const none = Result.toOptional(errResult);
 console.log(Optional.isNone(none)); // true
+
+export { errResult, none, okResult, optional };

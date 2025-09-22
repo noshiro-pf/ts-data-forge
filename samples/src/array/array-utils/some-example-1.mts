@@ -13,3 +13,5 @@ const result = hasNegative([1, 2, -3]); // true
 // Empty array
 const empty: number[] = [];
 const result2 = Arr.some(empty, (n) => n > 0); // false
+
+export { empty, hasEven, hasNegative, isNegative, numbers, result, result2 };

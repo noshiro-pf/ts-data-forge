@@ -40,3 +40,6 @@ callStack.push({ function: 'validate', variables: { input: 'test' } });
 // Current function context is at the top
 const currentFrame = callStack.pop().unwrap();
 console.log(`Current function: ${currentFrame.function}`);
+
+export { actionStack, callStack, currentFrame, dataStack };
+export type { StackFrame };

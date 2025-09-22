@@ -9,3 +9,5 @@ const validJson = parseJson<{ valid: boolean }>('{"valid": true}');
 if (Result.isOk(validJson)) {
   console.log(validJson.value.valid); // true
 }
+
+export { parseJson, validJson };

@@ -18,3 +18,5 @@ const activeUsers = userMap.map((user, id) => ({
   ...user,
   lastSeen: Date.now(),
 })); // O(n)
+
+export { activeUsers, hasUser, newMap, updated, user, userMap };

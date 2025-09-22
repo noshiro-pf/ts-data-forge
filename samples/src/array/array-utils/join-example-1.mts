@@ -12,3 +12,5 @@ if (Result.isOk(result)) {
 const joinWithComma = Arr.join(',');
 const result2 = pipe(['a', 'b', 'c']).map(joinWithComma).value;
 console.log(Result.unwrapOr(result2, '')); // "a,b,c"
+
+export { arr, joinWithComma, result, result2 };

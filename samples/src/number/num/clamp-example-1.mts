@@ -8,3 +8,5 @@ Num.clamp(5, 0, 10); // 5 (within bounds)
 // Curried usage
 const clampToPercent = Num.clamp(0, 100);
 clampToPercent(150); // 100
+
+export { clampToPercent };

@@ -7,3 +7,5 @@ const c = asFiniteNumber(7.8);
 
 FiniteNumber.max(a, b); // FiniteNumber (7.8)
 FiniteNumber.max(a, b, c); // FiniteNumber (7.8)
+
+export { a, b, c };

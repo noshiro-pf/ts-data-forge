@@ -19,3 +19,5 @@ try {
   const response = formatErrorResponse(error);
   res.status(500).send(response);
 }
+
+export { formatErrorResponse };

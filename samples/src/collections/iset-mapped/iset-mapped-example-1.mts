@@ -27,3 +27,6 @@ const user: User = {
 const hasUser = activeUsers.has(user); // O(1)
 const withNewUser = activeUsers.add(user); // O(1) - returns new ISetMapped
 const withoutUser = activeUsers.delete(user); // O(1) - returns new ISetMapped
+
+export { activeUsers, hasUser, keyToUser, user, userToKey, withNewUser, withoutUser };
+export type { User };

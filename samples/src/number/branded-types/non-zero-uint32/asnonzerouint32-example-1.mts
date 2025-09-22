@@ -6,3 +6,5 @@ const y = asNonZeroUint32(4294967295); // NonZeroUint32
 // asNonZeroUint32(0); // throws TypeError
 // asNonZeroUint32(-1); // throws TypeError
 // asNonZeroUint32(4294967296); // throws TypeError
+
+export { x, y };

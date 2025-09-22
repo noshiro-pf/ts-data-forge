@@ -9,3 +9,5 @@ const z = asInt(0); // Int
 // asInt(5.5);         // Not an integer
 // asInt(NaN);         // Not a number
 // asInt(Infinity);    // Not finite
+
+export { x, y, z };

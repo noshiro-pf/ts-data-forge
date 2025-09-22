@@ -49,3 +49,5 @@ expectType<typeof emptyResult, Optional.None>('=');
 expectType<typeof tupleResult, Optional.Some<'first'>>('=');
 expectType<typeof guaranteedResult, Optional.Some<number>>('=');
 expectType<typeof maybeResult, Optional<number>>('=');
+
+export { emptyResult, firstElements, firstObject, firstString, generalArray, getFirstElements, guaranteedResult, maybeResult, nestedArrays, nonEmpty, objects, strings, tupleResult };

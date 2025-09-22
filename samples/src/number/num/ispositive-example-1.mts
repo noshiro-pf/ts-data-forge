@@ -12,3 +12,5 @@ const value = 0 as -1 | 0 | 1 | 2;
 if (Num.isPositive(value)) {
   // value is typed as 1 | 2
 }
+
+export { count, value };

@@ -11,3 +11,5 @@ function processValue(value: string | number[] | null) {
 Arr.isArray([1, 2, 3]); // true
 Arr.isArray('hello'); // false
 Arr.isArray(null); // false
+
+export { processValue };

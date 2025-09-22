@@ -25,3 +25,5 @@ function updatePreferences(updates: Record<string, unknown>) {
 
   return { ...userPreferences, ...validUpdates };
 }
+
+export { settingsToUpdate, updatePreferences, userPreferences };

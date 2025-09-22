@@ -8,3 +8,5 @@ const isExpired = Date.now() > expiryDate;
 const isValid = checkValidity();
 const result = ifThen(!isExpired, isValid);
 // Same as: isExpired || isValid
+
+export { isExpired, isValid, result };

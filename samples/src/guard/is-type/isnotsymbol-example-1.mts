@@ -8,3 +8,6 @@ if (isNotSymbol(key)) {
   // key is now string | number
   console.log('Non-symbol key:', key);
 }
+
+export { key };
+export type { PropertyKey };

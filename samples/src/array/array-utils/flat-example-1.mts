@@ -16,3 +16,5 @@ const result = flattenOnceLevel([
 // Flatten all levels
 const deepNested = [1, [2, [3, [4, 5]]]];
 const allFlat = Arr.flat(deepNested, SafeUint.MAX_VALUE); // [1, 2, 3, 4, 5]
+
+export { allFlat, deepNested, flat1, flat2, flattenOnceLevel, nested, result };

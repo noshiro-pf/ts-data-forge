@@ -11,3 +11,5 @@ const obj = { key: 'value' };
 if (hasKey(obj, 'key')) {
   expectType<typeof obj.key, unknown>('<=');
 }
+
+export { obj };

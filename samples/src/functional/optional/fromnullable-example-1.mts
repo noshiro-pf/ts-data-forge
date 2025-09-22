@@ -8,3 +8,5 @@ console.log(Optional.unwrap(optional)); // "hello"
 const nullValue: string | null = null;
 const noneOptional = Optional.fromNullable(nullValue);
 console.log(Optional.isNone(noneOptional)); // true
+
+export { noneOptional, nullValue, optional, value };

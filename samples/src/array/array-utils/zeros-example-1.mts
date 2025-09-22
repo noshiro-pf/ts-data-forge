@@ -17,3 +17,5 @@ expectType<typeof exactLength, readonly [0, 0, 0]>('=');
 expectType<typeof empty, readonly []>('=');
 expectType<typeof nonEmpty, NonEmptyArray<0>>('=');
 expectType<typeof maybeEmpty, readonly 0[]>('=');
+
+export { count, empty, exactLength, maybeEmpty, nonEmpty };

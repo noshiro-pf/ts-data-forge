@@ -7,3 +7,5 @@ const people = [
 ] as const;
 Arr.maxBy(people, (p) => p.age); // Optional.some({ name: 'Alice', age: 30 })
 Arr.maxBy([], (p) => p.age); // Optional.none
+
+export { people };

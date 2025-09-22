@@ -14,3 +14,5 @@ const first = readonlyNumbers[0]; // ✅ Reading is allowed
 // Mutations are prevented
 // readonlyNumbers[0] = 10; // ❌ TypeScript Error
 // readonlyNumbers.sort(); // ❌ TypeScript Error (sort mutates)
+
+export { doubled, first, numbers, readonlyNumbers, sum };

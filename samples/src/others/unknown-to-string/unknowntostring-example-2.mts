@@ -20,3 +20,5 @@ console.log(prettyResult);
 //     3
 //   ]
 // }
+
+export { obj, prettyResult, result };

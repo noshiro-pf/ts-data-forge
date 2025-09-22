@@ -6,3 +6,5 @@ console.log(Result.unwrapErr(failure)); // "Connection failed"
 
 const success = Result.ok(42);
 console.log(Result.unwrapErr(success)); // undefined
+
+export { failure, success };

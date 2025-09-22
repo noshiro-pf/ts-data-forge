@@ -15,3 +15,5 @@ if (hasKey(obj, 'c')) {
   // This block won't execute at runtime
   console.log(obj.c); // But TypeScript would know 'c' exists if it did
 }
+
+export { obj };

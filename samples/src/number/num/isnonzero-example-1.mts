@@ -12,3 +12,5 @@ const literal = 0 as 0 | 1 | 2;
 if (Num.isNonZero(literal)) {
   // literal is typed as 1 | 2
 }
+
+export { literal, value };

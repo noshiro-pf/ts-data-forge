@@ -6,3 +6,5 @@ const y = asPositiveUint16(65535); // PositiveUint16
 // asPositiveUint16(0); // throws TypeError
 // asPositiveUint16(-1); // throws TypeError
 // asPositiveUint16(65536); // throws TypeError
+
+export { x, y };

@@ -25,3 +25,5 @@ function handleMessage(
 
 handleMessage(tp('error', 'Failed to load'));
 handleMessage(tp('success', { id: 123 }));
+
+export { handleMessage, processCoordinate };

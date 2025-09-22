@@ -6,3 +6,5 @@ console.log(inRange(1)); // true (lower bound)
 console.log(inRange(5)); // true
 console.log(inRange(10)); // true (upper bound)
 console.log(inRange(11)); // false
+
+export { inRange };

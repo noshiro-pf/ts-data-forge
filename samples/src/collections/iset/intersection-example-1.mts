@@ -25,3 +25,5 @@ const nonEmpty = ISet.create([1, 2, 3]);
 const empty = ISet.create<number>([]);
 const withEmpty = ISet.intersection(nonEmpty, empty);
 console.log(withEmpty.isEmpty); // true
+
+export { commonPermissions, completeOverlap, empty, identical1, identical2, noCommon, nonEmpty, rolePermissions, setA, setB, userPermissions, withEmpty };

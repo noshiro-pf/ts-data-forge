@@ -19,3 +19,5 @@ const nums2 = Arr.generate<number>(function* () {
   yield* [2, 3];
   // return 1; // NG - TypeScript error, cannot return T
 });
+
+export { nums, nums2 };

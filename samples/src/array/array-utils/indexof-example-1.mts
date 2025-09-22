@@ -12,3 +12,5 @@ if (Optional.isSome(result)) {
 const findB = Arr.indexOf('b');
 const result2 = pipe(['a', 'b', 'c']).map(findB).value;
 console.log(Optional.unwrapOr(result2, -1)); // 1
+
+export { arr, findB, result, result2 };

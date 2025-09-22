@@ -8,3 +8,5 @@ const parseNumber = (s: string): Optional<number> => {
 
 const result = Optional.flatMap(Optional.some('42'), parseNumber);
 console.log(Optional.unwrap(result)); // 42
+
+export { parseNumber, result };

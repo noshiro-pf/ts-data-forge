@@ -14,3 +14,6 @@ const handleResponse = (response: ApiResponse) =>
     success: 'Data loaded successfully!',
     error: 'Failed to load data',
   });
+
+export { handleResponse };
+export type { ApiResponse };

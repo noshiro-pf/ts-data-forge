@@ -18,3 +18,5 @@ const maximum = PositiveInt16.max(a, b); // PositiveInt16 (30000)
 // Utility operations
 const random = PositiveInt16.random(); // PositiveInt16 (random value in [1, 32767])
 const power = PositiveInt16.pow(asPositiveInt16(2), asPositiveInt16(10)); // PositiveInt16 (1024)
+
+export { a, b, clamped, diff, maximum, minimum, power, product, random, reverseDiff, sum };

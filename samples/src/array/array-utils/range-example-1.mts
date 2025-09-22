@@ -52,3 +52,5 @@ expectType<typeof countdown, readonly SafeInt[]>('='); // General integer array
 expectType<typeof negativeRange, readonly SafeInt[]>('='); // General integer array
 expectType<typeof small, readonly [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]>('='); // Precise tuple
 expectType<typeof beyondSmall, readonly SafeUint[]>('='); // General array (beyond SmallUint)
+
+export { beyondSmall, bigStep, countdown, dynamicEnd, dynamicRange, dynamicStart, emptyRange, evens, fibonacci, indices, invalidRange, invalidReverse, maxSmall, negativeCountdown, negativeRange, odds, range0to2, range1to4, reverseEmpty, reversedIndices, singleElement, small, squares, zeroRange };

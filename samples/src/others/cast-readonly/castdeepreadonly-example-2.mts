@@ -31,3 +31,6 @@ class StateManager {
     this.state.user.profile.settings.theme = theme;
   }
 }
+
+export { StateManager };
+export type { AppState };

@@ -18,3 +18,5 @@ const maximum = Uint.max(a, b); // Uint (150)
 // Utility operations
 const random = Uint.random(); // Uint (random non-negative integer)
 const power = Uint.pow(asUint(2), asUint(8)); // Uint (256)
+
+export { a, b, clamped, diff, maximum, minimum, power, product, quotient, random, sum };

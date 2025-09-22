@@ -14,3 +14,5 @@ definedItems.forEach((item) => {
   // item is guaranteed to be string, never null or undefined
   console.log(item.toUpperCase());
 });
+
+export { definedItems, items };

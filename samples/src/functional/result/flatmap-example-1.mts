@@ -6,3 +6,5 @@ const divide = (a: number, b: number): Result<number, string> =>
 
 const result = Result.flatMap(Result.ok(10), (x) => divide(x, 2));
 console.log(Result.unwrapOk(result)); // 5
+
+export { divide, result };

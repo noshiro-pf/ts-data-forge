@@ -17,3 +17,6 @@ if (isNonNullish(user.profile) && isNonNullish(user.profile.name)) {
   // user.profile.name is now guaranteed to be string
   console.log('User name:', user.profile.name.toUpperCase());
 }
+
+export { user };
+export type { User };

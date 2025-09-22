@@ -22,3 +22,5 @@ function getConfigValue(key: string): unknown {
 const apiUrl = getConfigValue('apiUrl'); // Returns string
 const timeout = getConfigValue('timeout'); // Returns number
 // getConfigValue('invalid') would throw an error
+
+export { apiUrl, config, getConfigValue, timeout };

@@ -25,3 +25,5 @@ function sumArray(numbers: readonly number[]): number {
   }
   return numbers.reduce((sum, n) => sum + n, 0);
 }
+
+export { emptyArray, nonEmptyArray, processArray, sumArray };

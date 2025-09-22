@@ -37,3 +37,5 @@ const emptyTupleCopy = Arr.copy(emptyTuple); // readonly []
 expectType<typeof mutableCopy, number[]>('=');
 expectType<typeof readonlyCopy, readonly [1, 2, 3]>('=');
 expectType<typeof tupleCopy, [string, number, boolean]>('=');
+
+export { emptyArray, emptyCopy, emptyTuple, emptyTupleCopy, mutableCopy, mutableOriginal, objectArray, objectCopy, readonlyCopy, readonlyOriginal, tupleCopy, tupleOriginal };

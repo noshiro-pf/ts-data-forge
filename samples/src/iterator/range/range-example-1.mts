@@ -53,3 +53,5 @@ for (const minute of range(0, 60, 5)) {
 for (const count of range(10, 0, -1)) {
   console.log(`T-minus ${count}`);
 }
+
+export { evens, gen, indices, numbers, testIds };

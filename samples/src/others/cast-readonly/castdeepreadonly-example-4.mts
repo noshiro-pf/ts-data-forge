@@ -24,3 +24,6 @@ function reducer(state: State, action: Action): State {
       return state;
   }
 }
+
+export { reducer };
+export type { State };

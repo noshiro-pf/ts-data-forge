@@ -10,3 +10,5 @@ mutableArr.push(4); // Now allowed by TypeScript
 const readonlyObj: { readonly x: number } = { x: 1 };
 const mutableObj = castMutable(readonlyObj);
 mutableObj.x = 2; // Now allowed by TypeScript
+
+export { mutableArr, mutableObj, readonlyArr, readonlyObj };

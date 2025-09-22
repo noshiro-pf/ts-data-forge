@@ -19,3 +19,6 @@ function formatUserDisplay(user: User): string {
 
 formatUserDisplay({ id: 1, name: 'John', email: 'john@example.com' }); // "JOHN (example.com)"
 formatUserDisplay({ id: 2 }); // "Anonymous "
+
+export { formatUserDisplay };
+export type { User };

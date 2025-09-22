@@ -17,3 +17,5 @@ const maximum = Uint16.max(a, b); // Uint16 (60000)
 // Utility operations
 const random = Uint16.random(); // Uint16 (random value in [0, 65535])
 const power = Uint16.pow(asUint16(2), asUint16(10)); // Uint16 (1024)
+
+export { a, b, clamped, diff, maximum, minimum, power, product, random, sum };

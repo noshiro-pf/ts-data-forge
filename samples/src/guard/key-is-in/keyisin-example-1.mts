@@ -13,3 +13,5 @@ if (keyIsIn(userInput, obj)) {
 } else {
   console.log(`Key '${userInput}' not found in object`);
 }
+
+export { obj, userInput };

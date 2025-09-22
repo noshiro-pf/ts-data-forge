@@ -7,3 +7,5 @@ expectType<ReturnType<typeof createUser>, { id: number; name: string }>('~=');
 const identity = <T,>(x: T): T => x;
 const result = identity('hello');
 expectType<typeof result, string>('=');
+
+export { createUser, identity, result };

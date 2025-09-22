@@ -20,3 +20,5 @@ const processString = (s: string | null) => {
 
 processString('test'); // "PREFIX_TEST"
 processString(null); // undefined
+
+export { addPrefix, parseNumber, processString, toUpperCase };

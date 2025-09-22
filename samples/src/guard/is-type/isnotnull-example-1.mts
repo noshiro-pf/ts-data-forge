@@ -8,3 +8,5 @@ nonNullItems.forEach((item) => {
   // item is guaranteed to be string, not null
   console.log(item.toUpperCase());
 });
+
+export { items, nonNullItems };

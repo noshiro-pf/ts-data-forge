@@ -16,3 +16,5 @@ function transformRecords(data: unknown[]): Record<string, unknown>[] {
       return transformed;
     });
 }
+
+export { transformRecords };

@@ -20,3 +20,5 @@ records.forEach((record) => {
   const keys = Object.keys(record);
   console.log('Object keys:', keys);
 });
+
+export { mixedData, records };

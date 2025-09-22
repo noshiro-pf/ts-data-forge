@@ -31,3 +31,5 @@ pathStack.push('/documents');
 // Backtrack one level
 const currentDir = pathStack.pop().unwrap(); // "/documents"
 const parentDir = pathStack.pop().unwrap(); // "/users"
+
+export { currentDir, emptyStack, middle, parentDir, pathStack, result, stack, top };

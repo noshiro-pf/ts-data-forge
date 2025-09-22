@@ -6,3 +6,5 @@ const pct = FiniteNumber.random(asFiniteNumber(0), asFiniteNumber(100));
 
 // Random coordinate (-1 to 1)
 const coord = FiniteNumber.random(asFiniteNumber(-1), asFiniteNumber(1));
+
+export { coord, pct };

@@ -15,3 +15,5 @@ unknownToString(123n); // '123'
 // Function conversion
 const fn = () => 'test';
 unknownToString(fn); // "() => 'test'"
+
+export { fn };

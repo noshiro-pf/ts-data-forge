@@ -8,3 +8,5 @@ definedItems.forEach((item) => {
   // item is guaranteed to be string, not undefined
   console.log(item.toUpperCase());
 });
+
+export { definedItems, items };

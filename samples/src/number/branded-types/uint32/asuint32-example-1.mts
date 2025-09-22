@@ -5,3 +5,5 @@ const x = asUint32(1000000); // Uint32
 const y = asUint32(0); // Uint32
 // asUint32(-1); // throws TypeError
 // asUint32(5000000000); // throws TypeError
+
+export { x, y };

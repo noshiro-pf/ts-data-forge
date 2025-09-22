@@ -23,3 +23,5 @@ const config = tp(
 // Type-safe destructuring
 const [[, host], [, port], [, secure]] = config;
 // host: 'localhost', port: 3000, secure: true
+
+export { config, host, port, secure, tuple1, tuple2, tuple3 };

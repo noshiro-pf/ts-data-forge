@@ -18,3 +18,6 @@ const userId: UserId = { department: 'engineering', employeeId: 123 };
 const hasUser = userMap.has(userId); // O(1)
 const profile = userMap.get(userId).unwrapOr(defaultProfile); // O(1)
 const updated = userMap.set(userId, newProfile); // O(1) - returns new IMapMapped
+
+export { hasUser, keyToUserId, profile, updated, userId, userIdToKey, userMap };
+export type { UserId };

@@ -11,3 +11,5 @@ mutable.apiKey = 'new-key'; // Dangerous! Other code expects this to be immutabl
 // ✅ Good: Create a copy if you need to mutate
 const configCopy = castMutable({ ...sharedConfig });
 configCopy.apiKey = 'new-key'; // Safe - operating on a copy
+
+export { configCopy, mutable, sharedConfig };

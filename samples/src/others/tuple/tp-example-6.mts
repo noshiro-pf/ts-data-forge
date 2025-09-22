@@ -17,3 +17,5 @@ const pipeline = pipe(tp(5, 10))
   .map(([a, b]) => tp(a + b, a * b))
   .map(([sum, product]) => tp('sum', sum, 'product', product)).value;
 // Type: readonly ['sum', 15, 'product', 50]
+
+export { calculation, divide, pipeline, result };

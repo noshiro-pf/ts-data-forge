@@ -22,3 +22,5 @@ primitives.forEach((primitive) => {
   console.log('Primitive value:', primitive);
   console.log('Type:', typeof primitive);
 });
+
+export { objects, primitives, values };

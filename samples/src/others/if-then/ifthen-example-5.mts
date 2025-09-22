@@ -11,3 +11,5 @@ function validateChain(a: boolean, b: boolean, c: boolean): boolean {
 validateChain(true, true, true); // true (valid chain)
 validateChain(true, false, true); // false (breaks at first implication)
 validateChain(false, false, false); // true (vacuously true chain)
+
+export { validateChain };

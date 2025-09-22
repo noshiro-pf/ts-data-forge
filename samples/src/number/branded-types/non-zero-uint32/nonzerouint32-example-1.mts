@@ -18,3 +18,5 @@ const maximum = NonZeroUint32.max(a, b); // NonZeroUint32 (4000000000)
 // Utility operations
 const random = NonZeroUint32.random(); // NonZeroUint32 (random value in [1, 4294967295])
 const power = NonZeroUint32.pow(asNonZeroUint32(2), asNonZeroUint32(20)); // NonZeroUint32 (1048576)
+
+export { a, b, clamped, diff, maximum, minimum, power, product, random, reverseDiff, sum };

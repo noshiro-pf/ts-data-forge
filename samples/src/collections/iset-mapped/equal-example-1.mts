@@ -90,3 +90,6 @@ const set4 = ISetMapped.create<Point, string>(
 
 // This would be false because the underlying mapped keys are different
 console.log(ISetMapped.equal(set1, set4)); // false
+
+export { alternativeKeyToPoint, alternativePointToKey, empty1, empty2, keyToPoint, keyToUser, pointToKey, set1, set2, set3, set4, userToKey, users1, users2 };
+export type { Point, User };

@@ -6,3 +6,5 @@ const result = Json.stringify(obj);
 if (Result.isOk(result)) {
   console.log(result.value); // '{"name":"John","age":30}'
 }
+
+export { obj, result };

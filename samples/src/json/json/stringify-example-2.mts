@@ -9,3 +9,5 @@ const error = Json.stringify(circular);
 if (Result.isErr(error)) {
   console.log('Stringify failed:', error.value);
 }
+
+export { circular, error };

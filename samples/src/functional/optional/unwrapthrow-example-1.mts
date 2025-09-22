@@ -10,3 +10,5 @@ try {
 } catch (error) {
   console.log(error.message); // "`unwrapThrow()` has failed because it is `None`"
 }
+
+export { empty, userInput };

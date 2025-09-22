@@ -7,3 +7,5 @@ const c = asFiniteNumber(7.8);
 
 FiniteNumber.min(a, b); // FiniteNumber (3.2)
 FiniteNumber.min(a, b, c); // FiniteNumber (3.2)
+
+export { a, b, c };

@@ -14,3 +14,5 @@ const indexed = Arr.map(nums, (x, i) => `${i}:${x}`);
 const mixed = [1, 'hello', true] as const;
 const descriptions = Arr.map(mixed, (x) => `Value: ${x}`);
 // readonly ['Value: 1', 'Value: hello', 'Value: true']
+
+export { descriptions, doubled, indexed, mixed, nums, strings };

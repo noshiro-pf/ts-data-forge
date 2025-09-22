@@ -29,3 +29,6 @@ console.log(
   diffResult.added.toArray().map((t) => t.name),
 );
 // Output: Added tags: ["react", "nextjs"]
+
+export { diffResult, keyToTag, newTags, oldTags, tagToKey };
+export type { Tag };

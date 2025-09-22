@@ -14,3 +14,5 @@ if (isRecord(data) && hasKey(data, 'user')) {
     console.log('User name:', user.name);
   }
 }
+
+export { data };

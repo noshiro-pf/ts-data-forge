@@ -16,3 +16,5 @@ const maximum = NonZeroSafeInt.max(a, b); // NonZeroSafeInt (a)
 
 // Random generation
 const random = NonZeroSafeInt.random(); // NonZeroSafeInt (random non-zero safe integer)
+
+export { a, absolute, b, diff, maximum, minimum, product, random, sum };

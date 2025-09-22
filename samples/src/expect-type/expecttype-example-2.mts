@@ -11,3 +11,5 @@ expectType<typeof sequence, readonly [0, 1, 2, 3, 4]>('=');
 // Dynamic length arrays
 const dynamicArray = Arr.zeros(someLength);
 expectType<typeof dynamicArray, readonly 0[]>('=');
+
+export { dynamicArray, sequence, zeros };

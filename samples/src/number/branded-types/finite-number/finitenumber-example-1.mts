@@ -29,3 +29,5 @@ const maximum = FiniteNumber.max(a, b, asFiniteNumber(5)); // FiniteNumber (10.5
 
 // Random generation
 const rand = FiniteNumber.random(asFiniteNumber(0), asFiniteNumber(1)); // Random in [0, 1]
+
+export { a, absolute, b, ceiled, diff, floored, maximum, minimum, power, product, quotient, rand, rounded, sum, value };

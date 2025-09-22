@@ -67,3 +67,6 @@ const discountedCatalog = catalog.map((product, key) => ({
   ...product,
   price: Math.round(product.price * 0.9), // 10% discount
 }));
+
+export { catalog, discountedCatalog, hondaAccord2022, productKeyToString, stringToProductKey, toyotaCamry2023 };
+export type { Product, ProductKey };

@@ -5,3 +5,5 @@ const x = asNonZeroSafeInt(5); // NonZeroSafeInt
 const y = asNonZeroSafeInt(-1000); // NonZeroSafeInt
 // asNonZeroSafeInt(0); // throws TypeError
 // asNonZeroSafeInt(1.5); // throws TypeError
+
+export { x, y };

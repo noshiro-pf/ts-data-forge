@@ -18,3 +18,5 @@ const maximum = PositiveInt32.max(a, b); // PositiveInt32 (2000000000)
 // Utility operations
 const random = PositiveInt32.random(); // PositiveInt32 (random value in [1, 2147483647])
 const power = PositiveInt32.pow(asPositiveInt32(2), asPositiveInt32(20)); // PositiveInt32 (1048576)
+
+export { a, b, clamped, diff, maximum, minimum, power, product, random, reverseDiff, sum };

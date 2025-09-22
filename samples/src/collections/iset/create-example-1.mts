@@ -35,3 +35,5 @@ function* generatePrimes(): Generator<number> {
 }
 const primes = ISet.create(generatePrimes());
 console.log(primes.size); // Output: 4
+
+export { colors, copiedTags, emptyPermissions, generatePrimes, jsSet, originalTags, primes, processedNumbers, uniqueIds };

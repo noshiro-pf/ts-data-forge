@@ -21,3 +21,5 @@ const power = NonNegativeInt32.pow(
   asNonNegativeInt32(2),
   asNonNegativeInt32(20),
 ); // NonNegativeInt32 (1048576)
+
+export { a, b, clamped, diff, maximum, minimum, power, product, random, reverseDiff, sum };

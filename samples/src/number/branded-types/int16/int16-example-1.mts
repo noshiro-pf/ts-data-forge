@@ -16,3 +16,5 @@ const maximum = Int16.max(a, b); // Int16 (30000)
 
 // Range constants
 const range = Int16.MAX_VALUE - Int16.MIN_VALUE + 1; // 65536
+
+export { a, b, clamped, diff, maximum, minimum, product, range, sum };

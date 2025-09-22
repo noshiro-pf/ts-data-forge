@@ -19,3 +19,5 @@ objects.forEach((obj) => {
   // Each obj is guaranteed to be an object
   console.log('Object type:', obj.constructor.name);
 });
+
+export { mixedArray, objects };

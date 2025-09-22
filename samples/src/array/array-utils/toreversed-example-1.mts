@@ -15,3 +15,5 @@ const empty = [] as const;
 const revEmpty = Arr.toReversed(empty); // readonly []
 const single = [42] as const;
 const revSingle = Arr.toReversed(single); // readonly [42]
+
+export { empty, mixed, nums, revEmpty, revMixed, revSingle, reversed, single };

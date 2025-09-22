@@ -8,3 +8,5 @@ if (isBigint(userInput)) {
   console.log('BigInt value:', userInput.toString());
   const doubled = userInput * 2n; // Safe bigint operations
 }
+
+export { userInput };

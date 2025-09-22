@@ -21,3 +21,5 @@ const queryResult = tp(
 // Configuration flags
 const features = tp('darkMode', 'analytics', 'notifications');
 const enabledFeatures = features.filter((f) => isEnabled(f));
+
+export { count, decrementAction, enabledFeatures, features, incrementAction, queryResult, setCount, useState };

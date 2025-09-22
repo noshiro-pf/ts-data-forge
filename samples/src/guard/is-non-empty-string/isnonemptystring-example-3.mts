@@ -10,3 +10,6 @@ if (isNonEmptyString(status)) {
   // status is now typed as "active" | "inactive"
   console.log(`Status is: ${status}`);
 }
+
+export { status };
+export type { Status };

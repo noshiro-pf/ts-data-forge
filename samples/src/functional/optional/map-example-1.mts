@@ -8,3 +8,5 @@ console.log(Optional.unwrap(mapped)); // 10
 const noneValue = Optional.none;
 const mappedNone = Optional.map(noneValue, (x) => x * 2);
 console.log(Optional.isNone(mappedNone)); // true
+
+export { mapped, mappedNone, noneValue, someNumber };

@@ -18,3 +18,5 @@ const shortString = pipe('hi')
   .map((n) => (n > 3 ? n : undefined)) // number | undefined: undefined
   .mapNullable((n) => n * 10).value; // undefined
 assert(shortString === undefined);
+
+export { complex, shortString };

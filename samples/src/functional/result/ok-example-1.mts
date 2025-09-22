@@ -16,3 +16,5 @@ function divide(a: number, b: number): Result<number, string> {
 
 const result = divide(10, 2);
 console.log(Result.unwrapOk(result)); // 5
+
+export { divide, result, success };

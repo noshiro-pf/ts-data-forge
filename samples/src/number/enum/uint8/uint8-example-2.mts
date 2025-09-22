@@ -8,3 +8,5 @@ const max = castType(255); // Uint8 (maximum)
 // castType(256);              // Exceeds maximum
 // castType(-1);               // Negative value
 // castType(1.5);              // Not an integer
+
+export { byte, max, zero };

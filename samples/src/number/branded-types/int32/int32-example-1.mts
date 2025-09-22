@@ -17,3 +17,5 @@ const maximum = Int32.max(a, b); // Int32 (2000000000)
 // Utility operations
 const absolute = Int32.abs(asInt32(-1000)); // Int32 (1000)
 const random = Int32.random(); // Int32 (random value in valid range)
+
+export { a, absolute, b, clamped, diff, maximum, minimum, product, random, sum };

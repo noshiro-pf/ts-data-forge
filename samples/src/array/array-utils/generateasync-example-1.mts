@@ -22,3 +22,5 @@ const nums2 = await Arr.generateAsync<number>(async function* () {
   yield* [2, 3];
   // return 1; // NG - TypeScript error, cannot return T
 });
+
+export { nums, nums2 };

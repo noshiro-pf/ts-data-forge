@@ -8,3 +8,5 @@ Arr.skip([1, 2, 3, 4] as const, 2); // [3, 4]
 const skipFirst2 = Arr.skip(2);
 const result = pipe([1, 2, 3, 4, 5]).map(skipFirst2).value;
 console.log(result); // [3, 4, 5]
+
+export { result, skipFirst2 };

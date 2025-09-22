@@ -8,3 +8,5 @@ Arr.skipLast([1, 2, 3, 4] as const, 2); // [1, 2]
 const skipLast2 = Arr.skipLast(2);
 const result = pipe([1, 2, 3, 4, 5]).map(skipLast2).value;
 console.log(result); // [1, 2, 3]
+
+export { result, skipLast2 };

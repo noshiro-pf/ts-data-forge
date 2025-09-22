@@ -13,3 +13,5 @@ function processData<T>(data: T): DeepReadonly<T> {
 
 const result = processData({ nested: { value: [1, 2, 3] } });
 // Type of result is DeepReadonly<{ nested: { value: number[] } }>
+
+export { processData, result };

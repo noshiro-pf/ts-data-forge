@@ -14,3 +14,5 @@ console.log(value2); // 0
 const unwrapWithDefault = Optional.unwrapOr('default');
 const result = unwrapWithDefault(Optional.some('hello'));
 console.log(result); // "hello"
+
+export { none, result, some, unwrapWithDefault, value1, value2 };

@@ -13,3 +13,5 @@ if (hasKey(dynamicObj, userInput)) {
 } else {
   console.log(`Key '${userInput}' not found`);
 }
+
+export { dynamicObj, userInput };

@@ -128,3 +128,5 @@ expectType<
   ) => IMap<string, readonly T[]>
 >('=');
 expectType<typeof emptyGroup, IMap<never, readonly never[]>>('=');
+
+export { aStudents, allGrouped, averageAGrade, byBooleanKey, byGradeLevel, byNumberKey, byParity, byPriceRange, byStringKey, bySymbolKey, byType, datasets, emptyGroup, fruitCount, fruitNames, fruits, groupByFirstChar, groupByLength, groupByType, numbers, processedGroups, products, singleGroup, students, uniqueGroups, words };

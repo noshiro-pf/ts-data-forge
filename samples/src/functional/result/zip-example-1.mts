@@ -8,3 +8,5 @@ console.log(Result.unwrapOk(zipped)); // [1, "hello"]
 
 const withErr = Result.zip(a, Result.err('error'));
 console.log(Result.unwrapErr(withErr)); // "error"
+
+export { a, b, withErr, zipped };

@@ -34,3 +34,5 @@ const formatLogEntry = (level: string, message: string) => ({
   icon: logLevelToIcon(level),
   text: `${logLevelToIcon(level)} ${message}`,
 });
+
+export { formatLogEntry, logLevelToColor, logLevelToIcon };

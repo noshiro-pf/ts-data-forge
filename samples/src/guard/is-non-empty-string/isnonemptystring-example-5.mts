@@ -17,3 +17,5 @@ validResponses.forEach((response) => {
   // Each response is guaranteed to be a non-empty string
   console.log(response.trim().toUpperCase());
 });
+
+export { responses, validResponses };

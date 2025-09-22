@@ -28,3 +28,6 @@ function validateRequiredFields(data: FormData): string[] {
 
   return errors;
 }
+
+export { formData, requiredFields, validateRequiredFields };
+export type { FormData };

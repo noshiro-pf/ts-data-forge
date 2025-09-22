@@ -31,3 +31,6 @@ const memoizedProcess = memoizeFunction(
   processUserData,
   (user, orgId) => `${user.id}:${orgId}`, // Composite key with separator
 );
+
+export { fetchUserPermissions, memoizedFetchPermissions, memoizedProcess, processUserData };
+export type { User };
