@@ -1,7 +1,5 @@
 // Sample code extracted from src/expect-type.mts (expectType)
 
-import { expectType } from './expect-type.mjs';
-
 // Primitive type equality
 expectType<string, string>('='); // ✓ exact match
 expectType<number, string>('!='); // ✓ different types

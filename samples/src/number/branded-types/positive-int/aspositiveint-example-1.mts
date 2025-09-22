@@ -10,3 +10,5 @@ const one = asPositiveInt(1); // PositiveInt (minimum valid)
 // asPositiveInt(-1);                // Negative numbers not allowed
 // asPositiveInt(5.5);               // Not an integer
 // asPositiveInt(Infinity);          // Not finite
+
+export { count, length, one };

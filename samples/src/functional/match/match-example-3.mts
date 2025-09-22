@@ -15,3 +15,5 @@ const route = match(
   '/404',
 ); // Default required for string type
 // Type: '/' | '/about' | '/contact' | '/404'
+
+export { route, userInput };

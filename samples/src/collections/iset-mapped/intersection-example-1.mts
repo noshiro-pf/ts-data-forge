@@ -21,3 +21,6 @@ const commonPermissions = ISetMapped.intersection(
   rolePermissions,
 );
 console.log(commonPermissions.toArray().map((p) => p.id)); // Output: ["read", "write"]
+
+export { commonPermissions, keyToPerm, permToKey, rolePermissions, userPermissions };
+export type { Permission };

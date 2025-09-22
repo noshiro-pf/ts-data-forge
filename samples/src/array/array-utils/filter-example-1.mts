@@ -20,3 +20,5 @@ const processNumbers = pipe(
   Arr.filter((n: number) => n > 0),
   Arr.map((n) => n * 2),
 );
+
+export { evens, filterStrings, isString, mixed, notNull, numbers, processNumbers, result, strings };

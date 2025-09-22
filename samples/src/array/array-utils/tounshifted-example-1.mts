@@ -8,3 +8,5 @@ Arr.toUnshifted([1, 2] as const, 0); // [0, 1, 2]
 const prependZero = Arr.toUnshifted(0);
 const result = pipe([1, 2, 3]).map(prependZero).value;
 console.log(result); // [0, 1, 2, 3]
+
+export { prependZero, result };

@@ -40,3 +40,5 @@ const result = pipe(user)
 const partialUser = { id: 1, name: 'Alice' } as const;
 const pickVisible = Obj.pick(['name', 'age']); // age might not exist
 const visible = pickVisible(partialUser); // { name: "Alice" } (age omitted)
+
+export { original, partialUser, pickIdAndName, pickVisible, publicUser, publicUsers, result, user, users, visible };

@@ -18,3 +18,5 @@ const maximum = NonZeroInt(a, b); // NonZeroInt (10)
 
 // Random generation
 const randomInt = NonZeroInt.random(); // NonZeroInt (random non-zero integer)
+
+export { a, absolute, b, diff, maximum, minimum, power, product, quotient, randomInt, sum };

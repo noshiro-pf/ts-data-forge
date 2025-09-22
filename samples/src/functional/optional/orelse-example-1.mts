@@ -5,3 +5,5 @@ const primary = Optional.none;
 const fallback = Optional.some('default');
 const result = Optional.orElse(primary, fallback);
 console.log(Optional.unwrap(result)); // "default"
+
+export { fallback, primary, result };

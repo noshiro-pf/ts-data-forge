@@ -13,3 +13,5 @@ if (Optional.isNone(optional)) {
 // Result type validation
 const result: Result<string, Error> = Result.ok('success');
 expectType<typeof result, Result<string, Error>>('<=');
+
+export { optional, result };

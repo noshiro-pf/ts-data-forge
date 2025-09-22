@@ -14,3 +14,5 @@ const [x3, y3, z3] = point3D; // Exact types preserved
 // Named coordinate system
 const namedPoint = tp('x', 100, 'y', 200);
 // Type: readonly ['x', 100, 'y', 200]
+
+export { namedPoint, point2D, point3D, x, x3, y, y3, z3 };

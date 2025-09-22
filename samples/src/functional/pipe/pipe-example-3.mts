@@ -17,3 +17,5 @@ assert(Math.abs(Optional.unwrap(result)! - Math.sqrt(21)) < 0.01);
 const noneOptional = Optional.none;
 const noneResult = pipe(noneOptional).mapOptional((x) => x * 2).value;
 assert(Optional.isNone(noneResult) === true);
+
+export { noneOptional, noneResult, optional, result };

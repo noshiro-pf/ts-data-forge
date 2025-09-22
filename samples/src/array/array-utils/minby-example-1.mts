@@ -7,3 +7,5 @@ const people = [
 ] as const;
 Arr.minBy(people, (p) => p.age); // Optional.some({ name: 'Bob', age: 20 })
 Arr.minBy([], (p) => p.age); // Optional.none
+
+export { people };

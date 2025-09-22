@@ -26,3 +26,5 @@ const featuresA = ISet.create(['feature1', 'feature2', 'feature3']);
 const featuresB = ISet.create(['feature2', 'feature3', 'feature4']);
 const allFeatures = ISet.union(featuresA, featuresB);
 console.log(allFeatures.size); // 4 (duplicates removed)
+
+export { allFeatures, allPermissions, empty, featuresA, featuresB, mixed, nonEmpty, numbers, rolePermissions, strings, userPermissions, withEmpty };

@@ -12,3 +12,5 @@ if (Optional.isSome(result)) {
 const findLastB = Arr.lastIndexOf('b');
 const result2 = pipe(['a', 'b', 'c', 'b']).map(findLastB).value;
 console.log(Optional.unwrapOr(result2, -1)); // 3
+
+export { arr, findLastB, result, result2 };

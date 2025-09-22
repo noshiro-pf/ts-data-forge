@@ -14,3 +14,5 @@ Arr.toSortedBy(
   (a, b) => b - a,
 ); // Sort descending
 // [{ name: 'Adam', score: 90 }, { name: 'Bob', score: 80 }, { name: 'Eve', score: 70 }]
+
+export { items };

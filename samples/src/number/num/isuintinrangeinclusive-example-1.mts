@@ -7,3 +7,5 @@ if (isValidScore(score)) {
   // score is typed as 0 | 1 | 2 | ... | 100
   const grade = calculateGrade(score);
 }
+
+export { isValidScore, score };

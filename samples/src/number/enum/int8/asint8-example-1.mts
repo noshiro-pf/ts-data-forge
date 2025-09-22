@@ -11,3 +11,5 @@ const zero = asInt8(0); // Int8
 // asInt8(-129);              // Below minimum (-128)
 // asInt8(1.5);               // Not an integer
 // asInt8(NaN);               // Not a number
+
+export { byte, max, min, zero };

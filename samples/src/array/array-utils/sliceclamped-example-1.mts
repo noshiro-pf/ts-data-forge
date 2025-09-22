@@ -50,3 +50,5 @@ try {
 } catch (error) {
   // sliceClamped never throws
 }
+
+export { arrays, beginning, bothClamped, clampedEnd, clampedStart, data, emptyArray, emptyAtEnd, emptyReversed, end, first3Elements, fullCopy, getMiddle2, middle, middle2Elements, result, singleElement, takeFirst3 };

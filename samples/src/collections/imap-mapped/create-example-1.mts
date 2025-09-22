@@ -85,3 +85,6 @@ const entityMap = IMapMapped.create<EntityKey, Entity, string>(
   entityKeyToString,
   stringToEntityKey,
 );
+
+export { coordToString, entityKeyToString, entityMap, existingEntries, keyToOrderId, locationMap, nyCoord, orderIdToKey, orderMap, simpleMap, stringToCoord, stringToEntityKey };
+export type { Coordinate, EntityKey, LocationInfo, OrderId };

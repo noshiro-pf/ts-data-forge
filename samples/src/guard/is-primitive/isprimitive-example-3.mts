@@ -27,3 +27,5 @@ function deepClone<T>(value: T): T {
   // For other object types, return as-is or implement specific cloning
   return value;
 }
+
+export { deepClone };

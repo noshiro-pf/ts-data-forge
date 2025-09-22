@@ -111,3 +111,6 @@ const emptyProductSet = ISetMapped.create<Product, string>(
   keyToProduct,
 );
 console.log(emptyProductSet.isEmpty); // Output: true
+
+export { emptyProductSet, keyToLocation, keyToProduct, keyToUser, locationSet, locationToKey, productSet, productToKey, userSet, userToKey };
+export type { Location, Product, User };

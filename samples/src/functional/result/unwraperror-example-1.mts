@@ -4,3 +4,5 @@ import { Result } from 'ts-data-forge';
 const result = Result.err('failed');
 const error = Result.unwrapErrOr(result, 'default');
 console.log(error); // "failed"
+
+export { error, result };

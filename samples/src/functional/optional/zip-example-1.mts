@@ -8,3 +8,5 @@ console.log(Optional.unwrap(zipped)); // [1, "hello"]
 
 const withNone = Optional.zip(a, Optional.none);
 console.log(Optional.isNone(withNone)); // true
+
+export { a, b, withNone, zipped };

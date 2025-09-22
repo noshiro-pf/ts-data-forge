@@ -15,3 +15,6 @@ const empty = tp(); // readonly []
 // TypeScript knows exact values at compile time
 type First = (typeof tuple)[0]; // 1 (literal type)
 type Second = (typeof tuple)[1]; // 'hello' (literal type)
+
+export { arr, coords, empty, single, tuple };
+export type { First, Second };

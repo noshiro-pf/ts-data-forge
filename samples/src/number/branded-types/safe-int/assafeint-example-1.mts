@@ -9,3 +9,5 @@ const z = asSafeInt(2 ** 50); // SafeInt (within range)
 // asSafeInt(1.5);                      // Not an integer
 // asSafeInt(Number.MAX_SAFE_INTEGER + 1); // Exceeds safe range
 // asSafeInt(2**53);                    // Loss of precision
+
+export { x, y, z };

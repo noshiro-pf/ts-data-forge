@@ -10,3 +10,5 @@ try {
 } catch (error) {
   console.log(error.message); // "Expected Err but got Ok: 42"
 }
+
+export { failure, success };

@@ -111,3 +111,6 @@ while (!historyStack.isEmpty) {
 // Going back to: page3.html
 // Going back to: page2.html
 // Going back to: page1.html
+
+export { a, b, callStack, edit1, edit2, historyStack, op, operandStack, operatorStack, processedCount, processingStack, redoStack, undoStack };
+export type { EditAction, FunctionCall };

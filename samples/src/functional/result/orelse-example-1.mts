@@ -5,3 +5,5 @@ const primary = Result.err('error');
 const fallback = Result.ok('default');
 const result = Result.orElse(primary, fallback);
 console.log(Result.unwrapOk(result)); // "default"
+
+export { fallback, primary, result };

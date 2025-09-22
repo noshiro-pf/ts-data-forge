@@ -25,3 +25,5 @@ function calculateAge(birthYear: number | null): string | undefined {
     }) ?? undefined
   );
 }
+
+export { calculateAge, parseJsonSafe };

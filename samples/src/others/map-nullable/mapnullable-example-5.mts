@@ -28,3 +28,5 @@ const upperNames = users
   .map((u) => mapNullable(u.name, (n) => n.toUpperCase()))
   .filter((n): n is string => n !== undefined);
 // Result: ['ALICE', 'BOB']
+
+export { doubled, nullableNumbers, upperNames, users };

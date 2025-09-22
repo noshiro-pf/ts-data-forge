@@ -13,3 +13,5 @@ if (Result.isOk(publicFields)) {
   console.log(publicFields.value);
   // '{"id":1,"name":"Alice","email":"alice@example.com"}'
 }
+
+export { publicFields, user };

@@ -23,3 +23,5 @@ const rounded = PositiveFiniteNumber.round(rate); // Uint (1)
 // Utility operations
 const random = PositiveFiniteNumber.random(); // PositiveFiniteNumber (random positive value)
 const power = PositiveFiniteNumber.pow(rate, probability); // PositiveFiniteNumber (1.18...)
+
+export { ceiled, clamped, combined, difference, floored, maximum, minimum, power, probability, random, rate, ratio, rounded, scaled };

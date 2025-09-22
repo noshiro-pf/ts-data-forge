@@ -33,3 +33,6 @@ if (!undoStack.isEmpty) {
   const lastAction = undoStack.pop().unwrap();
   console.log(`Undoing: ${lastAction.type}`);
 }
+
+export { operationStack, undoStack };
+export type { Action };

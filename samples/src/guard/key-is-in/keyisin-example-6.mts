@@ -16,3 +16,6 @@ function getConfigProperty(config: Config, propName: string): unknown {
 
   return undefined;
 }
+
+export { getConfigProperty };
+export type { Config };

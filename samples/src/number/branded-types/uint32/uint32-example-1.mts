@@ -25,3 +25,5 @@ Uint32.min(a, b); // Uint32 (500000)
 Uint32.max(a, b); // Uint32 (1000000)
 Uint32.clamp(asUint32(5000000000), Uint32.MIN_VALUE, Uint32.MAX_VALUE); // Uint32 (MAX_VALUE)
 Uint32.random(); // Random Uint32
+
+export { a, b };

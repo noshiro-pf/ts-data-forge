@@ -68,3 +68,5 @@ expectType<typeof getSecondElement, <T>(array: readonly T[]) => Optional<T>>(
   '=',
 );
 expectType<typeof negativeOutOfBounds, Optional<string>>('=');
+
+export { elementOrDefault, emptyResult, extractAndProcess, first, fruits, getLastElement, getMiddleElement, getSecondElement, last, lastElements, maybeElement, negativeOnEmpty, negativeOutOfBounds, nestedArrays, outOfBounds, processArray, secondElements, secondLast, singleElement, singleNegative, third };

@@ -8,3 +8,5 @@ Arr.take([1, 2, 3, 4] as const, 2); // [1, 2]
 const takeFirst3 = Arr.take(3);
 const result = pipe([1, 2, 3, 4, 5]).map(takeFirst3).value;
 console.log(result); // [1, 2, 3]
+
+export { result, takeFirst3 };

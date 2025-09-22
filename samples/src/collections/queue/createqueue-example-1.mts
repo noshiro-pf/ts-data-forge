@@ -81,3 +81,6 @@ addWork(async () => console.log('Work item 2'));
 
 // Process the work
 await processWork();
+
+export { addWork, eventQueue, priorityTasks, processWork, processedCount, requestQueue, workQueue };
+export type { Event };

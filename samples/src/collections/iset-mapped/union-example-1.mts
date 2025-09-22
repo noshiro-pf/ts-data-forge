@@ -25,3 +25,6 @@ console.log(
     .toSorted(),
 );
 // Output: ["betaFeature", "darkMode", "newUI"]
+
+export { combinedFlags, flagToKey, keyToFlag, setA, setB };
+export type { FeatureFlag };

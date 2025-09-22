@@ -7,3 +7,5 @@ const users = [
   { id: 1, name: 'Alicia' }, // Duplicate id
 ];
 Arr.uniqBy(users, (user) => user.id); // [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
+
+export { users };

@@ -18,3 +18,5 @@ const isValid = Num.isInRange(0, 100)(50); // true
 const clamped = Num.clamp(150, 0, 100); // 100
 const clampFn = Num.clamp(0, 100);
 const result = clampFn(150); // 100
+
+export { clampFn, clamped, invalid, isValid, num, result, value };

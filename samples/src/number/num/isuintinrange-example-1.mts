@@ -6,3 +6,5 @@ const isValidPercentage = Num.isUintInRange(0, 101);
 if (isValidPercentage(value)) {
   // value is typed as 0 | 1 | ... | 100
 }
+
+export { isValidPercentage };

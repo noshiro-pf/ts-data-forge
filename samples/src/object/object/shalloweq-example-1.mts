@@ -22,3 +22,5 @@ Obj.shallowEq({ name: 'ALICE' }, { name: 'alice' }, caseInsensitiveEq); // true
 // Handling special values
 Obj.shallowEq({ x: NaN }, { x: NaN }); // true (Object.is treats NaN === NaN)
 Obj.shallowEq({ x: +0 }, { x: -0 }); // false (Object.is distinguishes +0 and -0)
+
+export { caseInsensitiveEq };

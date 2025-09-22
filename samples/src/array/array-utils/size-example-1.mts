@@ -52,3 +52,5 @@ if (Arr.size(data) > 0) {
 expectType<typeof tupleSize, IntersectBrand<PositiveNumber, SizeType.Arr>>('=');
 expectType<typeof generalSize, SizeType.Arr>('=');
 expectType<typeof emptySize, SizeType.Arr>('=');
+
+export { arrays, data, dataSize, dynamicArray, dynamicSize, emptyArray, emptySize, generalArray, generalSize, indices, nonEmpty, nonEmptySize, sizes, totalElements, tuple, tupleSize, zeros };

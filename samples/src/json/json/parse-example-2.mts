@@ -5,3 +5,5 @@ const invalid = Json.parse('invalid json');
 if (Result.isErr(invalid)) {
   console.log('Parse failed:', invalid.value);
 }
+
+export { invalid };

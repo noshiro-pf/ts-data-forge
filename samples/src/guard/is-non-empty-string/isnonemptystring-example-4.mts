@@ -25,3 +25,6 @@ function validateForm(data: FormData): string[] {
 
   return errors;
 }
+
+export { validateForm };
+export type { FormData };

@@ -18,3 +18,5 @@ const maximum = NonZeroUint16.max(a, b); // NonZeroUint16 (60000)
 // Utility operations
 const random = NonZeroUint16.random(); // NonZeroUint16 (random value in [1, 65535])
 const power = NonZeroUint16.pow(asNonZeroUint16(2), asNonZeroUint16(10)); // NonZeroUint16 (1024)
+
+export { a, b, clamped, diff, maximum, minimum, power, product, random, reverseDiff, sum };

@@ -59,3 +59,5 @@ expectType<typeof emptyResult, Optional.None>('=');
 expectType<typeof tupleResult, Optional.Some<'last'>>('=');
 expectType<typeof guaranteedResult, Optional.Some<number>>('=');
 expectType<typeof maybeResult, Optional<number>>('=');
+
+export { coordinates, data, emptyLastOrDefault, emptyResult, generalArray, getLastElements, guaranteedResult, lastCoordinate, lastElements, lastOrDefault, lastString, maybeResult, nestedArrays, nonEmpty, single, singleResult, strings, tupleResult };

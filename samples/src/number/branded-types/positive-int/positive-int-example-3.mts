@@ -9,3 +9,5 @@ const userId = PositiveInt.random(asPositiveInt(1000), asPositiveInt(9999));
 
 // Random page count
 const pages = PositiveInt.random(asPositiveInt(50), asPositiveInt(500));
+
+export { d6, pages, userId };

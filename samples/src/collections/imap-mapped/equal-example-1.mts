@@ -83,3 +83,6 @@ const empty2 = IMapMapped.create<Point, string, string>(
   stringToPoint,
 );
 console.log(IMapMapped.equal(empty1, empty2)); // true
+
+export { alternativePointToString, alternativeStringToPoint, empty1, empty2, map1, map2, map3, map4, map5, pointToString, stringToPoint };
+export type { Point };

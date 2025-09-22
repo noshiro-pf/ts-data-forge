@@ -38,3 +38,6 @@ while (!taskQueue.isEmpty) {
   console.log(`Processing task ${task.id} with ${task.priority} priority`);
   task.action();
 }
+
+export { messageQueue, taskQueue };
+export type { Task };

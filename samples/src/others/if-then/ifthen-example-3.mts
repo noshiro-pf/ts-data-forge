@@ -16,3 +16,5 @@ checkPermission(adminUser, 'delete'); // false (admin without delete permission 
 
 const regularUser = { role: 'user', permissions: ['read'] };
 checkPermission(regularUser, 'delete'); // true (non-admin without permission is valid)
+
+export { adminUser, checkPermission, regularUser };

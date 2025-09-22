@@ -22,3 +22,5 @@ function safeStringify(value: unknown): string {
 
   return JSON.stringify(value);
 }
+
+export { canSerializeDirectly, safeStringify };

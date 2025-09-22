@@ -15,3 +15,5 @@ async function fetchUserData(): Promise<DeepReadonly<UserData>> {
 const userData = await fetchUserData();
 // userData is fully protected from mutations at any depth
 // userData.preferences.emails.push('new@email.com'); // ❌ TypeScript Error
+
+export { fetchUserData, userData };

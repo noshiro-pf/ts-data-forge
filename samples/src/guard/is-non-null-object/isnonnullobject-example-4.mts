@@ -18,3 +18,5 @@ if (isNonNullObject(apiResponse)) {
     console.log('Response is an array with length:', apiResponse.length);
   }
 }
+
+export { apiResponse };

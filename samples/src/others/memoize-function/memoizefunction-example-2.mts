@@ -20,3 +20,5 @@ const memoizedGrid2 = memoizeFunction(
   calculateGridValue,
   (x, y, scale) => (x << 20) | (y << 10) | scale, // Assuming small positive integers
 );
+
+export { calculateGridValue, memoizedGrid, memoizedGrid2 };

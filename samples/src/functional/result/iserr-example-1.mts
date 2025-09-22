@@ -25,3 +25,5 @@ const handleResult = (r: Result<Data, ApiError>) => {
 // Collecting errors from multiple Results
 const results: Result<string, ValidationError>[] = validateForm();
 const errors = results.filter(Result.isErr).map((err) => err.value); // ValidationError[]
+
+export { errors, handleResult, result, results };

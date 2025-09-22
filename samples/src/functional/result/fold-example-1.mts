@@ -8,3 +8,5 @@ const folded = Result.fold(
   () => 0,
 );
 console.log(Result.unwrapOk(folded)); // 84
+
+export { folded, result };

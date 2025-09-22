@@ -19,3 +19,6 @@ if (hasKey(preferences, 'autoSave')) {
   // preferences is narrowed to the third union member
   console.log(preferences.interval); // number (we know this exists)
 }
+
+export { preferences };
+export type { UserPreferences };

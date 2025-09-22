@@ -17,3 +17,5 @@ if (Result.isOk(result)) {
 } else {
   console.log(result.value); // Error: Failed
 }
+
+export { result };

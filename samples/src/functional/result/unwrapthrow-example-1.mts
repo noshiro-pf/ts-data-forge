@@ -10,3 +10,5 @@ try {
 } catch (error) {
   console.log(error.message); // "Network error"
 }
+
+export { failure, success };

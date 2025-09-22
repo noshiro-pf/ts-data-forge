@@ -21,3 +21,5 @@ const processResult = (r: Result<number, string>) => {
   const value = Result.unwrapOk(r);
   return value !== undefined ? value * 2 : 0;
 };
+
+export { data, maybeResult, processResult, result, success, unwrapped, value };

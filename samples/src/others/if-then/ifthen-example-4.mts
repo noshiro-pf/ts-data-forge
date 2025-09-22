@@ -21,3 +21,6 @@ function validateSubscription(sub: Subscription): boolean {
       sub.features.prioritySupport,
   );
 }
+
+export { validateSubscription };
+export type { Subscription };

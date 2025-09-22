@@ -75,3 +75,6 @@ const updatedUsers = activeUsers.map((user) => ({
   ...user,
   email: user.email.replace('.company.com', '.example.com'),
 }));
+
+export { activeUsers, alice, allUsers, bob, charlie, engineeringOnly, engineeringUsers, keyToUser, marketingUsers, updatedUsers, userToKey };
+export type { User };

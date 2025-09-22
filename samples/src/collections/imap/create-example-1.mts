@@ -34,3 +34,5 @@ function* generateEntries(): Generator<[string, number]> {
 }
 const generatedMap = IMap.create(generateEntries());
 console.log(generatedMap.size); // Output: 3
+
+export { config, copiedMap, emptyMap, generateEntries, generatedMap, jsMap, originalMap, userScores };

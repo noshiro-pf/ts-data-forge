@@ -9,3 +9,5 @@ const dice = Int8.random(asInt8(1), asInt8(6)); // 1-6
 
 // Random offset
 const offset = Int8.random(asInt8(-10), asInt8(10)); // -10 to 10
+
+export { dice, offset, randomByte };

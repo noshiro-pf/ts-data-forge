@@ -73,3 +73,5 @@ const tuple = [10, 20, 30, 20] as const;
 const lastTwentyIndex = Arr.findLastIndex(tuple, (x) => x === 20);
 // Type: ArrayIndex<readonly [10, 20, 30, 20]> | -1
 // Value: 3
+
+export { data, datasets, emptyResult, findLastLongStringIndex, findLastNegativeIndex, firstTwo, fruits, lastActiveIndex, lastBananaIndex, lastInactiveIndex, lastLargeIndex, lastLongIndex, lastNegativeIndices, lastTwentyIndex, lastTwo, numbers, result, tuple, users, values };

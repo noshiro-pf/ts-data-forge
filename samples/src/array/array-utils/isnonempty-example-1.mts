@@ -77,3 +77,5 @@ expectType<Parameters<typeof Arr.isNonEmpty>[0], readonly unknown[]>('=');
 if (Arr.isNonEmpty(testArray)) {
   expectType<typeof testArray, NonEmptyArray<number>>('=');
 }
+
+export { arrayGroups, calculateAverage, definitelyNonEmpty, emptyArray, firstElements, getFirstElement, isNonEmptyResult, nonEmptyArray, nonEmptyGroups, possiblyEmptyArrays, processArraySafely, processData, testArray };

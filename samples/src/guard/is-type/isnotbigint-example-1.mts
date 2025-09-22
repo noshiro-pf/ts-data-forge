@@ -8,3 +8,6 @@ if (isNotBigint(value)) {
   // value is now number
   console.log('Regular number:', value.toFixed(2));
 }
+
+export { value };
+export type { NumericValue };

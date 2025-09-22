@@ -12,3 +12,5 @@ const index = -1 as -1 | 0 | 1;
 if (Num.isNonNegative(index)) {
   // index is typed as 0 | 1
 }
+
+export { index, value };

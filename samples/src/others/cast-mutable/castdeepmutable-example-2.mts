@@ -15,3 +15,5 @@ draft.data.items[0].completed = true;
 // Create new immutable state from the mutated draft
 const newState = castDeepReadonly(draft);
 setState(newState);
+
+export { currentState, draft, newState };

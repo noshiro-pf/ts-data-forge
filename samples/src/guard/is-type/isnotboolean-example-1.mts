@@ -8,3 +8,6 @@ if (isNotBoolean(value)) {
   // value is now string | number
   console.log('Non-boolean value:', value);
 }
+
+export { value };
+export type { MixedValue };

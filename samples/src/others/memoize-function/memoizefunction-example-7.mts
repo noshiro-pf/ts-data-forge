@@ -23,3 +23,5 @@ const memoizedProcess = memoizeFunction(
   (user: User) => processUser(user),
   (user) => user.name, // Multiple users can have same name!
 );
+
+export { memoizedLog, memoizedProcess, memoizedRandom };

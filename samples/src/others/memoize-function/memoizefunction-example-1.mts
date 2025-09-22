@@ -17,3 +17,5 @@ const memoizedFib = memoizeFunction(
 
 memoizedFib(40); // Much faster than unmemoized version
 memoizedFib(40); // Returns instantly from cache
+
+export { fibonacci, memoizedFib };

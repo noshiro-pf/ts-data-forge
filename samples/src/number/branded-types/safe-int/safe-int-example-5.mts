@@ -8,3 +8,5 @@ SafeInt.div(asSafeInt(-10), asSafeInt(3)); // SafeInt (-4)
 const large = asSafeInt(1000000000000);
 const divisor = asSafeInt(1000000);
 SafeInt.div(large, divisor); // SafeInt (1000000)
+
+export { divisor, large };

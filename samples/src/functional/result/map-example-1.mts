@@ -10,3 +10,5 @@ console.log(Result.unwrap(mapped)); // 10
 const doubler = Result.map((x: number) => x * 2);
 const result2 = pipe(Result.ok(5)).map(doubler).value;
 console.log(Result.unwrap(result2)); // 10
+
+export { doubler, mapped, result, result2 };

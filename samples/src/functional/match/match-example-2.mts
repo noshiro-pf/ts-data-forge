@@ -16,3 +16,6 @@ const color = match(
 ); // Default required for uncovered cases
 // Type: 'red' | 'darkred' | 'gray'
 // Result: 'gray'
+
+export { color, priority };
+export type { Priority };

@@ -13,3 +13,6 @@ const response = match(String(status), {
 });
 // All cases covered, no default needed
 // Result: { ok: false, message: 'Not Found' }
+
+export { response, status };
+export type { HttpStatus };

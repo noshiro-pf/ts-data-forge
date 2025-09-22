@@ -14,3 +14,5 @@ const stringifyResult = Json.stringify({ name: 'Bob', age: 25 });
 if (Result.isOk(stringifyResult)) {
   console.log(stringifyResult.value); // '{"name":"Bob","age":25}'
 }
+
+export { parseResult, stringifyResult };

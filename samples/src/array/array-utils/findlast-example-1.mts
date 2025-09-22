@@ -12,3 +12,5 @@ const result = findLastPositive([-1, 2, -3, 4]); // Optional.some(4)
 
 // No match
 const noMatch = Arr.findLast([1, 3, 5], (n) => n % 2 === 0); // Optional.none
+
+export { findLastPositive, isPositive, lastEven, noMatch, numbers, result };

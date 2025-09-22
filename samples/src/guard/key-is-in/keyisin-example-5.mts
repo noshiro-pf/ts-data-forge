@@ -17,3 +17,5 @@ if (hasKey(obj, key)) {
   // obj type is narrowed to guarantee the key exists
   const value = obj.x; // Direct access
 }
+
+export { key, obj };

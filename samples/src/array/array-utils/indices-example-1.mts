@@ -12,3 +12,5 @@ const result = getIndices(['a', 'b']); // [0, 1]
 // Empty array
 const empty: string[] = [];
 const emptyIndices = Arr.indices(empty); // []
+
+export { empty, emptyIndices, fruits, getIndices, indices, result };

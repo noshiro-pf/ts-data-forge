@@ -8,3 +8,5 @@ Arr.toInserted([1, 2, 3], 1, 10); // [1, 10, 2, 3]
 const insertAtStart = Arr.toInserted(0, 99);
 const result = pipe([1, 2, 3]).map(insertAtStart).value;
 console.log(result); // [99, 1, 2, 3]
+
+export { insertAtStart, result };

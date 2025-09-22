@@ -13,3 +13,5 @@ if (Num.isNonZero(divisor)) {
 // With branded types
 const nonZero = asNonZeroNumber(5);
 const result3 = Num.div(20, nonZero); // 4
+
+export { divisor, nonZero, result, result3 };

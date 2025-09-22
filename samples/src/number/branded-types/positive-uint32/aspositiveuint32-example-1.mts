@@ -6,3 +6,5 @@ const y = asPositiveUint32(4294967295); // PositiveUint32
 // asPositiveUint32(0); // throws TypeError
 // asPositiveUint32(-1); // throws TypeError
 // asPositiveUint32(4294967296); // throws TypeError
+
+export { x, y };

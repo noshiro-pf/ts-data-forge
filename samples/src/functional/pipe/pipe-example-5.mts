@@ -20,3 +20,5 @@ const negativeResult = pipe(negativeNumber).mapNullable((n) =>
   n > 0 ? n : undefined,
 ).value;
 assert(negativeResult === undefined); // negative number
+
+export { maybeNumber, negativeNumber, negativeResult, result };

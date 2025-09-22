@@ -24,3 +24,5 @@ for (const i of range(1000000)) {
 }
 
 console.log(dataQueue.size); // 1000000
+
+export { dataQueue, taskQueue };

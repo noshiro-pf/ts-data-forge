@@ -15,3 +15,5 @@ class UserService {
 const service = new UserService();
 const users = service.getUsers();
 // users.push(newUser); // ❌ TypeScript prevents this
+
+export { UserService, service, users };

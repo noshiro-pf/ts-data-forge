@@ -16,3 +16,5 @@ function memoizeWithWeakMap<T extends object, R>(
     return result;
   };
 }
+
+export { cache, memoizeWithWeakMap };

@@ -13,3 +13,5 @@ if (isNonEmptyString(userInput)) {
 } else {
   console.log('No valid input provided');
 }
+
+export { userInput };

@@ -19,3 +19,5 @@ const processed = pipe('  Hello World  ')
   .map((s) => s.split(' ')) // ["hello", "world"]
   .map((arr) => arr.join('-')).value; // "hello-world"
 assert(processed === 'hello-world');
+
+export { processed, result };

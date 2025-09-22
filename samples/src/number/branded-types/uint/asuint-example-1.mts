@@ -5,3 +5,5 @@ const x = asUint(5); // Uint
 const y = asUint(0); // Uint
 // asUint(-1); // throws TypeError
 // asUint(1.5); // throws TypeError
+
+export { x, y };

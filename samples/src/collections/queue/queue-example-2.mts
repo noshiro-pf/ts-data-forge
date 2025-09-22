@@ -21,3 +21,5 @@ const result = emptyQueue.dequeue();
 if (result.isNone) {
   console.log('Queue is empty');
 }
+
+export { emptyQueue, first, queue, result, second };

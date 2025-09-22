@@ -18,3 +18,6 @@ function updateUserPreferences(user: DeepReadonlyUser, newPref: string) {
   mutableUser.profile.settings.preferences.push(newPref);
   return castDeepReadonly(mutableUser);
 }
+
+export { updateUserPreferences };
+export type { DeepReadonlyUser };

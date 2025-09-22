@@ -6,3 +6,5 @@ console.log(Optional.toNullable(some)); // 42
 
 const none = Optional.none;
 console.log(Optional.toNullable(none)); // undefined
+
+export { none, some };

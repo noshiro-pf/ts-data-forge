@@ -23,3 +23,5 @@ const clamped = SafeInt.clamp(2 ** 60); // SafeInt (MAX_SAFE_INTEGER)
 
 // Random generation
 const die = SafeInt.random(asSafeInt(1), asSafeInt(6)); // Random 1-6
+
+export { a, absolute, b, clamped, die, diff, increment, nearMax, power, product, quotient, sum };

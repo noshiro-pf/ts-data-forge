@@ -13,3 +13,5 @@ const users = [
 ];
 const adult = Arr.find(users, (user) => user.age >= 30);
 // Optional.Some({ id: 2, name: 'Bob', age: 30 })
+
+export { adult, firstEven, numbers, users };

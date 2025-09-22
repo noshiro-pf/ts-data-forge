@@ -10,3 +10,5 @@ if (isNull(value)) {
   // value is now typed as string
   console.log('Value length:', value.length);
 }
+
+export { value };

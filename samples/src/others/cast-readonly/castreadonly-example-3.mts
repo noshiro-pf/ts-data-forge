@@ -15,3 +15,5 @@ const config = {
 // Export as readonly to prevent modifications
 export const APP_CONFIG = castReadonly(config);
 // APP_CONFIG.timeout = 10000; // ❌ TypeScript Error
+
+export { config };

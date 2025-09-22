@@ -12,3 +12,5 @@ const readonlyNested = castDeepReadonly(mutableNested);
 // readonlyNested.a.b.push(4); // ❌ Error: readonly at all levels
 // readonlyNested.c.d.e = 'new'; // ❌ Error: readonly at all levels
 // readonlyNested.a = {}; // ❌ Error: cannot reassign readonly property
+
+export { mutableNested, readonlyNested };

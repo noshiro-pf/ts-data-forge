@@ -8,3 +8,5 @@ Arr.toRemoved([1, 2, 3], 1); // [1, 3]
 const removeFirst = Arr.toRemoved(0);
 const result = pipe([10, 20, 30]).map(removeFirst).value;
 console.log(result); // [20, 30]
+
+export { removeFirst, result };

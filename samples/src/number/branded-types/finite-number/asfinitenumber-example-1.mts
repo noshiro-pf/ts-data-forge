@@ -10,3 +10,5 @@ const z = asFiniteNumber(0); // FiniteNumber
 // asFiniteNumber(-Infinity);    // Not finite
 // asFiniteNumber(NaN);          // Not a number
 // asFiniteNumber(Math.sqrt(-1)); // Results in NaN
+
+export { x, y, z };

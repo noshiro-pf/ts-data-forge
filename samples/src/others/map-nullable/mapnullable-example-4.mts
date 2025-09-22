@@ -27,3 +27,6 @@ function processNullableChain(value: string | null): string | undefined {
   const step3 = mapNullable(step2, (v) => v.toUpperCase());
   return step3;
 }
+
+export { getDisplayName, processNullableChain };
+export type { ApiResponse };

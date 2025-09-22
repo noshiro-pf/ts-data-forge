@@ -12,3 +12,5 @@ if (Result.isOk(sorted)) {
   console.log(sorted.value);
   // '{"apple":"fruit","banana":"fruit","zebra":"animal"}'
 }
+
+export { sorted, unsortedObj };

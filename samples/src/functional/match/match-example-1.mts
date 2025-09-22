@@ -13,3 +13,6 @@ const message = match(status, {
 });
 // Type: string
 // Result: 'Please wait...'
+
+export { message, status };
+export type { Status };

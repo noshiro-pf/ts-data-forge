@@ -20,3 +20,5 @@ if (isRecord(apiResponse)) {
 } else {
   console.log('API response is not a valid object');
 }
+
+export { apiResponse };

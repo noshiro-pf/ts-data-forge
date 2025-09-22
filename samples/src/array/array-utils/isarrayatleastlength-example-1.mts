@@ -6,3 +6,5 @@ if (Arr.isArrayAtLeastLength(arr, 2)) {
   // arr is now typed as readonly [number, number, ...number[]]
 }
 Arr.isArrayAtLeastLength([1], 2); // false
+
+export { arr };

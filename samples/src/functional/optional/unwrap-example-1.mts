@@ -6,3 +6,5 @@ const value = Optional.unwrap(some); // 42
 
 const none = Optional.none;
 const result = Optional.unwrap(none); // undefined
+
+export { none, result, some, value };

@@ -10,3 +10,5 @@ const countByType = Arr.countBy((x: { type: string }) => x.type);
 const data = [{ type: 'a' }, { type: 'b' }, { type: 'a' }];
 const result = pipe(data).map(countByType).value;
 // IMap { 'a' => 2, 'b' => 1 }
+
+export { countByType, data, result };

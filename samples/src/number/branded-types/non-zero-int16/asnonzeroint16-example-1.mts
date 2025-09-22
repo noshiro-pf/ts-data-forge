@@ -5,3 +5,5 @@ const x = asNonZeroInt16(1000); // NonZeroInt16
 const y = asNonZeroInt16(-1000); // NonZeroInt16
 // asNonZeroInt16(0); // throws TypeError
 // asNonZeroInt16(32768); // throws TypeError
+
+export { x, y };

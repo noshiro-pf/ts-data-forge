@@ -151,3 +151,6 @@ expectType<
   <T extends readonly number[]>(array: T) => NonEmptyArray<number>
 >('=');
 expectType<typeof stateHistory, NonEmptyArray<State>>('=');
+
+export { allSums, analysisResult, balances, collectingFn, datasets, emptyArray, emptyResult, events, factorial, growing, indexed, items, letters, numbers, reduced, runningMax, runningProductFn, runningSales, runningSum, runningSumFn, sales, scanned, sentences, singleElement, stateHistory, stateTransition, temperatures, transactions, words };
+export type { Event, State };

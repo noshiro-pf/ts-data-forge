@@ -28,3 +28,5 @@ function processValue(value: unknown): string {
     return `Object: ${value?.constructor?.name || 'Unknown'}`;
   }
 }
+
+export { processValue };

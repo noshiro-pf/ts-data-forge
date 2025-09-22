@@ -24,3 +24,5 @@ if (allStrings(data)) {
 // Empty array
 const empty: number[] = [];
 const result2 = Arr.every(empty, (n) => n > 0); // true
+
+export { allEven, allStrings, data, empty, isString, mixed, numbers, result2 };

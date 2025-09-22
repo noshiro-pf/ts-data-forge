@@ -13,3 +13,5 @@ if (isString(userInput)) {
     console.log('Non-empty string:', userInput);
   }
 }
+
+export { userInput };

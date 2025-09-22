@@ -14,3 +14,5 @@ function validateAndStringify(input: unknown): string {
 
   return trimmed;
 }
+
+export { validateAndStringify };

@@ -8,3 +8,5 @@ Arr.foldr([1, 2, 3], (sum, n) => sum + n, 0); // 6
 const concatRight = Arr.foldr((acc: string, curr: string) => curr + acc, '');
 const result = pipe(['a', 'b', 'c']).map(concatRight).value;
 console.log(result); // "abc"
+
+export { concatRight, result };

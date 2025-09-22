@@ -12,3 +12,5 @@ validateField('hello', true); // true (required and has value)
 validateField('', true); // false (required but no value)
 validateField('', false); // true (not required, so valid)
 validateField('hello', false); // true (not required, but has value is fine)
+
+export { validateField };

@@ -9,3 +9,5 @@ const index = SafeInt.random(asSafeInt(0), asSafeInt(1000000));
 
 // Can use full safe range
 const any = SafeInt.random(SafeInt.MIN_VALUE, SafeInt.MAX_VALUE);
+
+export { any, d20, index };

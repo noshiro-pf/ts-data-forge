@@ -10,4 +10,4 @@ circular.self = circular;
 const result = unknownToString(circular);
 console.log(result); // "Converting circular structure to JSON"
 
-@example Logging and debugging utilities
+export { circular, result };

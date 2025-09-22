@@ -28,3 +28,5 @@ const results: Result<number, string>[] = [
 ];
 const successes = results.filter(Result.isOk);
 // successes is Result.Ok<number>[]
+
+export { processResult, result, results, successes };

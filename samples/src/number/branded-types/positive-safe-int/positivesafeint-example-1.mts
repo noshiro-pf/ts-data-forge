@@ -17,3 +17,5 @@ const maximum = PositiveSafeInt.max(a, b); // PositiveSafeInt (2000000)
 // Utility operations
 const random = PositiveSafeInt.random(); // PositiveSafeInt (random positive safe integer)
 const power = PositiveSafeInt.pow(asPositiveSafeInt(2), asPositiveSafeInt(10)); // PositiveSafeInt (1024)
+
+export { a, b, clamped, diff, maximum, minimum, power, product, random, sum };

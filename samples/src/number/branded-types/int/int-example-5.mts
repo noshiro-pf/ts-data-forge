@@ -9,3 +9,5 @@ const index = Int.random(asInt(0), asInt(array.length - 1));
 
 // Can generate negative values
 const temp = Int.random(asInt(-10), asInt(10));
+
+export { d6, index, temp };
