@@ -13,37 +13,14 @@ import { expectType } from '../expect-type.mjs';
  * Many functions in this namespace leverage TypeScript's type system to provide
  * compile-time guarantees about numeric constraints.
  *
- * @example
- * ```typescript
- * // Type conversion
- * const num = Num.from('123.45'); // 123.45
- * const invalid = Num.from('abc'); // NaN
- *
- * // Type guards
- * const value = 5;
- * if (Num.isPositive(value)) {
- *   // value is typed as PositiveNumber & 5
- * }
- *
- * // Range checking
- * const isValid = Num.isInRange(0, 100)(50); // true
- *
- * // Clamping
- * const clamped = Num.clamp(150, 0, 100); // 100
- * const clampFn = Num.clamp(0, 100);
- * const result = clampFn(150); // 100
- * ```
  */
 export namespace Num {
   /**
    * Converts an unknown value to a number. Alias for the `Number` constructor.
    * @param n The value to convert.
    * @returns The numeric representation of `n`.
-   * @example
-   * ```typescript
-   * Num.from('123.45'); // 123.45
-   * Num.from('hello'); // NaN
-   * ```
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/num-from-example.mts|Sample code}.
    */
   export const from: (n: unknown) => number = Number;
 
@@ -58,20 +35,8 @@ export namespace Num {
    * @param num - The number to check
    * @returns `true` if the number is not zero, `false` otherwise
    *
-   * @example
-   * ```typescript
-   * const value = 5;
-   * if (Num.isNonZero(value)) {
-   *   // value is typed as NonZeroNumber & 5
-   *   const result = 10 / value; // Safe division
-   * }
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/num-is-non-zero-example.mts|Sample code}.
    *
-   * // Works with numeric literals
-   * const literal = 0 as 0 | 1 | 2;
-   * if (Num.isNonZero(literal)) {
-   *   // literal is typed as 1 | 2
-   * }
-   * ```
    */
   export const isNonZero = <N extends number>(
     num: N,
@@ -90,20 +55,8 @@ export namespace Num {
    * @param num - The number to check
    * @returns `true` if the number is >= 0, `false` otherwise
    *
-   * @example
-   * ```typescript
-   * const value = 10;
-   * if (Num.isNonNegative(value)) {
-   *   // value is typed as NonNegativeNumber & 10
-   *   const arr = new Array(value); // Safe array creation
-   * }
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/num-is-non-negative-example.mts|Sample code}.
    *
-   * // Type narrowing with unions
-   * const index = -1 as -1 | 0 | 1;
-   * if (Num.isNonNegative(index)) {
-   *   // index is typed as 0 | 1
-   * }
-   * ```
    */
   export const isNonNegative = <N extends number>(
     num: N,
@@ -121,20 +74,8 @@ export namespace Num {
    * @param num - The number to check
    * @returns `true` if the number is > 0, `false` otherwise
    *
-   * @example
-   * ```typescript
-   * const count = 5;
-   * if (Num.isPositive(count)) {
-   *   // count is typed as PositiveNumber & 5
-   *   const average = total / count; // Safe division
-   * }
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/num-is-positive-example.mts|Sample code}.
    *
-   * // Type narrowing with numeric literals
-   * const value = 0 as -1 | 0 | 1 | 2;
-   * if (Num.isPositive(value)) {
-   *   // value is typed as 1 | 2
-   * }
-   * ```
    */
   export const isPositive = <N extends number>(
     num: N,
@@ -146,14 +87,8 @@ export namespace Num {
    * @param lowerBound The lower bound (inclusive).
    * @param upperBound The upper bound (exclusive).
    * @returns A function that takes a number `x` and returns `true` if `x` is in the range, `false` otherwise.
-   * @example
-   * ```typescript
-   * const isInRange0to10 = Num.isInRange(0, 10);
-   * isInRange0to10(5); // true
-   * isInRange0to10(0); // true (inclusive lower bound)
-   * isInRange0to10(10); // false (exclusive upper bound)
-   * isInRange0to10(-1); // false
-   * ```
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/num-is-in-range-example.mts|Sample code}.
    */
   export const isInRange =
     (lowerBound: number, upperBound: number) =>
@@ -165,14 +100,8 @@ export namespace Num {
    * @param lowerBound The lower bound (inclusive).
    * @param upperBound The upper bound (inclusive).
    * @returns A function that takes a number `x` and returns `true` if `x` is in the range, `false` otherwise.
-   * @example
-   * ```typescript
-   * const inRange = Num.isInRangeInclusive(1, 10);
-   * console.log(inRange(1));   // true (lower bound)
-   * console.log(inRange(5));   // true
-   * console.log(inRange(10));  // true (upper bound)
-   * console.log(inRange(11));  // false
-   * ```
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/num-is-in-range-inclusive-example.mts|Sample code}.
    */
   export const isInRangeInclusive =
     (lowerBound: number, upperBound: number) =>
@@ -225,14 +154,7 @@ export namespace Num {
    * @param upperBound - The maximum value (exclusive)
    * @returns A type guard function that validates and narrows number types
    *
-   * @example
-   * ```typescript
-   * // Custom range validation
-   * const isValidPercentage = Num.isUintInRange(0, 101);
-   * if (isValidPercentage(value)) {
-   *   // value is typed as 0 | 1 | ... | 100
-   * }
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/num-is-uint-in-range-example.mts|Sample code}.
    */
   export const isUintInRange =
     <L extends SmallUint, U extends SmallUint>(lowerBound: L, upperBound: U) =>
@@ -255,15 +177,7 @@ export namespace Num {
    * @param upperBound - The maximum value (inclusive)
    * @returns A type guard function that validates and narrows number types
    *
-   * @example
-   * ```typescript
-   * const isValidScore = Num.isUintInRangeInclusive(0, 100);
-   * const score: number = getTestScore();
-   * if (isValidScore(score)) {
-   *   // score is typed as 0 | 1 | 2 | ... | 100
-   *   const grade = calculateGrade(score);
-   * }
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/num-is-uint-in-range-inclusive-example.mts|Sample code}.
    */
   export const isUintInRangeInclusive =
     <L extends SmallUint, U extends SmallUint>(lowerBound: L, upperBound: U) =>
@@ -277,16 +191,7 @@ export namespace Num {
    * - **Direct usage**: Pass all three arguments to get the clamped value immediately
    * - **Curried usage**: Pass bounds to get a reusable clamping function
    *
-   * @example
-   * ```typescript
-   * // Direct usage
-   * Num.clamp(15, 0, 10); // 10 (clamped to upper bound)
-   * Num.clamp(5, 0, 10);  // 5 (within bounds)
-   *
-   * // Curried usage
-   * const clampToPercent = Num.clamp(0, 100);
-   * clampToPercent(150); // 100
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/num-clamp-example.mts|Sample code}.
    */
   export function clamp(
     target: number,
@@ -332,21 +237,6 @@ export namespace Num {
    * @param b - The divisor (must be non-zero, enforced by types)
    * @returns The quotient of a / b
    *
-   * @example
-   * ```typescript
-   * const result = Num.div(10, 2); // 5
-   * // Num.div(10, 0); // ❌ TypeScript error: Type '0' is not assignable
-   *
-   * // With type guards
-   * const divisor: number = getDivisor();
-   * if (Num.isNonZero(divisor)) {
-   *   const result = Num.div(100, divisor); // ✅ Safe
-   * }
-   *
-   * // With branded types
-   * const nonZero = asNonZeroNumber(5);
-   * const result3 = Num.div(20, nonZero); // 4
-   * ```
    */
   export const div = (a: number, b: NonZeroNumber | SmallInt<'!=0'>): number =>
     // eslint-disable-next-line total-functions/no-partial-division
@@ -365,11 +255,6 @@ export namespace Num {
    * @param b - The divisor
    * @returns The integer quotient, or `NaN` if b is zero
    *
-   * @example
-   * ```typescript
-   * Num.divInt(10, 3);   // 3
-   * Num.divInt(10, -3);  // -4 (floor division)
-   * ```
    */
   export const divInt = (
     a: number,
@@ -388,11 +273,6 @@ export namespace Num {
    * @param precision - The number of decimal places (must be positive)
    * @returns The rounded number
    *
-   * @example
-   * ```typescript
-   * Num.roundAt(3.14159, 2);   // 3.14
-   * Num.roundAt(10.5, 0);      // 11
-   * ```
    */
   export const roundAt = (
     num: number,
@@ -414,11 +294,6 @@ export namespace Num {
    * @param num - The number to round
    * @returns The rounded integer as an Int branded type
    *
-   * @example
-   * ```typescript
-   * Num.roundToInt(3.2);   // 3
-   * Num.roundToInt(3.5);   // 4
-   * ```
    */
   // eslint-disable-next-line total-functions/no-unsafe-type-assertion
   export const roundToInt = (num: number): Int => (0 | (num + 0.5)) as Int;
@@ -433,12 +308,6 @@ export namespace Num {
    * @param digit - The number of decimal places for rounding
    * @returns A function that rounds numbers to the specified precision
    *
-   * @example
-   * ```typescript
-   * const roundTo2 = Num.round(2);
-   * roundTo2(3.14159);  // 3.14
-   * roundTo2(2.71828);  // 2.72
-   * ```
    */
   export const round = (
     digit: PositiveSafeIntWithSmallInt,
@@ -461,11 +330,6 @@ export namespace Num {
    * @param num - The number to check
    * @returns The original number if not NaN, otherwise undefined
    *
-   * @example
-   * ```typescript
-   * Num.mapNaN2Undefined(42);   // 42
-   * Num.mapNaN2Undefined(NaN);  // undefined
-   * ```
    */
   export const mapNaN2Undefined = <N extends number>(
     num: N,
@@ -486,11 +350,6 @@ export namespace Num {
    * @param n - The SmallUint value to increment
    * @returns The incremented value with type Increment<N>
    *
-   * @example
-   * ```typescript
-   * const zero = 0 as 0;
-   * const one = Num.increment(zero); // type is 1, value is 1
-   * ```
    */
   export const increment = <N extends SmallUint>(n: N): Increment<N> =>
     // eslint-disable-next-line total-functions/no-unsafe-type-assertion
@@ -507,11 +366,6 @@ export namespace Num {
    * @param n - The positive SmallInt value to decrement
    * @returns The decremented value with type Decrement<N>
    *
-   * @example
-   * ```typescript
-   * const three = 3 as 3;
-   * const two = Num.decrement(three); // type is 2, value is 2
-   * ```
    */
   export const decrement = <N extends SmallPositiveInt>(n: N): Decrement<N> =>
     // eslint-disable-next-line total-functions/no-unsafe-type-assertion

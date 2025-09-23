@@ -8,22 +8,6 @@ import { castMutable, unknownToString } from '../others/index.mjs';
  * stringification, and manipulation of JSON data. All functions return `Result`
  * types to handle errors without throwing exceptions.
  *
- * @example Basic usage
- * ```typescript
- * import { Json, Result } from 'ts-data-forge';
- *
- * // Parse JSON safely
- * const parseResult = Json.parse('{"name": "Alice", "age": 30}');
- * if (Result.isOk(parseResult)) {
- *   console.log(parseResult.value); // { name: 'Alice', age: 30 }
- * }
- *
- * // Stringify with error handling
- * const stringifyResult = Json.stringify({ name: 'Bob', age: 25 });
- * if (Result.isOk(stringifyResult)) {
- *   console.log(stringifyResult.value); // '{"name":"Bob","age":25}'
- * }
- * ```
  */
 export namespace Json {
   /**
@@ -43,21 +27,6 @@ export namespace Json {
    *   - On success: `Result.ok(parsedValue)` where `parsedValue` is the parsed JSON
    *   - On failure: `Result.err(errorMessage)` where `errorMessage` describes the parsing error
    *
-   * @example
-   * ```typescript
-   * const result = Json.parse('{"name": "John", "age": 30}');
-   * if (Result.isOk(result)) {
-   *   console.log(result.value.name); // 'John'
-   * }
-   * ```
-   *
-   * @example
-   * ```typescript
-   * const invalid = Json.parse('invalid json');
-   * if (Result.isErr(invalid)) {
-   *   console.log('Parse failed:', invalid.value);
-   * }
-   * ```
    */
   export const parse = (
     text: string,
@@ -98,24 +67,6 @@ export namespace Json {
    *   - On success: `Result.ok(jsonString)` where `jsonString` is the serialized JSON
    *   - On failure: `Result.err(errorMessage)` where `errorMessage` describes the error
    *
-   * @example
-   * ```typescript
-   * const obj = { name: 'John', age: 30 };
-   * const result = Json.stringify(obj);
-   * if (Result.isOk(result)) {
-   *   console.log(result.value); // '{"name":"John","age":30}'
-   * }
-   * ```
-   *
-   * @example Error handling
-   * ```typescript
-   * const circular: any = { name: 'test' };
-   * circular.self = circular;
-   * const error = Json.stringify(circular);
-   * if (Result.isErr(error)) {
-   *   console.log('Stringify failed:', error.value);
-   * }
-   * ```
    */
   export const stringify = (
     value: unknown,
@@ -150,21 +101,6 @@ export namespace Json {
    *   - On success: `Result.ok(jsonString)` with only selected properties
    *   - On failure: `Result.err(errorMessage)` describing the serialization error
    *
-   * @example
-   * ```typescript
-   * const user = {
-   *   id: 1,
-   *   name: 'Alice',
-   *   email: 'alice@example.com',
-   *   password: 'secret123'
-   * };
-   *
-   * const publicFields = Json.stringifySelected(user, ['id', 'name', 'email']);
-   * if (Result.isOk(publicFields)) {
-   *   console.log(publicFields.value);
-   *   // '{"id":1,"name":"Alice","email":"alice@example.com"}'
-   * }
-   * ```
    */
   export const stringifySelected = (
     value: unknown,
@@ -200,20 +136,6 @@ export namespace Json {
    *   - On success: `Result.ok(jsonString)` with all object keys sorted alphabetically
    *   - On failure: `Result.err(errorMessage)` describing the serialization error
    *
-   * @example
-   * ```typescript
-   * const unsortedObj = {
-   *   zebra: 'animal',
-   *   apple: 'fruit',
-   *   banana: 'fruit'
-   * };
-   *
-   * const sorted = Json.stringifySortedKey(unsortedObj);
-   * if (Result.isOk(sorted)) {
-   *   console.log(sorted.value);
-   *   // '{"apple":"fruit","banana":"fruit","zebra":"animal"}'
-   * }
-   * ```
    */
   export const stringifySortedKey = (
     value: UnknownRecord,

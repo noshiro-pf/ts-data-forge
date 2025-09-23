@@ -49,6 +49,8 @@ export namespace Optional {
    * Checks if the given value is an {@link Optional}.
    * @param maybeOptional The value to check.
    * @returns `true` if the value is an {@link Optional}, otherwise `false`.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/is-optional-example.mts|Sample code}.
    */
   export const isOptional = (
     maybeOptional: unknown,
@@ -102,12 +104,8 @@ export namespace Optional {
    * @template S The type of the value.
    * @param value The value to wrap in an {@link Optional.Some}.
    * @returns An {@link Optional.Some}<S> containing the value.
-   * @example
-   * ```typescript
-   * const someValue = Optional.some(42);
-   * console.log(Optional.isSome(someValue)); // true
-   * console.log(Optional.unwrap(someValue)); // 42
-   * ```
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/some-example.mts|Sample code}.
    */
   export const some = <S,>(value: S): Some<S> => ({
     $$tag: SomeTypeTagName,
@@ -116,12 +114,8 @@ export namespace Optional {
 
   /**
    * The singleton instance representing {@link Optional.None} (an empty Optional).
-   * @example
-   * ```typescript
-   * const emptyValue = Optional.none;
-   * console.log(Optional.isNone(emptyValue)); // true
-   * console.log(Optional.unwrapOr(emptyValue, "default")); // "default"
-   * ```
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/some-example.mts|Sample code}.
    */
   export const none: None = { $$tag: NoneTypeTagName } as const;
 
@@ -131,6 +125,8 @@ export namespace Optional {
    * @template O The {@link Optional.Base} type to check.
    * @param optional The {@link Optional} to check.
    * @returns `true` if the {@link Optional} is {@link Optional.Some}, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/is-some-example.mts|Sample code}.
    */
   export const isSome = <O extends Base>(
     optional: O,
@@ -142,6 +138,8 @@ export namespace Optional {
    * @template O The {@link Optional.Base} type to check.
    * @param optional The {@link Optional} to check.
    * @returns `true` if the {@link Optional} is {@link Optional.None}, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/is-none-example.mts|Sample code}.
    */
   export const isNone = <O extends Base>(
     optional: O,
@@ -159,18 +157,8 @@ export namespace Optional {
    * @param optional The `Optional` to unwrap.
    * @returns The contained value if `Optional.Some`.
    * @throws {Error} Error with message "`unwrapThrow()` has failed because it is `None`" if the `Optional` is `Optional.None`.
-   * @example
-   * ```typescript
-   * const userInput = Optional.some(42);
-   * console.log(Optional.unwrapThrow(userInput)); // 42
    *
-   * const empty = Optional.none;
-   * try {
-   *   Optional.unwrapThrow(empty); // throws Error
-   * } catch (error) {
-   *   console.log(error.message); // "`unwrapThrow()` has failed because it is `None`"
-   * }
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/unwrap-throw-example.mts|Sample code}.
    */
   export const unwrapThrow = <O extends Base>(optional: O): Unwrap<O> => {
     if (isSome(optional)) {
@@ -192,14 +180,8 @@ export namespace Optional {
    * @template O The `Optional.Base` type to unwrap.
    * @param optional The `Optional` to unwrap.
    * @returns The contained value if `Optional.Some`, otherwise `undefined`.
-   * @example
-   * ```typescript
-   * const some = Optional.some(42);
-   * const value = Optional.unwrap(some); // 42
    *
-   * const none = Optional.none;
-   * const result = Optional.unwrap(none); // undefined
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/unwrap-example.mts|Sample code}.
    */
   export function unwrap<O extends Some<unknown>>(optional: O): Unwrap<O>;
 
@@ -223,22 +205,8 @@ export namespace Optional {
    * @param optional The `Optional` to unwrap.
    * @param defaultValue The value to return if `optional` is `Optional.None`.
    * @returns The contained value if `Optional.Some`, otherwise `defaultValue`.
-   * @example
-   * ```typescript
-   * // Direct usage - most common pattern
-   * const some = Optional.some(42);
-   * const value1 = Optional.unwrapOr(some, 0);
-   * console.log(value1); // 42
    *
-   * const none = Optional.none;
-   * const value2 = Optional.unwrapOr(none, 0);
-   * console.log(value2); // 0
-   *
-   * // Curried usage
-   * const unwrapWithDefault = Optional.unwrapOr("default");
-   * const result = unwrapWithDefault(Optional.some("hello"));
-   * console.log(result); // "hello"
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/unwrap-or-example.mts|Sample code}.
    */
   export function unwrapOr<O extends Base, D>(
     optional: O,
@@ -284,13 +252,8 @@ export namespace Optional {
    * @param optional The `Optional` to check.
    * @param alternative The alternative `Optional` to return if the first is `None`.
    * @returns The first `Optional` if `Some`, otherwise the alternative.
-   * @example
-   * ```typescript
-   * const primary = Optional.none;
-   * const fallback = Optional.some("default");
-   * const result = Optional.orElse(primary, fallback);
-   * console.log(Optional.unwrap(result)); // "default"
-   * ```
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/or-else-example.mts|Sample code}.
    */
   export function orElse<O extends Base, const O2 extends Base>(
     optional: O,
@@ -329,16 +292,8 @@ export namespace Optional {
    * @param optional The `Optional` to map.
    * @param mapFn The function to apply to the value if it exists.
    * @returns A new `Optional<S2>` resulting from the mapping, or `Optional.None` if the input was `Optional.None`.
-   * @example
-   * ```typescript
-   * const someNumber = Optional.some(5);
-   * const mapped = Optional.map(someNumber, x => x * 2);
-   * console.log(Optional.unwrap(mapped)); // 10
    *
-   * const noneValue = Optional.none;
-   * const mappedNone = Optional.map(noneValue, x => x * 2);
-   * console.log(Optional.isNone(mappedNone)); // true
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/map-example.mts|Sample code}.
    */
   export function map<O extends Base, S2>(
     optional: O,
@@ -378,16 +333,8 @@ export namespace Optional {
    * @param optional The `Optional` to flat map.
    * @param flatMapFn The function to apply that returns an `Optional`.
    * @returns The result of applying the function, or `Optional.None`.
-   * @example
-   * ```typescript
-   * const parseNumber = (s: string): Optional<number> => {
-   *   const n = Number(s);
-   *   return isNaN(n) ? Optional.none : Optional.some(n);
-   * };
    *
-   * const result = Optional.flatMap(Optional.some("42"), parseNumber);
-   * console.log(Optional.unwrap(result)); // 42
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/flat-map-example.mts|Sample code}.
    */
   export function flatMap<O extends Base, S2>(
     optional: O,
@@ -425,12 +372,8 @@ export namespace Optional {
    * @param optional The `Optional` to filter.
    * @param predicate The predicate function.
    * @returns The filtered `Optional`.
-   * @example
-   * ```typescript
-   * const someEven = Optional.some(4);
-   * const filtered = Optional.filter(someEven, x => x % 2 === 0);
-   * console.log(Optional.unwrap(filtered)); // 4
-   * ```
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/filter-example.mts|Sample code}.
    */
   export function filter<O extends Base>(
     optional: O,
@@ -473,12 +416,8 @@ export namespace Optional {
    * @param message The error message to throw if the `Optional` is `Optional.None`.
    * @returns The contained value if `Optional.Some`.
    * @throws Error with the provided message if the `Optional` is `Optional.None`.
-   * @example
-   * ```typescript
-   * const some = Optional.some(42);
-   * const value = Optional.expectToBe(some, "Value must exist");
-   * console.log(value); // 42
-   * ```
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/expect-to-be-example.mts|Sample code}.
    */
   export function expectToBe<O extends Base>(
     optional: O,
@@ -519,16 +458,8 @@ export namespace Optional {
    * @param optionalA The first `Optional`.
    * @param optionalB The second `Optional`.
    * @returns An `Optional` containing a tuple of both values, or `None`.
-   * @example
-   * ```typescript
-   * const a = Optional.some(1);
-   * const b = Optional.some("hello");
-   * const zipped = Optional.zip(a, b);
-   * console.log(Optional.unwrap(zipped)); // [1, "hello"]
    *
-   * const withNone = Optional.zip(a, Optional.none);
-   * console.log(Optional.isNone(withNone)); // true
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/zip-example.mts|Sample code}.
    */
   export const zip = <A, const B>(
     optionalA: Optional<A>,
@@ -548,16 +479,8 @@ export namespace Optional {
    * @template T The type of the nullable value.
    * @param value The nullable value to convert.
    * @returns `Optional.Some<NonNullable<T>>` if the value is not null or undefined, otherwise `Optional.None`.
-   * @example
-   * ```typescript
-   * const value: string | null = "hello";
-   * const optional = Optional.fromNullable(value);
-   * console.log(Optional.unwrap(optional)); // "hello"
    *
-   * const nullValue: string | null = null;
-   * const noneOptional = Optional.fromNullable(nullValue);
-   * console.log(Optional.isNone(noneOptional)); // true
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/from-nullable-example.mts|Sample code}.
    */
   export const fromNullable = <T,>(
     value: T | null | undefined,
@@ -576,14 +499,8 @@ export namespace Optional {
    * @template O The `Optional.Base` type to convert.
    * @param optional The `Optional` to convert.
    * @returns The contained value if `Some`, otherwise `undefined`.
-   * @example
-   * ```typescript
-   * const some = Optional.some(42);
-   * console.log(Optional.toNullable(some)); // 42
    *
-   * const none = Optional.none;
-   * console.log(Optional.toNullable(none)); // undefined
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/functional/optional/to-nullable-example.mts|Sample code}.
    */
   export const toNullable = <O extends Base>(
     optional: O,

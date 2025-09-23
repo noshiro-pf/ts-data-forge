@@ -33,6 +33,7 @@ const {
  * Checks if a number is a Uint.
  * @param value The value to check.
  * @returns `true` if the value is a Uint, `false` otherwise.
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/is-uint-example.mts|Sample code}.
  */
 export const isUint = is;
 
@@ -41,13 +42,7 @@ export const isUint = is;
  * @param value The value to cast.
  * @returns The value as a Uint type.
  * @throws {TypeError} If the value is not a non-negative integer.
- * @example
- * ```typescript
- * const x = asUint(5); // Uint
- * const y = asUint(0); // Uint
- * // asUint(-1); // throws TypeError
- * // asUint(1.5); // throws TypeError
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/as-uint-example.mts|Sample code}.
  */
 export const asUint = castType;
 
@@ -57,32 +52,14 @@ export const asUint = castType;
  * All operations maintain the non-negative constraint by clamping negative results to 0.
  * This ensures that all arithmetic preserves the unsigned integer property.
  *
- * @example
- * ```typescript
- * const a = asUint(100);
- * const b = asUint(150);
- *
- * // Arithmetic operations with non-negative clamping
- * const sum = Uint.add(a, b);       // Uint (250)
- * const diff = Uint.sub(a, b);      // Uint (0 - clamped to MIN_VALUE)
- * const product = Uint.mul(a, b);   // Uint (15000)
- * const quotient = Uint.div(b, a);  // Uint (1)
- *
- * // Range operations
- * const clamped = Uint.clamp(-50);      // Uint (0)
- * const minimum = Uint.min(a, b);       // Uint (100)
- * const maximum = Uint.max(a, b);       // Uint (150)
- *
- * // Utility operations
- * const random = Uint.random();         // Uint (random non-negative integer)
- * const power = Uint.pow(asUint(2), asUint(8)); // Uint (256)
- * ```
  */
 export const Uint = {
   /**
    * Type guard to check if a value is a Uint.
    * @param value The value to check.
    * @returns `true` if the value is a non-negative integer, `false` otherwise.
+   * @see {@link isUint} for usage examples
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/is-uint-example.mts|Sample code}.
    */
   is,
 
@@ -97,6 +74,7 @@ export const Uint = {
    * @param a The first Uint.
    * @param b The second Uint.
    * @returns The minimum value as a Uint.
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/min-example.mts|Sample code}.
    */
   min: min_,
 
@@ -105,6 +83,7 @@ export const Uint = {
    * @param a The first Uint.
    * @param b The second Uint.
    * @returns The maximum value as a Uint.
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/max-example.mts|Sample code}.
    */
   max: max_,
 
@@ -112,12 +91,14 @@ export const Uint = {
    * Clamps a number to the Uint range (non-negative).
    * @param value The number to clamp.
    * @returns The value clamped to [0, +∞) as a Uint.
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/clamp-example.mts|Sample code}.
    */
   clamp,
 
   /**
    * Generates a random Uint value.
    * @returns A random non-negative integer as a Uint.
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/random-example.mts|Sample code}.
    */
   random,
 
@@ -126,6 +107,7 @@ export const Uint = {
    * @param a The base Uint.
    * @param b The exponent Uint.
    * @returns `a ** b` clamped to [0, +∞) as a Uint.
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/pow-example.mts|Sample code}.
    */
   pow,
 
@@ -134,6 +116,7 @@ export const Uint = {
    * @param a The first Uint.
    * @param b The second Uint.
    * @returns `a + b` clamped to [0, +∞) as a Uint.
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/add-example.mts|Sample code}.
    */
   add,
 
@@ -142,6 +125,7 @@ export const Uint = {
    * @param a The minuend Uint.
    * @param b The subtrahend Uint.
    * @returns `a - b` clamped to [0, +∞) as a Uint (minimum 0).
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/sub-example.mts|Sample code}.
    */
   sub,
 
@@ -150,6 +134,7 @@ export const Uint = {
    * @param a The first Uint.
    * @param b The second Uint.
    * @returns `a * b` clamped to [0, +∞) as a Uint.
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/mul-example.mts|Sample code}.
    */
   mul,
 
@@ -158,6 +143,7 @@ export const Uint = {
    * @param a The dividend Uint.
    * @param b The divisor Uint.
    * @returns `⌊a / b⌋` clamped to [0, +∞) as a Uint.
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/branded-types/uint/div-example.mts|Sample code}.
    */
   div,
 } as const;

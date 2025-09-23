@@ -1,0 +1,8 @@
+// Example: src/number/num.mts (roundToInt)
+import { Num } from 'ts-data-forge';
+
+const three = Num.roundToInt(3.2);
+const four = Num.roundToInt(3.5);
+
+assert.strictEqual(four, 4);
+assert.strictEqual(three, 3);

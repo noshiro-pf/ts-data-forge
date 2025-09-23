@@ -43,13 +43,6 @@ export const isSafeUint = is;
  * @param value The value to cast.
  * @returns The value as a SafeUint type.
  * @throws {TypeError} If the value is not a non-negative safe integer.
- * @example
- * ```typescript
- * const x = asSafeUint(5); // SafeUint
- * const y = asSafeUint(0); // SafeUint
- * // asSafeUint(-1); // throws TypeError
- * // asSafeUint(1.5); // throws TypeError
- * ```
  */
 export const asSafeUint = castType;
 
@@ -60,25 +53,6 @@ export const asSafeUint = castType;
  * This ensures that all arithmetic maintains both the non-negative constraint and IEEE 754 precision guarantees,
  * preventing precision loss while ensuring results are never negative.
  *
- * @example
- * ```typescript
- * const a = asSafeUint(9007199254740000);  // Near MAX_SAFE_INTEGER
- * const b = asSafeUint(1000);
- *
- * // Arithmetic operations with safe unsigned range clamping
- * const sum = SafeUint.add(a, b);          // SafeUint (clamped to MAX_SAFE_INTEGER)
- * const diff = SafeUint.sub(b, a);         // SafeUint (0 - clamped to MIN_VALUE)
- * const product = SafeUint.mul(a, b);      // SafeUint (clamped to MAX_SAFE_INTEGER)
- *
- * // Range operations
- * const clamped = SafeUint.clamp(-100);        // SafeUint (0)
- * const minimum = SafeUint.min(a, b);          // SafeUint (1000)
- * const maximum = SafeUint.max(a, b);          // SafeUint (a)
- *
- * // Utility operations
- * const random = SafeUint.random();            // SafeUint (random safe unsigned integer)
- * const power = SafeUint.pow(asSafeUint(2), asSafeUint(20)); // SafeUint (1048576)
- * ```
  */
 export const SafeUint = {
   /**

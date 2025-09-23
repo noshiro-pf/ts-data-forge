@@ -294,6 +294,7 @@ export namespace TsDataForgeInternals {
      * @param config.typeNameInMessage - Human-readable type name for error messages
      *
      * @returns Object containing all type-safe operations for the integer type
+     * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/refined-number-utils/operators-for-integer-example.mts|Sample code}.
      * @internal
      */
     export const operatorsForInteger = <
@@ -474,6 +475,7 @@ export namespace TsDataForgeInternals {
      * @param config.typeNameInMessage - Human-readable type name for error messages
      *
      * @returns Object containing all type-safe operations for the floating-point type
+     * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/number/refined-number-utils/operators-for-float-example.mts|Sample code}.
      * @internal
      */
     export const operatorsForFloat = <

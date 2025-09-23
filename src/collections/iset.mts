@@ -25,16 +25,26 @@ import { unknownToString } from '../others/index.mjs';
 type ISetInterface<K extends MapSetKeyType> = Readonly<{
   // Getting information
 
-  /** The number of elements in the set. */
+  /**
+   * The number of elements in the set.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/size-example.mts|Sample code}.
+   */
   size: SizeType.Arr;
 
-  /** Checks if the set is empty. */
+  /**
+   * Checks if the set is empty.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/is-empty-example.mts|Sample code}.
+   */
   isEmpty: boolean;
   /**
    * Checks if an element exists in the set.
    * Allows for wider literal types for keys during checking.
    * @param key The element to check.
    * @returns `true` if the element exists, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/has-example.mts|Sample code}.
    */
   has: (key: K | (WidenLiteral<K> & {})) => boolean;
 
@@ -44,6 +54,8 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
    * Checks if all elements in the set satisfy a predicate.
    * @param predicate A function to test each element.
    * @returns `true` if all elements satisfy the predicate, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/every-example.mts|Sample code}.
    */
   every: ((predicate: (key: K) => boolean) => boolean) &
     /**
@@ -59,6 +71,8 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
    * Checks if at least one element in the set satisfies a predicate.
    * @param predicate A function to test each element.
    * @returns `true` if at least one element satisfies the predicate, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/some-example.mts|Sample code}.
    */
   some: (predicate: (key: K) => boolean) => boolean;
 
@@ -68,6 +82,8 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
    * Adds an element to the set.
    * @param key The element to add.
    * @returns A new ISet instance with the element added.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/add-example.mts|Sample code}.
    */
   add: (key: K) => ISet<K>;
 
@@ -75,6 +91,8 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
    * Deletes an element from the set.
    * @param key The element to delete.
    * @returns A new ISet instance without the specified element.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/delete-example.mts|Sample code}.
    */
   delete: (key: K) => ISet<K>;
 
@@ -82,6 +100,8 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
    * Applies a series of mutations to the set.
    * @param actions An array of mutation actions (add or delete).
    * @returns A new ISet instance with all mutations applied.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/with-mutations-example.mts|Sample code}.
    */
   withMutations: (
     actions: readonly Readonly<
@@ -96,6 +116,8 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
    * @template K2 The type of the new elements.
    * @param mapFn A function that maps an element to a new element.
    * @returns A new ISet instance with mapped elements.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/map-example.mts|Sample code}.
    */
   map: <K2 extends MapSetKeyType>(mapFn: (key: K) => K2) => ISet<K2>;
 
@@ -105,6 +127,8 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
    * @template K2 The narrowed type of the elements.
    * @param predicate A type predicate function.
    * @returns A new ISet instance with elements that satisfy the type predicate.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/filter-example.mts|Sample code}.
    */
   filter: (<K2 extends K>(predicate: (key: K) => key is K2) => ISet<K2>) &
     /**
@@ -118,6 +142,8 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
    * Filters the elements of the set by excluding elements for which the predicate returns true.
    * @param predicate A function to test each element.
    * @returns A new ISet instance with elements for which the predicate returned `false`.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/filter-not-example.mts|Sample code}.
    */
   filterNot: (predicate: (key: K) => boolean) => ISet<K>;
 
@@ -126,24 +152,32 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
    * Checks if this set is a subset of another set.
    * @param set The other set.
    * @returns `true` if this set is a subset of the other set, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/is-subset-of-example.mts|Sample code}.
    */
   isSubsetOf: (set: ISet<WidenLiteral<K>>) => boolean;
   /**
    * Checks if this set is a superset of another set.
    * @param set The other set.
    * @returns `true` if this set is a superset of the other set, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/is-superset-of-example.mts|Sample code}.
    */
   isSupersetOf: (set: ISet<WidenLiteral<K>>) => boolean;
   /**
    * Returns a new set with elements that are in this set but not in another set.
    * @param set The other set.
    * @returns A new ISet instance representing the set difference.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/subtract-example.mts|Sample code}.
    */
   subtract: (set: ISet<K>) => ISet<K>;
   /**
    * Returns a new set with elements that are common to both this set and another set.
    * @param set The other set.
    * @returns A new ISet instance representing the set intersection.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/intersect-example.mts|Sample code}.
    */
   intersect: (set: ISet<K>) => ISet<K>;
   /**
@@ -151,6 +185,8 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
    * @template K2 The type of elements in the other set.
    * @param set The other set.
    * @returns A new ISet instance representing the set union.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/union-example.mts|Sample code}.
    */
   union: <K2 extends MapSetKeyType>(set: ISet<K2>) => ISet<K | K2>;
 
@@ -158,6 +194,8 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
   /**
    * Executes a callback function for each element in the set.
    * @param callbackfn A function to execute for each element.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/for-each-example.mts|Sample code}.
    */
   forEach: (callbackfn: (key: K) => void) => void;
 
@@ -165,16 +203,22 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
   /**
    * Returns an iterator for the elements in the set (alias for values).
    * @returns An iterable iterator of elements.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/keys-example.mts|Sample code}.
    */
   keys: () => IterableIterator<K>;
   /**
    * Returns an iterator for the elements in the set.
    * @returns An iterable iterator of elements.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/values-example.mts|Sample code}.
    */
   values: () => IterableIterator<K>;
   /**
    * Returns an iterator for the entries (element-element pairs) in the set.
    * @returns An iterable iterator of entries.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/entries-example.mts|Sample code}.
    */
   entries: () => IterableIterator<readonly [K, K]>;
 
@@ -182,11 +226,15 @@ type ISetInterface<K extends MapSetKeyType> = Readonly<{
   /**
    * Converts the elements of the set to an array.
    * @returns A readonly array of elements.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/to-array-example.mts|Sample code}.
    */
   toArray: () => readonly K[];
   /**
    * Returns the underlying readonly JavaScript Set.
    * @returns The raw ReadonlySet instance.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/to-raw-set-example.mts|Sample code}.
    */
   toRawSet: () => ReadonlySet<K>;
 }>;
@@ -233,40 +281,7 @@ export namespace ISet {
    * @param iterable An iterable of elements (e.g., Array, Set, ISet, etc.)
    * @returns A new ISet instance containing all unique elements from the iterable.
    *
-   * @example
-   * ```typescript
-   * // From array (duplicates automatically removed)
-   * const uniqueIds = ISet.create([1, 2, 3, 2, 1]); // Contains: 1, 2, 3
-   * console.log(uniqueIds.size); // Output: 3
-   *
-   * // From JavaScript Set
-   * const jsSet = new Set(["red", "green", "blue"]);
-   * const colors = ISet.create(jsSet);
-   * console.log(colors.has("red")); // Output: true
-   *
-   * // From another ISet (creates a copy)
-   * const originalTags = ISet.create(["typescript", "immutable"]);
-   * const copiedTags = ISet.create(originalTags);
-   * console.log(copiedTags.size); // Output: 2
-   *
-   * // Empty set
-   * const emptyPermissions = ISet.create<string>([]);
-   * console.log(emptyPermissions.isEmpty); // Output: true
-   *
-   * // Fluent operations
-   * const processedNumbers = ISet.create([1, 2, 3, 4, 5])
-   *   .filter(x => x % 2 === 0)  // Keep even numbers: 2, 4
-   *   .add(6)                    // Add 6: 2, 4, 6
-   *   .delete(2);                // Remove 2: 4, 6
-   * console.log(processedNumbers.toArray().toSorted()); // Output: [4, 6]
-   *
-   * // From generator function
-   * function* generatePrimes(): Generator<number> {
-   *   yield 2; yield 3; yield 5; yield 7;
-   * }
-   * const primes = ISet.create(generatePrimes());
-   * console.log(primes.size); // Output: 4
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/create-example.mts|Sample code}.
    */
   export const create = <K extends MapSetKeyType>(
     iterable: Iterable<K>,
@@ -286,37 +301,7 @@ export namespace ISet {
    * @param b The second ISet instance to compare.
    * @returns `true` if the sets contain exactly the same elements, `false` otherwise.
    *
-   * @example
-   * ```typescript
-   * // Basic equality comparison
-   * const permissions1 = ISet.create(["read", "write", "execute"]);
-   * const permissions2 = ISet.create(["execute", "read", "write"]); // Order doesn't matter
-   * const permissions3 = ISet.create(["read", "write"]);
-   *
-   * console.log(ISet.equal(permissions1, permissions2)); // true
-   * console.log(ISet.equal(permissions1, permissions3)); // false (different sizes)
-   *
-   * // With different element types
-   * const numbers1 = ISet.create([1, 2, 3]);
-   * const numbers2 = ISet.create([3, 1, 2]);
-   * const numbers3 = ISet.create([1, 2, 4]); // Different element
-   *
-   * console.log(ISet.equal(numbers1, numbers2)); // true
-   * console.log(ISet.equal(numbers1, numbers3)); // false
-   *
-   * // Empty sets
-   * const empty1 = ISet.create<string>([]);
-   * const empty2 = ISet.create<string>([]);
-   * console.log(ISet.equal(empty1, empty2)); // true
-   *
-   * // Single element sets
-   * const single1 = ISet.create(["unique"]);
-   * const single2 = ISet.create(["unique"]);
-   * const single3 = ISet.create(["different"]);
-   *
-   * console.log(ISet.equal(single1, single2)); // true
-   * console.log(ISet.equal(single1, single3)); // false
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/equal-example.mts|Sample code}.
    */
   export const equal = <K extends MapSetKeyType>(
     a: ISet<K>,
@@ -338,36 +323,7 @@ export namespace ISet {
    * @returns An object with `added` and `deleted` properties, each containing an ISet
    *          of elements that were added or removed respectively.
    *
-   * @example
-   * ```typescript
-   * // User permission changes
-   * const oldPermissions = ISet.create(["read", "write", "delete"]);
-   * const newPermissions = ISet.create(["read", "write", "execute", "admin"]);
-   *
-   * const permissionDiff = ISet.diff(oldPermissions, newPermissions);
-   *
-   * console.log("Permissions removed:", permissionDiff.deleted.toArray());
-   * // Output: ["delete"]
-   *
-   * console.log("Permissions added:", permissionDiff.added.toArray());
-   * // Output: ["execute", "admin"]
-   *
-   * // No changes
-   * const unchanged1 = ISet.create(["a", "b", "c"]);
-   * const unchanged2 = ISet.create(["a", "b", "c"]);
-   * const noDiff = ISet.diff(unchanged1, unchanged2);
-   *
-   * console.log(noDiff.added.isEmpty);   // true
-   * console.log(noDiff.deleted.isEmpty); // true
-   *
-   * // Complete replacement
-   * const oldTags = ISet.create(["javascript", "react"]);
-   * const newTags = ISet.create(["typescript", "vue"]);
-   * const tagDiff = ISet.diff(oldTags, newTags);
-   *
-   * console.log(tagDiff.deleted.toArray()); // ["javascript", "react"]
-   * console.log(tagDiff.added.toArray());   // ["typescript", "vue"]
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/diff-example.mts|Sample code}.
    */
   export const diff = <K extends MapSetKeyType>(
     oldSet: ISet<K>,
@@ -390,33 +346,7 @@ export namespace ISet {
    * @param b The second set.
    * @returns A new ISet instance containing elements common to both sets.
    *
-   * @example
-   * ```typescript
-   * // Finding common permissions between user and role
-   * const userPermissions = ISet.create(["read", "write", "delete", "admin"]);
-   * const rolePermissions = ISet.create(["read", "write", "execute"]);
-   *
-   * const commonPermissions = ISet.intersection(userPermissions, rolePermissions);
-   * console.log(commonPermissions.toArray()); // ["read", "write"]
-   *
-   * // No common elements
-   * const setA = ISet.create([1, 2, 3]);
-   * const setB = ISet.create([4, 5, 6]);
-   * const noCommon = ISet.intersection(setA, setB);
-   * console.log(noCommon.isEmpty); // true
-   *
-   * // Complete overlap
-   * const identical1 = ISet.create(["a", "b", "c"]);
-   * const identical2 = ISet.create(["a", "b", "c"]);
-   * const completeOverlap = ISet.intersection(identical1, identical2);
-   * console.log(ISet.equal(completeOverlap, identical1)); // true
-   *
-   * // Intersection with empty set
-   * const nonEmpty = ISet.create([1, 2, 3]);
-   * const empty = ISet.create<number>([]);
-   * const withEmpty = ISet.intersection(nonEmpty, empty);
-   * console.log(withEmpty.isEmpty); // true
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/intersection-function-example.mts|Sample code}.
    */
   export const intersection = <K extends MapSetKeyType>(
     a: ISet<K>,
@@ -438,34 +368,7 @@ export namespace ISet {
    * @param b The second set.
    * @returns A new ISet instance containing all elements from both sets.
    *
-   * @example
-   * ```typescript
-   * // Combining permissions from multiple sources
-   * const userPermissions = ISet.create(["read", "write"]);
-   * const rolePermissions = ISet.create(["write", "execute", "admin"]);
-   *
-   * const allPermissions = ISet.union(userPermissions, rolePermissions);
-   * console.log(allPermissions.toArray().toSorted());
-   * // Output: ["admin", "execute", "read", "write"]
-   *
-   * // Union with different types (type widening)
-   * const numbers = ISet.create([1, 2, 3]);
-   * const strings = ISet.create(["a", "b"]);
-   * const mixed = ISet.union(numbers, strings); // ISet<number | string>
-   * console.log(mixed.size); // 5
-   *
-   * // Union with empty set
-   * const nonEmpty = ISet.create(["item1", "item2"]);
-   * const empty = ISet.create<string>([]);
-   * const withEmpty = ISet.union(nonEmpty, empty);
-   * console.log(ISet.equal(withEmpty, nonEmpty)); // true
-   *
-   * // Overlapping sets
-   * const featuresA = ISet.create(["feature1", "feature2", "feature3"]);
-   * const featuresB = ISet.create(["feature2", "feature3", "feature4"]);
-   * const allFeatures = ISet.union(featuresA, featuresB);
-   * console.log(allFeatures.size); // 4 (duplicates removed)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/union-function-example.mts|Sample code}.
    */
   export const union = <K1 extends MapSetKeyType, K2 extends MapSetKeyType>(
     a: ISet<K1>,
@@ -648,6 +551,8 @@ class ISetClass<K extends MapSetKeyType> implements ISet<K>, Iterable<K> {
 
   /**
    * @inheritdoc
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset/iterator-example.mts|Sample code}.
    */
   [Symbol.iterator](): Iterator<K> {
     return this.#set[Symbol.iterator]();

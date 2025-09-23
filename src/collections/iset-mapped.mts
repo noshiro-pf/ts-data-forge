@@ -24,27 +24,6 @@ import { asUint32 } from '../number/index.mjs';
  * @template K The type of the custom elements in the set.
  * @template KM The type of the mapped primitive keys (string, number, etc.).
  *
- * @example
- * ```typescript
- * // Example with complex object elements
- * type User = { id: number; department: string; email: string };
- *
- * // Define transformation functions
- * const userToKey = (user: User): string => `${user.department}:${user.id}`;
- * const keyToUser = (key: string): User => {
- *   const [department, idStr] = key.split(':');
- *   // In practice, you might fetch from a cache or reconstruct more robustly
- *   return { id: Number(idStr), department, email: `user${idStr}@${department}.com` };
- * };
- *
- * declare const activeUsers: ISetMapped<User, string>;
- *
- * // All operations work with the complex element type
- * const user: User = { id: 123, department: "engineering", email: "alice@engineering.com" };
- * const hasUser = activeUsers.has(user);                    // O(1)
- * const withNewUser = activeUsers.add(user);                // O(1) - returns new ISetMapped
- * const withoutUser = activeUsers.delete(user);             // O(1) - returns new ISetMapped
- * ```
  */
 type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
   /**
@@ -56,16 +35,26 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
   new (iterable: Iterable<K>, toKey: (a: K) => KM, fromKey: (k: KM) => K): void;
 
   // Getting information
-  /** The number of elements in the set. */
+  /**
+   * The number of elements in the set.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/size-example.mts|Sample code}.
+   */
   size: SizeType.Arr;
 
-  /** Checks if the set is empty. */
+  /**
+   * Checks if the set is empty.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/is-empty-example.mts|Sample code}.
+   */
   isEmpty: boolean;
 
   /**
    * Checks if an element exists in the set.
    * @param key The element to check.
    * @returns `true` if the element exists, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/has-example.mts|Sample code}.
    */
   has: (key: K) => boolean;
 
@@ -74,6 +63,8 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
    * Checks if all elements in the set satisfy a predicate.
    * @param predicate A function to test each element.
    * @returns `true` if all elements satisfy the predicate, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/every-example.mts|Sample code}.
    */
   every: ((predicate: (key: K) => boolean) => boolean) &
     /**
@@ -90,6 +81,8 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
    * Checks if at least one element in the set satisfies a predicate.
    * @param predicate A function to test each element.
    * @returns `true` if at least one element satisfies the predicate, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/some-example.mts|Sample code}.
    */
   some: (predicate: (key: K) => boolean) => boolean;
 
@@ -98,18 +91,24 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
    * Adds an element to the set.
    * @param key The element to add.
    * @returns A new ISetMapped instance with the element added.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/add-example.mts|Sample code}.
    */
   add: (key: K) => ISetMapped<K, KM>;
   /**
    * Deletes an element from the set.
    * @param key The element to delete.
    * @returns A new ISetMapped instance without the specified element.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/delete-example.mts|Sample code}.
    */
   delete: (key: K) => ISetMapped<K, KM>;
   /**
    * Applies a series of mutations to the set.
    * @param actions An array of mutation actions (add or delete).
    * @returns A new ISetMapped instance with all mutations applied.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/with-mutations-example.mts|Sample code}.
    */
   withMutations: (
     actions: readonly Readonly<
@@ -123,6 +122,8 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
    * Note: The element type `K` cannot be changed because `toKey` and `fromKey` would become unusable if the mapped type `KM` changes.
    * @param mapFn A function that maps an element to a new element of the same type `K`.
    * @returns A new ISetMapped instance with mapped elements.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/map-example.mts|Sample code}.
    */
   map: (mapFn: (key: K) => K) => ISetMapped<K, KM>;
 
@@ -130,6 +131,8 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
    * Filters the elements of the set based on a predicate.
    * @param predicate A function to test each element.
    * @returns A new ISetMapped instance with elements that satisfy the predicate.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/filter-example.mts|Sample code}.
    */
   filter: (predicate: (value: K) => boolean) => ISetMapped<K, KM>;
 
@@ -137,6 +140,8 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
    * Filters the elements of the set by excluding elements for which the predicate returns true.
    * @param predicate A function to test each element.
    * @returns A new ISetMapped instance with elements for which the predicate returned `false`.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/filter-not-example.mts|Sample code}.
    */
   filterNot: (predicate: (key: K) => boolean) => ISetMapped<K, KM>;
 
@@ -144,6 +149,8 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
   /**
    * Executes a callback function for each element in the set.
    * @param callbackfn A function to execute for each element.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/for-each-example.mts|Sample code}.
    */
   forEach: (callbackfn: (key: K) => void) => void;
 
@@ -152,30 +159,40 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
    * Checks if this set is a subset of another set.
    * @param set The other set.
    * @returns `true` if this set is a subset of the other set, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/is-subset-of-example.mts|Sample code}.
    */
   isSubsetOf: (set: ISetMapped<K, KM>) => boolean;
   /**
    * Checks if this set is a superset of another set.
    * @param set The other set.
    * @returns `true` if this set is a superset of the other set, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/is-superset-of-example.mts|Sample code}.
    */
   isSupersetOf: (set: ISetMapped<K, KM>) => boolean;
   /**
    * Returns a new set with elements that are in this set but not in another set.
    * @param set The other set.
    * @returns A new ISetMapped instance representing the set difference.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/subtract-example.mts|Sample code}.
    */
   subtract: (set: ISetMapped<K, KM>) => ISetMapped<K, KM>;
   /**
    * Returns a new set with elements that are common to both this set and another set.
    * @param set The other set.
    * @returns A new ISetMapped instance representing the set intersection.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/intersect-example.mts|Sample code}.
    */
   intersect: (set: ISetMapped<K, KM>) => ISetMapped<K, KM>;
   /**
    * Returns a new set with all elements from both this set and another set.
    * @param set The other set.
    * @returns A new ISetMapped instance representing the set union.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/union-example.mts|Sample code}.
    */
   union: (set: ISetMapped<K, KM>) => ISetMapped<K, KM>;
 
@@ -183,16 +200,22 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
   /**
    * Returns an iterator for the elements in the set (alias for values).
    * @returns An iterable iterator of elements.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/keys-example.mts|Sample code}.
    */
   keys: () => IterableIterator<K>;
   /**
    * Returns an iterator for the elements in the set.
    * @returns An iterable iterator of elements.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/values-example.mts|Sample code}.
    */
   values: () => IterableIterator<K>;
   /**
    * Returns an iterator for the entries (element-element pairs) in the set.
    * @returns An iterable iterator of entries.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/entries-example.mts|Sample code}.
    */
   entries: () => IterableIterator<readonly [K, K]>;
 
@@ -200,11 +223,15 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
   /**
    * Converts the elements of the set to an array.
    * @returns A readonly array of elements.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/to-array-example.mts|Sample code}.
    */
   toArray: () => readonly K[];
   /**
    * Returns the underlying readonly JavaScript Set of mapped keys.
    * @returns The raw ReadonlySet instance.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/to-raw-set-example.mts|Sample code}.
    */
   toRawSet: () => ReadonlySet<KM>;
 }>;
@@ -234,63 +261,6 @@ type ISetMappedInterface<K, KM extends MapSetKeyType> = Readonly<{
  * @template K The type of the custom elements in the set.
  * @template KM The type of the mapped primitive keys (string, number, etc.).
  *
- * @example
- * ```typescript
- * // Example: User management with composite identity
- * type User = { id: number; department: string; username: string; email: string };
- *
- * // Define bidirectional transformation functions
- * const userToKey = (user: User): string => `${user.department}:${user.id}`;
- * const keyToUser = (key: string): User => {
- *   const [department, idStr] = key.split(':');
- *   const id = Number(idStr);
- *   // In practice, this might fetch from a user service or cache
- *   return {
- *     id,
- *     department,
- *     username: `user${id}`,
- *     email: `user${id}@${department}.company.com`
- *   };
- * };
- *
- * // Create a set with complex elements
- * let activeUsers = ISetMapped.create<User, string>([], userToKey, keyToUser);
- *
- * // Use complex objects as elements naturally
- * const alice: User = { id: 1, department: "engineering", username: "alice", email: "alice@engineering.company.com" };
- * const bob: User = { id: 2, department: "marketing", username: "bob", email: "bob@marketing.company.com" };
- * const charlie: User = { id: 3, department: "engineering", username: "charlie", email: "charlie@engineering.company.com" };
- *
- * activeUsers = activeUsers
- *   .add(alice)
- *   .add(bob)
- *   .add(charlie);
- *
- * // All operations work with the original element type
- * console.log(activeUsers.has(alice)); // Output: true
- * console.log(activeUsers.size); // Output: 3
- *
- * // Set operations preserve element types
- * const engineeringUsers = ISetMapped.create<User, string>([alice, charlie], userToKey, keyToUser);
- * const marketingUsers = ISetMapped.create<User, string>([bob], userToKey, keyToUser);
- *
- * const allUsers = ISetMapped.union(engineeringUsers, marketingUsers);
- * const engineeringOnly = activeUsers.intersect(engineeringUsers);
- *
- * // Iteration preserves original element types
- * for (const user of engineeringOnly) {
- *   console.log(`${user.username} works in ${user.department}`);
- * }
- * // Output:
- * // alice works in engineering
- * // charlie works in engineering
- *
- * // Functional transformations work seamlessly
- * const updatedUsers = activeUsers.map(user => ({
- *   ...user,
- *   email: user.email.replace('.company.com', '.example.com')
- * }));
- * ```
  */
 export type ISetMapped<K, KM extends MapSetKeyType> = Iterable<K> &
   Readonly<ISetMappedInterface<K, KM>>;
@@ -318,90 +288,7 @@ export namespace ISetMapped {
    *                This should be the inverse of `toKey`.
    * @returns A new ISetMapped instance containing all unique elements from the iterable.
    *
-   * @example
-   * ```typescript
-   * // Example 1: Product catalog with SKU-based identity
-   * type Product = { sku: string; name: string; price: number; category: string };
-   *
-   * const productToKey = (product: Product): string => product.sku;
-   * const keyToProduct = (sku: string): Product => {
-   *   // In practice, this might fetch from a product service or cache
-   *   return {
-   *     sku,
-   *     name: `Product ${sku}`,
-   *     price: 0,
-   *     category: "unknown"
-   *   };
-   * };
-   *
-   * const productSet = ISetMapped.create<Product, string>(
-   *   [
-   *     { sku: "LAPTOP-001", name: "Gaming Laptop", price: 1299, category: "electronics" },
-   *     { sku: "MOUSE-002", name: "Wireless Mouse", price: 49, category: "accessories" },
-   *     { sku: "LAPTOP-001", name: "Gaming Laptop", price: 1299, category: "electronics" } // Duplicate SKU
-   *   ],
-   *   productToKey,
-   *   keyToProduct
-   * );
-   *
-   * console.log(productSet.size); // Output: 2 (duplicate removed)
-   * console.log(productSet.has({ sku: "LAPTOP-001", name: "Gaming Laptop", price: 1299, category: "electronics" })); // true
-   *
-   * // Example 2: Geographic locations with coordinate-based identity
-   * type Location = { name: string; lat: number; lng: number; type: string };
-   *
-   * const locationToKey = (loc: Location): string => `${loc.lat.toFixed(6)},${loc.lng.toFixed(6)}`;
-   * const keyToLocation = (key: string): Location => {
-   *   const [latStr, lngStr] = key.split(',');
-   *   return {
-   *     name: "Unknown Location",
-   *     lat: parseFloat(latStr),
-   *     lng: parseFloat(lngStr),
-   *     type: "point"
-   *   };
-   * };
-   *
-   * const locationSet = ISetMapped.create<Location, string>(
-   *   [
-   *     { name: "Statue of Liberty", lat: 40.689247, lng: -74.044502, type: "monument" },
-   *     { name: "Empire State Building", lat: 40.748817, lng: -73.985428, type: "building" }
-   *   ],
-   *   locationToKey,
-   *   keyToLocation
-   * );
-   *
-   * // Example 3: User entities with multi-part identity
-   * type User = { id: number; tenant: string; email: string; active: boolean };
-   *
-   * const userToKey = (user: User): string => `${user.tenant}:${user.id}`;
-   * const keyToUser = (key: string): User => {
-   *   const [tenant, idStr] = key.split(':');
-   *   return {
-   *     id: Number(idStr),
-   *     tenant,
-   *     email: `user${idStr}@${tenant}.com`,
-   *     active: true
-   *   };
-   * };
-   *
-   * const userSet = ISetMapped.create<User, string>(
-   *   [],
-   *   userToKey,
-   *   keyToUser
-   * )
-   * .add({ id: 1, tenant: "acme", email: "alice@acme.com", active: true })
-   * .add({ id: 2, tenant: "acme", email: "bob@acme.com", active: false });
-   *
-   * console.log(userSet.size); // Output: 2
-   *
-   * // Example 4: Empty set with type specification
-   * const emptyProductSet = ISetMapped.create<Product, string>(
-   *   [],
-   *   productToKey,
-   *   keyToProduct
-   * );
-   * console.log(emptyProductSet.isEmpty); // Output: true
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/create-example.mts|Sample code}.
    */
   export const create = <K, KM extends MapSetKeyType>(
     iterable: Iterable<K>,
@@ -425,86 +312,7 @@ export namespace ISetMapped {
    * @param b The second ISetMapped instance to compare.
    * @returns `true` if the sets contain exactly the same elements, `false` otherwise.
    *
-   * @example
-   * ```typescript
-   * // Example with coordinate-based elements
-   * type Point = { x: number; y: number; label?: string };
-   * const pointToKey = (p: Point): string => `${p.x},${p.y}`;
-   * const keyToPoint = (s: string): Point => {
-   *   const [x, y] = s.split(',').map(Number);
-   *   return { x, y };
-   * };
-   *
-   * const set1 = ISetMapped.create<Point, string>(
-   *   [{ x: 1, y: 2, label: "A" }, { x: 3, y: 4, label: "B" }],
-   *   pointToKey,
-   *   keyToPoint
-   * );
-   *
-   * const set2 = ISetMapped.create<Point, string>(
-   *   [{ x: 3, y: 4, label: "Different" }, { x: 1, y: 2, label: "Labels" }], // Order doesn't matter
-   *   pointToKey,
-   *   keyToPoint
-   * );
-   *
-   * const set3 = ISetMapped.create<Point, string>(
-   *   [{ x: 1, y: 2 }, { x: 5, y: 6 }], // Different point
-   *   pointToKey,
-   *   keyToPoint
-   * );
-   *
-   * console.log(ISetMapped.equal(set1, set2)); // true (same coordinates, labels don't affect equality)
-   * console.log(ISetMapped.equal(set1, set3)); // false (different coordinates)
-   *
-   * // Example with user entities
-   * type User = { id: number; department: string; name: string };
-   * const userToKey = (u: User): string => `${u.department}:${u.id}`;
-   * const keyToUser = (k: string): User => {
-   *   const [department, idStr] = k.split(':');
-   *   return { id: Number(idStr), department, name: "" };
-   * };
-   *
-   * const users1 = ISetMapped.create<User, string>(
-   *   [
-   *     { id: 1, department: "eng", name: "Alice" },
-   *     { id: 2, department: "sales", name: "Bob" }
-   *   ],
-   *   userToKey,
-   *   keyToUser
-   * );
-   *
-   * const users2 = ISetMapped.create<User, string>(
-   *   [
-   *     { id: 2, department: "sales", name: "Robert" }, // Different name, same identity
-   *     { id: 1, department: "eng", name: "Alicia" }    // Different name, same identity
-   *   ],
-   *   userToKey,
-   *   keyToUser
-   * );
-   *
-   * console.log(ISetMapped.equal(users1, users2)); // true (same department:id combinations)
-   *
-   * // Empty sets
-   * const empty1 = ISetMapped.create<Point, string>([], pointToKey, keyToPoint);
-   * const empty2 = ISetMapped.create<Point, string>([], pointToKey, keyToPoint);
-   * console.log(ISetMapped.equal(empty1, empty2)); // true
-   *
-   * // Sets with different transformation functions but same logical content
-   * const alternativePointToKey = (p: Point): string => `(${p.x},${p.y})`; // Different format
-   * const alternativeKeyToPoint = (s: string): Point => {
-   *   const match = s.match(/\((\d+),(\d+)\)/)!;
-   *   return { x: Number(match[1]), y: Number(match[2]) };
-   * };
-   *
-   * const set4 = ISetMapped.create<Point, string>(
-   *   [{ x: 1, y: 2 }, { x: 3, y: 4 }],
-   *   alternativePointToKey,
-   *   alternativeKeyToPoint
-   * );
-   *
-   * // This would be false because the underlying mapped keys are different
-   * console.log(ISetMapped.equal(set1, set4)); // false
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/equal-example.mts|Sample code}.
    */
   export const equal = <K, KM extends MapSetKeyType>(
     a: ISetMapped<K, KM>,
@@ -518,31 +326,8 @@ export namespace ISetMapped {
    * @param oldSet The original set.
    * @param newSet The new set.
    * @returns An object containing sets of added and deleted elements.
-   * @example
-   * ```typescript
-   * type Tag = { name: string };
-   * const tagToKey = (t: Tag): string => t.name;
-   * const keyToTag = (name: string): Tag => ({ name });
    *
-   * const oldTags = ISetMapped.create<Tag, string>(
-   *   [{ name: "typescript" }, { name: "javascript" }],
-   *   tagToKey,
-   *   keyToTag
-   * );
-   * const newTags = ISetMapped.create<Tag, string>(
-   *   [{ name: "javascript" }, { name: "react" }, { name: "nextjs" }],
-   *   tagToKey,
-   *   keyToTag
-   * );
-   *
-   * const diffResult = ISetMapped.diff(oldTags, newTags);
-   *
-   * console.log("Deleted tags:", diffResult.deleted.toArray().map(t => t.name));
-   * // Output: Deleted tags: ["typescript"]
-   *
-   * console.log("Added tags:", diffResult.added.toArray().map(t => t.name));
-   * // Output: Added tags: ["react", "nextjs"]
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/diff-example.mts|Sample code}.
    */
   export const diff = <K, KM extends MapSetKeyType>(
     oldSet: ISetMapped<K, KM>,
@@ -559,26 +344,8 @@ export namespace ISetMapped {
    * @param a The first set.
    * @param b The second set.
    * @returns A new ISetMapped instance representing the intersection.
-   * @example
-   * ```typescript
-   * type Permission = { id: string };
-   * const permToKey = (p: Permission): string => p.id;
-   * const keyToPerm = (id: string): Permission => ({ id });
    *
-   * const userPermissions = ISetMapped.create<Permission, string>(
-   *   [{ id: "read" }, { id: "write" }, { id: "delete" }],
-   *   permToKey,
-   *   keyToPerm
-   * );
-   * const rolePermissions = ISetMapped.create<Permission, string>(
-   *   [{ id: "read" }, { id: "comment" }, { id: "write" }],
-   *   permToKey,
-   *   keyToPerm
-   * );
-   *
-   * const commonPermissions = ISetMapped.intersection(userPermissions, rolePermissions);
-   * console.log(commonPermissions.toArray().map(p => p.id)); // Output: ["read", "write"]
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/intersection-function-example.mts|Sample code}.
    */
   export const intersection = <K, KM extends MapSetKeyType>(
     a: ISetMapped<K, KM>,
@@ -592,28 +359,8 @@ export namespace ISetMapped {
    * @param a The first set.
    * @param b The second set.
    * @returns A new ISetMapped instance representing the union.
-   * @example
-   * ```typescript
-   * type FeatureFlag = { flagName: string };
-   * const flagToKey = (f: FeatureFlag): string => f.flagName;
-   * const keyToFlag = (name: string): FeatureFlag => ({ flagName: name });
    *
-   * const setA = ISetMapped.create<FeatureFlag, string>(
-   *   [{ flagName: "newUI" }, { flagName: "betaFeature" }],
-   *   flagToKey,
-   *   keyToFlag
-   * );
-   * const setB = ISetMapped.create<FeatureFlag, string>(
-   *   [{ flagName: "betaFeature" }, { flagName: "darkMode" }],
-   *   flagToKey,
-   *   keyToFlag
-   * );
-   *
-   * const combinedFlags = ISetMapped.union(setA, setB);
-   * // The order might vary as sets are unordered internally.
-   * console.log(combinedFlags.toArray().map(f => f.flagName).toSorted());
-   * // Output: ["betaFeature", "darkMode", "newUI"]
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/union-function-example.mts|Sample code}.
    */
   export const union = <K, KM extends MapSetKeyType>(
     a: ISetMapped<K, KM>,
@@ -846,6 +593,8 @@ class ISetMappedClass<K, KM extends MapSetKeyType>
 
   /**
    * @inheritdoc
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/iset-mapped/iterator-example.mts|Sample code}.
    */
   *[Symbol.iterator](): Iterator<K> {
     for (const k of this.keys()) {

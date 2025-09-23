@@ -1,0 +1,13 @@
+// Example: src/functional/pipe.mts
+import { Optional, pipe } from 'ts-data-forge';
+
+const value = pipe(2)
+  .map((n) => n * 3)
+  .map((n) => n.toString()).value;
+
+const optionalValue = pipe(Optional.some('hello')).mapOptional(
+  (text) => text.length + 1,
+).value;
+
+assert.deepStrictEqual(optionalValue, Optional.some(6));
+assert.strictEqual(value, '6');

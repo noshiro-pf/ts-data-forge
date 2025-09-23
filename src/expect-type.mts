@@ -44,145 +44,26 @@
  * ## Usage Patterns
  *
  * ### Basic Type Testing
- * @example
- * ```typescript
- * import { expectType } from './expect-type.mjs';
- *
- * // Primitive type equality
- * expectType<string, string>("=");           // ✓ exact match
- * expectType<number, string>("!=");          // ✓ different types
- * expectType<42, number>("<=");              // ✓ literal extends primitive
- * expectType<number, 42>(">=");              // ✓ primitive is supertype
- *
- * // Type assertions will cause compilation errors for wrong relationships:
- * // expectType<string, number>("=");        // ❌ TypeScript error
- * // expectType<number, string>("<=");       // ❌ TypeScript error
- * ```
  *
  * ### Array and Tuple Type Validation
- * @example
- * ```typescript
- * // Testing array utility function return types
- * const zeros = Arr.zeros(3);
- * expectType<typeof zeros, readonly [0, 0, 0]>("=");
- *
- * const sequence = Arr.seq(5);
- * expectType<typeof sequence, readonly [0, 1, 2, 3, 4]>("=");
- *
- * // Dynamic length arrays
- * const dynamicArray = Arr.zeros(someLength);
- * expectType<typeof dynamicArray, readonly 0[]>("=");
- * ```
  *
  * ### Function Return Type Testing
- * @example
- * ```typescript
- * // Testing function return types
- * const createUser = () => ({ id: 1, name: 'John' });
- * expectType<ReturnType<typeof createUser>, { id: number; name: string }>("~=");
- *
- * // Generic function type inference
- * const identity = <T>(x: T): T => x;
- * const result = identity('hello');
- * expectType<typeof result, string>("=");
- * ```
  *
  * ### Union and Intersection Types
- * @example
- * ```typescript
- * // Union type relationships
- * expectType<string, string | number>("<=");     // string extends union
- * expectType<string | number, string>(">=");     // union contains string
- * expectType<string | number, number>(">=");     // union contains number
- *
- * // Intersection type relationships
- * type A = { a: number };
- * type B = { b: string };
- * expectType<A & B, A>(">=");                    // intersection extends component
- * expectType<A, A & B>("<=");                    // component extends intersection
- * ```
  *
  * ### Branded Type Validation
- * @example
- * ```typescript
- * // Testing branded number types
- * expectType<PositiveInt, number>("<=");         // branded type extends base
- * expectType<number, PositiveInt>(">=");         // base type is supertype
- * expectType<PositiveInt, NegativeInt>("!=");    // different branded types
- *
- * // Type guard function validation
- * if (isPositiveInt(value)) {
- *   expectType<typeof value, PositiveInt>("<=");
- * }
- * ```
  *
  * ### Optional and Result Type Testing
- * @example
- * ```typescript
- * // Optional type narrowing
- * const optional: Optional<number> = Optional.some(42);
- * if (Optional.isSome(optional)) {
- *   expectType<typeof optional, Optional.Some<number>>("<=");
- * }
- * if (Optional.isNone(optional)) {
- *   expectType<typeof optional, Optional.None>("<=");
- * }
- *
- * // Result type validation
- * const result: Result<string, Error> = Result.ok('success');
- * expectType<typeof result, Result<string, Error>>("<=");
- * ```
  *
  * ### Type Guard and Validation Testing
- * @example
- * ```typescript
- * // Testing type guard functions
- * if (isRecord(value)) {
- *   expectType<typeof value, UnknownRecord>("<=");
- * }
- *
- * // Testing compile-time type predicates
- * const obj = { key: 'value' };
- * if (hasKey(obj, 'key')) {
- *   expectType<typeof obj.key, unknown>("<=");
- * }
- * ```
  *
  * ## Common Testing Patterns
  *
  * ### Dual Testing Strategy
  * Combine `expectType` with runtime assertions for comprehensive testing:
  *
- * @example
- * ```typescript
- * describe('Arr.zeros', () => {
- *   test('should create array of zeros with correct type', () => {
- *     const result = Arr.zeros(3);
- *
- *     // Compile-time type assertion
- *     expectType<typeof result, readonly [0, 0, 0]>("=");
- *
- *     // Runtime behavior assertion
- *     expect(result).toStrictEqual([0, 0, 0]);
- *   });
- * });
- * ```
- *
  * ### Type Relationship Validation
  * Test complex type hierarchies and relationships:
- *
- * @example
- * ```typescript
- * // Ensure proper type hierarchy
- * expectType<PositiveInt, Int>("<=");           // positive is subset of int
- * expectType<Int, FiniteNumber>("<=");          // int is subset of finite
- * expectType<FiniteNumber, number>("<=");       // finite is subset of number
- *
- * // Verify mutual exclusion
- * expectType<PositiveInt, NegativeInt>("!=");   // different int types
- * expectType<PositiveInt, NegativeInt>("!<=");  // neither extends the other
- * expectType<NegativeInt, PositiveInt>("!<=");
- * ```
  *
  * ## Important Notes
  *

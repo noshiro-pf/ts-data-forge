@@ -17,76 +17,8 @@
  * @returns `true` if the object has the specified key as its own property, `false` otherwise.
  *          When `true`, TypeScript narrows the object type to guarantee the key exists.
  *
- * @example
- * Basic usage with known object structure:
- * ```typescript
- * const obj = { a: 1, b: 'hello' };
- *
- * if (hasKey(obj, 'a')) {
- *   // obj is narrowed to guarantee 'a' exists
- *   console.log(obj.a); // TypeScript knows 'a' exists and is type number
- *   // No need for optional chaining or undefined checks
- * }
- *
- * if (hasKey(obj, 'c')) {
- *   // This block won't execute at runtime
- *   console.log(obj.c); // But TypeScript would know 'c' exists if it did
- * }
- * ```
- *
- * @example
- * Working with dynamic objects and unknown keys:
- * ```typescript
- * const dynamicObj: Record<string, unknown> = { x: 10, y: 20 };
- * const userInput: string = getUserInput();
- *
- * if (hasKey(dynamicObj, userInput)) {
- *   // Safe to access the dynamic key
- *   const value = dynamicObj[userInput]; // Type: unknown
- *   console.log(`Value for ${userInput}:`, value);
- * } else {
- *   console.log(`Key '${userInput}' not found`);
- * }
- * ```
- *
- * @example
- * Type narrowing with union types:
- * ```typescript
- * type UserPreferences =
- *   | { theme: 'dark'; notifications: boolean }
- *   | { theme: 'light' }
- *   | { autoSave: true; interval: number };
- *
- * const preferences: UserPreferences = getPreferences();
- *
- * if (hasKey(preferences, 'theme')) {
- *   // preferences is narrowed to the first two union members
- *   console.log(preferences.theme); // 'dark' | 'light'
- * }
- *
- * if (hasKey(preferences, 'autoSave')) {
- *   // preferences is narrowed to the third union member
- *   console.log(preferences.interval); // number (we know this exists)
- * }
- * ```
- *
- * @example
- * Basic usage with isRecord for progressive narrowing:
- * ```typescript
- * const data: unknown = parseApiResponse();
- *
- * if (isRecord(data) && hasKey(data, 'user')) {
- *   // data is now Record<string, unknown> with guaranteed 'user' key
- *   const user = data.user;
- *
- *   if (isRecord(user) && hasKey(user, 'name')) {
- *     // Safely access nested properties
- *     console.log('User name:', user.name);
- *   }
- * }
- * ```
- *
  * @see {@link keyIsIn} - Similar function that narrows the key type instead of the object type
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/has-key/has-key-example.mts|Sample code}.
  */
 export const hasKey = <
   const R extends UnknownRecord,

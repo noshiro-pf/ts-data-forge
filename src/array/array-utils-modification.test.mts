@@ -34,7 +34,11 @@ describe('Arr modifications', () => {
     });
 
     test('case 3 (insert tail)', () => {
-      const result = Arr.toInserted(['a', 'b', 'c'], asUint32(999), 5);
+      const result = Arr.toInserted(
+        ['a', 'b', 'c'] as readonly string[],
+        asUint32(999),
+        5,
+      );
 
       expectType<typeof result, NonEmptyArray<string | 5>>('=');
 

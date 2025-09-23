@@ -23,28 +23,15 @@ import { tp, unknownToString } from '../others/index.mjs';
  * @template K The type of the keys in the map. Must extend MapSetKeyType (string, number, boolean, etc.)
  * @template V The type of the values in the map.
  *
- * @example
- * ```typescript
- * // This is a type alias describing an interface, so it's not directly instantiated.
- * // See IMap.create for examples of creating IMap instances that conform to this interface.
- *
- * // Example of how you might use a variable that implements this structure:
- * declare const userMap: IMap<string, User>;
- *
- * // Immutable operations - original map is never modified
- * const hasUser = userMap.has("alice");                    // O(1)
- * const user = userMap.get("alice").unwrapOr(defaultUser); // O(1)
- * const newMap = userMap.set("bob", newUser);              // O(1) - returns new IMap
- * const updated = userMap.update("alice", u => ({ ...u, active: true })); // O(1)
- *
- * // Functional transformations
- * const activeUsers = userMap.map((user, id) => ({ ...user, lastSeen: Date.now() })); // O(n)
- * ```
  */
 type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
   // Getting information
 
-  /** The number of elements in the map. */
+  /**
+   * The number of elements in the map.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/size-example.mts|Sample code}.
+   */
   size: SizeType.Arr;
 
   /**
@@ -52,6 +39,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * Allows for wider literal types for keys during checking.
    * @param key The key to check.
    * @returns `true` if the key exists, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/has-example.mts|Sample code}.
    */
   has: (key: K | (WidenLiteral<K> & {})) => boolean;
 
@@ -59,6 +48,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * Retrieves the value associated with a key.
    * @param key The key to retrieve.
    * @returns The value associated with the key wrapped with Optional.some, or `Optional.none` if the key does not exist.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/get-example.mts|Sample code}.
    */
   get: (key: K | (WidenLiteral<K> & {})) => Optional<V>;
 
@@ -68,6 +59,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * Checks if all elements in the map satisfy a predicate.
    * @param predicate A function to test each key-value pair.
    * @returns `true` if all elements satisfy the predicate, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/every-example.mts|Sample code}.
    */
   every: ((predicate: (value: V, key: K) => boolean) => boolean) &
     /**
@@ -85,6 +78,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * Checks if at least one element in the map satisfies a predicate.
    * @param predicate A function to test each key-value pair.
    * @returns `true` if at least one element satisfies the predicate, `false` otherwise.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/some-example.mts|Sample code}.
    */
   some: (predicate: (value: V, key: K) => boolean) => boolean;
 
@@ -93,6 +88,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * Deletes a key-value pair from the map.
    * @param key The key to delete.
    * @returns A new IMap instance without the specified key.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/delete-example.mts|Sample code}.
    */
   delete: (key: K) => IMap<K, V>;
 
@@ -101,6 +98,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * @param key The key to set.
    * @param value The value to associate with the key.
    * @returns A new IMap instance with the specified key-value pair.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/set-example.mts|Sample code}.
    */
   set: (key: K, value: V) => IMap<K, V>;
 
@@ -109,6 +108,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * @param key The key whose value to update.
    * @param updater A function that takes the current value and returns the new value.
    * @returns A new IMap instance with the updated value.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/update-example.mts|Sample code}.
    */
   update: (key: K, updater: (value: V) => V) => IMap<K, V>;
 
@@ -116,6 +117,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * Applies a series of mutations to the map.
    * @param actions An array of mutation actions (delete, set, or update).
    * @returns A new IMap instance with all mutations applied.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/with-mutations-example.mts|Sample code}.
    */
   withMutations: (
     actions: readonly Readonly<
@@ -132,6 +135,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * @template V2 The type of the new values.
    * @param mapFn A function that maps a value and key to a new value.
    * @returns A new IMap instance with mapped values.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/map-example.mts|Sample code}.
    */
   map: <V2>(mapFn: (value: V, key: K) => V2) => IMap<K, V2>;
 
@@ -140,6 +145,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * @template K2 The type of the new keys.
    * @param mapFn A function that maps a key to a new key.
    * @returns A new IMap instance with mapped keys and original values.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/map-keys-example.mts|Sample code}.
    */
   mapKeys: <K2 extends MapSetKeyType>(mapFn: (key: K) => K2) => IMap<K2, V>;
 
@@ -149,6 +156,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * @template V2 The type of the new values in the entries.
    * @param mapFn A function that maps an entry to a new entry.
    * @returns A new IMap instance with mapped entries.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/map-entries-example.mts|Sample code}.
    */
   mapEntries: <K2 extends MapSetKeyType, V2>(
     mapFn: (entry: readonly [K, V]) => readonly [K2, V2],
@@ -159,6 +168,8 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
   /**
    * Executes a callback function for each key-value pair in the map.
    * @param callbackfn A function to execute for each element.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/for-each-example.mts|Sample code}.
    */
   forEach: (callbackfn: (value: V, key: K) => void) => void;
 
@@ -166,18 +177,24 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
   /**
    * Returns an iterator for the keys in the map.
    * @returns An iterable iterator of keys.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/keys-method-example.mts|Sample code}.
    */
   keys: () => IterableIterator<K>;
 
   /**
    * Returns an iterator for the values in the map.
    * @returns An iterable iterator of values.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/values-method-example.mts|Sample code}.
    */
   values: () => IterableIterator<V>;
 
   /**
    * Returns an iterator for the entries (key-value pairs) in the map.
    * @returns An iterable iterator of entries.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/entries-method-example.mts|Sample code}.
    */
   entries: () => IterableIterator<readonly [K, V]>;
 
@@ -186,18 +203,24 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
   /**
    * Converts the keys of the map to an array.
    * @returns A readonly array of keys.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/to-keys-array-example.mts|Sample code}.
    */
   toKeysArray: () => readonly K[];
 
   /**
    * Converts the values of the map to an array.
    * @returns A readonly array of values.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/to-values-array-example.mts|Sample code}.
    */
   toValuesArray: () => readonly V[];
 
   /**
    * Converts the entries (key-value pairs) of the map to an array.
    * @returns A readonly array of entries.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/to-entries-array-example.mts|Sample code}.
    */
   toEntriesArray: () => readonly (readonly [K, V])[];
 
@@ -205,12 +228,16 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
    * Converts the map to an array of entries (key-value pairs).
    * Alias for `toEntriesArray`.
    * @returns A readonly array of entries.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/to-array-example.mts|Sample code}.
    */
   toArray: () => readonly (readonly [K, V])[];
 
   /**
    * Returns the underlying readonly JavaScript Map.
    * @returns The raw ReadonlyMap instance.
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/to-raw-map-example.mts|Sample code}.
    */
   toRawMap: () => ReadonlyMap<K, V>;
 }>;
@@ -238,42 +265,6 @@ type IMapInterface<K extends MapSetKeyType, V> = Readonly<{
  * @template K The type of the keys in the map. Must extend MapSetKeyType.
  * @template V The type of the values in the map.
  *
- * @example
- * ```typescript
- * // Create an immutable map with initial data
- * let userPreferences = IMap.create<string, UserPreference>([
- *   ["theme", { value: "dark", lastModified: Date.now() }],
- *   ["language", { value: "en", lastModified: Date.now() }]
- * ]);
- *
- * console.log(userPreferences.get("theme").unwrapOr(defaultPreference));
- * console.log(userPreferences.size); // Output: 2
- *
- * // All operations return new instances - original is unchanged
- * const updated = userPreferences
- *   .set("notifications", { value: true, lastModified: Date.now() })
- *   .update("theme", pref => ({ ...pref, value: "light" }));
- *
- * console.log(userPreferences.has("notifications")); // false (original unchanged)
- * console.log(updated.has("notifications"));         // true (new instance)
- *
- * // Efficient iteration and transformation
- * for (const [key, preference] of updated) {
- *   console.log(`${key}: ${preference.value}`);
- * }
- *
- * // Functional transformations
- * const withTimestamps = updated.map((pref, key) => ({
- *   ...pref,
- *   accessedAt: Date.now()
- * }));
- *
- * // Type-safe operations with narrowing
- * const stringKeys = IMap.create<number | string, any>([[1, "a"], ["b", 2]]);
- * const onlyStringKeys = stringKeys.mapKeys(key =>
- *   typeof key === "string" ? key : key.toString()
- * );
- * ```
  */
 export type IMap<K extends MapSetKeyType, V> = Iterable<readonly [K, V]> &
   IMapInterface<K, V>;
@@ -296,39 +287,7 @@ export namespace IMap {
    * @param iterable An iterable of key-value pairs (e.g., Array, Map, IMap, etc.)
    * @returns A new IMap instance containing all entries from the iterable.
    *
-   * @example
-   * ```typescript
-   * // From array of tuples
-   * const userScores = IMap.create<string, number>([
-   *   ["alice", 95],
-   *   ["bob", 87],
-   *   ["charlie", 92]
-   * ]);
-   * console.log(userScores.get("alice").unwrap()); // Output: 95
-   *
-   * // From JavaScript Map
-   * const jsMap = new Map([["config", { debug: true }], ["env", "production"]]);
-   * const config = IMap.create(jsMap);
-   * console.log(config.get("env").unwrap()); // Output: "production"
-   *
-   * // From another IMap (creates a copy)
-   * const originalMap = IMap.create<string, boolean>([["enabled", true]]);
-   * const copiedMap = IMap.create(originalMap);
-   * console.log(copiedMap.get("enabled").unwrap()); // Output: true
-   *
-   * // Empty map
-   * const emptyMap = IMap.create<string, number>([]);
-   * console.log(emptyMap.size); // Output: 0
-   *
-   * // From custom iterable
-   * function* generateEntries(): Generator<[string, number]> {
-   *   for (const i of range(3)) {
-   *     yield [`item${i}`, i * 10];
-   *   }
-   * }
-   * const generatedMap = IMap.create(generateEntries());
-   * console.log(generatedMap.size); // Output: 3
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/create-example.mts|Sample code}.
    */
   export const create = <K extends MapSetKeyType, V>(
     iterable: Iterable<readonly [K, V]>,
@@ -349,49 +308,7 @@ export namespace IMap {
    * @param b The second IMap instance to compare.
    * @returns `true` if the maps contain exactly the same key-value pairs, `false` otherwise.
    *
-   * @example
-   * ```typescript
-   * // Basic equality comparison
-   * const preferences1 = IMap.create<string, boolean>([
-   *   ["darkMode", true],
-   *   ["notifications", false]
-   * ]);
-   * const preferences2 = IMap.create<string, boolean>([
-   *   ["darkMode", true],
-   *   ["notifications", false]
-   * ]);
-   * const preferences3 = IMap.create<string, boolean>([
-   *   ["notifications", false],
-   *   ["darkMode", true]  // Order doesn't matter
-   * ]);
-   *
-   * console.log(IMap.equal(preferences1, preferences2)); // true
-   * console.log(IMap.equal(preferences1, preferences3)); // true (order doesn't matter)
-   *
-   * // Different values
-   * const preferences4 = IMap.create<string, boolean>([
-   *   ["darkMode", false],  // Different value
-   *   ["notifications", false]
-   * ]);
-   * console.log(IMap.equal(preferences1, preferences4)); // false
-   *
-   * // Different keys
-   * const preferences5 = IMap.create<string, boolean>([
-   *   ["darkMode", true],
-   *   ["sounds", false]  // Different key
-   * ]);
-   * console.log(IMap.equal(preferences1, preferences5)); // false
-   *
-   * // Empty maps
-   * const empty1 = IMap.create<string, number>([]);
-   * const empty2 = IMap.create<string, number>([]);
-   * console.log(IMap.equal(empty1, empty2)); // true
-   *
-   * // Note: For deep equality of object values, use a custom comparison
-   * const users1 = IMap.create<string, User>([["1", { name: "Alice" }]]);
-   * const users2 = IMap.create<string, User>([["1", { name: "Alice" }]]);
-   * console.log(IMap.equal(users1, users2)); // false (different object references)
-   * ```
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/equal-example.mts|Sample code}.
    */
   export const equal = <K extends MapSetKeyType, V>(
     a: IMap<K, V>,
@@ -597,6 +514,8 @@ class IMapClass<K extends MapSetKeyType, V>
 
   /**
    * @inheritdoc
+   *
+   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/collections/imap/iterator-example.mts|Sample code}.
    */
   [Symbol.iterator](): Iterator<readonly [K, V]> {
     return this.#map[Symbol.iterator]();

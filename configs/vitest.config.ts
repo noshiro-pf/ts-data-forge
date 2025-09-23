@@ -7,7 +7,8 @@ export default defineConfig({
   test: {
     globals: true,
     dir: projectRootPath,
-    includeSource: [path.resolve(projectRootPath, './src/**/*.mts')],
+    include: ['src/**/*.mts', 'samples/**/*.mts'],
+    includeSource: ['src/**/*.mts', 'samples/**/*.mts'],
     typecheck: {
       tsconfig: path.resolve(projectRootPath, './configs/tsconfig.test.json'),
     },
@@ -20,7 +21,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['html', 'lcov', 'text'],
-      include: ['src/**'],
+      include: ['src/**', 'samples/**'],
       exclude: ['**/index.mts', 'src/entry-point.mts'],
     },
   },

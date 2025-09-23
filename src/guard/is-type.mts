@@ -9,18 +9,7 @@
  * @returns `true` if `u` is `undefined`, `false` otherwise.
  *          When `true`, TypeScript narrows the type to `undefined`.
  *
- * @example
- * ```typescript
- * const value: string | undefined = getValue();
- *
- * if (isUndefined(value)) {
- *   // value is now typed as undefined
- *   console.log('Value is undefined');
- * } else {
- *   // value is now typed as string
- *   console.log('Value length:', value.length);
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-undefined-example.mts|Sample code}.
  */
 export const isUndefined = (u: unknown): u is undefined => u === undefined;
 
@@ -37,18 +26,7 @@ export const isUndefined = (u: unknown): u is undefined => u === undefined;
  * @returns `true` if `u` is not `undefined`, `false` otherwise.
  *          When `true`, TypeScript excludes `undefined` from the type.
  *
- * @example
- * ```typescript
- * const items: (string | undefined)[] = ['a', undefined, 'b', undefined, 'c'];
- *
- * const definedItems = items.filter(isNotUndefined);
- * // definedItems is now string[] - undefined values are filtered out
- *
- * definedItems.forEach(item => {
- *   // item is guaranteed to be string, not undefined
- *   console.log(item.toUpperCase());
- * });
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-not-undefined-example.mts|Sample code}.
  */
 export const isNotUndefined = <T,>(u: T): u is RelaxedExclude<T, undefined> =>
   u !== undefined;
@@ -64,15 +42,7 @@ export const isNotUndefined = <T,>(u: T): u is RelaxedExclude<T, undefined> =>
  * @returns `true` if `u` is a boolean, `false` otherwise.
  *          When `true`, TypeScript narrows the type to `boolean`.
  *
- * @example
- * ```typescript
- * const userInput: unknown = parseInput();
- *
- * if (isBoolean(userInput)) {
- *   // userInput is now typed as boolean
- *   console.log('Boolean value:', userInput ? 'true' : 'false');
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-boolean-example.mts|Sample code}.
  */
 export const isBoolean = (u: unknown): u is boolean => typeof u === 'boolean';
 
@@ -88,16 +58,7 @@ export const isBoolean = (u: unknown): u is boolean => typeof u === 'boolean';
  * @returns `true` if `u` is not a boolean, `false` otherwise.
  *          When `true`, TypeScript excludes `boolean` from the type.
  *
- * @example
- * ```typescript
- * type MixedValue = string | number | boolean;
- * const value: MixedValue = getValue();
- *
- * if (isNotBoolean(value)) {
- *   // value is now string | number
- *   console.log('Non-boolean value:', value);
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-not-boolean-example.mts|Sample code}.
  */
 export const isNotBoolean = <T,>(u: T): u is RelaxedExclude<T, boolean> =>
   typeof u !== 'boolean';
@@ -114,20 +75,7 @@ export const isNotBoolean = <T,>(u: T): u is RelaxedExclude<T, boolean> =>
  * @returns `true` if `u` is a number, `false` otherwise.
  *          When `true`, TypeScript narrows the type to `number`.
  *
- * @example
- * ```typescript
- * const userInput: unknown = parseInput();
- *
- * if (isNumber(userInput)) {
- *   // userInput is now typed as number
- *   console.log('Number value:', userInput.toFixed(2));
- *
- *   // Note: this includes NaN and Infinity
- *   if (Number.isFinite(userInput)) {
- *     console.log('Finite number:', userInput);
- *   }
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-number-example.mts|Sample code}.
  */
 export const isNumber = (u: unknown): u is number => typeof u === 'number';
 
@@ -143,14 +91,7 @@ export const isNumber = (u: unknown): u is number => typeof u === 'number';
  * @returns `true` if `u` is not a number, `false` otherwise.
  *          When `true`, TypeScript excludes `number` from the type.
  *
- * @example
- * ```typescript
- * type Value = string | number | boolean;
- * const values: Value[] = ['hello', 42, true, 3.14, false];
- *
- * const nonNumbers = values.filter(isNotNumber);
- * // nonNumbers is now (string | boolean)[] - numbers are filtered out
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-not-number-example.mts|Sample code}.
  */
 export const isNotNumber = <T,>(u: T): u is RelaxedExclude<T, number> =>
   typeof u !== 'number';
@@ -166,16 +107,7 @@ export const isNotNumber = <T,>(u: T): u is RelaxedExclude<T, number> =>
  * @returns `true` if `u` is a bigint, `false` otherwise.
  *          When `true`, TypeScript narrows the type to `bigint`.
  *
- * @example
- * ```typescript
- * const userInput: unknown = parseInput();
- *
- * if (isBigint(userInput)) {
- *   // userInput is now typed as bigint
- *   console.log('BigInt value:', userInput.toString());
- *   const doubled = userInput * 2n; // Safe bigint operations
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-bigint-example.mts|Sample code}.
  */
 export const isBigint = (u: unknown): u is bigint => typeof u === 'bigint';
 
@@ -191,16 +123,7 @@ export const isBigint = (u: unknown): u is bigint => typeof u === 'bigint';
  * @returns `true` if `u` is not a bigint, `false` otherwise.
  *          When `true`, TypeScript excludes `bigint` from the type.
  *
- * @example
- * ```typescript
- * type NumericValue = number | bigint;
- * const value: NumericValue = getValue();
- *
- * if (isNotBigint(value)) {
- *   // value is now number
- *   console.log('Regular number:', value.toFixed(2));
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-not-bigint-example.mts|Sample code}.
  */
 export const isNotBigint = <T,>(u: T): u is RelaxedExclude<T, bigint> =>
   typeof u !== 'bigint';
@@ -217,21 +140,7 @@ export const isNotBigint = <T,>(u: T): u is RelaxedExclude<T, bigint> =>
  * @returns `true` if `u` is a string, `false` otherwise.
  *          When `true`, TypeScript narrows the type to `string`.
  *
- * @example
- * ```typescript
- * const userInput: unknown = parseInput();
- *
- * if (isString(userInput)) {
- *   // userInput is now typed as string
- *   console.log('String length:', userInput.length);
- *   console.log('Uppercase:', userInput.toUpperCase());
- *
- *   // You can further check for non-empty strings
- *   if (userInput.length > 0) {
- *     console.log('Non-empty string:', userInput);
- *   }
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-string-example.mts|Sample code}.
  */
 export const isString = (u: unknown): u is string => typeof u === 'string';
 
@@ -247,14 +156,7 @@ export const isString = (u: unknown): u is string => typeof u === 'string';
  * @returns `true` if `u` is not a string, `false` otherwise.
  *          When `true`, TypeScript excludes `string` from the type.
  *
- * @example
- * ```typescript
- * type Value = string | number | boolean;
- * const mixedValues: Value[] = ['hello', 42, true, 'world', 3.14];
- *
- * const nonStrings = mixedValues.filter(isNotString);
- * // nonStrings is now (number | boolean)[] - strings are filtered out
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-not-string-example.mts|Sample code}.
  */
 export const isNotString = <T,>(u: T): u is RelaxedExclude<T, string> =>
   typeof u !== 'string';
@@ -270,16 +172,7 @@ export const isNotString = <T,>(u: T): u is RelaxedExclude<T, string> =>
  * @returns `true` if `u` is a symbol, `false` otherwise.
  *          When `true`, TypeScript narrows the type to `symbol`.
  *
- * @example
- * ```typescript
- * const userInput: unknown = parseInput();
- *
- * if (isSymbol(userInput)) {
- *   // userInput is now typed as symbol
- *   console.log('Symbol description:', userInput.description);
- *   console.log('Symbol string:', userInput.toString());
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-symbol-example.mts|Sample code}.
  */
 export const isSymbol = (u: unknown): u is symbol => typeof u === 'symbol';
 
@@ -295,16 +188,7 @@ export const isSymbol = (u: unknown): u is symbol => typeof u === 'symbol';
  * @returns `true` if `u` is not a symbol, `false` otherwise.
  *          When `true`, TypeScript excludes `symbol` from the type.
  *
- * @example
- * ```typescript
- * type PropertyKey = string | number | symbol;
- * const key: PropertyKey = getPropertyKey();
- *
- * if (isNotSymbol(key)) {
- *   // key is now string | number
- *   console.log('Non-symbol key:', key);
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-not-symbol-example.mts|Sample code}.
  */
 export const isNotSymbol = <T,>(u: T): u is RelaxedExclude<T, symbol> =>
   typeof u !== 'symbol';
@@ -320,18 +204,7 @@ export const isNotSymbol = <T,>(u: T): u is RelaxedExclude<T, symbol> =>
  * @returns `true` if `u` is `null`, `false` otherwise.
  *          When `true`, TypeScript narrows the type to `null`.
  *
- * @example
- * ```typescript
- * const value: string | null = getValue();
- *
- * if (isNull(value)) {
- *   // value is now typed as null
- *   console.log('Value is null');
- * } else {
- *   // value is now typed as string
- *   console.log('Value length:', value.length);
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-null-example.mts|Sample code}.
  */
 export const isNull = (u: unknown): u is null => u === null;
 
@@ -348,18 +221,7 @@ export const isNull = (u: unknown): u is null => u === null;
  * @returns `true` if `u` is not `null`, `false` otherwise.
  *          When `true`, TypeScript excludes `null` from the type.
  *
- * @example
- * ```typescript
- * const items: (string | null)[] = ['a', null, 'b', null, 'c'];
- *
- * const nonNullItems = items.filter(isNotNull);
- * // nonNullItems is now string[] - null values are filtered out
- *
- * nonNullItems.forEach(item => {
- *   // item is guaranteed to be string, not null
- *   console.log(item.toUpperCase());
- * });
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-not-null-example.mts|Sample code}.
  */
 export const isNotNull = <T,>(u: T | null): u is T => u !== null;
 
@@ -377,18 +239,7 @@ export const isNotNull = <T,>(u: T | null): u is T => u !== null;
  * @returns `true` if `u` is `null` or `undefined`, `false` otherwise.
  *          When `true`, TypeScript narrows the type to `null | undefined`.
  *
- * @example
- * ```typescript
- * const value: string | null | undefined = getValue();
- *
- * if (isNullish(value)) {
- *   // value is now typed as null | undefined
- *   console.log('Value is nullish');
- * } else {
- *   // value is now typed as string
- *   console.log('Value length:', value.length);
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-nullish-example.mts|Sample code}.
  */
 export const isNullish = (u: unknown): u is null | undefined => u == null;
 
@@ -409,42 +260,6 @@ export const isNullish = (u: unknown): u is null | undefined => u == null;
  * @returns `true` if `u` is not `null` and not `undefined`, `false` otherwise.
  *          When `true`, TypeScript narrows the type to `NonNullable<T>`.
  *
- * @example
- * ```typescript
- * const items: (string | null | undefined)[] = [
- *   'hello',
- *   null,
- *   'world',
- *   undefined,
- *   'test'
- * ];
- *
- * const definedItems = items.filter(isNonNullish);
- * // definedItems is now string[] - both null and undefined values are filtered out
- *
- * definedItems.forEach(item => {
- *   // item is guaranteed to be string, never null or undefined
- *   console.log(item.toUpperCase());
- * });
- * ```
- *
- * @example
- * Progressive validation with optional chaining alternative:
- * ```typescript
- * interface User {
- *   profile?: {
- *     name?: string;
- *     email?: string;
- *   };
- * }
- *
- * const user: User = getUser();
- *
- * // Instead of optional chaining: user.profile?.name
- * if (isNonNullish(user.profile) && isNonNullish(user.profile.name)) {
- *   // user.profile.name is now guaranteed to be string
- *   console.log('User name:', user.profile.name.toUpperCase());
- * }
- * ```
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/guard/is-type/is-non-nullish-example.mts|Sample code}.
  */
 export const isNonNullish = <T,>(u: T): u is NonNullable<T> => u != null;

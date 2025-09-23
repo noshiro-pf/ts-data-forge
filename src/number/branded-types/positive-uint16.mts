@@ -42,14 +42,6 @@ export const isPositiveUint16 = is;
  * @param value The value to cast.
  * @returns The value as a PositiveUint16 type.
  * @throws {TypeError} If the value is not a positive integer in [1, 2^16).
- * @example
- * ```typescript
- * const x = asPositiveUint16(1000); // PositiveUint16
- * const y = asPositiveUint16(65535); // PositiveUint16
- * // asPositiveUint16(0); // throws TypeError
- * // asPositiveUint16(-1); // throws TypeError
- * // asPositiveUint16(65536); // throws TypeError
- * ```
  */
 export const asPositiveUint16 = castType;
 
@@ -60,26 +52,6 @@ export const asPositiveUint16 = castType;
  * This ensures that all arithmetic maintains the 16-bit positive unsigned integer constraint,
  * with results below 1 clamped to MIN_VALUE and overflow results clamped to MAX_VALUE.
  *
- * @example
- * ```typescript
- * const a = asPositiveUint16(60000);
- * const b = asPositiveUint16(10000);
- *
- * // Arithmetic operations with automatic clamping and positive constraint
- * const sum = PositiveUint16.add(a, b);       // PositiveUint16 (65535 - clamped to MAX_VALUE)
- * const diff = PositiveUint16.sub(a, b);      // PositiveUint16 (50000)
- * const reverseDiff = PositiveUint16.sub(b, a); // PositiveUint16 (1 - clamped to MIN_VALUE)
- * const product = PositiveUint16.mul(a, b);   // PositiveUint16 (65535 - clamped due to overflow)
- *
- * // Range operations (maintaining positive constraint)
- * const clamped = PositiveUint16.clamp(-100);     // PositiveUint16 (1)
- * const minimum = PositiveUint16.min(a, b);       // PositiveUint16 (10000)
- * const maximum = PositiveUint16.max(a, b);       // PositiveUint16 (60000)
- *
- * // Utility operations
- * const random = PositiveUint16.random();         // PositiveUint16 (random value in [1, 65535])
- * const power = PositiveUint16.pow(asPositiveUint16(2), asPositiveUint16(10)); // PositiveUint16 (1024)
- * ```
  */
 export const PositiveUint16 = {
   /**

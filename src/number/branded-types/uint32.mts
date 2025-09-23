@@ -42,13 +42,6 @@ export const isUint32 = is;
  * @param value The value to cast.
  * @returns The value as a Uint32 type.
  * @throws {TypeError} If the value is not a non-negative integer less than 2^32.
- * @example
- * ```typescript
- * const x = asUint32(1000000); // Uint32
- * const y = asUint32(0); // Uint32
- * // asUint32(-1); // throws TypeError
- * // asUint32(5000000000); // throws TypeError
- * ```
  */
 export const asUint32 = castType;
 
@@ -57,33 +50,6 @@ export const asUint32 = castType;
  * Provides type-safe operations that ensure results remain within the valid range [0, 2^32).
  * All arithmetic operations are clamped to maintain the Uint32 constraint.
  *
- * @example
- * ```typescript
- * // Type checking
- * Uint32.is(1000000); // true
- * Uint32.is(-1); // false
- * Uint32.is(5000000000); // false (exceeds 2^32)
- *
- * // Constants
- * console.log(Uint32.MIN_VALUE); // 0
- * console.log(Uint32.MAX_VALUE); // 4294967295 (2^32 - 1)
- *
- * // Arithmetic operations (all results clamped to [0, 2^32))
- * const a = asUint32(1000000);
- * const b = asUint32(500000);
- *
- * Uint32.add(a, b); // Uint32 (1500000)
- * Uint32.sub(a, b); // Uint32 (500000)
- * Uint32.mul(a, b); // Uint32 (clamped if overflow)
- * Uint32.div(a, b); // Uint32 (2)
- * Uint32.pow(asUint32(2), asUint32(10)); // Uint32 (1024)
- *
- * // Utility functions
- * Uint32.min(a, b); // Uint32 (500000)
- * Uint32.max(a, b); // Uint32 (1000000)
- * Uint32.clamp(asUint32(5000000000), Uint32.MIN_VALUE, Uint32.MAX_VALUE); // Uint32 (MAX_VALUE)
- * Uint32.random(); // Random Uint32
- * ```
  */
 export const Uint32 = {
   /**
@@ -125,10 +91,6 @@ export const Uint32 = {
    * @param min - The minimum value
    * @param max - The maximum value
    * @returns The clamped value as a Uint32
-   * @example
-   * ```typescript
-   * Uint32.clamp(asUint32(5000000000), Uint32.MIN_VALUE, asUint32(1000)); // Uint32 (1000)
-   * ```
    */
   clamp,
 
@@ -143,10 +105,6 @@ export const Uint32 = {
    * @param a - The base Uint32
    * @param b - The exponent Uint32
    * @returns `a ** b` as a Uint32, clamped to valid range
-   * @example
-   * ```typescript
-   * Uint32.pow(asUint32(2), asUint32(10)); // Uint32 (1024)
-   * ```
    */
   pow,
 
@@ -155,10 +113,6 @@ export const Uint32 = {
    * @param a - First Uint32
    * @param b - Second Uint32
    * @returns `a + b` as a Uint32, clamped to valid range
-   * @example
-   * ```typescript
-   * Uint32.add(asUint32(1000000), asUint32(500000)); // Uint32 (1500000)
-   * ```
    */
   add,
 
@@ -167,11 +121,6 @@ export const Uint32 = {
    * @param a - First Uint32
    * @param b - Second Uint32
    * @returns `a - b` as a Uint32, clamped to valid range (minimum 0)
-   * @example
-   * ```typescript
-   * Uint32.sub(asUint32(1000000), asUint32(500000)); // Uint32 (500000)
-   * Uint32.sub(asUint32(100), asUint32(500)); // Uint32 (0) - clamped
-   * ```
    */
   sub,
 
@@ -180,10 +129,6 @@ export const Uint32 = {
    * @param a - First Uint32
    * @param b - Second Uint32
    * @returns `a * b` as a Uint32, clamped to valid range
-   * @example
-   * ```typescript
-   * Uint32.mul(asUint32(1000), asUint32(500)); // Uint32 (500000)
-   * ```
    */
   mul,
 
@@ -192,11 +137,6 @@ export const Uint32 = {
    * @param a - The dividend Uint32
    * @param b - The divisor Uint32
    * @returns `⌊a / b⌋` as a Uint32, clamped to valid range
-   * @example
-   * ```typescript
-   * Uint32.div(asUint32(1000000), asUint32(500000)); // Uint32 (2)
-   * Uint32.div(asUint32(7), asUint32(3)); // Uint32 (2) - floor division
-   * ```
    */
   div,
 } as const;
