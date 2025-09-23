@@ -49,6 +49,8 @@ const defineConfig = () => [
   {
     files: ['samples/**/*'],
     rules: {
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-unnecessary-condition': 'off',
       'import/no-extraneous-dependencies': 'off',
       'import/no-internal-modules': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
