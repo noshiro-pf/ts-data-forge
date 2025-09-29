@@ -1,8 +1,8 @@
 // Example: src/number/branded-types/uint16.mts (Uint16)
 import { Uint16, asUint16 } from 'ts-data-forge';
 
-const a = asUint16(60000);
-const b = asUint16(10000);
+const a = asUint16(60_000);
+const b = asUint16(10_000);
 
 // Arithmetic operations with automatic clamping
 const sum = Uint16.add(a, b); // Uint16 (65535 - clamped to MAX_VALUE)
