@@ -1,4 +1,6 @@
 // Example: src/expect-type.mts (expectType)
+import { expectType } from 'ts-data-forge';
+
 import { hasKey, isRecord } from 'ts-data-forge';
 
 // Testing type guard functions

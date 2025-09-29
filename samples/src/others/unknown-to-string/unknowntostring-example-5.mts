@@ -1,20 +1,23 @@
 // Example: src/others/unknown-to-string.mts (unknownToString)
-// Working with special objects
+// API response formatting
 
 import { unknownToString } from 'ts-data-forge';
 
-// Date objects
-unknownToString(new Date('2023-01-01'));
-// '"2023-01-01T00:00:00.000Z"' - JSON stringified
+// Safe error response formatting
+function formatErrorResponse(error: unknown): string {
+  const errorStr = unknownToString(error, { prettyPrintObject: true });
 
-// Regular expressions
-unknownToString(/test/gi);
-// '{}' - RegExp has no enumerable properties
+  return JSON.stringify({
+    success: false,
+    error: errorStr,
+  });
+}
 
-// Arrays
-unknownToString([1, 'two', { three: 3 }]);
-// '[1,"two",{"three":3}]'
+try {
+  // some operation
+} catch (error) {
+  const response = formatErrorResponse(error);
+  res.status(500).send(response);
+}
 
-// Map and Set (converted to empty objects by JSON.stringify)
-unknownToString(new Map([['a', 1]])); // '{}'
-unknownToString(new Set([1, 2, 3])); // '{}'
+export { formatErrorResponse };

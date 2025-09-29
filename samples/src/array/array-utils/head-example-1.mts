@@ -1,4 +1,6 @@
 // Example: src/array/array-utils.mts (head)
+import { expectType } from 'ts-data-forge';
+
 import { Arr, Optional } from 'ts-data-forge';
 
 // Empty array - precise None type

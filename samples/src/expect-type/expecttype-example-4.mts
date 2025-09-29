@@ -1,6 +1,8 @@
 // Example: src/expect-type.mts (expectType)
 
 // Union type relationships
+import { expectType } from 'ts-data-forge';
+
 expectType<string, string | number>('<='); // string extends union
 expectType<string | number, string>('>='); // union contains string
 expectType<string | number, number>('>='); // union contains number

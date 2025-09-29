@@ -26,27 +26,14 @@ import { isNonNullish } from '../guard/index.mjs';
  * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-2.mts|Sample code 2}.
  *
  * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-3.mts|Sample code 3}.
- * // Type-safe logger
- * class Logger {
- *   log(message: string, data?: unknown): void {
- *     const timestamp = new Date().toISOString();
- *     const dataStr = data !== undefined
- *       ? unknownToString(data, { prettyPrintObject: true })
- *       : '';
- *
- *     console.log(`[${timestamp}] ${message}`, dataStr);
- *   }
- * }
- *
- * const logger = new Logger();
- * logger.log('User data:', { id: 123, name: 'John' });
- * ```
  *
  * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-4.mts|Sample code 4}.
  *
  * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-5.mts|Sample code 5}.
  *
  * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-6.mts|Sample code 6}.
+ *
+ * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/others/unknown-to-string/unknowntostring-example-7.mts|Sample code 7}.
  *
  * **Error Handling:**
  * Circular references and non-serializable objects return descriptive error messages instead of throwing

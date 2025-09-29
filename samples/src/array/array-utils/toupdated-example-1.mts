@@ -1,4 +1,6 @@
 // Example: src/array/array-utils.mts (toUpdated)
+import { expectType } from 'ts-data-forge';
+
 import { Arr, pipe } from 'ts-data-forge';
 
 // Basic usage with same type transformation

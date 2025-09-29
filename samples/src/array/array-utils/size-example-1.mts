@@ -1,4 +1,6 @@
 // Example: src/array/array-utils.mts (size)
+import { expectType } from 'ts-data-forge';
+
 import { Arr, Uint32 } from 'ts-data-forge';
 
 // Known non-empty arrays get positive branded type

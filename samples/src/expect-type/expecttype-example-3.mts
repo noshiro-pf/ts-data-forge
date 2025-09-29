@@ -1,5 +1,7 @@
 // Example: src/expect-type.mts (expectType)
 // Testing function return types
+import { expectType } from 'ts-data-forge';
+
 const createUser = () => ({ id: 1, name: 'John' });
 expectType<ReturnType<typeof createUser>, { id: number; name: string }>('~=');
 

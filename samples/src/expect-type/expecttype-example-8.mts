@@ -1,4 +1,6 @@
 // Example: src/expect-type.mts (expectType)
+import { expectType } from 'ts-data-forge';
+
 import { expect } from 'vitest';
 
 import { Arr } from 'ts-data-forge';

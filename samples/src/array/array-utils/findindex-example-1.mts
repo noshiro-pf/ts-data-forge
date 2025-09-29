@@ -1,4 +1,6 @@
 // Example: src/array/array-utils.mts (findIndex)
+import { expectType } from 'ts-data-forge';
+
 import { Arr, Optional, pipe } from 'ts-data-forge';
 
 // Basic index finding

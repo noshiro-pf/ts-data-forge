@@ -1,4 +1,6 @@
 // Example: src/array/array-utils.mts (zeros)
+import { expectType } from 'ts-data-forge';
+
 import { Arr } from 'ts-data-forge';
 
 // Compile-time known lengths produce precise tuple types

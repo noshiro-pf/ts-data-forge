@@ -1,4 +1,6 @@
 // Example: src/expect-type.mts (expectType)
+import { expectType } from 'ts-data-forge';
+
 import { Optional, Result } from 'ts-data-forge';
 
 // Optional type narrowing

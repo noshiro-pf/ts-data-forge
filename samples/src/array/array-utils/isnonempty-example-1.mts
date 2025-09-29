@@ -1,4 +1,6 @@
 // Example: src/array/array-utils.mts (isNonEmpty)
+import { expectType } from 'ts-data-forge';
+
 import { Arr } from 'ts-data-forge';
 
 // Basic non-emptiness checking

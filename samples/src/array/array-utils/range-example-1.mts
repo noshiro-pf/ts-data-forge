@@ -1,4 +1,6 @@
 // Example: src/array/array-utils.mts (range)
+import { expectType } from 'ts-data-forge';
+
 import { Arr } from 'ts-data-forge';
 
 // Compile-time known ranges with step=1 produce precise tuple types

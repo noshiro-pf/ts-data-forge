@@ -1,18 +1,20 @@
 // Example: src/others/unknown-to-string.mts (unknownToString)
-// Using with validation
+// Working with special objects
 
 import { unknownToString } from 'ts-data-forge';
 
-// Simple validation helper
-function validateAndStringify(input: unknown): string {
-  const str = unknownToString(input);
-  const trimmed = str.trim();
+// Date objects
+unknownToString(new Date('2023-01-01'));
+// '"2023-01-01T00:00:00.000Z"' - JSON stringified
 
-  if (trimmed.length === 0) {
-    throw new Error('Empty string');
-  }
+// Regular expressions
+unknownToString(/test/gi);
+// '{}' - RegExp has no enumerable properties
 
-  return trimmed;
-}
+// Arrays
+unknownToString([1, 'two', { three: 3 }]);
+// '[1,"two",{"three":3}]'
 
-export { validateAndStringify };
+// Map and Set (converted to empty objects by JSON.stringify)
+unknownToString(new Map([['a', 1]])); // '{}'
+unknownToString(new Set([1, 2, 3])); // '{}'

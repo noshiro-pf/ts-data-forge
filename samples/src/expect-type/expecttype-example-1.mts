@@ -1,6 +1,8 @@
 // Example: src/expect-type.mts (expectType)
 
 // Primitive type equality
+import { expectType } from 'ts-data-forge';
+
 expectType<string, string>('='); // ✓ exact match
 expectType<number, string>('!='); // ✓ different types
 expectType<42, number>('<='); // ✓ literal extends primitive

@@ -3,21 +3,18 @@
 
 import { unknownToString } from 'ts-data-forge';
 
-// Safe error response formatting
-function formatErrorResponse(error: unknown): string {
-  const errorStr = unknownToString(error, { prettyPrintObject: true });
-
-  return JSON.stringify({
-    success: false,
-    error: errorStr,
-  });
+// Type-safe logger
+class Logger {
+  log(message: string, data?: unknown): void {
+    const timestamp = new Date().toISOString();
+    const dataStr =
+      data !== undefined
+        ? unknownToString(data, { prettyPrintObject: true })
+        : '';
+    console.log(`[${timestamp}] ${message}`, dataStr);
+  }
 }
 
-try {
-  // some operation
-} catch (error) {
-  const response = formatErrorResponse(error);
-  res.status(500).send(response);
-}
+const logger = new Logger();
 
-export { formatErrorResponse };
+logger.log('User data:', { id: 123, name: 'John' });

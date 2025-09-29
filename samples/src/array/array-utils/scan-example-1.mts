@@ -1,4 +1,6 @@
 // Example: src/array/array-utils.mts (scan)
+import { expectType } from 'ts-data-forge';
+
 import { Arr, pipe } from 'ts-data-forge';
 
 // Basic running sum example

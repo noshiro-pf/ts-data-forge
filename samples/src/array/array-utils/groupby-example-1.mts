@@ -1,5 +1,5 @@
 // Example: src/array/array-utils.mts (groupBy)
-import { Arr, IMap, Optional, pipe } from 'ts-data-forge';
+import { Arr, expectType, IMap, Optional, pipe } from 'ts-data-forge';
 
 // Basic grouping by object property
 const products = [
