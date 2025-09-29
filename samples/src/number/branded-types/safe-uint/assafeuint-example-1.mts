@@ -1,9 +1,17 @@
-// Example: src/number/branded-types/safe-uint.mts (asSafeUint)
-import { asSafeUint } from 'ts-data-forge';
+// Example: src/number/branded-types/safe-uint.mts (safe-uint)
+import { SafeUint, asSafeUint } from 'ts-data-forge';
 
-const x = asSafeUint(5); // SafeUint
-const y = asSafeUint(0); // SafeUint
-// asSafeUint(-1); // throws TypeError
-// asSafeUint(1.5); // throws TypeError
+const value = asSafeUint(1);
+const other = asSafeUint(2);
+const added = SafeUint.add(value, other);
+const isValue = SafeUint.is(value);
 
-export { x, y };
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

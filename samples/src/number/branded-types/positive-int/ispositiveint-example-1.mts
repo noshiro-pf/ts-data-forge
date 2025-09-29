@@ -1,9 +1,17 @@
-// Example: src/number/branded-types/positive-int.mts (isPositiveInt)
-import { isPositiveInt } from 'ts-data-forge';
+// Example: src/number/branded-types/positive-int.mts (positive-int)
+import { PositiveInt, asPositiveInt } from 'ts-data-forge';
 
-isPositiveInt(5); // true
-isPositiveInt(1); // true
-isPositiveInt(0); // false (zero is not positive)
-isPositiveInt(-1); // false (negative)
-isPositiveInt(5.5); // false (not an integer)
-isPositiveInt(Number.NaN); // false
+const value = asPositiveInt(1);
+const other = asPositiveInt(2);
+const added = PositiveInt.add(value, other);
+const isValue = PositiveInt.is(value);
+
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

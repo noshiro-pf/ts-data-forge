@@ -1,16 +1,18 @@
 // Example: src/number/num.mts (isNonZero)
 import { Num } from 'ts-data-forge';
 
-const value = 5;
-if (Num.isNonZero(value)) {
-  // value is typed as NonZeroNumber & 5
-  const result = 10 / value; // Safe division
-}
+const candidate = 5;
+const safeDivision = Num.isNonZero(candidate) ? 10 / candidate : undefined;
 
-// Works with numeric literals
 const literal = 0 as 0 | 1 | 2;
-if (Num.isNonZero(literal)) {
-  // literal is typed as 1 | 2
-}
+const narrowed = Num.isNonZero(literal) ? literal : undefined;
 
-export { literal, value };
+const summary = {
+  candidate,
+  literal,
+  narrowed,
+  safeDivision,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

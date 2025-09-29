@@ -1,13 +1,17 @@
 // Example: src/number/branded-types/positive-int.mts (positive-int)
 import { PositiveInt, asPositiveInt } from 'ts-data-forge';
 
-// Dice roll
-const d6 = PositiveInt.random(asPositiveInt(1), asPositiveInt(6));
+const value = asPositiveInt(1);
+const other = asPositiveInt(2);
+const added = PositiveInt.add(value, other);
+const isValue = PositiveInt.is(value);
 
-// Random user ID
-const userId = PositiveInt.random(asPositiveInt(1000), asPositiveInt(9999));
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
 
-// Random page count
-const pages = PositiveInt.random(asPositiveInt(50), asPositiveInt(500));
-
-export { d6, pages, userId };
+// embed-sample-code-ignore-below
+export { summary };

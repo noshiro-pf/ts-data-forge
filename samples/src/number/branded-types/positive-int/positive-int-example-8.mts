@@ -1,7 +1,17 @@
 // Example: src/number/branded-types/positive-int.mts (positive-int)
 import { PositiveInt, asPositiveInt } from 'ts-data-forge';
 
-PositiveInt.div(asPositiveInt(10), asPositiveInt(3)); // PositiveInt (3)
-PositiveInt.div(asPositiveInt(9), asPositiveInt(3)); // PositiveInt (3)
-PositiveInt.div(asPositiveInt(2), asPositiveInt(3)); // PositiveInt (1) - clamped
-PositiveInt.div(asPositiveInt(1), asPositiveInt(5)); // PositiveInt (1) - clamped
+const value = asPositiveInt(1);
+const other = asPositiveInt(2);
+const added = PositiveInt.add(value, other);
+const isValue = PositiveInt.is(value);
+
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

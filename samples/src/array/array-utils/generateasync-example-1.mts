@@ -1,26 +1,27 @@
 // Example: src/array/array-utils.mts (generateAsync)
-import { strict as assert } from 'node:assert/strict';
-
 import { Arr } from 'ts-data-forge';
 
-const nums: readonly number[] = await Arr.generateAsync<number>(
-  async function* () {
-    yield 1;
-    await new Promise((resolve) => setTimeout(resolve, 10));
-    yield* [2, 3];
-  },
-);
-
-assert.deepStrictEqual(nums, [1, 2, 3]);
-
-// Type safety - prevents incorrect returns:
-const nums2 = await Arr.generateAsync<number>(async function* () {
+const numbers = await Arr.generateAsync<number>(async function* () {
   yield 1;
-  if (someCondition) {
-    return; // OK - returning is allowed, but must be void
-  }
-  yield* [2, 3];
-  // return 1; // NG - TypeScript error, cannot return T
+  await Promise.resolve();
+  yield 2;
 });
 
-export { nums, nums2 };
+const includeExtra = true;
+const conditional = await Arr.generateAsync<number>(async function* () {
+  yield 1;
+  if (!includeExtra) {
+    return;
+  }
+  await Promise.resolve();
+  yield 2;
+});
+
+const summary = {
+  conditional,
+  includeExtra,
+  numbers,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

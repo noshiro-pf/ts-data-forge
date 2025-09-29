@@ -1,14 +1,17 @@
-// Example: src/number/branded-types/positive-int.mts (asPositiveInt)
-import { asPositiveInt } from 'ts-data-forge';
+// Example: src/number/branded-types/positive-int.mts (positive-int)
+import { PositiveInt, asPositiveInt } from 'ts-data-forge';
 
-const count = asPositiveInt(5); // PositiveInt
-const length = asPositiveInt(100); // PositiveInt
-const one = asPositiveInt(1); // PositiveInt (minimum valid)
+const value = asPositiveInt(1);
+const other = asPositiveInt(2);
+const added = PositiveInt.add(value, other);
+const isValue = PositiveInt.is(value);
 
-// These throw TypeError:
-// asPositiveInt(0);                 // Zero is not positive
-// asPositiveInt(-1);                // Negative numbers not allowed
-// asPositiveInt(5.5);               // Not an integer
-// asPositiveInt(Infinity);          // Not finite
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
 
-export { count, length, one };
+// embed-sample-code-ignore-below
+export { summary };

@@ -1,7 +1,13 @@
 // Example: src/number/num.mts (increment)
 import { Num } from 'ts-data-forge';
 
-const zero = 0;
-const one = Num.increment(zero); // type is 1, value is 1
+const start = 0;
+const incremented = Num.increment(start);
 
-export { one, zero };
+const summary = {
+  incremented,
+  start,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

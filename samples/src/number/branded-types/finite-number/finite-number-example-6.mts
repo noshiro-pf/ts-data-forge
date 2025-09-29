@@ -1,10 +1,17 @@
 // Example: src/number/branded-types/finite-number.mts (finite-number)
 import { FiniteNumber, asFiniteNumber } from 'ts-data-forge';
 
-// Random percentage (0-100)
-const pct = FiniteNumber.random(asFiniteNumber(0), asFiniteNumber(100));
+const value = asFiniteNumber(1.5);
+const other = asFiniteNumber(2.5);
+const added = FiniteNumber.add(value, other);
+const isValue = FiniteNumber.is(value);
 
-// Random coordinate (-1 to 1)
-const coord = FiniteNumber.random(asFiniteNumber(-1), asFiniteNumber(1));
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
 
-export { coord, pct };
+// embed-sample-code-ignore-below
+export { summary };

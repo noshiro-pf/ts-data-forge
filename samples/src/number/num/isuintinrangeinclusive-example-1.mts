@@ -1,11 +1,13 @@
 // Example: src/number/num.mts (isUintInRangeInclusive)
 import { Num } from 'ts-data-forge';
 
-const isValidScore = Num.isUintInRangeInclusive(0, 100);
-const score: number = getTestScore();
-if (isValidScore(score)) {
-  // score is typed as 0 | 1 | 2 | ... | 100
-  const grade = calculateGrade(score);
-}
+const isValidSmallScore = Num.isUintInRangeInclusive(0, 10);
+const checks = [isValidSmallScore(10), isValidSmallScore(11)];
 
-export { isValidScore, score };
+const summary = {
+  checks,
+  isValidSmallScore,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

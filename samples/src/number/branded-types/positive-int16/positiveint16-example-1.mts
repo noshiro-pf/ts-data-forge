@@ -1,34 +1,17 @@
-// Example: src/number/branded-types/positive-int16.mts (PositiveInt16)
+// Example: src/number/branded-types/positive-int16.mts (positive-int16)
 import { PositiveInt16, asPositiveInt16 } from 'ts-data-forge';
 
-const a = asPositiveInt16(30_000);
-const b = asPositiveInt16(5000);
+const value = asPositiveInt16(1);
+const other = asPositiveInt16(2);
+const added = PositiveInt16.add(value, other);
+const isValue = PositiveInt16.is(value);
 
-// Arithmetic operations with automatic clamping
-const sum = PositiveInt16.add(a, b); // PositiveInt16 (32767 - clamped to MAX_VALUE)
-const diff = PositiveInt16.sub(a, b); // PositiveInt16 (25000)
-const reverseDiff = PositiveInt16.sub(b, a); // PositiveInt16 (1 - clamped to MIN_VALUE)
-const product = PositiveInt16.mul(a, b); // PositiveInt16 (32767 - clamped due to overflow)
-
-// Range operations
-const clamped = PositiveInt16.clamp(0); // PositiveInt16 (1)
-const minimum = PositiveInt16.min(a, b); // PositiveInt16 (5000)
-const maximum = PositiveInt16.max(a, b); // PositiveInt16 (30000)
-
-// Utility operations
-const random = PositiveInt16.random(); // PositiveInt16 (random value in [1, 32767])
-const power = PositiveInt16.pow(asPositiveInt16(2), asPositiveInt16(10)); // PositiveInt16 (1024)
-
-export {
-  a,
-  b,
-  clamped,
-  diff,
-  maximum,
-  minimum,
-  power,
-  product,
-  random,
-  reverseDiff,
-  sum,
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
 };
+
+// embed-sample-code-ignore-below
+export { summary };

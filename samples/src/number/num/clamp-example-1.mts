@@ -1,12 +1,15 @@
 // Example: src/number/num.mts (clamp)
 import { Num } from 'ts-data-forge';
 
-// Direct usage
-Num.clamp(15, 0, 10); // 10 (clamped to upper bound)
-Num.clamp(5, 0, 10); // 5 (within bounds)
-
-// Curried usage
+const direct = Num.clamp(15, 0, 10);
 const clampToPercent = Num.clamp(0, 100);
-clampToPercent(150); // 100
+const clampedPercent = clampToPercent(150);
 
-export { clampToPercent };
+const summary = {
+  clampToPercent,
+  clampedPercent,
+  direct,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

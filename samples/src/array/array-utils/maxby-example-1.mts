@@ -1,11 +1,19 @@
 // Example: src/array/array-utils.mts (maxBy)
-import { Arr } from 'ts-data-forge';
+import { Arr, Optional } from 'ts-data-forge';
 
 const people = [
   { name: 'Alice', age: 30 },
   { name: 'Bob', age: 20 },
 ] as const;
-Arr.maxBy(people, (p) => p.age); // Optional.some({ name: 'Alice', age: 30 })
-Arr.maxBy([], (p) => p.age); // Optional.none
 
-export { people };
+const oldest = Arr.maxBy(people, (person) => person.age);
+const oldestName = Optional.unwrapOr(oldest, { name: 'Unknown', age: 0 }).name;
+
+const summary = {
+  oldest,
+  oldestName,
+  people,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

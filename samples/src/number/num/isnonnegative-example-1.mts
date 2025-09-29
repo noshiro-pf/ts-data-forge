@@ -2,15 +2,17 @@
 import { Num } from 'ts-data-forge';
 
 const value = 10;
-if (Num.isNonNegative(value)) {
-  // value is typed as NonNegativeNumber & 10
-  const arr = Array.from({length: value}); // Safe array creation
-}
+const isValueNonNegative = Num.isNonNegative(value);
 
-// Type narrowing with unions
-const index = -1 as -1 | 0 | 1;
-if (Num.isNonNegative(index)) {
-  // index is typed as 0 | 1
-}
+const candidate = -1 as -1 | 0 | 1;
+const narrowed = Num.isNonNegative(candidate) ? candidate : undefined;
 
-export { index, value };
+const summary = {
+  candidate,
+  isValueNonNegative,
+  narrowed,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

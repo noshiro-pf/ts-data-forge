@@ -1,10 +1,13 @@
 // Example: src/number/num.mts (isUintInRange)
 import { Num } from 'ts-data-forge';
 
-// Custom range validation
-const isValidPercentage = Num.isUintInRange(0, 101);
-if (isValidPercentage(value)) {
-  // value is typed as 0 | 1 | ... | 100
-}
+const isValidSmallIndex = Num.isUintInRange(0, 11);
+const checks = [isValidSmallIndex(5), isValidSmallIndex(12)];
 
-export { isValidPercentage };
+const summary = {
+  checks,
+  isValidSmallIndex,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

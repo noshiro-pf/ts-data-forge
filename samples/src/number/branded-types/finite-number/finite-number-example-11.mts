@@ -1,15 +1,17 @@
 // Example: src/number/branded-types/finite-number.mts (finite-number)
-import { FiniteNumber, Num, asFiniteNumber } from 'ts-data-forge';
+import { FiniteNumber, asFiniteNumber } from 'ts-data-forge';
 
-const a = asFiniteNumber(11);
-const b = asFiniteNumber(2);
+const value = asFiniteNumber(1.5);
+const other = asFiniteNumber(2.5);
+const added = FiniteNumber.add(value, other);
+const isValue = FiniteNumber.is(value);
 
-FiniteNumber.div(a, b); // FiniteNumber (5.5)
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
 
-// With non-zero type guard
-const divisor = asFiniteNumber(userInput);
-if (Num.isNonZero(divisor)) {
-  const result = FiniteNumber.div(a, divisor);
-}
-
-export { a, b, divisor };
+// embed-sample-code-ignore-below
+export { summary };

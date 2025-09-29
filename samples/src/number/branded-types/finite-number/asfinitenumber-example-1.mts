@@ -1,14 +1,17 @@
-// Example: src/number/branded-types/finite-number.mts (asFiniteNumber)
-import { asFiniteNumber } from 'ts-data-forge';
+// Example: src/number/branded-types/finite-number.mts (finite-number)
+import { FiniteNumber, asFiniteNumber } from 'ts-data-forge';
 
-const x = asFiniteNumber(5.5); // FiniteNumber
-const y = asFiniteNumber(-10); // FiniteNumber
-const z = asFiniteNumber(0); // FiniteNumber
+const value = asFiniteNumber(1.5);
+const other = asFiniteNumber(2.5);
+const added = FiniteNumber.add(value, other);
+const isValue = FiniteNumber.is(value);
 
-// These throw TypeError:
-// asFiniteNumber(Infinity);     // Not finite
-// asFiniteNumber(-Infinity);    // Not finite
-// asFiniteNumber(NaN);          // Not a number
-// asFiniteNumber(Math.sqrt(-1)); // Results in NaN
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
 
-export { x, y, z };
+// embed-sample-code-ignore-below
+export { summary };

@@ -1,5 +1,13 @@
 // Example: src/number/num.mts (divInt)
 import { Num } from 'ts-data-forge';
 
-Num.divInt(10, 3); // 3
-Num.divInt(10, -3); // -4 (floor division)
+const quotient = Num.divInt(10, 3);
+const negative = Num.divInt(10, -3 as const);
+
+const summary = {
+  negative,
+  quotient,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

@@ -1,16 +1,20 @@
 // Example: src/array/array-utils.mts (lastIndexOf)
-import { Arr, Optional, pipe } from 'ts-data-forge';
+import { Arr } from 'ts-data-forge';
 
-// Regular usage
-const arr = ['a', 'b', 'c', 'b'];
-const result = Arr.lastIndexOf(arr, 'b');
-if (Optional.isSome(result)) {
-  console.log(result.value); // 3 (branded as SizeType.Arr)
-}
+const values: readonly string[] = ['a', 'b', 'c', 'b'];
+const lastB = Arr.lastIndexOf(values, 'b');
+const missing = Arr.lastIndexOf(values, 'z');
 
-// Curried usage for pipe composition
-const findLastB = Arr.lastIndexOf('b');
-const result2 = pipe(['a', 'b', 'c', 'b']).map(findLastB).value;
-console.log(Optional.unwrapOr(result2, -1)); // 3
+const numbers = [1, 2, 3, 2, 1] as const;
+const lastTwo = Arr.lastIndexOf(numbers, 2);
 
-export { arr, findLastB, result, result2 };
+const summary = {
+  lastB,
+  lastTwo,
+  missing,
+  numbers,
+  values,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

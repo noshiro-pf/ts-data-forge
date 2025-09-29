@@ -1,29 +1,22 @@
 // Example: src/array/array-utils.mts (isEmpty)
 import { Arr } from 'ts-data-forge';
 
-// Basic emptiness checking
-const emptyArray: number[] = [];
-const nonEmptyArray = [1, 2, 3];
+const emptyArray: readonly number[] = [];
+const numbers = [1, 2, 3] as const;
 
-console.log(Arr.isEmpty(emptyArray)); // true
-console.log(Arr.isEmpty(nonEmptyArray)); // false
+const emptyCheck = Arr.isEmpty(emptyArray);
+const nonEmptyCheck = Arr.isEmpty(numbers);
 
-// Type guard behavior
-function processArray(arr: readonly number[]) {
-  if (Arr.isEmpty(arr)) {
-    // arr is now typed as readonly []
-    console.log('Array is empty');
-    // arr[0]; // type error!
-    return 0;
-  }
-}
+const describe = (values: readonly number[]) =>
+  Arr.isEmpty(values) ? 'empty' : `size=${values.length}`;
 
-// Early returns
-function sumArray(numbers: readonly number[]): number {
-  if (Arr.isEmpty(numbers)) {
-    return 0; // Handle empty case early
-  }
-  return numbers.reduce((sum, n) => sum + n, 0);
-}
+const summary = {
+  describeEmpty: describe(emptyArray),
+  describeNumbers: describe(numbers),
+  emptyArray,
+  emptyCheck,
+  nonEmptyCheck,
+};
 
-export { emptyArray, nonEmptyArray, processArray, sumArray };
+// embed-sample-code-ignore-below
+export { summary };

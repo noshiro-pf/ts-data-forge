@@ -1,9 +1,17 @@
-// Example: src/number/branded-types/int16.mts (asInt16)
-import { asInt16 } from 'ts-data-forge';
+// Example: src/number/branded-types/int16.mts (int16)
+import { Int16, asInt16 } from 'ts-data-forge';
 
-const x = asInt16(1000); // Int16
-const y = asInt16(-5000); // Int16
-// asInt16(50000); // throws TypeError
-// asInt16(1.5); // throws TypeError
+const value = asInt16(1);
+const other = asInt16(2);
+const added = Int16.add(value, other);
+const isValue = Int16.is(value);
 
-export { x, y };
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

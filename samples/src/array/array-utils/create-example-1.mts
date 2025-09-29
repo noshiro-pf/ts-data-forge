@@ -11,12 +11,11 @@ const empty = Arr.create(0, 'unused'); // readonly []
 // Object references are shared (shallow copy behavior)
 const obj = { id: 1, name: 'test' };
 const objects = Arr.create(3, obj); // readonly [obj, obj, obj]
-objects[0] === objects[1]; // true - same reference
-objects[0].id = 999; // Mutates the shared object
-console.log(objects[1].id); // 999 - all positions affected
+objects[0].id = 999; // Mutates the shared object reference for all entries
+const sharedMutation = objects[1].id;
 
-// Runtime positive values produce non-empty arrays
-const count = Math.floor(Math.random() * 5) + 1;
+// Runtime positive values produce non-empty arrays when length is > 0
+const count = 3;
 const nonEmpty = Arr.create(count, 'item'); // NonEmptyArray<string>
 
 // Literal type preservation with const assertion
@@ -27,4 +26,17 @@ expectType<typeof strings, readonly ['hello', 'hello', 'hello']>('=');
 expectType<typeof numbers, readonly [42, 42]>('=');
 expectType<typeof empty, readonly []>('=');
 
-export { count, empty, literals, nonEmpty, numbers, obj, objects, strings };
+const summary = {
+  count,
+  empty,
+  literals,
+  nonEmpty,
+  numbers,
+  obj,
+  objects,
+  sharedMutation,
+  strings,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

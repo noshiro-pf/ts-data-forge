@@ -1,22 +1,24 @@
 // Example: src/number/num.mts (from)
 import { Num } from 'ts-data-forge';
 
-// Type conversion
-const num = Num.from('123.45'); // 123.45
-const invalid = Num.from('abc'); // NaN
+const parsed = Num.from('123.45');
+const invalid = Num.from('abc');
 
-// Type guards
-const value = 5;
-if (Num.isPositive(value)) {
-  // value is typed as PositiveNumber & 5
-}
+const withinRange = Num.isInRange(0, 100);
+const isScoreValid = withinRange(76);
 
-// Range checking
-const isValid = Num.isInRange(0, 100)(50); // true
+const clamped = Num.clamp(150, 0, 100);
+const clampToPercent = Num.clamp(0, 100);
+const clampedPercent = clampToPercent(150);
 
-// Clamping
-const clamped = Num.clamp(150, 0, 100); // 100
-const clampFn = Num.clamp(0, 100);
-const result = clampFn(150); // 100
+const summary = {
+  clamped,
+  clampedPercent,
+  clampToPercent,
+  invalid,
+  isScoreValid,
+  parsed,
+};
 
-export { clamped, clampFn, invalid, isValid, num, result, value };
+// embed-sample-code-ignore-below
+export { summary };

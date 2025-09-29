@@ -1,9 +1,17 @@
-// Example: src/number/branded-types/non-negative-int16.mts (asNonNegativeInt16)
-import { asNonNegativeInt16 } from 'ts-data-forge';
+// Example: src/number/branded-types/non-negative-int16.mts (non-negative-int16)
+import { NonNegativeInt16, asNonNegativeInt16 } from 'ts-data-forge';
 
-const x = asNonNegativeInt16(1000); // NonNegativeInt16
-const y = asNonNegativeInt16(0); // NonNegativeInt16
-// asNonNegativeInt16(-1); // throws TypeError
-// asNonNegativeInt16(32768); // throws TypeError
+const value = asNonNegativeInt16(0);
+const other = asNonNegativeInt16(2);
+const added = NonNegativeInt16.add(value, other);
+const isValue = NonNegativeInt16.is(value);
 
-export { x, y };
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

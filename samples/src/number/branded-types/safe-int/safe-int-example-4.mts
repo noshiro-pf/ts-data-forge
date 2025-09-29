@@ -1,13 +1,17 @@
 // Example: src/number/branded-types/safe-int.mts (safe-int)
 import { SafeInt, asSafeInt } from 'ts-data-forge';
 
-// Dice roll
-const d20 = SafeInt.random(asSafeInt(1), asSafeInt(20));
+const value = asSafeInt(1);
+const other = asSafeInt(2);
+const added = SafeInt.add(value, other);
+const isValue = SafeInt.is(value);
 
-// Random index for large array
-const index = SafeInt.random(asSafeInt(0), asSafeInt(1_000_000));
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
 
-// Can use full safe range
-const any = SafeInt.random(SafeInt.MIN_VALUE, SafeInt.MAX_VALUE);
-
-export { any, d20, index };
+// embed-sample-code-ignore-below
+export { summary };

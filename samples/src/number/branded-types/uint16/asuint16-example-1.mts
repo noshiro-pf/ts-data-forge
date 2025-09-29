@@ -1,9 +1,17 @@
-// Example: src/number/branded-types/uint16.mts (asUint16)
-import { asUint16 } from 'ts-data-forge';
+// Example: src/number/branded-types/uint16.mts (uint16)
+import { Uint16, asUint16 } from 'ts-data-forge';
 
-const x = asUint16(1000); // Uint16
-const y = asUint16(0); // Uint16
-// asUint16(-1); // throws TypeError
-// asUint16(70000); // throws TypeError
+const value = asUint16(1);
+const other = asUint16(2);
+const added = Uint16.add(value, other);
+const isValue = Uint16.is(value);
 
-export { x, y };
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

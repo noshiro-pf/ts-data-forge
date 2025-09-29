@@ -1,34 +1,28 @@
 // Example: src/array/array-utils.mts (filter)
-import { Arr, pipe } from 'ts-data-forge';
+import { Arr } from 'ts-data-forge';
 
-// Direct usage
-const numbers = [1, 2, 3, 4, 5];
-const evens = Arr.filter(numbers, (n) => n % 2 === 0); // [2, 4]
+const numbers = [1, 2, 3, 4, 5] as const;
+const evens = Arr.filter(numbers, (n) => n % 2 === 0);
 
-// Type guard usage
 const mixed: (string | number | null)[] = ['hello', 42, null, 'world'];
-const strings = Arr.filter(mixed, (x): x is string => typeof x === 'string'); // string[]
-const notNull = Arr.filter(mixed, (x): x is NonNullable<typeof x> => x != null); // (string | number)[]
+const strings = Arr.filter(mixed, (x): x is string => typeof x === 'string');
+const notNull = Arr.filter(mixed, (x): x is NonNullable<typeof x> => x != null);
 
-// Curried usage with type guards
-const isString = (x: unknown): x is string => typeof x === 'string';
-const filterStrings = Arr.filter(isString);
-const result = filterStrings(['a', 1, 'b', 2]); // string[]
+const isString = (value: unknown): value is string => typeof value === 'string';
+const stringValues = Arr.filter(['a', 1, 'b', 2], isString);
 
-// Functional composition
-const processNumbers = pipe(
-  Arr.filter((n: number) => n > 0),
-  Arr.map((n) => n * 2),
-);
+const processNumbers = (values: readonly number[]) =>
+  Arr.map(Arr.filter(values, (n) => n > 0), (n) => n * 2);
 
-export {
+const summary = {
   evens,
-  filterStrings,
-  isString,
   mixed,
   notNull,
   numbers,
   processNumbers,
-  result,
+  stringValues,
   strings,
 };
+
+// embed-sample-code-ignore-below
+export { isString, summary };

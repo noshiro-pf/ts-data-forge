@@ -1,20 +1,17 @@
-// Example: src/number/branded-types/non-zero-safe-int.mts (NonZeroSafeInt)
+// Example: src/number/branded-types/non-zero-safe-int.mts (non-zero-safe-int)
 import { NonZeroSafeInt, asNonZeroSafeInt } from 'ts-data-forge';
 
-const a = asNonZeroSafeInt(9_007_199_254_740_000); // Near MAX_SAFE_INTEGER
-const b = asNonZeroSafeInt(-1000);
+const value = asNonZeroSafeInt(1);
+const other = asNonZeroSafeInt(2);
+const added = NonZeroSafeInt.add(value, other);
+const isValue = NonZeroSafeInt.is(value);
 
-// Arithmetic operations with non-zero safe range clamping
-const sum = NonZeroSafeInt.add(a, b); // NonZeroSafeInt (9007199254739000)
-const diff = NonZeroSafeInt.sub(a, b); // NonZeroSafeInt (clamped to MAX_SAFE_INTEGER)
-const product = NonZeroSafeInt.mul(a, b); // NonZeroSafeInt (clamped to MIN_SAFE_INTEGER)
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
 
-// Utility operations
-const absolute = NonZeroSafeInt.abs(b); // NonZeroSafeInt (1000)
-const minimum = NonZeroSafeInt.min(a, b); // NonZeroSafeInt (-1000)
-const maximum = NonZeroSafeInt.max(a, b); // NonZeroSafeInt (a)
-
-// Random generation
-const random = NonZeroSafeInt.random(); // NonZeroSafeInt (random non-zero safe integer)
-
-export { a, absolute, b, diff, maximum, minimum, product, random, sum };
+// embed-sample-code-ignore-below
+export { summary };

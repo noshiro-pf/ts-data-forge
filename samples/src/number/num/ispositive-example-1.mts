@@ -2,15 +2,17 @@
 import { Num } from 'ts-data-forge';
 
 const count = 5;
-if (Num.isPositive(count)) {
-  // count is typed as PositiveNumber & 5
-  const average = total / count; // Safe division
-}
+const average = Num.isPositive(count) ? 100 / count : undefined;
 
-// Type narrowing with numeric literals
 const value = 0 as -1 | 0 | 1 | 2;
-if (Num.isPositive(value)) {
-  // value is typed as 1 | 2
-}
+const narrowed = Num.isPositive(value) ? value : undefined;
 
-export { count, value };
+const summary = {
+  average,
+  count,
+  narrowed,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

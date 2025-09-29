@@ -1,9 +1,17 @@
-// Example: src/number/branded-types/non-zero-finite-number.mts (asNonZeroFiniteNumber)
-import { asNonZeroFiniteNumber } from 'ts-data-forge';
+// Example: src/number/branded-types/non-zero-finite-number.mts (non-zero-finite-number)
+import { NonZeroFiniteNumber, asNonZeroFiniteNumber } from 'ts-data-forge';
 
-const x = asNonZeroFiniteNumber(5.5); // NonZeroFiniteNumber
-const y = asNonZeroFiniteNumber(-3.2); // NonZeroFiniteNumber
-// asNonZeroFiniteNumber(0); // throws TypeError
-// asNonZeroFiniteNumber(Infinity); // throws TypeError
+const value = asNonZeroFiniteNumber(1.5);
+const other = asNonZeroFiniteNumber(2.5);
+const added = NonZeroFiniteNumber.add(value, other);
+const isValue = NonZeroFiniteNumber.is(value);
 
-export { x, y };
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

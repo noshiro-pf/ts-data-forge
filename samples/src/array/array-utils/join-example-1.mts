@@ -1,16 +1,21 @@
 // Example: src/array/array-utils.mts (join)
-import { Arr, Result, pipe } from 'ts-data-forge';
+import { Arr, Result } from 'ts-data-forge';
 
-// Regular usage
-const arr = ['Hello', 'World'];
-const result = Arr.join(arr, ' ');
-if (Result.isOk(result)) {
-  console.log(result.value); // "Hello World"
-}
+const phrases = ['Hello', 'World'] as const;
+const joined = Arr.join(phrases, ' ');
+const joinedValue = Result.isOk(joined) ? joined.value : '';
 
-// Curried usage for pipe composition
-const joinWithComma = Arr.join(',');
-const result2 = pipe(['a', 'b', 'c']).map(joinWithComma).value;
-console.log(Result.unwrapOr(result2, '')); // "a,b,c"
+const joinWithComma = Arr.join(', ');
+const letters = joinWithComma(['a', 'b', 'c']);
+const lettersValue = Result.isOk(letters) ? letters.value : '';
 
-export { arr, joinWithComma, result, result2 };
+const summary = {
+  joined,
+  joinedValue,
+  letters,
+  lettersValue,
+  phrases,
+};
+
+// embed-sample-code-ignore-below
+export { joinWithComma, summary };

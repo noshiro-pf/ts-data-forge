@@ -1,9 +1,17 @@
-// Example: src/number/branded-types/positive-finite-number.mts (asPositiveFiniteNumber)
-import { asPositiveFiniteNumber } from 'ts-data-forge';
+// Example: src/number/branded-types/positive-finite-number.mts (positive-finite-number)
+import { PositiveFiniteNumber, asPositiveFiniteNumber } from 'ts-data-forge';
 
-const x = asPositiveFiniteNumber(5.5); // PositiveFiniteNumber
-const y = asPositiveFiniteNumber(0.001); // PositiveFiniteNumber
-// asPositiveFiniteNumber(0); // throws TypeError
-// asPositiveFiniteNumber(-1); // throws TypeError
+const value = asPositiveFiniteNumber(1.5);
+const other = asPositiveFiniteNumber(2.5);
+const added = PositiveFiniteNumber.add(value, other);
+const isValue = PositiveFiniteNumber.is(value);
 
-export { x, y };
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

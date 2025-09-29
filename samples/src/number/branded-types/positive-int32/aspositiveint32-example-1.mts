@@ -1,10 +1,17 @@
-// Example: src/number/branded-types/positive-int32.mts (asPositiveInt32)
-import { asPositiveInt32 } from 'ts-data-forge';
+// Example: src/number/branded-types/positive-int32.mts (positive-int32)
+import { PositiveInt32, asPositiveInt32 } from 'ts-data-forge';
 
-const x = asPositiveInt32(1000); // PositiveInt32
-const y = asPositiveInt32(2_147_483_647); // PositiveInt32
-// asPositiveInt32(0); // throws TypeError
-// asPositiveInt32(-1); // throws TypeError
-// asPositiveInt32(2147483648); // throws TypeError
+const value = asPositiveInt32(1);
+const other = asPositiveInt32(2);
+const added = PositiveInt32.add(value, other);
+const isValue = PositiveInt32.is(value);
 
-export { x, y };
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

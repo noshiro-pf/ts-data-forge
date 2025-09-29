@@ -1,5 +1,13 @@
 // Example: src/number/num.mts (from)
 import { Num } from 'ts-data-forge';
 
-Num.from('123.45'); // 123.45
-Num.from('hello'); // NaN
+const parsed = Num.from('123.45');
+const invalid = Num.from('hello');
+
+const summary = {
+  invalid,
+  parsed,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

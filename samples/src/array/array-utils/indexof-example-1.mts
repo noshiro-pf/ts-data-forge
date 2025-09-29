@@ -1,16 +1,18 @@
 // Example: src/array/array-utils.mts (indexOf)
-import { Arr, Optional, pipe } from 'ts-data-forge';
+import { Arr } from 'ts-data-forge';
 
-// Regular usage
-const arr = ['a', 'b', 'c', 'b'];
-const result = Arr.indexOf(arr, 'b');
-if (Optional.isSome(result)) {
-  console.log(result.value); // 1 (branded as SizeType.Arr)
-}
+const values: readonly string[] = ['a', 'b', 'c', 'b'];
+const firstB = Arr.indexOf(values, 'b');
+const missing = Arr.indexOf(values, 'z');
 
-// Curried usage for pipe composition
-const findB = Arr.indexOf('b');
-const result2 = pipe(['a', 'b', 'c']).map(findB).value;
-console.log(Optional.unwrapOr(result2, -1)); // 1
+const lettersResult = Arr.indexOf('b')(['x', 'y', 'b']);
 
-export { arr, findB, result, result2 };
+const summary = {
+  firstB,
+  lettersResult,
+  missing,
+  values,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

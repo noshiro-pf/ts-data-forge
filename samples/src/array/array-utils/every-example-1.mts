@@ -1,28 +1,32 @@
 // Example: src/array/array-utils.mts (every)
 import { Arr } from 'ts-data-forge';
 
-// Direct usage
-const numbers = [2, 4, 6, 8];
-const allEven = Arr.every(numbers, (n) => n % 2 === 0); // true
+const numbers = [2, 4, 6, 8] as const;
+const allEven = Arr.every(numbers, (n) => n % 2 === 0);
 
-// Type guard usage - narrows entire array type
 const mixed: (string | number)[] = ['hello', 'world'];
-if (Arr.every(mixed, (x): x is string => typeof x === 'string')) {
-  // TypeScript knows mixed is string[] here
-  console.log(mixed.map((s) => s.toUpperCase()));
-}
+const areAllStrings = Arr.every(mixed, (value): value is string => typeof value === 'string');
+const uppercase = Arr.filter(mixed, (value): value is string => typeof value === 'string').map((value) => value.toUpperCase());
 
-// Curried usage with type guards
-const isString = (x: unknown): x is string => typeof x === 'string';
-const allStrings = Arr.every(isString);
-const data: unknown[] = ['a', 'b', 'c'];
-if (allStrings(data)) {
-  // TypeScript knows data is string[] here
-  console.log(data.join(''));
-}
+const data: unknown[] = ['a', 'b', 3];
+const joined = Arr.every(data, (value): value is string => typeof value === 'string')
+  ? data.join('')
+  : undefined;
 
-// Empty array
 const empty: number[] = [];
-const result2 = Arr.every(empty, (n) => n > 0); // true
+const result2 = Arr.every(empty, (n) => n > 0);
 
-export { allEven, allStrings, data, empty, isString, mixed, numbers, result2 };
+const summary = {
+  allEven,
+  areAllStrings,
+  data,
+  empty,
+  joined,
+  mixed,
+  numbers,
+  result2,
+  uppercase,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

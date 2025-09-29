@@ -1,9 +1,17 @@
-// Example: src/number/branded-types/non-negative-finite-number.mts (asNonNegativeFiniteNumber)
-import { asNonNegativeFiniteNumber } from 'ts-data-forge';
+// Example: src/number/branded-types/non-negative-finite-number.mts (non-negative-finite-number)
+import { NonNegativeFiniteNumber, asNonNegativeFiniteNumber } from 'ts-data-forge';
 
-const x = asNonNegativeFiniteNumber(5.5); // NonNegativeFiniteNumber
-const y = asNonNegativeFiniteNumber(0); // NonNegativeFiniteNumber
-// asNonNegativeFiniteNumber(-1); // throws TypeError
-// asNonNegativeFiniteNumber(Infinity); // throws TypeError
+const value = asNonNegativeFiniteNumber(1.5);
+const other = asNonNegativeFiniteNumber(2.5);
+const added = NonNegativeFiniteNumber.add(value, other);
+const isValue = NonNegativeFiniteNumber.is(value);
 
-export { x, y };
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

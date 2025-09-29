@@ -1,13 +1,17 @@
-// Example: src/number/branded-types/int.mts (asInt)
-import { asInt } from 'ts-data-forge';
+// Example: src/number/branded-types/int.mts (int)
+import { Int, asInt } from 'ts-data-forge';
 
-const x = asInt(5); // Int
-const y = asInt(-10); // Int
-const z = asInt(0); // Int
+const value = asInt(1);
+const other = asInt(2);
+const added = Int.add(value, other);
+const isValue = Int.is(value);
 
-// These throw TypeError:
-// asInt(5.5);         // Not an integer
-// asInt(NaN);         // Not a number
-// asInt(Infinity);    // Not finite
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
 
-export { x, y, z };
+// embed-sample-code-ignore-below
+export { summary };

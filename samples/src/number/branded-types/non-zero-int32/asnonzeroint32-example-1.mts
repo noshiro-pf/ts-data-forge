@@ -1,9 +1,17 @@
-// Example: src/number/branded-types/non-zero-int32.mts (asNonZeroInt32)
-import { asNonZeroInt32 } from 'ts-data-forge';
+// Example: src/number/branded-types/non-zero-int32.mts (non-zero-int32)
+import { NonZeroInt32, asNonZeroInt32 } from 'ts-data-forge';
 
-const x = asNonZeroInt32(1000); // NonZeroInt32
-const y = asNonZeroInt32(-1000); // NonZeroInt32
-// asNonZeroInt32(0); // throws TypeError
-// asNonZeroInt32(2147483648); // throws TypeError
+const value = asNonZeroInt32(1);
+const other = asNonZeroInt32(2);
+const added = NonZeroInt32.add(value, other);
+const isValue = NonZeroInt32.is(value);
 
-export { x, y };
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

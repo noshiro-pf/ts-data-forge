@@ -1,9 +1,17 @@
-// Example: src/number/branded-types/int32.mts (asInt32)
-import { asInt32 } from 'ts-data-forge';
+// Example: src/number/branded-types/int32.mts (int32)
+import { Int32, asInt32 } from 'ts-data-forge';
 
-const x = asInt32(100_000); // Int32
-const y = asInt32(-500_000); // Int32
-// asInt32(3000000000); // throws TypeError
-// asInt32(1.5); // throws TypeError
+const value = asInt32(1);
+const other = asInt32(2);
+const added = Int32.add(value, other);
+const isValue = Int32.is(value);
 
-export { x, y };
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

@@ -2,9 +2,12 @@
 import { Num } from 'ts-data-forge';
 
 const inRange = Num.isInRangeInclusive(1, 10);
-console.log(inRange(1)); // true (lower bound)
-console.log(inRange(5)); // true
-console.log(inRange(10)); // true (upper bound)
-console.log(inRange(11)); // false
+const checks = [inRange(1), inRange(5), inRange(11)];
 
-export { inRange };
+const summary = {
+  checks,
+  inRange,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

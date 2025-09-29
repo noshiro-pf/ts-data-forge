@@ -1,13 +1,17 @@
-// Example: src/number/branded-types/safe-int.mts (asSafeInt)
-import { asSafeInt } from 'ts-data-forge';
+// Example: src/number/branded-types/safe-int.mts (safe-int)
+import { SafeInt, asSafeInt } from 'ts-data-forge';
 
-const x = asSafeInt(5); // SafeInt
-const y = asSafeInt(-1000); // SafeInt
-const z = asSafeInt(2 ** 50); // SafeInt (within range)
+const value = asSafeInt(1);
+const other = asSafeInt(2);
+const added = SafeInt.add(value, other);
+const isValue = SafeInt.is(value);
 
-// These throw TypeError:
-// asSafeInt(1.5);                      // Not an integer
-// asSafeInt(Number.MAX_SAFE_INTEGER + 1); // Exceeds safe range
-// asSafeInt(2**53);                    // Loss of precision
+const summary = {
+  added,
+  isValue,
+  other,
+  value,
+};
 
-export { x, y, z };
+// embed-sample-code-ignore-below
+export { summary };
