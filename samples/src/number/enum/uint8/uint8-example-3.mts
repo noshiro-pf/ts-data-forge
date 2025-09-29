@@ -1,5 +1,8 @@
-// Example: src/number/enum/uint8.mts (uint8)
-import { asUint8 } from 'ts-data-forge';
+// Example: src/number/enum/uint8.mts (Uint8.min)
+import { Uint8 } from 'ts-data-forge';
 
-min_(asUint8(50), asUint8(30), asUint8(100)); // Uint8 (30)
-min_(asUint8(0), asUint8(255)); // Uint8 (0)
+const smallest = Uint8.min(50, 30, 100);
+const withBounds = Uint8.min(0, Uint8.MAX_VALUE);
+
+// embed-sample-code-ignore-below
+export { smallest, withBounds };
