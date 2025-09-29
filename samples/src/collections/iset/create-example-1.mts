@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/iset.mts (create)
+// Example: src/collections/iset.mts (create)
 import { ISet } from 'ts-data-forge';
 
 // From array (duplicates automatically removed)
@@ -36,4 +36,14 @@ function* generatePrimes(): Generator<number> {
 const primes = ISet.create(generatePrimes());
 console.log(primes.size); // Output: 4
 
-export { colors, copiedTags, emptyPermissions, generatePrimes, jsSet, originalTags, primes, processedNumbers, uniqueIds };
+export {
+  colors,
+  copiedTags,
+  emptyPermissions,
+  generatePrimes,
+  jsSet,
+  originalTags,
+  primes,
+  processedNumbers,
+  uniqueIds,
+};

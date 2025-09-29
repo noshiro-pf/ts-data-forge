@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/optional.mts (flatMap)
+// Example: src/functional/optional.mts (flatMap)
 import { Optional } from 'ts-data-forge';
 
 const parseNumber = (s: string): Optional<number> => {

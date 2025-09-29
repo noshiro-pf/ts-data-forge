@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (mapErr)
+// Example: src/functional/result.mts (mapErr)
 import { Result } from 'ts-data-forge';
 
 const result = Result.err('error');

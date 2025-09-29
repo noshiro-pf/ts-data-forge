@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (mapNaN2Undefined)
+// Example: src/number/num.mts (mapNaN2Undefined)
 import { Num } from 'ts-data-forge';
 
 Num.mapNaN2Undefined(42); // 42

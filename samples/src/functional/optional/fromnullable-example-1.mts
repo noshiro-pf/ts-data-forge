@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/optional.mts (fromNullable)
+// Example: src/functional/optional.mts (fromNullable)
 import { Optional } from 'ts-data-forge';
 
 const value: string | null = 'hello';

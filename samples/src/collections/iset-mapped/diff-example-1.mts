@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/iset-mapped.mts (diff)
+// Example: src/collections/iset-mapped.mts (diff)
 import { ISetMapped } from 'ts-data-forge';
 
 type Tag = { name: string };

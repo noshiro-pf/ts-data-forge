@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-zero-uint32.mts (asNonZeroUint32)
+// Example: src/number/branded-types/non-zero-uint32.mts (asNonZeroUint32)
 import { asNonZeroUint32 } from 'ts-data-forge';
 
 const x = asNonZeroUint32(1000); // NonZeroUint32

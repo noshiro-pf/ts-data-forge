@@ -1,4 +1,4 @@
-// Sample code extracted from src/expect-type.mts (expectType)
+// Example: src/expect-type.mts (expectType)
 
 // Union type relationships
 expectType<string, string | number>('<='); // string extends union

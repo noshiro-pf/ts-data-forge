@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/stack.mts (createStack)
+// Example: src/collections/stack.mts (createStack)
 import { range } from 'ts-data-forge';
 
 import { createStack } from './stack';
@@ -112,5 +112,19 @@ while (!historyStack.isEmpty) {
 // Going back to: page2.html
 // Going back to: page1.html
 
-export { a, b, callStack, edit1, edit2, historyStack, op, operandStack, operatorStack, processedCount, processingStack, redoStack, undoStack };
+export {
+  a,
+  b,
+  callStack,
+  edit1,
+  edit2,
+  historyStack,
+  op,
+  operandStack,
+  operatorStack,
+  processedCount,
+  processingStack,
+  redoStack,
+  undoStack,
+};
 export type { EditAction, FunctionCall };

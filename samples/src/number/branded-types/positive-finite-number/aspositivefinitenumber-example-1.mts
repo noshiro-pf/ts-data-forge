@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-finite-number.mts (asPositiveFiniteNumber)
+// Example: src/number/branded-types/positive-finite-number.mts (asPositiveFiniteNumber)
 import { asPositiveFiniteNumber } from 'ts-data-forge';
 
 const x = asPositiveFiniteNumber(5.5); // PositiveFiniteNumber

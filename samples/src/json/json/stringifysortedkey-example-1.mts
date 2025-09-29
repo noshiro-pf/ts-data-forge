@@ -1,4 +1,4 @@
-// Sample code extracted from src/json/json.mts (stringifySortedKey)
+// Example: src/json/json.mts (stringifySortedKey)
 import { Json, Result } from 'ts-data-forge';
 
 const unsortedObj = {

@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/optional.mts (map)
+// Example: src/functional/optional.mts (map)
 import { Optional } from 'ts-data-forge';
 
 const someNumber = Optional.some(5);

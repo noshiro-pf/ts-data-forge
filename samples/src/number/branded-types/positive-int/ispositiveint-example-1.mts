@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-int.mts (isPositiveInt)
+// Example: src/number/branded-types/positive-int.mts (isPositiveInt)
 import { isPositiveInt } from 'ts-data-forge';
 
 isPositiveInt(5); // true

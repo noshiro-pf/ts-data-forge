@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/int.mts (Int)
+// Example: src/number/branded-types/int.mts (Int)
 import { Int, asInt } from 'ts-data-forge';
 
 Int.abs(asInt(-5)); // Int (5)

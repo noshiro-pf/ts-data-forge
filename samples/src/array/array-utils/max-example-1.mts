@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (max)
+// Example: src/array/array-utils.mts (max)
 import { Arr } from 'ts-data-forge';
 
 Arr.max([3, 1, 4, 1, 5] as const); // Optional.some(5)

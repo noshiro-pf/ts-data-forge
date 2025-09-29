@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (from)
+// Example: src/number/num.mts (from)
 import { Num } from 'ts-data-forge';
 
 // Type conversion
@@ -19,4 +19,4 @@ const clamped = Num.clamp(150, 0, 100); // 100
 const clampFn = Num.clamp(0, 100);
 const result = clampFn(150); // 100
 
-export { clampFn, clamped, invalid, isValid, num, result, value };
+export { clamped, clampFn, invalid, isValid, num, result, value };

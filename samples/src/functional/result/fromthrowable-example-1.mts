@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (fromThrowable)
+// Example: src/functional/result.mts (fromThrowable)
 import { Result } from 'ts-data-forge';
 
 // Wrapping JSON.parse which can throw

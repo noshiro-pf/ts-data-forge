@@ -1,5 +1,5 @@
-// Sample code extracted from src/array/array-utils.mts (copy)
-import { Arr } from 'ts-data-forge';
+// Example: src/array/array-utils.mts (copy)
+import { Arr, expectType } from 'ts-data-forge';
 
 // Mutable arrays remain mutable
 const mutableOriginal = [1, 2, 3];
@@ -37,5 +37,3 @@ const emptyTupleCopy = Arr.copy(emptyTuple); // readonly []
 expectType<typeof mutableCopy, number[]>('=');
 expectType<typeof readonlyCopy, readonly [1, 2, 3]>('=');
 expectType<typeof tupleCopy, [string, number, boolean]>('=');
-
-export { emptyArray, emptyCopy, emptyTuple, emptyTupleCopy, mutableCopy, mutableOriginal, objectArray, objectCopy, readonlyCopy, readonlyOriginal, tupleCopy, tupleOriginal };

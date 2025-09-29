@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-primitive.mts (isPrimitive)
+// Example: src/guard/is-primitive.mts (isPrimitive)
 // Basic usage with different value types:
 
 import { isPrimitive } from 'ts-data-forge';

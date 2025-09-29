@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (isArrayOfLength)
+// Example: src/array/array-utils.mts (isArrayOfLength)
 import { Arr } from 'ts-data-forge';
 
 const arr: readonly number[] = [1, 2, 3];

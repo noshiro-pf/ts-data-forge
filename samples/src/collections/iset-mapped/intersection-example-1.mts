@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/iset-mapped.mts (intersection)
+// Example: src/collections/iset-mapped.mts (intersection)
 import { ISetMapped } from 'ts-data-forge';
 
 type Permission = { id: string };
@@ -22,5 +22,11 @@ const commonPermissions = ISetMapped.intersection(
 );
 console.log(commonPermissions.toArray().map((p) => p.id)); // Output: ["read", "write"]
 
-export { commonPermissions, keyToPerm, permToKey, rolePermissions, userPermissions };
+export {
+  commonPermissions,
+  keyToPerm,
+  permToKey,
+  rolePermissions,
+  userPermissions,
+};
 export type { Permission };

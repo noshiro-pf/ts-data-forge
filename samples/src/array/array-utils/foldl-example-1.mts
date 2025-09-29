@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (foldl)
+// Example: src/array/array-utils.mts (foldl)
 import { Arr } from 'ts-data-forge';
 
 Arr.foldl([1, 2, 3], (sum, n) => sum + n, 0); // 6

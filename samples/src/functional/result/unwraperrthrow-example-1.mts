@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (unwrapErrThrow)
+// Example: src/functional/result.mts (unwrapErrThrow)
 import { Result } from 'ts-data-forge';
 
 const failure = Result.err('Network timeout');

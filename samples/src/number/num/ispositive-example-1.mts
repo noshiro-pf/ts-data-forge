@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (isPositive)
+// Example: src/number/num.mts (isPositive)
 import { Num } from 'ts-data-forge';
 
 const count = 5;

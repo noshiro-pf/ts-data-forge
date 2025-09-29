@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/tuple.mts (tp)
+// Example: src/others/tuple.mts (tp)
 // Common patterns and use cases
 
 import { tp } from 'ts-data-forge';
@@ -22,4 +22,13 @@ const queryResult = tp(
 const features = tp('darkMode', 'analytics', 'notifications');
 const enabledFeatures = features.filter((f) => isEnabled(f));
 
-export { count, decrementAction, enabledFeatures, features, incrementAction, queryResult, setCount, useState };
+export {
+  count,
+  decrementAction,
+  enabledFeatures,
+  features,
+  incrementAction,
+  queryResult,
+  setCount,
+  useState,
+};

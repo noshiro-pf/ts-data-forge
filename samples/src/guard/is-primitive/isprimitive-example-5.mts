@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-primitive.mts (isPrimitive)
+// Example: src/guard/is-primitive.mts (isPrimitive)
 // Type narrowing in conditional logic:
 
 import { isPrimitive } from 'ts-data-forge';

@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (toReversed)
+// Example: src/array/array-utils.mts (toReversed)
 import { Arr } from 'ts-data-forge';
 
 // Basic reversal
@@ -16,4 +16,4 @@ const revEmpty = Arr.toReversed(empty); // readonly []
 const single = [42] as const;
 const revSingle = Arr.toReversed(single); // readonly [42]
 
-export { empty, mixed, nums, revEmpty, revMixed, revSingle, reversed, single };
+export { empty, mixed, nums, revEmpty, reversed, revMixed, revSingle, single };

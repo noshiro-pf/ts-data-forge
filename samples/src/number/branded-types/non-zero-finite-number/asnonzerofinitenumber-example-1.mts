@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-zero-finite-number.mts (asNonZeroFiniteNumber)
+// Example: src/number/branded-types/non-zero-finite-number.mts (asNonZeroFiniteNumber)
 import { asNonZeroFiniteNumber } from 'ts-data-forge';
 
 const x = asNonZeroFiniteNumber(5.5); // NonZeroFiniteNumber

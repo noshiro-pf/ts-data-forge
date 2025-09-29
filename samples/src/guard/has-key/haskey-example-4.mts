@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/has-key.mts (hasKey)
+// Example: src/guard/has-key.mts (hasKey)
 // Basic usage with isRecord for progressive narrowing:
 
 import { hasKey, isRecord } from 'ts-data-forge';

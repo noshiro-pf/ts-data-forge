@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/queue.mts (queue)
+// Example: src/collections/queue.mts (queue)
 const queue = createQueue<string>();
 
 // Add some elements

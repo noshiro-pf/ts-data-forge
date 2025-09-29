@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-negative-int32.mts (asNonNegativeInt32)
+// Example: src/number/branded-types/non-negative-int32.mts (asNonNegativeInt32)
 import { asNonNegativeInt32 } from 'ts-data-forge';
 
 const x = asNonNegativeInt32(1000); // NonNegativeInt32

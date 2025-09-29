@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/enum/int8.mts (int8)
+// Example: src/number/enum/int8.mts (int8)
 import { Int8, asInt8 } from 'ts-data-forge';
 
 // Random signed byte

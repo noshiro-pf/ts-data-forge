@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (isEmpty)
+// Example: src/array/array-utils.mts (isEmpty)
 import { Arr } from 'ts-data-forge';
 
 // Basic emptiness checking

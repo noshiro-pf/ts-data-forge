@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (some)
+// Example: src/array/array-utils.mts (some)
 import { Arr } from 'ts-data-forge';
 
 // Direct usage

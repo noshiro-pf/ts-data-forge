@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/if-then.mts (ifThen)
+// Example: src/others/if-then.mts (ifThen)
 // Access control - "if admin then has all permissions"
 
 import { ifThen } from 'ts-data-forge';

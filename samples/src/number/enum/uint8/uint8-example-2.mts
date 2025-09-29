@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/enum/uint8.mts (uint8)
+// Example: src/number/enum/uint8.mts (uint8)
 
 const byte = castType(200); // Uint8
 const zero = castType(0); // Uint8 (minimum)

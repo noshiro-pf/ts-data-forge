@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (flat)
+// Example: src/array/array-utils.mts (flat)
 import { Arr, SafeUint } from 'ts-data-forge';
 
 // Direct usage

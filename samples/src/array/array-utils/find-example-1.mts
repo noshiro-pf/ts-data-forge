@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (find)
+// Example: src/array/array-utils.mts (find)
 import { Arr, Optional } from 'ts-data-forge';
 
 const numbers = [1, 2, 3, 4, 5];

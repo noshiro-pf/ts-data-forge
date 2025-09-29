@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-primitive.mts (isPrimitive)
+// Example: src/guard/is-primitive.mts (isPrimitive)
 // Serialization helpers:
 
 import { isPrimitive } from 'ts-data-forge';

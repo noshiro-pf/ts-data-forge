@@ -1,4 +1,4 @@
-// Sample code extracted from src/expect-type.mts (expectType)
+// Example: src/expect-type.mts (expectType)
 import type { FiniteNumber, Int, PositiveInt } from 'ts-data-forge';
 
 // Ensure proper type hierarchy

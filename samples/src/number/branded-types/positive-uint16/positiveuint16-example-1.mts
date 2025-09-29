@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-uint16.mts (PositiveUint16)
+// Example: src/number/branded-types/positive-uint16.mts (PositiveUint16)
 import { PositiveUint16, asPositiveUint16 } from 'ts-data-forge';
 
 const a = asPositiveUint16(60000);
@@ -19,4 +19,16 @@ const maximum = PositiveUint16.max(a, b); // PositiveUint16 (60000)
 const random = PositiveUint16.random(); // PositiveUint16 (random value in [1, 65535])
 const power = PositiveUint16.pow(asPositiveUint16(2), asPositiveUint16(10)); // PositiveUint16 (1024)
 
-export { a, b, clamped, diff, maximum, minimum, power, product, random, reverseDiff, sum };
+export {
+  a,
+  b,
+  clamped,
+  diff,
+  maximum,
+  minimum,
+  power,
+  product,
+  random,
+  reverseDiff,
+  sum,
+};

@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/imap.mts (imap)
+// Example: src/collections/imap.mts (imap)
 import { IMap } from 'ts-data-forge';
 
 // This is a type alias describing an interface, so it's not directly instantiated.

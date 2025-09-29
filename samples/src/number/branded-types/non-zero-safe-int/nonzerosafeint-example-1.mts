@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-zero-safe-int.mts (NonZeroSafeInt)
+// Example: src/number/branded-types/non-zero-safe-int.mts (NonZeroSafeInt)
 import { NonZeroSafeInt, asNonZeroSafeInt } from 'ts-data-forge';
 
 const a = asNonZeroSafeInt(9007199254740000); // Near MAX_SAFE_INTEGER

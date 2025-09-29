@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (indexOf)
+// Example: src/array/array-utils.mts (indexOf)
 import { Arr, Optional, pipe } from 'ts-data-forge';
 
 // Regular usage

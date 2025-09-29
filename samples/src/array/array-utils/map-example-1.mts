@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (map)
+// Example: src/array/array-utils.mts (map)
 import { Arr } from 'ts-data-forge';
 
 // Basic transformation

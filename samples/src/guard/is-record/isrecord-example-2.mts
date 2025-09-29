@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-record.mts (isRecord)
+// Example: src/guard/is-record.mts (isRecord)
 // Type guard usage for safe property access:
 
 import { hasKey, isRecord, isString } from 'ts-data-forge';

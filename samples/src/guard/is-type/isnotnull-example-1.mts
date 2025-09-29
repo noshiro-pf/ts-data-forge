@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isNotNull)
+// Example: src/guard/is-type.mts (isNotNull)
 const items: (string | null)[] = ['a', null, 'b', null, 'c'];
 
 const nonNullItems = items.filter(isNotNull);

@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (toUpdated)
+// Example: src/array/array-utils.mts (toUpdated)
 import { Arr, pipe } from 'ts-data-forge';
 
 // Basic usage with same type transformation
@@ -134,5 +134,27 @@ expectType<
 >('=');
 expectType<typeof safe1, readonly number[]>('='); // Bounds check preserves type
 
-export { activatedUser, allDoubled, capitalizeAtIndex0, capitalized, discounted, doubleAtIndex2, doubled, markCompleteAtIndex, mixed, numberArrays, numbers, pipeline, processArray, products, safe1, safe2, safe3, safeUpdate, updateUserName, users, words };
+export {
+  activatedUser,
+  allDoubled,
+  capitalizeAtIndex0,
+  capitalized,
+  discounted,
+  doubleAtIndex2,
+  doubled,
+  markCompleteAtIndex,
+  mixed,
+  numberArrays,
+  numbers,
+  pipeline,
+  processArray,
+  products,
+  safe1,
+  safe2,
+  safe3,
+  safeUpdate,
+  updateUserName,
+  users,
+  words,
+};
 export type { AppState };

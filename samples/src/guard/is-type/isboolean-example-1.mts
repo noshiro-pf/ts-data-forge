@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isBoolean)
+// Example: src/guard/is-type.mts (isBoolean)
 import { isBoolean } from 'ts-data-forge';
 
 const userInput: unknown = parseInput();

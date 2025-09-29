@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/queue.mts (createQueue)
+// Example: src/collections/queue.mts (createQueue)
 import { range } from 'ts-data-forge';
 
 import { createQueue } from './queue';
@@ -82,5 +82,13 @@ addWork(async () => console.log('Work item 2'));
 // Process the work
 await processWork();
 
-export { addWork, eventQueue, priorityTasks, processWork, processedCount, requestQueue, workQueue };
+export {
+  addWork,
+  eventQueue,
+  priorityTasks,
+  processedCount,
+  processWork,
+  requestQueue,
+  workQueue,
+};
 export type { Event };

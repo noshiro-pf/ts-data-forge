@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (isInRangeInclusive)
+// Example: src/number/num.mts (isInRangeInclusive)
 import { Num } from 'ts-data-forge';
 
 const inRange = Num.isInRangeInclusive(1, 10);

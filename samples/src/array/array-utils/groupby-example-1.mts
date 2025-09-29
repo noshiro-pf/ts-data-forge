@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (groupBy)
+// Example: src/array/array-utils.mts (groupBy)
 import { Arr, IMap, Optional, pipe } from 'ts-data-forge';
 
 // Basic grouping by object property
@@ -129,4 +129,31 @@ expectType<
 >('=');
 expectType<typeof emptyGroup, IMap<never, readonly never[]>>('=');
 
-export { aStudents, allGrouped, averageAGrade, byBooleanKey, byGradeLevel, byNumberKey, byParity, byPriceRange, byStringKey, bySymbolKey, byType, datasets, emptyGroup, fruitCount, fruitNames, fruits, groupByFirstChar, groupByLength, groupByType, numbers, processedGroups, products, singleGroup, students, uniqueGroups, words };
+export {
+  allGrouped,
+  aStudents,
+  averageAGrade,
+  byBooleanKey,
+  byGradeLevel,
+  byNumberKey,
+  byParity,
+  byPriceRange,
+  byStringKey,
+  bySymbolKey,
+  byType,
+  datasets,
+  emptyGroup,
+  fruitCount,
+  fruitNames,
+  fruits,
+  groupByFirstChar,
+  groupByLength,
+  groupByType,
+  numbers,
+  processedGroups,
+  products,
+  singleGroup,
+  students,
+  uniqueGroups,
+  words,
+};

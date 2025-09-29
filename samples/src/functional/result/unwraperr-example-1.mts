@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (unwrapErr)
+// Example: src/functional/result.mts (unwrapErr)
 import { Result } from 'ts-data-forge';
 
 const failure = Result.err('Connection failed');

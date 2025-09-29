@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/map-nullable.mts (mapNullable)
+// Example: src/others/map-nullable.mts (mapNullable)
 // Curried usage for functional composition
 
 import { mapNullable } from 'ts-data-forge';

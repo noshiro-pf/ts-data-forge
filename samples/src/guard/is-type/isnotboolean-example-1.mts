@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isNotBoolean)
+// Example: src/guard/is-type.mts (isNotBoolean)
 import { isNotBoolean } from 'ts-data-forge';
 
 type MixedValue = string | number | boolean;

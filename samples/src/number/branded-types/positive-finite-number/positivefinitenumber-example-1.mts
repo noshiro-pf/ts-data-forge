@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-finite-number.mts (PositiveFiniteNumber)
+// Example: src/number/branded-types/positive-finite-number.mts (PositiveFiniteNumber)
 import { PositiveFiniteNumber, asPositiveFiniteNumber } from 'ts-data-forge';
 
 const probability = asPositiveFiniteNumber(0.75);
@@ -24,4 +24,19 @@ const rounded = PositiveFiniteNumber.round(rate); // Uint (1)
 const random = PositiveFiniteNumber.random(); // PositiveFiniteNumber (random positive value)
 const power = PositiveFiniteNumber.pow(rate, probability); // PositiveFiniteNumber (1.18...)
 
-export { ceiled, clamped, combined, difference, floored, maximum, minimum, power, probability, random, rate, ratio, rounded, scaled };
+export {
+  ceiled,
+  clamped,
+  combined,
+  difference,
+  floored,
+  maximum,
+  minimum,
+  power,
+  probability,
+  random,
+  rate,
+  ratio,
+  rounded,
+  scaled,
+};

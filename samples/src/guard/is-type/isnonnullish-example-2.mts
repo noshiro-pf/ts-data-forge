@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isNonNullish)
+// Example: src/guard/is-type.mts (isNonNullish)
 // Progressive validation with optional chaining alternative:
 
 import { isNonNullish } from 'ts-data-forge';

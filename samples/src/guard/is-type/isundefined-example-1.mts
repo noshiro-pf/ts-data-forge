@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isUndefined)
+// Example: src/guard/is-type.mts (isUndefined)
 import { isUndefined } from 'ts-data-forge';
 
 const value: string | undefined = getValue();

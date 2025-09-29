@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (zip)
+// Example: src/array/array-utils.mts (zip)
 import { Arr } from 'ts-data-forge';
 
 Arr.zip([1, 2, 3] as const, ['a', 'b', 'c'] as const); // [[1, 'a'], [2, 'b'], [3, 'c']]

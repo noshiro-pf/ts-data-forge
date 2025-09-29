@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-int.mts (positive-int)
+// Example: src/number/branded-types/positive-int.mts (positive-int)
 import { PositiveInt } from 'ts-data-forge';
 
 PositiveInt.clamp(5); // PositiveInt (5)

@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-non-null-object.mts (isNonNullObject)
+// Example: src/guard/is-non-null-object.mts (isNonNullObject)
 // Progressive type narrowing with other guards:
 
 import { hasKey, isNonNullObject, isRecord } from 'ts-data-forge';

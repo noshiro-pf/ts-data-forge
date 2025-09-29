@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (setIntersection)
+// Example: src/array/array-utils.mts (setIntersection)
 import { Arr } from 'ts-data-forge';
 
 Arr.setIntersection([1, 2, 3], [2, 3, 4]); // [2, 3]

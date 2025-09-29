@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (toUnshifted)
+// Example: src/array/array-utils.mts (toUnshifted)
 import { Arr, pipe } from 'ts-data-forge';
 
 // Regular usage

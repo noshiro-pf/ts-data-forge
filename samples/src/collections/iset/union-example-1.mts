@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/iset.mts (union)
+// Example: src/collections/iset.mts (union)
 import { ISet } from 'ts-data-forge';
 
 // Combining permissions from multiple sources
@@ -27,4 +27,17 @@ const featuresB = ISet.create(['feature2', 'feature3', 'feature4']);
 const allFeatures = ISet.union(featuresA, featuresB);
 console.log(allFeatures.size); // 4 (duplicates removed)
 
-export { allFeatures, allPermissions, empty, featuresA, featuresB, mixed, nonEmpty, numbers, rolePermissions, strings, userPermissions, withEmpty };
+export {
+  allFeatures,
+  allPermissions,
+  empty,
+  featuresA,
+  featuresB,
+  mixed,
+  nonEmpty,
+  numbers,
+  rolePermissions,
+  strings,
+  userPermissions,
+  withEmpty,
+};

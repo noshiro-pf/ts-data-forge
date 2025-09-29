@@ -1,5 +1,5 @@
-// Sample code extracted from src/array/array-utils.mts (at)
-import { Arr, Optional, pipe } from 'ts-data-forge';
+// Example: src/array/array-utils.mts (at)
+import { Arr, expectType, Optional, pipe } from 'ts-data-forge';
 
 // Direct usage with positive indices
 const fruits = ['apple', 'banana', 'cherry', 'date', 'elderberry'];
@@ -68,5 +68,3 @@ expectType<typeof getSecondElement, <T>(array: readonly T[]) => Optional<T>>(
   '=',
 );
 expectType<typeof negativeOutOfBounds, Optional<string>>('=');
-
-export { elementOrDefault, emptyResult, extractAndProcess, first, fruits, getLastElement, getMiddleElement, getSecondElement, last, lastElements, maybeElement, negativeOnEmpty, negativeOutOfBounds, nestedArrays, outOfBounds, processArray, secondElements, secondLast, singleElement, singleNegative, third };

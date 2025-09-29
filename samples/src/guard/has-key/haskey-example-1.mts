@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/has-key.mts (hasKey)
+// Example: src/guard/has-key.mts (hasKey)
 // Basic usage with known object structure:
 
 import { hasKey } from 'ts-data-forge';

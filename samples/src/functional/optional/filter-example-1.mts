@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/optional.mts (filter)
+// Example: src/functional/optional.mts (filter)
 import { Optional } from 'ts-data-forge';
 
 const someEven = Optional.some(4);

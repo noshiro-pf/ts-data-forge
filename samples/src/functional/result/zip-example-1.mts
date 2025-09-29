@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (zip)
+// Example: src/functional/result.mts (zip)
 import { Result } from 'ts-data-forge';
 
 const a = Result.ok(1);

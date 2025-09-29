@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-non-empty-string.mts (isNonEmptyString)
+// Example: src/guard/is-non-empty-string.mts (isNonEmptyString)
 // Type guard usage with nullable strings:
 
 import { isNonEmptyString } from 'ts-data-forge';

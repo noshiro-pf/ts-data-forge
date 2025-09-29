@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/memoize-function.mts (memoizeFunction)
+// Example: src/others/memoize-function.mts (memoizeFunction)
 // Object arguments with selective memoization
 
 import { memoizeFunction } from 'ts-data-forge';
@@ -32,5 +32,10 @@ const memoizedProcess = memoizeFunction(
   (user, orgId) => `${user.id}:${orgId}`, // Composite key with separator
 );
 
-export { fetchUserPermissions, memoizedFetchPermissions, memoizedProcess, processUserData };
+export {
+  fetchUserPermissions,
+  memoizedFetchPermissions,
+  memoizedProcess,
+  processUserData,
+};
 export type { User };

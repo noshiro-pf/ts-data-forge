@@ -1,4 +1,4 @@
-// Sample code extracted from src/expect-type.mts (expectType)
+// Example: src/expect-type.mts (expectType)
 // Testing function return types
 const createUser = () => ({ id: 1, name: 'John' });
 expectType<ReturnType<typeof createUser>, { id: number; name: string }>('~=');

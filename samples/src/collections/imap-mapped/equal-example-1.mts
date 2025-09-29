@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/imap-mapped.mts (equal)
+// Example: src/collections/imap-mapped.mts (equal)
 import { IMapMapped } from 'ts-data-forge';
 
 // Example with coordinate keys
@@ -84,5 +84,17 @@ const empty2 = IMapMapped.create<Point, string, string>(
 );
 console.log(IMapMapped.equal(empty1, empty2)); // true
 
-export { alternativePointToString, alternativeStringToPoint, empty1, empty2, map1, map2, map3, map4, map5, pointToString, stringToPoint };
+export {
+  alternativePointToString,
+  alternativeStringToPoint,
+  empty1,
+  empty2,
+  map1,
+  map2,
+  map3,
+  map4,
+  map5,
+  pointToString,
+  stringToPoint,
+};
 export type { Point };

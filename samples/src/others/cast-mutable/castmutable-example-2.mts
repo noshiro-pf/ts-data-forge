@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/cast-mutable.mts (castMutable)
+// Example: src/others/cast-mutable.mts (castMutable)
 // When to use - Working with third-party APIs
 
 import { castMutable } from 'ts-data-forge';

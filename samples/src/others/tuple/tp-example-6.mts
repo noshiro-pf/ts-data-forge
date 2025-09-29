@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/tuple.mts (tp)
+// Example: src/others/tuple.mts (tp)
 // Integration with other utilities
 
 import { Result, pipe, tp } from 'ts-data-forge';

@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-negative-finite-number.mts (NonNegativeFiniteNumber)
+// Example: src/number/branded-types/non-negative-finite-number.mts (NonNegativeFiniteNumber)
 import {
   NonNegativeFiniteNumber,
   asNonNegativeFiniteNumber,
@@ -23,4 +23,17 @@ const pixels = NonNegativeFiniteNumber.round(distance); // Uint (6)
 const floorValue = NonNegativeFiniteNumber.floor(distance); // Uint (5)
 const ceilValue = NonNegativeFiniteNumber.ceil(distance); // Uint (6)
 
-export { area, ceilValue, clamped, diff, distance, floorValue, maximum, minimum, pixels, ratio, speed, total };
+export {
+  area,
+  ceilValue,
+  clamped,
+  diff,
+  distance,
+  floorValue,
+  maximum,
+  minimum,
+  pixels,
+  ratio,
+  speed,
+  total,
+};

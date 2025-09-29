@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (findLast)
+// Example: src/array/array-utils.mts (findLast)
 import { Arr } from 'ts-data-forge';
 
 // Direct usage

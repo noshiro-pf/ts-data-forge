@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-int.mts (asPositiveInt)
+// Example: src/number/branded-types/positive-int.mts (asPositiveInt)
 import { asPositiveInt } from 'ts-data-forge';
 
 const count = asPositiveInt(5); // PositiveInt

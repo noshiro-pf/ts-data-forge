@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (increment)
+// Example: src/number/num.mts (increment)
 import { Num } from 'ts-data-forge';
 
 const zero = 0 as 0;

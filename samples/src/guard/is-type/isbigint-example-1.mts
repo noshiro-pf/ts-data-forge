@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isBigint)
+// Example: src/guard/is-type.mts (isBigint)
 import { isBigint } from 'ts-data-forge';
 
 const userInput: unknown = parseInput();

@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/cast-readonly.mts (castReadonly)
+// Example: src/others/cast-readonly.mts (castReadonly)
 // Protecting function return values
 
 import { castReadonly } from 'ts-data-forge';
@@ -16,4 +16,4 @@ const service = new UserService();
 const users = service.getUsers();
 // users.push(newUser); // ❌ TypeScript prevents this
 
-export { UserService, service, users };
+export { service, users, UserService };

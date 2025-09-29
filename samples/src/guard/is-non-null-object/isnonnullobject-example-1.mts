@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-non-null-object.mts (isNonNullObject)
+// Example: src/guard/is-non-null-object.mts (isNonNullObject)
 // Basic usage with different value types:
 
 import { isNonNullObject } from 'ts-data-forge';

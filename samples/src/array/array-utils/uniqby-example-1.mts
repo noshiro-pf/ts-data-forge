@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (uniqBy)
+// Example: src/array/array-utils.mts (uniqBy)
 import { Arr } from 'ts-data-forge';
 
 const users = [

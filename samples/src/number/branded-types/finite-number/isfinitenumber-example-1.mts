@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/finite-number.mts (isFiniteNumber)
+// Example: src/number/branded-types/finite-number.mts (isFiniteNumber)
 import { isFiniteNumber } from 'ts-data-forge';
 
 isFiniteNumber(42); // true

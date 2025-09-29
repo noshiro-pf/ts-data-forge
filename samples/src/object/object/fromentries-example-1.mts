@@ -1,4 +1,4 @@
-// Sample code extracted from src/object/object.mts (fromEntries)
+// Example: src/object/object.mts (fromEntries)
 import { Obj } from 'ts-data-forge';
 
 // Fixed entries with precise typing
@@ -69,4 +69,20 @@ function createUserFromEntries(
   throw new Error('Invalid user data');
 }
 
-export { computed, computedEntries, config, configEntries, coordEntries, createUserFromEntries, dynamicEntries, fixedEntries, keys, partialUser, point, settings, settingsMap, user, values };
+export {
+  computed,
+  computedEntries,
+  config,
+  configEntries,
+  coordEntries,
+  createUserFromEntries,
+  dynamicEntries,
+  fixedEntries,
+  keys,
+  partialUser,
+  point,
+  settings,
+  settingsMap,
+  user,
+  values,
+};

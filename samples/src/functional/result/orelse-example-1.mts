@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (orElse)
+// Example: src/functional/result.mts (orElse)
 import { Result } from 'ts-data-forge';
 
 const primary = Result.err('error');

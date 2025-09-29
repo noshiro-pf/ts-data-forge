@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-record.mts (isRecord)
+// Example: src/guard/is-record.mts (isRecord)
 // Progressive validation of nested structures:
 
 import { hasKey, isRecord, isString } from 'ts-data-forge';

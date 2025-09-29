@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isNotNumber)
+// Example: src/guard/is-type.mts (isNotNumber)
 type Value = string | number | boolean;
 const values: Value[] = ['hello', 42, true, 3.14, false];
 

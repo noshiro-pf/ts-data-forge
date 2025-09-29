@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/imap.mts (create)
+// Example: src/collections/imap.mts (create)
 import { IMap, range } from 'ts-data-forge';
 
 // From array of tuples
@@ -35,4 +35,13 @@ function* generateEntries(): Generator<[string, number]> {
 const generatedMap = IMap.create(generateEntries());
 console.log(generatedMap.size); // Output: 3
 
-export { config, copiedMap, emptyMap, generateEntries, generatedMap, jsMap, originalMap, userScores };
+export {
+  config,
+  copiedMap,
+  emptyMap,
+  generatedMap,
+  generateEntries,
+  jsMap,
+  originalMap,
+  userScores,
+};

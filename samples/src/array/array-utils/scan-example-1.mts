@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (scan)
+// Example: src/array/array-utils.mts (scan)
 import { Arr, pipe } from 'ts-data-forge';
 
 // Basic running sum example
@@ -152,5 +152,35 @@ expectType<
 >('=');
 expectType<typeof stateHistory, NonEmptyArray<State>>('=');
 
-export { allSums, analysisResult, balances, collectingFn, datasets, emptyArray, emptyResult, events, factorial, growing, indexed, items, letters, numbers, reduced, runningMax, runningProductFn, runningSales, runningSum, runningSumFn, sales, scanned, sentences, singleElement, stateHistory, stateTransition, temperatures, transactions, words };
+export {
+  allSums,
+  analysisResult,
+  balances,
+  collectingFn,
+  datasets,
+  emptyArray,
+  emptyResult,
+  events,
+  factorial,
+  growing,
+  indexed,
+  items,
+  letters,
+  numbers,
+  reduced,
+  runningMax,
+  runningProductFn,
+  runningSales,
+  runningSum,
+  runningSumFn,
+  sales,
+  scanned,
+  sentences,
+  singleElement,
+  stateHistory,
+  stateTransition,
+  temperatures,
+  transactions,
+  words,
+};
 export type { Event, State };

@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/optional.mts (expectToBe)
+// Example: src/functional/optional.mts (expectToBe)
 import { Optional } from 'ts-data-forge';
 
 const some = Optional.some(42);

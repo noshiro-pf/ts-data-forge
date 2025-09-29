@@ -1,4 +1,4 @@
-// Sample code extracted from src/object/object.mts (shallowEq)
+// Example: src/object/object.mts (shallowEq)
 import { Obj } from 'ts-data-forge';
 
 // Basic usage with default Object.is equality

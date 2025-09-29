@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/key-is-in.mts (keyIsIn)
+// Example: src/guard/key-is-in.mts (keyIsIn)
 // Basic usage with known object structure:
 
 import { keyIsIn } from 'ts-data-forge';

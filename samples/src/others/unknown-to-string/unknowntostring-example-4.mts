@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/unknown-to-string.mts (unknownToString)
+// Example: src/others/unknown-to-string.mts (unknownToString)
 // API response formatting
 
 import { unknownToString } from 'ts-data-forge';

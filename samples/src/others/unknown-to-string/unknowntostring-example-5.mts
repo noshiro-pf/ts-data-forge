@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/unknown-to-string.mts (unknownToString)
+// Example: src/others/unknown-to-string.mts (unknownToString)
 // Working with special objects
 
 import { unknownToString } from 'ts-data-forge';

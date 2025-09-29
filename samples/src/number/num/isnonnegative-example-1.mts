@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (isNonNegative)
+// Example: src/number/num.mts (isNonNegative)
 import { Num } from 'ts-data-forge';
 
 const value = 10;

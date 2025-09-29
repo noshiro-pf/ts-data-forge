@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/stack.mts (stack)
+// Example: src/collections/stack.mts (stack)
 const stack = createStack<string>();
 
 // Add some elements
@@ -32,4 +32,13 @@ pathStack.push('/documents');
 const currentDir = pathStack.pop().unwrap(); // "/documents"
 const parentDir = pathStack.pop().unwrap(); // "/users"
 
-export { currentDir, emptyStack, middle, parentDir, pathStack, result, stack, top };
+export {
+  currentDir,
+  emptyStack,
+  middle,
+  parentDir,
+  pathStack,
+  result,
+  stack,
+  top,
+};

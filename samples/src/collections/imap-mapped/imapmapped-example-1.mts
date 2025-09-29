@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/imap-mapped.mts (IMapMapped)
+// Example: src/collections/imap-mapped.mts (IMapMapped)
 import { IMapMapped } from 'ts-data-forge';
 
 // Example: Product catalog with composite keys
@@ -68,5 +68,12 @@ const discountedCatalog = catalog.map((product, key) => ({
   price: Math.round(product.price * 0.9), // 10% discount
 }));
 
-export { catalog, discountedCatalog, hondaAccord2022, productKeyToString, stringToProductKey, toyotaCamry2023 };
+export {
+  catalog,
+  discountedCatalog,
+  hondaAccord2022,
+  productKeyToString,
+  stringToProductKey,
+  toyotaCamry2023,
+};
 export type { Product, ProductKey };

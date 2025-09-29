@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (isArray)
+// Example: src/array/array-utils.mts (isArray)
 import { Arr } from 'ts-data-forge';
 
 function processValue(value: string | number[] | null) {

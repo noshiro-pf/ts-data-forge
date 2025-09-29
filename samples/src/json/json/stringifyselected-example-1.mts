@@ -1,4 +1,4 @@
-// Sample code extracted from src/json/json.mts (stringifySelected)
+// Example: src/json/json.mts (stringifySelected)
 import { Json, Result } from 'ts-data-forge';
 
 const user = {

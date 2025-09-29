@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (head)
+// Example: src/array/array-utils.mts (head)
 import { Arr, Optional } from 'ts-data-forge';
 
 // Empty array - precise None type
@@ -50,4 +50,18 @@ expectType<typeof tupleResult, Optional.Some<'first'>>('=');
 expectType<typeof guaranteedResult, Optional.Some<number>>('=');
 expectType<typeof maybeResult, Optional<number>>('=');
 
-export { emptyResult, firstElements, firstObject, firstString, generalArray, getFirstElements, guaranteedResult, maybeResult, nestedArrays, nonEmpty, objects, strings, tupleResult };
+export {
+  emptyResult,
+  firstElements,
+  firstObject,
+  firstString,
+  generalArray,
+  getFirstElements,
+  guaranteedResult,
+  maybeResult,
+  nestedArrays,
+  nonEmpty,
+  objects,
+  strings,
+  tupleResult,
+};

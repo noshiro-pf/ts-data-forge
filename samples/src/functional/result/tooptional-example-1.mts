@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (toOptional)
+// Example: src/functional/result.mts (toOptional)
 import { Optional, Result } from 'ts-data-forge';
 
 // Basic conversion

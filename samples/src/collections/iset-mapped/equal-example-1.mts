@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/iset-mapped.mts (equal)
+// Example: src/collections/iset-mapped.mts (equal)
 import { ISetMapped } from 'ts-data-forge';
 
 // Example with coordinate-based elements
@@ -91,5 +91,20 @@ const set4 = ISetMapped.create<Point, string>(
 // This would be false because the underlying mapped keys are different
 console.log(ISetMapped.equal(set1, set4)); // false
 
-export { alternativeKeyToPoint, alternativePointToKey, empty1, empty2, keyToPoint, keyToUser, pointToKey, set1, set2, set3, set4, userToKey, users1, users2 };
+export {
+  alternativeKeyToPoint,
+  alternativePointToKey,
+  empty1,
+  empty2,
+  keyToPoint,
+  keyToUser,
+  pointToKey,
+  set1,
+  set2,
+  set3,
+  set4,
+  users1,
+  users2,
+  userToKey,
+};
 export type { Point, User };

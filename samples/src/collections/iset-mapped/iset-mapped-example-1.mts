@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/iset-mapped.mts (iset-mapped)
+// Example: src/collections/iset-mapped.mts (iset-mapped)
 import { ISetMapped } from 'ts-data-forge';
 
 // Example with complex object elements
@@ -28,5 +28,13 @@ const hasUser = activeUsers.has(user); // O(1)
 const withNewUser = activeUsers.add(user); // O(1) - returns new ISetMapped
 const withoutUser = activeUsers.delete(user); // O(1) - returns new ISetMapped
 
-export { activeUsers, hasUser, keyToUser, user, userToKey, withNewUser, withoutUser };
+export {
+  activeUsers,
+  hasUser,
+  keyToUser,
+  user,
+  userToKey,
+  withNewUser,
+  withoutUser,
+};
 export type { User };

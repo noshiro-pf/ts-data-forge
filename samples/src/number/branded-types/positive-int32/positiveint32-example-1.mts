@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-int32.mts (PositiveInt32)
+// Example: src/number/branded-types/positive-int32.mts (PositiveInt32)
 import { PositiveInt32, asPositiveInt32 } from 'ts-data-forge';
 
 const a = asPositiveInt32(2000000000);
@@ -19,4 +19,16 @@ const maximum = PositiveInt32.max(a, b); // PositiveInt32 (2000000000)
 const random = PositiveInt32.random(); // PositiveInt32 (random value in [1, 2147483647])
 const power = PositiveInt32.pow(asPositiveInt32(2), asPositiveInt32(20)); // PositiveInt32 (1048576)
 
-export { a, b, clamped, diff, maximum, minimum, power, product, random, reverseDiff, sum };
+export {
+  a,
+  b,
+  clamped,
+  diff,
+  maximum,
+  minimum,
+  power,
+  product,
+  random,
+  reverseDiff,
+  sum,
+};

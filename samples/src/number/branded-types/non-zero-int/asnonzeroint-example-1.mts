@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-zero-int.mts (asNonZeroInt)
+// Example: src/number/branded-types/non-zero-int.mts (asNonZeroInt)
 import { asNonZeroInt } from 'ts-data-forge';
 
 const x = asNonZeroInt(5); // NonZeroInt

@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/int.mts (isInt)
+// Example: src/number/branded-types/int.mts (isInt)
 import { isInt } from 'ts-data-forge';
 
 isInt(5); // true

@@ -1,4 +1,4 @@
-// Sample code extracted from src/promise/promise.mts (createPromise)
+// Example: src/promise/promise.mts (createPromise)
 
 import { createPromise, Result } from 'ts-data-forge';
 
@@ -17,5 +17,3 @@ if (Result.isOk(result)) {
 } else {
   console.log(result.value); // Error: Failed
 }
-
-export { result };

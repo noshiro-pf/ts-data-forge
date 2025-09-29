@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/iset.mts (diff)
+// Example: src/collections/iset.mts (diff)
 import { ISet } from 'ts-data-forge';
 
 // User permission changes
@@ -29,4 +29,14 @@ const tagDiff = ISet.diff(oldTags, newTags);
 console.log(tagDiff.deleted.toArray()); // ["javascript", "react"]
 console.log(tagDiff.added.toArray()); // ["typescript", "vue"]
 
-export { newPermissions, newTags, noDiff, oldPermissions, oldTags, permissionDiff, tagDiff, unchanged1, unchanged2 };
+export {
+  newPermissions,
+  newTags,
+  noDiff,
+  oldPermissions,
+  oldTags,
+  permissionDiff,
+  tagDiff,
+  unchanged1,
+  unchanged2,
+};

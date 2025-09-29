@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/cast-readonly.mts (castDeepReadonly)
+// Example: src/others/cast-readonly.mts (castDeepReadonly)
 // Creating immutable API responses
 
 import { castDeepReadonly } from 'ts-data-forge';

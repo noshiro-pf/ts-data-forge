@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isNotSymbol)
+// Example: src/guard/is-type.mts (isNotSymbol)
 import { isNotSymbol } from 'ts-data-forge';
 
 type PropertyKey = string | number | symbol;

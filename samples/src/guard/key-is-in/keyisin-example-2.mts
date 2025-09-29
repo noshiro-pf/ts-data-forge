@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/key-is-in.mts (keyIsIn)
+// Example: src/guard/key-is-in.mts (keyIsIn)
 // Dynamic key validation for safe property access:
 
 import { keyIsIn } from 'ts-data-forge';

@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/stack.mts (stack)
+// Example: src/collections/stack.mts (stack)
 import { range } from 'ts-data-forge';
 
 const actionStack = createStack<string>();

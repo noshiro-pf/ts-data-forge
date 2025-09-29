@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (div)
+// Example: src/number/num.mts (div)
 import { Num } from 'ts-data-forge';
 
 const result = Num.div(10, 2); // 5

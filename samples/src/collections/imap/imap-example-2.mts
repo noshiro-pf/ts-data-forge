@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/imap.mts (IMap)
+// Example: src/collections/imap.mts (IMap)
 import { IMap } from 'ts-data-forge';
 
 // Create an immutable map with initial data

@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (generateAsync)
+// Example: src/array/array-utils.mts (generateAsync)
 import { strict as assert } from 'node:assert/strict';
 
 import { Arr } from 'ts-data-forge';

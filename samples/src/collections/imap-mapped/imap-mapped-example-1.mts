@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/imap-mapped.mts (imap-mapped)
+// Example: src/collections/imap-mapped.mts (imap-mapped)
 import { IMapMapped } from 'ts-data-forge';
 
 // Example with complex object keys

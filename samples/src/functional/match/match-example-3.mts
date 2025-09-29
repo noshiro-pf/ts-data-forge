@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/match.mts (match)
+// Example: src/functional/match.mts (match)
 // Working with general string types:
 
 import { match } from 'ts-data-forge';

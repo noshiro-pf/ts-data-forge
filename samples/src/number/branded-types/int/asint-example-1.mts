@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/int.mts (asInt)
+// Example: src/number/branded-types/int.mts (asInt)
 import { asInt } from 'ts-data-forge';
 
 const x = asInt(5); // Int

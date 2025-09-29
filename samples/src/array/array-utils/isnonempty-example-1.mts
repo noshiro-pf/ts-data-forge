@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (isNonEmpty)
+// Example: src/array/array-utils.mts (isNonEmpty)
 import { Arr } from 'ts-data-forge';
 
 // Basic non-emptiness checking
@@ -78,4 +78,18 @@ if (Arr.isNonEmpty(testArray)) {
   expectType<typeof testArray, NonEmptyArray<number>>('=');
 }
 
-export { arrayGroups, calculateAverage, definitelyNonEmpty, emptyArray, firstElements, getFirstElement, isNonEmptyResult, nonEmptyArray, nonEmptyGroups, possiblyEmptyArrays, processArraySafely, processData, testArray };
+export {
+  arrayGroups,
+  calculateAverage,
+  definitelyNonEmpty,
+  emptyArray,
+  firstElements,
+  getFirstElement,
+  isNonEmptyResult,
+  nonEmptyArray,
+  nonEmptyGroups,
+  possiblyEmptyArrays,
+  processArraySafely,
+  processData,
+  testArray,
+};

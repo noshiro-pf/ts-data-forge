@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-record.mts (isRecord)
+// Example: src/guard/is-record.mts (isRecord)
 // Object transformation and mapping:
 
 function transformRecords(data: unknown[]): Record<string, unknown>[] {

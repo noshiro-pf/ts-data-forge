@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-int.mts (PositiveInt)
+// Example: src/number/branded-types/positive-int.mts (PositiveInt)
 import { PositiveInt, asPositiveInt } from 'ts-data-forge';
 
 // Type validation
@@ -28,4 +28,17 @@ const maximum = PositiveInt.max(a, b); // PositiveInt (10)
 const dice = PositiveInt.random(asPositiveInt(1), asPositiveInt(6)); // 1-6
 const id = PositiveInt.random(asPositiveInt(1000), asPositiveInt(9999)); // 4-digit ID
 
-export { a, b, dice, diff1, diff2, id, maximum, minimum, product, quotient, small, sum };
+export {
+  a,
+  b,
+  dice,
+  diff1,
+  diff2,
+  id,
+  maximum,
+  minimum,
+  product,
+  quotient,
+  small,
+  sum,
+};

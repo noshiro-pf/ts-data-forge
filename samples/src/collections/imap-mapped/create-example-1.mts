@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/imap-mapped.mts (create)
+// Example: src/collections/imap-mapped.mts (create)
 import { IMapMapped } from 'ts-data-forge';
 
 // Example 1: Geographic coordinates as keys
@@ -86,5 +86,18 @@ const entityMap = IMapMapped.create<EntityKey, Entity, string>(
   stringToEntityKey,
 );
 
-export { coordToString, entityKeyToString, entityMap, existingEntries, keyToOrderId, locationMap, nyCoord, orderIdToKey, orderMap, simpleMap, stringToCoord, stringToEntityKey };
+export {
+  coordToString,
+  entityKeyToString,
+  entityMap,
+  existingEntries,
+  keyToOrderId,
+  locationMap,
+  nyCoord,
+  orderIdToKey,
+  orderMap,
+  simpleMap,
+  stringToCoord,
+  stringToEntityKey,
+};
 export type { Coordinate, EntityKey, LocationInfo, OrderId };

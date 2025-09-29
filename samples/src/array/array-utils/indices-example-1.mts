@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (indices)
+// Example: src/array/array-utils.mts (indices)
 import { Arr } from 'ts-data-forge';
 
 // Direct usage

@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/safe-uint.mts (SafeUint)
+// Example: src/number/branded-types/safe-uint.mts (SafeUint)
 import { SafeUint, asSafeUint } from 'ts-data-forge';
 
 const a = asSafeUint(9007199254740000); // Near MAX_SAFE_INTEGER

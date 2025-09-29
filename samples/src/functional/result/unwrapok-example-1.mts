@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (unwrapOk)
+// Example: src/functional/result.mts (unwrapOk)
 import { Result } from 'ts-data-forge';
 
 // With guaranteed Ok - returns the value

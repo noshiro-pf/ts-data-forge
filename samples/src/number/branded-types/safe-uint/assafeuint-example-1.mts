@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/safe-uint.mts (asSafeUint)
+// Example: src/number/branded-types/safe-uint.mts (asSafeUint)
 import { asSafeUint } from 'ts-data-forge';
 
 const x = asSafeUint(5); // SafeUint

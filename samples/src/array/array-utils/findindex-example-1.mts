@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (findIndex)
+// Example: src/array/array-utils.mts (findIndex)
 import { Arr, Optional, pipe } from 'ts-data-forge';
 
 // Basic index finding
@@ -85,4 +85,26 @@ expectType<
   (array: readonly number[]) => Optional<SizeType.Arr>
 >('=');
 
-export { bananaIndex, data, datasets, emptyResult, findLongStringIndex, findNegativeIndex, firstActiveIndex, firstLargeIndex, foundElement, foundIndex, fruits, inactiveAdminIndex, indexOrDefault, longStringIndex, maybeIndex, nativeResult, negativeIndices, numbers, result, safeResult, users };
+export {
+  bananaIndex,
+  data,
+  datasets,
+  emptyResult,
+  findLongStringIndex,
+  findNegativeIndex,
+  firstActiveIndex,
+  firstLargeIndex,
+  foundElement,
+  foundIndex,
+  fruits,
+  inactiveAdminIndex,
+  indexOrDefault,
+  longStringIndex,
+  maybeIndex,
+  nativeResult,
+  negativeIndices,
+  numbers,
+  result,
+  safeResult,
+  users,
+};

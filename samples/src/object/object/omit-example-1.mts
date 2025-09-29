@@ -1,4 +1,4 @@
-// Sample code extracted from src/object/object.mts (omit)
+// Example: src/object/object.mts (omit)
 import { Obj, pipe } from 'ts-data-forge';
 
 // Direct usage
@@ -55,4 +55,17 @@ const partialUser = { id: 1, name: 'Alice', password: 'secret' } as const;
 const omitCredentials = Obj.omit(['password', 'apiKey']); // apiKey might not exist
 const cleaned = omitCredentials(partialUser); // { id: 1, name: "Alice" }
 
-export { cleaned, dbUser, omitCredentials, original, partialUser, publicProfile, removeSensitive, safeUser, safeUsers, storableData, user, users };
+export {
+  cleaned,
+  dbUser,
+  omitCredentials,
+  original,
+  partialUser,
+  publicProfile,
+  removeSensitive,
+  safeUser,
+  safeUsers,
+  storableData,
+  user,
+  users,
+};

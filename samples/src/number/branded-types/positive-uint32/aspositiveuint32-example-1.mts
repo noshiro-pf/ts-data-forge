@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-uint32.mts (asPositiveUint32)
+// Example: src/number/branded-types/positive-uint32.mts (asPositiveUint32)
 import { asPositiveUint32 } from 'ts-data-forge';
 
 const x = asPositiveUint32(1000); // PositiveUint32

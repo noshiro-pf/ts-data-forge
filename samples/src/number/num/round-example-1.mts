@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (round)
+// Example: src/number/num.mts (round)
 import { Num } from 'ts-data-forge';
 
 const roundTo2 = Num.round(2);

@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (foldr)
+// Example: src/array/array-utils.mts (foldr)
 import { Arr, pipe } from 'ts-data-forge';
 
 // Regular usage

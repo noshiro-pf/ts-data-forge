@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/cast-readonly.mts (castReadonly)
+// Example: src/others/cast-readonly.mts (castReadonly)
 // Working with array methods
 
 import { castReadonly } from 'ts-data-forge';

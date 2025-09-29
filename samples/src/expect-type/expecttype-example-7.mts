@@ -1,4 +1,4 @@
-// Sample code extracted from src/expect-type.mts (expectType)
+// Example: src/expect-type.mts (expectType)
 import { hasKey, isRecord } from 'ts-data-forge';
 
 // Testing type guard functions

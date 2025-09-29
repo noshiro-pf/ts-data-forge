@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (filterNot)
+// Example: src/array/array-utils.mts (filterNot)
 import { Arr, pipe } from 'ts-data-forge';
 
 // Regular usage

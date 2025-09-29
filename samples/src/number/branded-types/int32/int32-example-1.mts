@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/int32.mts (Int32)
+// Example: src/number/branded-types/int32.mts (Int32)
 import { Int32, asInt32 } from 'ts-data-forge';
 
 const a = asInt32(2000000000);
@@ -18,4 +18,15 @@ const maximum = Int32.max(a, b); // Int32 (2000000000)
 const absolute = Int32.abs(asInt32(-1000)); // Int32 (1000)
 const random = Int32.random(); // Int32 (random value in valid range)
 
-export { a, absolute, b, clamped, diff, maximum, minimum, product, random, sum };
+export {
+  a,
+  absolute,
+  b,
+  clamped,
+  diff,
+  maximum,
+  minimum,
+  product,
+  random,
+  sum,
+};

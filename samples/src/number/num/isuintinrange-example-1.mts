@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (isUintInRange)
+// Example: src/number/num.mts (isUintInRange)
 import { Num } from 'ts-data-forge';
 
 // Custom range validation

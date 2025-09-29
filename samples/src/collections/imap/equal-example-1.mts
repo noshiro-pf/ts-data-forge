@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/imap.mts (equal)
+// Example: src/collections/imap.mts (equal)
 import { IMap } from 'ts-data-forge';
 
 // Basic equality comparison
@@ -42,4 +42,14 @@ const users1 = IMap.create<string, User>([['1', { name: 'Alice' }]]);
 const users2 = IMap.create<string, User>([['1', { name: 'Alice' }]]);
 console.log(IMap.equal(users1, users2)); // false (different object references)
 
-export { empty1, empty2, preferences1, preferences2, preferences3, preferences4, preferences5, users1, users2 };
+export {
+  empty1,
+  empty2,
+  preferences1,
+  preferences2,
+  preferences3,
+  preferences4,
+  preferences5,
+  users1,
+  users2,
+};

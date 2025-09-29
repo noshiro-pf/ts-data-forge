@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-zero-uint16.mts (NonZeroUint16)
+// Example: src/number/branded-types/non-zero-uint16.mts (NonZeroUint16)
 import { NonZeroUint16, asNonZeroUint16 } from 'ts-data-forge';
 
 const a = asNonZeroUint16(60000);
@@ -19,4 +19,16 @@ const maximum = NonZeroUint16.max(a, b); // NonZeroUint16 (60000)
 const random = NonZeroUint16.random(); // NonZeroUint16 (random value in [1, 65535])
 const power = NonZeroUint16.pow(asNonZeroUint16(2), asNonZeroUint16(10)); // NonZeroUint16 (1024)
 
-export { a, b, clamped, diff, maximum, minimum, power, product, random, reverseDiff, sum };
+export {
+  a,
+  b,
+  clamped,
+  diff,
+  maximum,
+  minimum,
+  power,
+  product,
+  random,
+  reverseDiff,
+  sum,
+};

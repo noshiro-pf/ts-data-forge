@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/iset-mapped.mts (union)
+// Example: src/collections/iset-mapped.mts (union)
 import { ISetMapped } from 'ts-data-forge';
 
 type FeatureFlag = { flagName: string };

@@ -1,4 +1,4 @@
-// Sample code extracted from src/iterator/range.mts (range)
+// Example: src/iterator/range.mts (range)
 import { range } from 'ts-data-forge';
 
 // Basic ascending range

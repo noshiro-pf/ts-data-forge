@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isNonNullish)
+// Example: src/guard/is-type.mts (isNonNullish)
 const items: (string | null | undefined)[] = [
   'hello',
   null,

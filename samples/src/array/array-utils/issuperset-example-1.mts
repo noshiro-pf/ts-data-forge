@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (isSuperset)
+// Example: src/array/array-utils.mts (isSuperset)
 import { Arr } from 'ts-data-forge';
 
 Arr.isSuperset([1, 2, 3], [1, 2]); // true

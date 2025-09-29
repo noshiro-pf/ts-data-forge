@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/finite-number.mts (asFiniteNumber)
+// Example: src/number/branded-types/finite-number.mts (asFiniteNumber)
 import { asFiniteNumber } from 'ts-data-forge';
 
 const x = asFiniteNumber(5.5); // FiniteNumber

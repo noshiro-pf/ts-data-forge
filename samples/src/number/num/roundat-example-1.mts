@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (roundAt)
+// Example: src/number/num.mts (roundAt)
 import { Num } from 'ts-data-forge';
 
 Num.roundAt(3.14159, 2); // 3.14

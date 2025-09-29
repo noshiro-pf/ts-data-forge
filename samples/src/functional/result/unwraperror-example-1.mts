@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (unwrapErrOr)
+// Example: src/functional/result.mts (unwrapErrOr)
 import { Result } from 'ts-data-forge';
 
 const result = Result.err('failed');

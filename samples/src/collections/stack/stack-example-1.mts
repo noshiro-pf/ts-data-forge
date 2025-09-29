@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/stack.mts (Stack)
+// Example: src/collections/stack.mts (Stack)
 import type { Stack } from 'ts-data-forge';
 
 import { createStack } from './stack';

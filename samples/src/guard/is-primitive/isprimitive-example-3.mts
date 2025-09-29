@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-primitive.mts (isPrimitive)
+// Example: src/guard/is-primitive.mts (isPrimitive)
 // Deep cloning detection - primitives don't need cloning:
 
 import { isPrimitive, isRecord } from 'ts-data-forge';

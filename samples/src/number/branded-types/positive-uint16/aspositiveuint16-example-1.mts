@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-uint16.mts (asPositiveUint16)
+// Example: src/number/branded-types/positive-uint16.mts (asPositiveUint16)
 import { asPositiveUint16 } from 'ts-data-forge';
 
 const x = asPositiveUint16(1000); // PositiveUint16

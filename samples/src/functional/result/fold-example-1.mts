@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (fold)
+// Example: src/functional/result.mts (fold)
 import { Result } from 'ts-data-forge';
 
 const result = Result.ok(42);

@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-zero-int.mts (NonZeroInt)
+// Example: src/number/branded-types/non-zero-int.mts (NonZeroInt)
 import { NonZeroInt, asNonZeroInt } from 'ts-data-forge';
 
 const a = asNonZeroInt(10);
@@ -19,4 +19,16 @@ const maximum = NonZeroInt(a, b); // NonZeroInt (10)
 // Random generation
 const randomInt = NonZeroInt.random(); // NonZeroInt (random non-zero integer)
 
-export { a, absolute, b, diff, maximum, minimum, power, product, quotient, randomInt, sum };
+export {
+  a,
+  absolute,
+  b,
+  diff,
+  maximum,
+  minimum,
+  power,
+  product,
+  quotient,
+  randomInt,
+  sum,
+};

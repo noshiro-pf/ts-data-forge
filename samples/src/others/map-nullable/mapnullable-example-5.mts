@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/map-nullable.mts (mapNullable)
+// Example: src/others/map-nullable.mts (mapNullable)
 // Integration with array methods
 
 import { mapNullable } from 'ts-data-forge';

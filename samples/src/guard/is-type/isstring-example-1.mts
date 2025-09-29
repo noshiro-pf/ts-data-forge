@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isString)
+// Example: src/guard/is-type.mts (isString)
 import { isString } from 'ts-data-forge';
 
 const userInput: unknown = parseInput();

@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (clamp)
+// Example: src/number/num.mts (clamp)
 import { Num } from 'ts-data-forge';
 
 // Direct usage

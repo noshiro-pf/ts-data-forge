@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/queue.mts (Queue)
+// Example: src/collections/queue.mts (Queue)
 import type { Queue } from 'ts-data-forge';
 
 import { createQueue } from './queue';

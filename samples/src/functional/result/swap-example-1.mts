@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (swap)
+// Example: src/functional/result.mts (swap)
 import { Result } from 'ts-data-forge';
 
 const okResult = Result.ok(42);

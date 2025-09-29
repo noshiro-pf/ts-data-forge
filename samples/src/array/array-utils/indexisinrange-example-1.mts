@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (indexIsInRange)
+// Example: src/array/array-utils.mts (indexIsInRange)
 import { Arr } from 'ts-data-forge';
 
 Arr.indexIsInRange([10, 20], 0); // true

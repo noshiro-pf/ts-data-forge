@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/uint32.mts (asUint32)
+// Example: src/number/branded-types/uint32.mts (asUint32)
 import { asUint32 } from 'ts-data-forge';
 
 const x = asUint32(1000000); // Uint32

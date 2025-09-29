@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (eq)
+// Example: src/array/array-utils.mts (eq)
 import { Arr } from 'ts-data-forge';
 
 Arr.eq([1, 2, 3], [1, 2, 3]); // true

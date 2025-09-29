@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (expectToBe)
+// Example: src/functional/result.mts (expectToBe)
 import { Result } from 'ts-data-forge';
 
 const result = Result.ok(42);

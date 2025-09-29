@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/enum/int8.mts (Int8)
+// Example: src/number/enum/int8.mts (Int8)
 import { Int8, asInt8 } from 'ts-data-forge';
 
 // Basic usage
@@ -25,4 +25,19 @@ const maximum = Int8.max(a, b); // Int8 (100)
 const die = Int8.random(asInt8(1), asInt8(6)); // Random 1-6
 const offset = Int8.random(asInt8(-10), asInt8(10)); // Random ±10
 
-export { a, absolute, b, clamped, die, diff, maximum, minimum, offset, overflow, product, quotient, sum, underflow };
+export {
+  a,
+  absolute,
+  b,
+  clamped,
+  die,
+  diff,
+  maximum,
+  minimum,
+  offset,
+  overflow,
+  product,
+  quotient,
+  sum,
+  underflow,
+};

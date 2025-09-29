@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/map-nullable.mts (mapNullable)
+// Example: src/others/map-nullable.mts (mapNullable)
 // Error handling patterns
 
 import { mapNullable } from 'ts-data-forge';

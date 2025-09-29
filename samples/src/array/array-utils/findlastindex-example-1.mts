@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (findLastIndex)
+// Example: src/array/array-utils.mts (findLastIndex)
 import { Arr, pipe } from 'ts-data-forge';
 
 // Basic last index finding
@@ -74,4 +74,25 @@ const lastTwentyIndex = Arr.findLastIndex(tuple, (x) => x === 20);
 // Type: ArrayIndex<readonly [10, 20, 30, 20]> | -1
 // Value: 3
 
-export { data, datasets, emptyResult, findLastLongStringIndex, findLastNegativeIndex, firstTwo, fruits, lastActiveIndex, lastBananaIndex, lastInactiveIndex, lastLargeIndex, lastLongIndex, lastNegativeIndices, lastTwentyIndex, lastTwo, numbers, result, tuple, users, values };
+export {
+  data,
+  datasets,
+  emptyResult,
+  findLastLongStringIndex,
+  findLastNegativeIndex,
+  firstTwo,
+  fruits,
+  lastActiveIndex,
+  lastBananaIndex,
+  lastInactiveIndex,
+  lastLargeIndex,
+  lastLongIndex,
+  lastNegativeIndices,
+  lastTwentyIndex,
+  lastTwo,
+  numbers,
+  result,
+  tuple,
+  users,
+  values,
+};

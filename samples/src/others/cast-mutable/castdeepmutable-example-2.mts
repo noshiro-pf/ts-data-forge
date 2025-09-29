@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/cast-mutable.mts (castDeepMutable)
+// Example: src/others/cast-mutable.mts (castDeepMutable)
 // Practical use case - Working with immutable state updates
 
 import { castDeepMutable, castDeepReadonly } from 'ts-data-forge';

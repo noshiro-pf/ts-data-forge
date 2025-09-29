@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-zero-int16.mts (NonZeroInt16)
+// Example: src/number/branded-types/non-zero-int16.mts (NonZeroInt16)
 import { NonZeroInt16, asNonZeroInt16 } from 'ts-data-forge';
 
 const a = asNonZeroInt16(30000);
@@ -19,4 +19,16 @@ const clamped = NonZeroInt16.clamp(0); // NonZeroInt16 (1 or -1, avoiding zero)
 const random = NonZeroInt16.random(); // NonZeroInt16 (random non-zero value in range)
 const power = NonZeroInt16.pow(asNonZeroInt16(2), asNonZeroInt16(10)); // NonZeroInt16 (1024)
 
-export { a, absolute, b, clamped, diff, maximum, minimum, power, product, random, sum };
+export {
+  a,
+  absolute,
+  b,
+  clamped,
+  diff,
+  maximum,
+  minimum,
+  power,
+  product,
+  random,
+  sum,
+};

@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isNull)
+// Example: src/guard/is-type.mts (isNull)
 import { isNull } from 'ts-data-forge';
 
 const value: string | null = getValue();

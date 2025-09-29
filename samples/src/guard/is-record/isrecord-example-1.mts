@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-record.mts (isRecord)
+// Example: src/guard/is-record.mts (isRecord)
 // Basic usage with different value types:
 
 import { isRecord } from 'ts-data-forge';

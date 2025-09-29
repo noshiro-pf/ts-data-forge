@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/queue.mts (queue)
+// Example: src/collections/queue.mts (queue)
 import { range } from 'ts-data-forge';
 
 const taskQueue = createQueue<string>();

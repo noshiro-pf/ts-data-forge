@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/enum/uint8.mts (asUint8)
+// Example: src/number/enum/uint8.mts (asUint8)
 import { asUint8 } from 'ts-data-forge';
 
 const x = asUint8(255); // Uint8

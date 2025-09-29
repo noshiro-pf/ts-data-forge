@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/safe-int.mts (isSafeInt)
+// Example: src/number/branded-types/safe-int.mts (isSafeInt)
 import { isSafeInt } from 'ts-data-forge';
 
 isSafeInt(42); // true

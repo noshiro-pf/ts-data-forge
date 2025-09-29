@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (flatMap)
+// Example: src/functional/result.mts (flatMap)
 import { Result } from 'ts-data-forge';
 
 const divide = (a: number, b: number): Result<number, string> =>

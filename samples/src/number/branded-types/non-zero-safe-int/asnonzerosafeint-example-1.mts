@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-zero-safe-int.mts (asNonZeroSafeInt)
+// Example: src/number/branded-types/non-zero-safe-int.mts (asNonZeroSafeInt)
 import { asNonZeroSafeInt } from 'ts-data-forge';
 
 const x = asNonZeroSafeInt(5); // NonZeroSafeInt

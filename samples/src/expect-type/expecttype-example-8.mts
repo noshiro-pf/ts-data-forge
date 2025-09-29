@@ -1,4 +1,4 @@
-// Sample code extracted from src/expect-type.mts (expectType)
+// Example: src/expect-type.mts (expectType)
 import { expect } from 'vitest';
 
 import { Arr } from 'ts-data-forge';

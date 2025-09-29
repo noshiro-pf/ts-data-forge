@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (map)
+// Example: src/functional/result.mts (map)
 import { Result, pipe } from 'ts-data-forge';
 
 // Regular usage

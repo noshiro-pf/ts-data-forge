@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/key-is-in.mts (keyIsIn)
+// Example: src/guard/key-is-in.mts (keyIsIn)
 // Comparison with hasKey() - different narrowing behavior:
 
 import { hasKey, keyIsIn } from 'ts-data-forge';

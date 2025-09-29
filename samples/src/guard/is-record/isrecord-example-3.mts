@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-record.mts (isRecord)
+// Example: src/guard/is-record.mts (isRecord)
 // Filtering mixed arrays to find plain objects:
 
 const mixedData: unknown[] = [

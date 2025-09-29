@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-int.mts (positive-int)
+// Example: src/number/branded-types/positive-int.mts (positive-int)
 import { PositiveInt, asPositiveInt } from 'ts-data-forge';
 
 PositiveInt.sub(asPositiveInt(8), asPositiveInt(3)); // PositiveInt (5)

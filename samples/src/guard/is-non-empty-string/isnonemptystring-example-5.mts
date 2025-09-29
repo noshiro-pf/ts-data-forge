@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-non-empty-string.mts (isNonEmptyString)
+// Example: src/guard/is-non-empty-string.mts (isNonEmptyString)
 // Filtering arrays of potentially empty strings:
 
 const responses: (string | null | undefined)[] = [

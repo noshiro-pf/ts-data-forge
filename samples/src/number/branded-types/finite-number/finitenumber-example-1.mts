@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/finite-number.mts (FiniteNumber)
+// Example: src/number/branded-types/finite-number.mts (FiniteNumber)
 import { FiniteNumber, asFiniteNumber } from 'ts-data-forge';
 
 // Type validation
@@ -30,4 +30,20 @@ const maximum = FiniteNumber.max(a, b, asFiniteNumber(5)); // FiniteNumber (10.5
 // Random generation
 const rand = FiniteNumber.random(asFiniteNumber(0), asFiniteNumber(1)); // Random in [0, 1]
 
-export { a, absolute, b, ceiled, diff, floored, maximum, minimum, power, product, quotient, rand, rounded, sum, value };
+export {
+  a,
+  absolute,
+  b,
+  ceiled,
+  diff,
+  floored,
+  maximum,
+  minimum,
+  power,
+  product,
+  quotient,
+  rand,
+  rounded,
+  sum,
+  value,
+};

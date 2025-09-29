@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/uint16.mts (asUint16)
+// Example: src/number/branded-types/uint16.mts (asUint16)
 import { asUint16 } from 'ts-data-forge';
 
 const x = asUint16(1000); // Uint16

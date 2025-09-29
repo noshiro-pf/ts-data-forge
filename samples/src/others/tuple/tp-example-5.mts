@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/tuple.mts (tp)
+// Example: src/others/tuple.mts (tp)
 // Advanced type inference
 
 import { tp } from 'ts-data-forge';

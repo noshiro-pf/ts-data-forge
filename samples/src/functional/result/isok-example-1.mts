@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (isOk)
+// Example: src/functional/result.mts (isOk)
 import { Result } from 'ts-data-forge';
 
 // Basic type guard usage

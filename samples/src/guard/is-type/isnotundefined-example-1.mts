@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isNotUndefined)
+// Example: src/guard/is-type.mts (isNotUndefined)
 const items: (string | undefined)[] = ['a', undefined, 'b', undefined, 'c'];
 
 const definedItems = items.filter(isNotUndefined);

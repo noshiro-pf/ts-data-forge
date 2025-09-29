@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (filter)
+// Example: src/array/array-utils.mts (filter)
 import { Arr, pipe } from 'ts-data-forge';
 
 // Direct usage
@@ -21,4 +21,14 @@ const processNumbers = pipe(
   Arr.map((n) => n * 2),
 );
 
-export { evens, filterStrings, isString, mixed, notNull, numbers, processNumbers, result, strings };
+export {
+  evens,
+  filterStrings,
+  isString,
+  mixed,
+  notNull,
+  numbers,
+  processNumbers,
+  result,
+  strings,
+};

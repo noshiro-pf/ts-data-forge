@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-negative-finite-number.mts (asNonNegativeFiniteNumber)
+// Example: src/number/branded-types/non-negative-finite-number.mts (asNonNegativeFiniteNumber)
 import { asNonNegativeFiniteNumber } from 'ts-data-forge';
 
 const x = asNonNegativeFiniteNumber(5.5); // NonNegativeFiniteNumber

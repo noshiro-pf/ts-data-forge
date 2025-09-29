@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isNullish)
+// Example: src/guard/is-type.mts (isNullish)
 import { isNullish } from 'ts-data-forge';
 
 const value: string | null | undefined = getValue();

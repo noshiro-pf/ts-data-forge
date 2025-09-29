@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-primitive.mts (isPrimitive)
+// Example: src/guard/is-primitive.mts (isPrimitive)
 // Type guard usage for separating primitives from objects:
 
 import { isPrimitive } from 'ts-data-forge';

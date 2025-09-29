@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isNotString)
+// Example: src/guard/is-type.mts (isNotString)
 type Value = string | number | boolean;
 const mixedValues: Value[] = ['hello', 42, true, 'world', 3.14];
 

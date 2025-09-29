@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/optional.mts (unwrapThrow)
+// Example: src/functional/optional.mts (unwrapThrow)
 import { Optional } from 'ts-data-forge';
 
 const userInput = Optional.some(42);

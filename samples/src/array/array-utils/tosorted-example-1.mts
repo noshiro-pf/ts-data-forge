@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (toSorted)
+// Example: src/array/array-utils.mts (toSorted)
 import { Arr } from 'ts-data-forge';
 
 const items = [

@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-non-null-object.mts (isNonNullObject)
+// Example: src/guard/is-non-null-object.mts (isNonNullObject)
 // Filtering arrays to find objects:
 
 const mixedArray: unknown[] = [

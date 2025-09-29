@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (size)
+// Example: src/array/array-utils.mts (size)
 import { Arr, Uint32 } from 'ts-data-forge';
 
 // Known non-empty arrays get positive branded type
@@ -53,4 +53,22 @@ expectType<typeof tupleSize, IntersectBrand<PositiveNumber, SizeType.Arr>>('=');
 expectType<typeof generalSize, SizeType.Arr>('=');
 expectType<typeof emptySize, SizeType.Arr>('=');
 
-export { arrays, data, dataSize, dynamicArray, dynamicSize, emptyArray, emptySize, generalArray, generalSize, indices, nonEmpty, nonEmptySize, sizes, totalElements, tuple, tupleSize, zeros };
+export {
+  arrays,
+  data,
+  dataSize,
+  dynamicArray,
+  dynamicSize,
+  emptyArray,
+  emptySize,
+  generalArray,
+  generalSize,
+  indices,
+  nonEmpty,
+  nonEmptySize,
+  sizes,
+  totalElements,
+  tuple,
+  tupleSize,
+  zeros,
+};

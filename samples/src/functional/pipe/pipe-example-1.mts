@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/pipe.mts (pipe)
+// Example: src/functional/pipe.mts (pipe)
 // Basic value transformation chaining:
 
 import { strict as assert } from 'node:assert/strict';

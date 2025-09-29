@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/if-then.mts (ifThen)
+// Example: src/others/if-then.mts (ifThen)
 // Basic truth table demonstration
 
 import { ifThen } from 'ts-data-forge';

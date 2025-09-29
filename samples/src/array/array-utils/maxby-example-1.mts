@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (maxBy)
+// Example: src/array/array-utils.mts (maxBy)
 import { Arr } from 'ts-data-forge';
 
 const people = [

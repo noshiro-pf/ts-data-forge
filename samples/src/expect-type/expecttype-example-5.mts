@@ -1,4 +1,4 @@
-// Sample code extracted from src/expect-type.mts (expectType)
+// Example: src/expect-type.mts (expectType)
 import type { PositiveInt } from 'ts-data-forge';
 import { isPositiveInt } from 'ts-data-forge';
 

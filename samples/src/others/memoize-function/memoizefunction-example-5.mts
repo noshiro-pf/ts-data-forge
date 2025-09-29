@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/memoize-function.mts (memoizeFunction)
+// Example: src/others/memoize-function.mts (memoizeFunction)
 // Cache key strategies
 
 import { memoizeFunction } from 'ts-data-forge';

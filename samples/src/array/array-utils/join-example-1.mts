@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (join)
+// Example: src/array/array-utils.mts (join)
 import { Arr, Result, pipe } from 'ts-data-forge';
 
 // Regular usage

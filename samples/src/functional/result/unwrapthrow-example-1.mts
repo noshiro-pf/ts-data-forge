@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (unwrapThrow)
+// Example: src/functional/result.mts (unwrapThrow)
 import { Result } from 'ts-data-forge';
 
 const success = Result.ok(42);

@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (isSubset)
+// Example: src/array/array-utils.mts (isSubset)
 import { Arr } from 'ts-data-forge';
 
 Arr.isSubset([1, 2], [1, 2, 3]); // true

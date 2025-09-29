@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/if-then.mts (ifThen)
+// Example: src/others/if-then.mts (ifThen)
 // Contract validation - "if premium then features enabled"
 
 import { ifThen } from 'ts-data-forge';

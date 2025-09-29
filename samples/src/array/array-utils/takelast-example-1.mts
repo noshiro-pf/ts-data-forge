@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (takeLast)
+// Example: src/array/array-utils.mts (takeLast)
 import { Arr, pipe } from 'ts-data-forge';
 
 // Regular usage

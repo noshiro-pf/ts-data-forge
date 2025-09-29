@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/optional.mts (unwrapOr)
+// Example: src/functional/optional.mts (unwrapOr)
 import { Optional } from 'ts-data-forge';
 
 // Direct usage - most common pattern

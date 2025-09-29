@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/iset.mts (intersection)
+// Example: src/collections/iset.mts (intersection)
 import { ISet } from 'ts-data-forge';
 
 // Finding common permissions between user and role
@@ -26,4 +26,17 @@ const empty = ISet.create<number>([]);
 const withEmpty = ISet.intersection(nonEmpty, empty);
 console.log(withEmpty.isEmpty); // true
 
-export { commonPermissions, completeOverlap, empty, identical1, identical2, noCommon, nonEmpty, rolePermissions, setA, setB, userPermissions, withEmpty };
+export {
+  commonPermissions,
+  completeOverlap,
+  empty,
+  identical1,
+  identical2,
+  noCommon,
+  nonEmpty,
+  rolePermissions,
+  setA,
+  setB,
+  userPermissions,
+  withEmpty,
+};

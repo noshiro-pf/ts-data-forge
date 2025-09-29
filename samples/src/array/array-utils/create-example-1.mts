@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (create)
+// Example: src/array/array-utils.mts (create)
 import { Arr } from 'ts-data-forge';
 
 // Compile-time known lengths produce precise tuple types

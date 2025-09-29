@@ -1,4 +1,4 @@
-// Sample code extracted from src/json/json.mts (stringify)
+// Example: src/json/json.mts (stringify)
 // Error handling
 
 import { Json, Result } from 'ts-data-forge';

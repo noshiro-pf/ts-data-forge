@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-negative-int16.mts (NonNegativeInt16)
+// Example: src/number/branded-types/non-negative-int16.mts (NonNegativeInt16)
 import { NonNegativeInt16, asNonNegativeInt16 } from 'ts-data-forge';
 
 const a = asNonNegativeInt16(30000);
@@ -22,4 +22,16 @@ const power = NonNegativeInt16.pow(
   asNonNegativeInt16(10),
 ); // NonNegativeInt16 (1024)
 
-export { a, b, clamped, diff, maximum, minimum, power, product, random, reverseDiff, sum };
+export {
+  a,
+  b,
+  clamped,
+  diff,
+  maximum,
+  minimum,
+  power,
+  product,
+  random,
+  reverseDiff,
+  sum,
+};

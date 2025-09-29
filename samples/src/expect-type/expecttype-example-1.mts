@@ -1,4 +1,4 @@
-// Sample code extracted from src/expect-type.mts (expectType)
+// Example: src/expect-type.mts (expectType)
 
 // Primitive type equality
 expectType<string, string>('='); // ✓ exact match

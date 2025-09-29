@@ -1,4 +1,4 @@
-// Sample code extracted from src/guard/is-type.mts (isNotBigint)
+// Example: src/guard/is-type.mts (isNotBigint)
 import { isNotBigint } from 'ts-data-forge';
 
 type NumericValue = number | bigint;

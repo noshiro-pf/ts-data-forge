@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/num.mts (isUintInRangeInclusive)
+// Example: src/number/num.mts (isUintInRangeInclusive)
 import { Num } from 'ts-data-forge';
 
 const isValidScore = Num.isUintInRangeInclusive(0, 100);

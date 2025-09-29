@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/non-zero-finite-number.mts (NonZeroFiniteNumber)
+// Example: src/number/branded-types/non-zero-finite-number.mts (NonZeroFiniteNumber)
 import { NonZeroFiniteNumber, asNonZeroFiniteNumber } from 'ts-data-forge';
 
 const factor = asNonZeroFiniteNumber(2.5);
@@ -23,4 +23,18 @@ const ceiled = NonZeroFiniteNumber.ceil(factor); // NonZeroInt (3)
 // Random generation
 const randomValue = NonZeroFiniteNumber.random(); // NonZeroFiniteNumber (random non-zero value)
 
-export { absolute, ceiled, difference, factor, floored, maximum, minimum, multiplier, product, quotient, randomValue, result, rounded };
+export {
+  absolute,
+  ceiled,
+  difference,
+  factor,
+  floored,
+  maximum,
+  minimum,
+  multiplier,
+  product,
+  quotient,
+  randomValue,
+  result,
+  rounded,
+};

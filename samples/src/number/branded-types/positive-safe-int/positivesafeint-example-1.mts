@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/positive-safe-int.mts (PositiveSafeInt)
+// Example: src/number/branded-types/positive-safe-int.mts (PositiveSafeInt)
 import { PositiveSafeInt, asPositiveSafeInt } from 'ts-data-forge';
 
 const a = asPositiveSafeInt(1000000);

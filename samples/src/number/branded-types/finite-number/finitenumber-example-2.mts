@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/finite-number.mts (FiniteNumber)
+// Example: src/number/branded-types/finite-number.mts (FiniteNumber)
 import { FiniteNumber, asFiniteNumber } from 'ts-data-forge';
 
 FiniteNumber.abs(asFiniteNumber(-5.5)); // FiniteNumber (5.5)

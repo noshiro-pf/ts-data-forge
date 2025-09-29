@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/memoize-function.mts (memoizeFunction)
+// Example: src/others/memoize-function.mts (memoizeFunction)
 // Memory-conscious memoization with weak references
 
 // For object keys, consider using WeakMap externally

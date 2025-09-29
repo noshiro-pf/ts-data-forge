@@ -1,4 +1,4 @@
-// Sample code extracted from src/json/json.mts (Json)
+// Example: src/json/json.mts (Json)
 // Basic usage
 
 import { Json, Result } from 'ts-data-forge';

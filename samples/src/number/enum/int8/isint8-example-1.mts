@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/enum/int8.mts (isInt8)
+// Example: src/number/enum/int8.mts (isInt8)
 import { isInt8 } from 'ts-data-forge';
 
 isInt8(100); // true

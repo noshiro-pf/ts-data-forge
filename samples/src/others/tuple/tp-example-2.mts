@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/tuple.mts (tp)
+// Example: src/others/tuple.mts (tp)
 // Creating type-safe coordinate systems
 
 import { tp } from 'ts-data-forge';

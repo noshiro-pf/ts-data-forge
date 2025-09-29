@@ -1,4 +1,4 @@
-// Sample code extracted from src/others/cast-mutable.mts (castDeepMutable)
+// Example: src/others/cast-mutable.mts (castDeepMutable)
 // Basic usage with nested structures
 
 import { castDeepMutable } from 'ts-data-forge';

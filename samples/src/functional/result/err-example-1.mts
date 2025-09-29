@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/result.mts (err)
+// Example: src/functional/result.mts (err)
 import { Result } from 'ts-data-forge';
 
 // Basic error case

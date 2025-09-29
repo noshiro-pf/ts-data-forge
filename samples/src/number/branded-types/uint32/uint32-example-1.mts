@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/branded-types/uint32.mts (Uint32)
+// Example: src/number/branded-types/uint32.mts (Uint32)
 import { Uint32, asUint32 } from 'ts-data-forge';
 
 // Type checking

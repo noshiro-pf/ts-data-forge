@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/iset-mapped.mts (ISetMapped)
+// Example: src/collections/iset-mapped.mts (ISetMapped)
 import { ISetMapped } from 'ts-data-forge';
 
 // Example: User management with composite identity
@@ -76,5 +76,17 @@ const updatedUsers = activeUsers.map((user) => ({
   email: user.email.replace('.company.com', '.example.com'),
 }));
 
-export { activeUsers, alice, allUsers, bob, charlie, engineeringOnly, engineeringUsers, keyToUser, marketingUsers, updatedUsers, userToKey };
+export {
+  activeUsers,
+  alice,
+  allUsers,
+  bob,
+  charlie,
+  engineeringOnly,
+  engineeringUsers,
+  keyToUser,
+  marketingUsers,
+  updatedUsers,
+  userToKey,
+};
 export type { User };

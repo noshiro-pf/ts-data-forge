@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (sliceClamped)
+// Example: src/array/array-utils.mts (sliceClamped)
 import { Arr, pipe } from 'ts-data-forge';
 
 const data = [10, 20, 30, 40, 50];
@@ -51,4 +51,23 @@ try {
   // sliceClamped never throws
 }
 
-export { arrays, beginning, bothClamped, clampedEnd, clampedStart, data, emptyArray, emptyAtEnd, emptyReversed, end, first3Elements, fullCopy, getMiddle2, middle, middle2Elements, result, singleElement, takeFirst3 };
+export {
+  arrays,
+  beginning,
+  bothClamped,
+  clampedEnd,
+  clampedStart,
+  data,
+  emptyArray,
+  emptyAtEnd,
+  emptyReversed,
+  end,
+  first3Elements,
+  fullCopy,
+  getMiddle2,
+  middle,
+  middle2Elements,
+  result,
+  singleElement,
+  takeFirst3,
+};

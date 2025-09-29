@@ -1,4 +1,4 @@
-// Sample code extracted from src/array/array-utils.mts (flatMap)
+// Example: src/array/array-utils.mts (flatMap)
 import { Arr } from 'ts-data-forge';
 
 // Direct usage

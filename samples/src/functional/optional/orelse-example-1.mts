@@ -1,4 +1,4 @@
-// Sample code extracted from src/functional/optional.mts (orElse)
+// Example: src/functional/optional.mts (orElse)
 import { Optional } from 'ts-data-forge';
 
 const primary = Optional.none;

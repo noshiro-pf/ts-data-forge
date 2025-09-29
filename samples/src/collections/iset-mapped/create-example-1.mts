@@ -1,4 +1,4 @@
-// Sample code extracted from src/collections/iset-mapped.mts (create)
+// Example: src/collections/iset-mapped.mts (create)
 import { ISetMapped } from 'ts-data-forge';
 
 // Example 1: Product catalog with SKU-based identity
@@ -112,5 +112,16 @@ const emptyProductSet = ISetMapped.create<Product, string>(
 );
 console.log(emptyProductSet.isEmpty); // Output: true
 
-export { emptyProductSet, keyToLocation, keyToProduct, keyToUser, locationSet, locationToKey, productSet, productToKey, userSet, userToKey };
+export {
+  emptyProductSet,
+  keyToLocation,
+  keyToProduct,
+  keyToUser,
+  locationSet,
+  locationToKey,
+  productSet,
+  productToKey,
+  userSet,
+  userToKey,
+};
 export type { Location, Product, User };

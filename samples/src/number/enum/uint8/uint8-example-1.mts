@@ -1,4 +1,4 @@
-// Sample code extracted from src/number/enum/uint8.mts (uint8)
+// Example: src/number/enum/uint8.mts (uint8)
 is(100); // true
 is(0); // true (minimum value)
 is(255); // true (maximum value)
