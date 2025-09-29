@@ -16,7 +16,7 @@ function safeStringify(value: unknown): string {
     if (value === null) return 'null';
     if (value === undefined) return 'undefined';
     if (typeof value === 'symbol') return value.toString();
-    if (typeof value === 'bigint') return value.toString() + 'n';
+    if (typeof value === 'bigint') return `${value.toString()  }n`;
     return String(value);
   }
 

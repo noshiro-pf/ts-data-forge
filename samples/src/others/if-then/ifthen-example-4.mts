@@ -3,7 +3,7 @@
 
 import { ifThen } from 'ts-data-forge';
 
-interface Subscription {
+type Subscription = {
   isPremium: boolean;
   features: {
     advancedAnalytics: boolean;

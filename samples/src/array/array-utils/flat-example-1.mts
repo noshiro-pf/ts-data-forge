@@ -7,7 +7,7 @@ const flat1 = Arr.flat(nested, 1); // [1, 2, [3, 4], 5]
 const flat2 = Arr.flat(nested, 2); // [1, 2, 3, 4, 5]
 
 // Curried usage
-const flattenOnceLevel = Arr.flat(1);
+const flattenOnceLevel = Arr.flat();
 const result = flattenOnceLevel([
   [1, 2],
   [3, 4],

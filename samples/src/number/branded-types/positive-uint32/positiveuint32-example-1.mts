@@ -1,8 +1,8 @@
 // Example: src/number/branded-types/positive-uint32.mts (PositiveUint32)
 import { PositiveUint32, asPositiveUint32 } from 'ts-data-forge';
 
-const a = asPositiveUint32(4000000000);
-const b = asPositiveUint32(1000000000);
+const a = asPositiveUint32(4_000_000_000);
+const b = asPositiveUint32(1_000_000_000);
 
 // Arithmetic operations with automatic clamping and positive constraint
 const sum = PositiveUint32.add(a, b); // PositiveUint32 (4294967295 - clamped to MAX_VALUE)

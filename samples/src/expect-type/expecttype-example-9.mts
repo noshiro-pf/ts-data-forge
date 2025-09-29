@@ -1,7 +1,7 @@
 // Example: src/expect-type.mts (expectType)
 import { expectType } from 'ts-data-forge';
 
-import type { FiniteNumber, Int, PositiveInt } from 'ts-data-forge';
+import  { type FiniteNumber, type Int, type PositiveInt } from 'ts-data-forge';
 
 // Ensure proper type hierarchy
 expectType<PositiveInt, Int>('<='); // positive is subset of int

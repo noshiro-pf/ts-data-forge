@@ -2,7 +2,7 @@
 import { IMap } from 'ts-data-forge';
 
 // Create an immutable map with initial data
-let userPreferences = IMap.create<string, UserPreference>([
+const userPreferences = IMap.create<string, UserPreference>([
   ['theme', { value: 'dark', lastModified: Date.now() }],
   ['language', { value: 'en', lastModified: Date.now() }],
 ]);

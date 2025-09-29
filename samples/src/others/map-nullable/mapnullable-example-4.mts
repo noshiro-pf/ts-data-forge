@@ -4,7 +4,7 @@
 import { mapNullable } from 'ts-data-forge';
 
 // API response handling
-interface ApiResponse {
+type ApiResponse = {
   data?: {
     user?: {
       profile?: {

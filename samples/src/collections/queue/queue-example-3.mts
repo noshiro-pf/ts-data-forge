@@ -19,7 +19,7 @@ while (!taskQueue.isEmpty) {
 // High-volume enqueueing (demonstrates amortized O(1) performance)
 const dataQueue = createQueue<number>();
 
-for (const i of range(1000000)) {
+for (const i of range(1_000_000)) {
   dataQueue.enqueue(i); // Each operation is O(1) amortized
 }
 

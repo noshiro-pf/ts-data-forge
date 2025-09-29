@@ -5,7 +5,7 @@ import { castReadonly } from 'ts-data-forge';
 
 // Prevent callers from mutating internal state
 class UserService {
-  private users: User[] = [];
+  private readonly users: User[] = [];
 
   getUsers(): readonly User[] {
     return castReadonly(this.users); // Callers can't mutate the array

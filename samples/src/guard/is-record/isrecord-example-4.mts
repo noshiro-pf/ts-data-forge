@@ -3,7 +3,7 @@
 
 import { hasKey, isRecord, isString } from 'ts-data-forge';
 
-interface User {
+type User = {
   id: string;
   profile: {
     name: string;

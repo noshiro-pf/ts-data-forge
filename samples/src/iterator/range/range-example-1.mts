@@ -23,7 +23,7 @@ for (const n of range(0, -10, -1)) {
 
 // Convert generator to array
 const numbers = Array.from(range(1, 4)); // [1, 2, 3]
-const evens = [...range(0, 11, 2)]; // [0, 2, 4, 6, 8, 10]
+const evens = Array.from(range(0, 11, 2)); // [0, 2, 4, 6, 8, 10]
 
 // Empty ranges
 Array.from(range(5, 5)); // [] (start equals end)
@@ -42,7 +42,7 @@ console.log(gen.next()); // { value: undefined, done: true }
 const indices = Array.from(range(0, items.length));
 
 // Generate test data
-const testIds = [...range(1, 101)]; // [1, 2, ..., 100]
+const testIds = Array.from(range(1, 101)); // [1, 2, ..., 100]
 
 // Iterate with step intervals
 for (const minute of range(0, 60, 5)) {

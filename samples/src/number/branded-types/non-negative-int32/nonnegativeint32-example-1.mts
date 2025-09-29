@@ -1,8 +1,8 @@
 // Example: src/number/branded-types/non-negative-int32.mts (NonNegativeInt32)
 import { NonNegativeInt32, asNonNegativeInt32 } from 'ts-data-forge';
 
-const a = asNonNegativeInt32(2000000000);
-const b = asNonNegativeInt32(500000000);
+const a = asNonNegativeInt32(2_000_000_000);
+const b = asNonNegativeInt32(500_000_000);
 
 // Arithmetic operations with automatic clamping
 const sum = NonNegativeInt32.add(a, b); // NonNegativeInt32 (2147483647 - clamped to MAX_VALUE)

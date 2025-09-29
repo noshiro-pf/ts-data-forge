@@ -1,7 +1,7 @@
 // Example: src/number/branded-types/non-zero-safe-int.mts (NonZeroSafeInt)
 import { NonZeroSafeInt, asNonZeroSafeInt } from 'ts-data-forge';
 
-const a = asNonZeroSafeInt(9007199254740000); // Near MAX_SAFE_INTEGER
+const a = asNonZeroSafeInt(9_007_199_254_740_000); // Near MAX_SAFE_INTEGER
 const b = asNonZeroSafeInt(-1000);
 
 // Arithmetic operations with non-zero safe range clamping

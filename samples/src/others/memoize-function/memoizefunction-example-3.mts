@@ -3,7 +3,7 @@
 
 import { memoizeFunction } from 'ts-data-forge';
 
-interface User {
+type User = {
   id: number;
   name: string;
   email: string;

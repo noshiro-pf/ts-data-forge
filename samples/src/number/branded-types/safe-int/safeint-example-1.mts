@@ -2,7 +2,7 @@
 import { SafeInt, asSafeInt } from 'ts-data-forge';
 
 // Near the boundary
-const nearMax = asSafeInt(9007199254740990);
+const nearMax = asSafeInt(9_007_199_254_740_990);
 const increment = asSafeInt(10);
 
 // Automatic clamping prevents precision loss
@@ -10,7 +10,7 @@ const sum = SafeInt.add(nearMax, increment); // Clamped to MAX_SAFE_INTEGER
 const product = SafeInt.mul(nearMax, increment); // Clamped to MAX_SAFE_INTEGER
 
 // Safe operations
-const a = asSafeInt(1000000);
+const a = asSafeInt(1_000_000);
 const b = asSafeInt(500);
 
 const diff = SafeInt.sub(a, b); // SafeInt (999500)

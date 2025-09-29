@@ -10,9 +10,9 @@ const items: (string | null | undefined)[] = [
 const definedItems = items.filter(isNonNullish);
 // definedItems is now string[] - both null and undefined values are filtered out
 
-definedItems.forEach((item) => {
+for (const item of definedItems) {
   // item is guaranteed to be string, never null or undefined
   console.log(item.toUpperCase());
-});
+}
 
 export { definedItems, items };

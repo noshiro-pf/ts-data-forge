@@ -1,8 +1,8 @@
 // Example: src/number/branded-types/positive-uint16.mts (PositiveUint16)
 import { PositiveUint16, asPositiveUint16 } from 'ts-data-forge';
 
-const a = asPositiveUint16(60000);
-const b = asPositiveUint16(10000);
+const a = asPositiveUint16(60_000);
+const b = asPositiveUint16(10_000);
 
 // Arithmetic operations with automatic clamping and positive constraint
 const sum = PositiveUint16.add(a, b); // PositiveUint16 (65535 - clamped to MAX_VALUE)

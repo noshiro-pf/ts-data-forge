@@ -26,7 +26,7 @@ type Event = { timestamp: number; type: string; data: any };
 const eventQueue = createQueue<Event>();
 
 // Simulate high-volume event ingestion
-for (const i of range(10000)) {
+for (const i of range(10_000)) {
   eventQueue.enqueue({
     timestamp: Date.now(),
     type: `event-${i % 5}`,
@@ -76,8 +76,8 @@ const processWork = async () => {
 };
 
 // Add some work
-addWork(async () => console.log('Work item 1'));
-addWork(async () => console.log('Work item 2'));
+addWork(async () => { console.log('Work item 1'); });
+addWork(async () => { console.log('Work item 2'); });
 
 // Process the work
 await processWork();

@@ -16,11 +16,11 @@ const locationMap = IMapMapped.create<Coordinate, LocationInfo, string>(
   [
     [
       { lat: 40.7128, lng: -74.006 },
-      { name: 'New York', population: 8000000 },
+      { name: 'New York', population: 8_000_000 },
     ],
     [
       { lat: 34.0522, lng: -118.2437 },
-      { name: 'Los Angeles', population: 4000000 },
+      { name: 'Los Angeles', population: 4_000_000 },
     ],
   ],
   coordToString,

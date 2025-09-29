@@ -3,9 +3,9 @@
 
 import { castDeepMutable } from 'ts-data-forge';
 
-const readonlyNested: {
-  readonly a: { readonly b: readonly number[] };
-} = { a: { b: [1, 2, 3] } };
+const readonlyNested: Readonly<{
+  a: { b: readonly number[] };
+}> = { a: { b: [1, 2, 3] } };
 
 const mutableNested = castDeepMutable(readonlyNested);
 mutableNested.a.b.push(4); // Mutations allowed at all levels

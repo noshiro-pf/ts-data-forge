@@ -102,7 +102,7 @@ const safeUpdate = <T, U>(
 
 // Advanced: State management pattern
 type AppState = {
-  users: Array<{ id: number; name: string }>;
+  users: { id: number; name: string }[];
   currentUserId: number;
 };
 
@@ -132,7 +132,7 @@ expectType<typeof doubled, readonly number[]>('='); // Same type
 expectType<typeof mixed, readonly (number | string)[]>('='); // Union type
 expectType<
   typeof doubleAtIndex2,
-  <T extends readonly number[]>(array: T) => readonly (number | number)[]
+  <T extends readonly number[]>(array: T) => readonly (number  )[]
 >('=');
 expectType<typeof safe1, readonly number[]>('='); // Bounds check preserves type
 

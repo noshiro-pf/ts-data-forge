@@ -36,12 +36,12 @@ const hondaAccord2022: ProductKey = {
 catalog = catalog
   .set(toyotaCamry2023, {
     name: 'Toyota Camry 2023',
-    price: 28000,
+    price: 28_000,
     inStock: true,
   })
   .set(hondaAccord2022, {
     name: 'Honda Accord 2022',
-    price: 26500,
+    price: 26_500,
     inStock: false,
   });
 

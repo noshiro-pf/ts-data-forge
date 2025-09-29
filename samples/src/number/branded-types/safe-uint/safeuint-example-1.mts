@@ -1,7 +1,7 @@
 // Example: src/number/branded-types/safe-uint.mts (SafeUint)
 import { SafeUint, asSafeUint } from 'ts-data-forge';
 
-const a = asSafeUint(9007199254740000); // Near MAX_SAFE_INTEGER
+const a = asSafeUint(9_007_199_254_740_000); // Near MAX_SAFE_INTEGER
 const b = asSafeUint(1000);
 
 // Arithmetic operations with safe unsigned range clamping

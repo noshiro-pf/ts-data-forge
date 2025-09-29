@@ -1,5 +1,5 @@
 // Example: src/collections/imap.mts (imap)
-import { IMap } from 'ts-data-forge';
+import { type IMap } from 'ts-data-forge';
 
 // This is a type alias describing an interface, so it's not directly instantiated.
 // See IMap.create for examples of creating IMap instances that conform to this interface.

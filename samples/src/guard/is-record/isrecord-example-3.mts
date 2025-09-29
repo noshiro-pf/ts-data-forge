@@ -15,10 +15,10 @@ const records = mixedData.filter(isRecord);
 // records contains only the plain objects:
 // [{ type: 'user', name: 'Alice' }, { type: 'admin', permissions: [...] }, { id: 123 }]
 
-records.forEach((record) => {
+for (const record of records) {
   // Each record is guaranteed to be UnknownRecord
   const keys = Object.keys(record);
   console.log('Object keys:', keys);
-});
+}
 
 export { mixedData, records };

@@ -6,5 +6,5 @@ isFiniteNumber(3.14); // true
 isFiniteNumber(-0); // true
 isFiniteNumber(Infinity); // false
 isFiniteNumber(-Infinity); // false
-isFiniteNumber(NaN); // false
+isFiniteNumber(Number.NaN); // false
 isFiniteNumber(1 / 0); // false (Infinity)

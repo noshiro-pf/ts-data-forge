@@ -3,7 +3,7 @@
 
 import { isNonNullish } from 'ts-data-forge';
 
-interface User {
+type User = {
   profile?: {
     name?: string;
     email?: string;

@@ -39,9 +39,9 @@ const byParity = Arr.groupBy(numbers, (n) => (n % 2 === 0 ? 'even' : 'odd'));
 // Grouping by price ranges using index information
 const byPriceRange = Arr.groupBy(products, (product, index) => {
   const category =
-    product.price < 1.0
+    product.price < 1
       ? 'cheap'
-      : product.price < 2.0
+      : product.price < 2
         ? 'moderate'
         : 'expensive';
   return `${category}_${index < 2 ? 'early' : 'late'}`;

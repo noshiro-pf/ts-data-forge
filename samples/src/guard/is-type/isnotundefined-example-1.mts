@@ -4,9 +4,9 @@ const items: (string | undefined)[] = ['a', undefined, 'b', undefined, 'c'];
 const definedItems = items.filter(isNotUndefined);
 // definedItems is now string[] - undefined values are filtered out
 
-definedItems.forEach((item) => {
+for (const item of definedItems) {
   // item is guaranteed to be string, not undefined
   console.log(item.toUpperCase());
-});
+}
 
 export { definedItems, items };

@@ -54,7 +54,7 @@ console.log(IMapMapped.equal(map1, map4)); // true
 // Different transformation functions but same logical content
 const alternativePointToString = (p: Point): string => `(${p.x},${p.y})`; // Different format
 const alternativeStringToPoint = (s: string): Point => {
-  const match = s.match(/\((\d+),(\d+)\)/);
+  const match = /\((\d+),(\d+)\)/.exec(s);
   return { x: Number(match![1]), y: Number(match![2]) };
 };
 

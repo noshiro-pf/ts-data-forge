@@ -2,4 +2,4 @@
 import { Num } from 'ts-data-forge';
 
 Num.mapNaN2Undefined(42); // 42
-Num.mapNaN2Undefined(NaN); // undefined
+Num.mapNaN2Undefined(Number.NaN); // undefined

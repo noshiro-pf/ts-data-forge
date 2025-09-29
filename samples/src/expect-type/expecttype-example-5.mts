@@ -1,7 +1,7 @@
 // Example: src/expect-type.mts (expectType)
 import { expectType } from 'ts-data-forge';
 
-import type { PositiveInt } from 'ts-data-forge';
+import  { type PositiveInt } from 'ts-data-forge';
 import { isPositiveInt } from 'ts-data-forge';
 
 // Testing branded number types

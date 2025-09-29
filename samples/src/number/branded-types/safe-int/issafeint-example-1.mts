@@ -5,4 +5,4 @@ isSafeInt(42); // true
 isSafeInt(Number.MAX_SAFE_INTEGER); // true
 isSafeInt(Number.MAX_SAFE_INTEGER + 1); // false
 isSafeInt(3.14); // false
-isSafeInt(NaN); // false
+isSafeInt(Number.NaN); // false

@@ -1,8 +1,8 @@
 // Example: src/number/branded-types/non-zero-int16.mts (NonZeroInt16)
 import { NonZeroInt16, asNonZeroInt16 } from 'ts-data-forge';
 
-const a = asNonZeroInt16(30000);
-const b = asNonZeroInt16(-10000);
+const a = asNonZeroInt16(30_000);
+const b = asNonZeroInt16(-10_000);
 
 // Arithmetic operations with automatic clamping and non-zero constraint
 const sum = NonZeroInt16.add(a, b); // NonZeroInt16 (20000)

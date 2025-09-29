@@ -8,7 +8,7 @@ console.log(Result.unwrapErr(failure)); // "Something went wrong"
 
 // Function that can fail
 function parseInteger(input: string): Result<number, string> {
-  const num = parseInt(input, 10);
+  const num = Number.parseInt(input, 10);
   if (isNaN(num)) {
     return Result.err(`Invalid number format: ${input}`);
   }
@@ -19,7 +19,7 @@ const result = parseInteger('abc');
 console.log(Result.unwrapErr(result)); // "Invalid number format: abc"
 
 // Using custom error types
-interface ValidationError {
+type ValidationError = {
   field: string;
   message: string;
 }

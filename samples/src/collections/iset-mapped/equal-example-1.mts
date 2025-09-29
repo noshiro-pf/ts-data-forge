@@ -75,7 +75,7 @@ console.log(ISetMapped.equal(empty1, empty2)); // true
 // Sets with different transformation functions but same logical content
 const alternativePointToKey = (p: Point): string => `(${p.x},${p.y})`; // Different format
 const alternativeKeyToPoint = (s: string): Point => {
-  const match = s.match(/\((\d+),(\d+)\)/)!;
+  const match = /\((\d+),(\d+)\)/.exec(s)!;
   return { x: Number(match[1]), y: Number(match[2]) };
 };
 

@@ -4,9 +4,7 @@ import { range } from 'ts-data-forge';
 const actionStack = createStack<string>();
 
 // Add actions in chronological order
-actionStack.push('open file'); // O(1)
-actionStack.push('edit content'); // O(1)
-actionStack.push('save file'); // O(1)
+actionStack.push('open file', 'edit content', 'save file'); // O(1)
 
 console.log(actionStack.size); // 3
 
@@ -23,7 +21,7 @@ while (!actionStack.isEmpty) {
 // High-volume pushing (demonstrates amortized O(1) performance)
 const dataStack = createStack<number>();
 
-for (const i of range(1000000)) {
+for (const i of range(1_000_000)) {
   dataStack.push(i); // Each operation is O(1) amortized
 }
 
@@ -33,9 +31,7 @@ console.log(dataStack.size); // 1000000
 type StackFrame = { function: string; variables: Record<string, any> };
 const callStack = createStack<StackFrame>();
 
-callStack.push({ function: 'main', variables: { argc: 1, argv: ['program'] } });
-callStack.push({ function: 'process', variables: { data: [1, 2, 3] } });
-callStack.push({ function: 'validate', variables: { input: 'test' } });
+callStack.push({ function: 'main', variables: { argc: 1, argv: ['program'] } }, { function: 'process', variables: { data: [1, 2, 3] } }, { function: 'validate', variables: { input: 'test' } });
 
 // Current function context is at the top
 const currentFrame = callStack.pop().unwrap();

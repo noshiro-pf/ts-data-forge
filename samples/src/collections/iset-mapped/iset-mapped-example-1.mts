@@ -1,5 +1,5 @@
 // Example: src/collections/iset-mapped.mts (iset-mapped)
-import { ISetMapped } from 'ts-data-forge';
+import { type ISetMapped } from 'ts-data-forge';
 
 // Example with complex object elements
 type User = { id: number; department: string; email: string };

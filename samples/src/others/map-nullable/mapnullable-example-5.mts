@@ -18,7 +18,7 @@ const doubled = nullableNumbers
 // Result: [2, 6, 10]
 
 // Process optional array elements
-const users: Array<{ name?: string }> = [
+const users: { name?: string }[] = [
   { name: 'Alice' },
   { name: undefined },
   { name: 'Bob' },

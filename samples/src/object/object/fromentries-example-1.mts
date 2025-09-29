@@ -22,7 +22,7 @@ const point = Obj.fromEntries(coordEntries);
 // Value: { x: 1, y: 3 }
 
 // Dynamic entries with union keys
-const dynamicEntries: Array<['name' | 'email', string]> = [
+const dynamicEntries: ['name' | 'email', string][] = [
   ['name', 'Alice'],
   // email might or might not be present
 ];
@@ -46,7 +46,7 @@ const settingsMap = new Map([
   ['language', 'en'],
   ['notifications', true],
 ] as const);
-const settings = Obj.fromEntries([...settingsMap]);
+const settings = Obj.fromEntries(Array.from(settingsMap));
 
 // Building objects from computed entries
 const keys = ['a', 'b', 'c'] as const;
@@ -57,7 +57,7 @@ const computed = Obj.fromEntries(computedEntries);
 
 // Error handling with validation
 function createUserFromEntries(
-  entries: ReadonlyArray<readonly [string, unknown]>,
+  entries: readonly (readonly [string, unknown])[],
 ) {
   const user = Obj.fromEntries(entries);
   // Type is Partial<Record<string, unknown>> - safe for dynamic data

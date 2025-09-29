@@ -1,14 +1,12 @@
 // Example: src/collections/stack.mts (Stack)
-import type { Stack } from 'ts-data-forge';
+import  { type Stack } from 'ts-data-forge';
 
 import { createStack } from './stack';
 
 // Example 1: Basic LIFO operations
 const operationStack: Stack<string> = createStack<string>();
 
-operationStack.push('operation1'); // Add to top
-operationStack.push('operation2'); // Add to top
-operationStack.push('operation3'); // Add to top
+operationStack.push('operation1', 'operation2', 'operation3'); // Add to top
 
 console.log(operationStack.size); // Output: 3
 

@@ -17,7 +17,7 @@ const findPaths = (
 const memoizedFindPaths = memoizeFunction(
   findPaths,
   (start, end, visited = new Set()) =>
-    `${start}->${end}:[${[...visited].toSorted().join(',')}]`,
+    `${start}->${end}:[${Array.from(visited).toSorted().join(',')}]`,
 );
 
 export { findPaths, memoizedFindPaths };

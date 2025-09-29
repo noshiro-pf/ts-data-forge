@@ -47,7 +47,7 @@ try {
   const regularSlice = data.slice(-10, 100); // [10, 20, 30, 40, 50]
   // sliceClamped provides same safe behavior explicitly
   const clampedSlice = Arr.sliceClamped(data, -10, 100); // [10, 20, 30, 40, 50]
-} catch (error) {
+} catch {
   // sliceClamped never throws
 }
 

@@ -1,7 +1,7 @@
 // Example: src/number/branded-types/non-negative-int16.mts (NonNegativeInt16)
 import { NonNegativeInt16, asNonNegativeInt16 } from 'ts-data-forge';
 
-const a = asNonNegativeInt16(30000);
+const a = asNonNegativeInt16(30_000);
 const b = asNonNegativeInt16(5000);
 
 // Arithmetic operations with automatic clamping

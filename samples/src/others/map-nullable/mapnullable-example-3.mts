@@ -6,7 +6,7 @@ import { mapNullable } from 'ts-data-forge';
 // Create reusable transformers
 const toUpperCase = mapNullable((s: string) => s.toUpperCase());
 const addPrefix = mapNullable((s: string) => `PREFIX_${s}`);
-const parseNumber = mapNullable((s: string) => parseInt(s, 10));
+const parseNumber = mapNullable((s: string) => Number.parseInt(s, 10));
 
 // Use in different contexts
 toUpperCase('hello'); // "HELLO"

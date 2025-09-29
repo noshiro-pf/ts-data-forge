@@ -6,4 +6,4 @@ isPositiveInt(1); // true
 isPositiveInt(0); // false (zero is not positive)
 isPositiveInt(-1); // false (negative)
 isPositiveInt(5.5); // false (not an integer)
-isPositiveInt(NaN); // false
+isPositiveInt(Number.NaN); // false

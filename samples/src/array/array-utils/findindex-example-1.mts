@@ -66,7 +66,7 @@ const result = pipe(['a', 'bb', 'ccc'])
   .map((opt) => Optional.unwrapOr(opt, -1)).value; // 2 (index of 'ccc')
 
 // Comparing with native findIndex (which returns -1)
-const nativeResult = fruits.findIndex((fruit) => fruit === 'grape'); // -1
+const nativeResult = fruits.indexOf('grape'); // -1
 const safeResult = Arr.findIndex(fruits, (fruit) => fruit === 'grape'); // Optional.None
 
 // Safe index usage patterns

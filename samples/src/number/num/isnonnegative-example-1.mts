@@ -4,7 +4,7 @@ import { Num } from 'ts-data-forge';
 const value = 10;
 if (Num.isNonNegative(value)) {
   // value is typed as NonNegativeNumber & 10
-  const arr = new Array(value); // Safe array creation
+  const arr = Array.from({length: value}); // Safe array creation
 }
 
 // Type narrowing with unions

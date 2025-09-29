@@ -2,9 +2,7 @@
 const stack = createStack<string>();
 
 // Add some elements
-stack.push('bottom');
-stack.push('middle');
-stack.push('top');
+stack.push('bottom', 'middle', 'top');
 
 // Remove elements in LIFO order
 const top = stack.pop();
@@ -24,9 +22,7 @@ if (result.isNone) {
 
 // Typical usage in algorithms
 const pathStack = createStack<string>();
-pathStack.push('/home');
-pathStack.push('/users');
-pathStack.push('/documents');
+pathStack.push('/home', '/users', '/documents');
 
 // Backtrack one level
 const currentDir = pathStack.pop().unwrap(); // "/documents"

@@ -3,7 +3,7 @@
 
 import { isNonEmptyString } from 'ts-data-forge';
 
-interface FormData {
+type FormData = {
   name?: string;
   email?: string;
   phone?: string;

@@ -5,15 +5,15 @@ import { ISetMapped } from 'ts-data-forge';
 type Product = { sku: string; name: string; price: number; category: string };
 
 const productToKey = (product: Product): string => product.sku;
-const keyToProduct = (sku: string): Product => {
+const keyToProduct = (sku: string): Product => 
   // In practice, this might fetch from a product service or cache
-  return {
+   ({
     sku,
     name: `Product ${sku}`,
     price: 0,
     category: 'unknown',
-  };
-};
+  })
+;
 
 const productSet = ISetMapped.create<Product, string>(
   [
@@ -59,8 +59,8 @@ const keyToLocation = (key: string): Location => {
   const [latStr, lngStr] = key.split(',');
   return {
     name: 'Unknown Location',
-    lat: parseFloat(latStr),
-    lng: parseFloat(lngStr),
+    lat: Number.parseFloat(latStr),
+    lng: Number.parseFloat(lngStr),
     type: 'point',
   };
 };
@@ -69,14 +69,14 @@ const locationSet = ISetMapped.create<Location, string>(
   [
     {
       name: 'Statue of Liberty',
-      lat: 40.689247,
-      lng: -74.044502,
+      lat: 40.689_247,
+      lng: -74.044_502,
       type: 'monument',
     },
     {
       name: 'Empire State Building',
-      lat: 40.748817,
-      lng: -73.985428,
+      lat: 40.748_817,
+      lng: -73.985_428,
       type: 'building',
     },
   ],

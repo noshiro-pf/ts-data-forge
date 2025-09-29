@@ -1,8 +1,8 @@
 // Example: src/number/branded-types/positive-safe-int.mts (PositiveSafeInt)
 import { PositiveSafeInt, asPositiveSafeInt } from 'ts-data-forge';
 
-const a = asPositiveSafeInt(1000000);
-const b = asPositiveSafeInt(2000000);
+const a = asPositiveSafeInt(1_000_000);
+const b = asPositiveSafeInt(2_000_000);
 
 // Arithmetic operations with positive safe range clamping
 const sum = PositiveSafeInt.add(a, b); // PositiveSafeInt (3000000)

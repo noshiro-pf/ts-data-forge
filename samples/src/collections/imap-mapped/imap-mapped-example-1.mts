@@ -1,5 +1,5 @@
 // Example: src/collections/imap-mapped.mts (imap-mapped)
-import { IMapMapped } from 'ts-data-forge';
+import { type IMapMapped } from 'ts-data-forge';
 
 // Example with complex object keys
 type UserId = { department: string; employeeId: number };

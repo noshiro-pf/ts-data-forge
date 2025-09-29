@@ -8,9 +8,7 @@ type FunctionCall = { name: string; args: any[]; context: any };
 const callStack = createStack<FunctionCall>();
 
 // Simulate function calls (push onto stack)
-callStack.push({ name: 'main', args: [], context: {} }); // O(1)
-callStack.push({ name: 'processData', args: [data], context: {} }); // O(1)
-callStack.push({ name: 'validateInput', args: [input], context: {} }); // O(1)
+callStack.push({ name: 'main', args: [], context: {} }, { name: 'processData', args: [data], context: {} }, { name: 'validateInput', args: [input], context: {} }); // O(1)
 
 // Simulate function returns (pop from stack)
 while (!callStack.isEmpty) {
@@ -64,8 +62,7 @@ const edit2: EditAction = {
   newValue: ' World',
 };
 
-undoStack.push(edit1);
-undoStack.push(edit2);
+undoStack.push(edit1, edit2);
 
 // Undo last edit
 if (!undoStack.isEmpty) {
@@ -78,7 +75,7 @@ if (!undoStack.isEmpty) {
 const processingStack = createStack<number>();
 
 // Add large amount of data (demonstrates amortized O(1) performance)
-for (const i of range(100000)) {
+for (const i of range(100_000)) {
   processingStack.push(i); // Each push is O(1) amortized
 }
 

@@ -3,7 +3,7 @@
 
 import { castDeepReadonly } from 'ts-data-forge';
 
-interface AppState {
+type AppState = {
   user: {
     id: number;
     profile: {
@@ -15,12 +15,12 @@ interface AppState {
     };
   };
   data: {
-    items: Array<{ id: number; value: string }>;
+    items: { id: number; value: string }[];
   };
 }
 
 class StateManager {
-  private state: AppState = initialState;
+  private readonly state: AppState = initialState;
 
   getState(): DeepReadonly<AppState> {
     return castDeepReadonly(this.state);

@@ -35,7 +35,7 @@ const runningMax = Arr.scan(
 const words = ['Hello', 'beautiful', 'world'];
 const sentences = Arr.scan(
   words,
-  (sentence, word) => sentence + ' ' + word,
+  (sentence, word) => `${sentence  } ${  word}`,
   '',
 );
 // ['', ' Hello', ' Hello beautiful', ' Hello beautiful world']
@@ -58,7 +58,7 @@ const balances = Arr.scan(
 const letters = ['a', 'b', 'c'];
 const indexed = Arr.scan(
   letters,
-  (acc, letter, index) => acc + `${index}:${letter} `,
+  (acc, letter, index) => `${acc  }${index}:${letter} `,
   '',
 );
 // ['', '0:a ', '0:a 1:b ', '0:a 1:b 2:c ']

@@ -3,7 +3,7 @@
 
 import { keyIsIn } from 'ts-data-forge';
 
-interface FormData {
+type FormData = {
   name: string;
   email: string;
   age: number;

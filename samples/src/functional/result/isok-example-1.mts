@@ -14,11 +14,9 @@ if (Result.isOk(result)) {
 }
 
 // Using in conditional logic
-const processResult = (r: Result<string, Error>) => {
-  return Result.isOk(r)
+const processResult = (r: Result<string, Error>) => Result.isOk(r)
     ? r.value.toUpperCase() // Safe string operations
     : 'Error occurred';
-};
 
 // Filtering arrays of Results
 const results: Result<number, string>[] = [

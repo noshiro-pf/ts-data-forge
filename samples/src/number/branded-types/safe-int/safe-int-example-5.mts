@@ -5,8 +5,8 @@ SafeInt.div(asSafeInt(10), asSafeInt(3)); // SafeInt (3)
 SafeInt.div(asSafeInt(-10), asSafeInt(3)); // SafeInt (-4)
 
 // Large number division
-const large = asSafeInt(1000000000000);
-const divisor = asSafeInt(1000000);
+const large = asSafeInt(1_000_000_000_000);
+const divisor = asSafeInt(1_000_000);
 SafeInt.div(large, divisor); // SafeInt (1000000)
 
 export { divisor, large };

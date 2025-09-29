@@ -1,5 +1,5 @@
 // Example: src/collections/queue.mts (Queue)
-import type { Queue } from 'ts-data-forge';
+import  { type Queue } from 'ts-data-forge';
 
 import { createQueue } from './queue';
 
@@ -24,12 +24,12 @@ const taskQueue: Queue<Task> = createQueue<Task>();
 taskQueue.enqueue({
   id: 1,
   priority: 'high',
-  action: () => console.log('Task 1'),
+  action: () => { console.log('Task 1'); },
 });
 taskQueue.enqueue({
   id: 2,
   priority: 'low',
-  action: () => console.log('Task 2'),
+  action: () => { console.log('Task 2'); },
 });
 
 // Process tasks in order

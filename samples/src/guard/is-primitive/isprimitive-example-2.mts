@@ -17,10 +17,10 @@ const values: unknown[] = [
 const primitives = values.filter(isPrimitive);
 const objects = values.filter((value) => !isPrimitive(value));
 
-primitives.forEach((primitive) => {
+for (const primitive of primitives) {
   // primitive is now typed as Primitive
   console.log('Primitive value:', primitive);
   console.log('Type:', typeof primitive);
-});
+}
 
 export { objects, primitives, values };

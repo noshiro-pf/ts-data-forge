@@ -15,9 +15,9 @@ const objects = mixedArray.filter(isNonNullObject);
 // objects contains: [{ name: 'John' }, [1, 2, 3], Date instance]
 // Note: includes both plain objects and arrays
 
-objects.forEach((obj) => {
+for (const obj of objects) {
   // Each obj is guaranteed to be an object
   console.log('Object type:', obj.constructor.name);
-});
+}
 
 export { mixedArray, objects };

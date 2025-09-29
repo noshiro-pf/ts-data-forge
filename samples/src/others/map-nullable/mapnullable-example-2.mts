@@ -3,7 +3,7 @@
 
 import { mapNullable } from 'ts-data-forge';
 
-interface User {
+type User = {
   id: number;
   name?: string;
   email?: string;

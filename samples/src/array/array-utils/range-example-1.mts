@@ -41,10 +41,10 @@ const reversedIndices = Arr.range(9, -1, -1); // readonly SafeInt[] -> [9, 8, 7,
 
 // Functional programming patterns
 const squares = Arr.range(1, 6).map((x) => x * x); // [1, 4, 9, 16, 25]
-const fibonacci = Arr.range(0, 10).reduce((acc, _, i) => {
+const fibonacci = Arr.range(0, 10).reduce<number[]>((acc, _, i) => {
   if (i <= 1) return [...acc, i];
   return [...acc, acc[i - 1] + acc[i - 2]];
-}, [] as number[]); // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+}, []); // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 
 // Type inference examples showing precise vs general types
 expectType<typeof range1to4, readonly [1, 2, 3, 4]>('='); // Precise tuple
