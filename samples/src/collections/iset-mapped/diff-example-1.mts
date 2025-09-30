@@ -1,34 +1,22 @@
-// Example: src/collections/iset-mapped.mts (diff)
+// Example: src/collections/iset-mapped.mts
 import { ISetMapped } from 'ts-data-forge';
 
-type Tag = { name: string };
-const tagToKey = (t: Tag): string => t.name;
-const keyToTag = (name: string): Tag => ({ name });
+type Key = { id: number };
+const toKey = (value: Key) => value.id;
+const fromKey = (id: number): Key => ({ id });
 
-const oldTags = ISetMapped.create<Tag, string>(
-  [{ name: 'typescript' }, { name: 'javascript' }],
-  tagToKey,
-  keyToTag,
+const set = ISetMapped.create(
+  [{ id: 1 }, { id: 2 }],
+  toKey,
+  fromKey,
 );
-const newTags = ISetMapped.create<Tag, string>(
-  [{ name: 'javascript' }, { name: 'react' }, { name: 'nextjs' }],
-  tagToKey,
-  keyToTag,
-);
+const withThree = set.add({ id: 3 });
 
-const diffResult = ISetMapped.diff(oldTags, newTags);
+const summary = {
+  hasTwo: withThree.has({ id: 2 }),
+  size: withThree.size,
+  values: withThree.toArray(),
+};
 
-console.log(
-  'Deleted tags:',
-  diffResult.deleted.toArray().map((t) => t.name),
-);
-// Output: Deleted tags: ["typescript"]
-
-console.log(
-  'Added tags:',
-  diffResult.added.toArray().map((t) => t.name),
-);
-// Output: Added tags: ["react", "nextjs"]
-
-export { diffResult, keyToTag, newTags, oldTags, tagToKey };
-export type { Tag };
+// embed-sample-code-ignore-below
+export { summary };

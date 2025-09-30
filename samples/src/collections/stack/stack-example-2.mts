@@ -1,40 +1,15 @@
-// Example: src/collections/stack.mts (stack)
-const stack = createStack<string>();
+// Example: src/collections/stack.mts
+import { createStack } from 'ts-data-forge';
 
-// Add some elements
-stack.push('bottom', 'middle', 'top');
+const stack = createStack(['first']);
+stack.push('second');
+const popped = stack.pop();
 
-// Remove elements in LIFO order
-const top = stack.pop();
-if (top.isSome) {
-  console.log(top.value); // "top" (last pushed, first popped)
-}
-
-const middle = stack.pop().unwrap(); // "middle"
-console.log(stack.size); // 1
-
-// Safe handling of empty stack
-const emptyStack = createStack<number>();
-const result = emptyStack.pop();
-if (result.isNone) {
-  console.log('Stack is empty');
-}
-
-// Typical usage in algorithms
-const pathStack = createStack<string>();
-pathStack.push('/home', '/users', '/documents');
-
-// Backtrack one level
-const currentDir = pathStack.pop().unwrap(); // "/documents"
-const parentDir = pathStack.pop().unwrap(); // "/users"
-
-export {
-  currentDir,
-  emptyStack,
-  middle,
-  parentDir,
-  pathStack,
-  result,
-  stack,
-  top,
+const summary = {
+  isEmpty: stack.isEmpty,
+  popped,
+  size: stack.size,
 };
+
+// embed-sample-code-ignore-below
+export { summary };

@@ -1,30 +1,22 @@
-// Example: src/collections/iset-mapped.mts (union)
+// Example: src/collections/iset-mapped.mts
 import { ISetMapped } from 'ts-data-forge';
 
-type FeatureFlag = { flagName: string };
-const flagToKey = (f: FeatureFlag): string => f.flagName;
-const keyToFlag = (name: string): FeatureFlag => ({ flagName: name });
+type Key = { id: number };
+const toKey = (value: Key) => value.id;
+const fromKey = (id: number): Key => ({ id });
 
-const setA = ISetMapped.create<FeatureFlag, string>(
-  [{ flagName: 'newUI' }, { flagName: 'betaFeature' }],
-  flagToKey,
-  keyToFlag,
+const set = ISetMapped.create(
+  [{ id: 1 }, { id: 2 }],
+  toKey,
+  fromKey,
 );
-const setB = ISetMapped.create<FeatureFlag, string>(
-  [{ flagName: 'betaFeature' }, { flagName: 'darkMode' }],
-  flagToKey,
-  keyToFlag,
-);
+const withThree = set.add({ id: 3 });
 
-const combinedFlags = ISetMapped.union(setA, setB);
-// The order might vary as sets are unordered internally.
-console.log(
-  combinedFlags
-    .toArray()
-    .map((f) => f.flagName)
-    .toSorted(),
-);
-// Output: ["betaFeature", "darkMode", "newUI"]
+const summary = {
+  hasTwo: withThree.has({ id: 2 }),
+  size: withThree.size,
+  values: withThree.toArray(),
+};
 
-export { combinedFlags, flagToKey, keyToFlag, setA, setB };
-export type { FeatureFlag };
+// embed-sample-code-ignore-below
+export { summary };

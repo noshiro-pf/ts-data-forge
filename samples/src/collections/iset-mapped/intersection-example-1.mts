@@ -1,32 +1,22 @@
-// Example: src/collections/iset-mapped.mts (intersection)
+// Example: src/collections/iset-mapped.mts
 import { ISetMapped } from 'ts-data-forge';
 
-type Permission = { id: string };
-const permToKey = (p: Permission): string => p.id;
-const keyToPerm = (id: string): Permission => ({ id });
+type Key = { id: number };
+const toKey = (value: Key) => value.id;
+const fromKey = (id: number): Key => ({ id });
 
-const userPermissions = ISetMapped.create<Permission, string>(
-  [{ id: 'read' }, { id: 'write' }, { id: 'delete' }],
-  permToKey,
-  keyToPerm,
+const set = ISetMapped.create(
+  [{ id: 1 }, { id: 2 }],
+  toKey,
+  fromKey,
 );
-const rolePermissions = ISetMapped.create<Permission, string>(
-  [{ id: 'read' }, { id: 'comment' }, { id: 'write' }],
-  permToKey,
-  keyToPerm,
-);
+const withThree = set.add({ id: 3 });
 
-const commonPermissions = ISetMapped.intersection(
-  userPermissions,
-  rolePermissions,
-);
-console.log(commonPermissions.toArray().map((p) => p.id)); // Output: ["read", "write"]
-
-export {
-  commonPermissions,
-  keyToPerm,
-  permToKey,
-  rolePermissions,
-  userPermissions,
+const summary = {
+  hasTwo: withThree.has({ id: 2 }),
+  size: withThree.size,
+  values: withThree.toArray(),
 };
-export type { Permission };
+
+// embed-sample-code-ignore-below
+export { summary };

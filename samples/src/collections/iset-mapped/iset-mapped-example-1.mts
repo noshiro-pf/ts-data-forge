@@ -1,40 +1,22 @@
-// Example: src/collections/iset-mapped.mts (iset-mapped)
-import { type ISetMapped } from 'ts-data-forge';
+// Example: src/collections/iset-mapped.mts
+import { ISetMapped } from 'ts-data-forge';
 
-// Example with complex object elements
-type User = { id: number; department: string; email: string };
+type Key = { id: number };
+const toKey = (value: Key) => value.id;
+const fromKey = (id: number): Key => ({ id });
 
-// Define transformation functions
-const userToKey = (user: User): string => `${user.department}:${user.id}`;
-const keyToUser = (key: string): User => {
-  const [department, idStr] = key.split(':');
-  // In practice, you might fetch from a cache or reconstruct more robustly
-  return {
-    id: Number(idStr),
-    department,
-    email: `user${idStr}@${department}.com`,
-  };
+const set = ISetMapped.create(
+  [{ id: 1 }, { id: 2 }],
+  toKey,
+  fromKey,
+);
+const withThree = set.add({ id: 3 });
+
+const summary = {
+  hasTwo: withThree.has({ id: 2 }),
+  size: withThree.size,
+  values: withThree.toArray(),
 };
 
-declare const activeUsers: ISetMapped<User, string>;
-
-// All operations work with the complex element type
-const user: User = {
-  id: 123,
-  department: 'engineering',
-  email: 'alice@engineering.com',
-};
-const hasUser = activeUsers.has(user); // O(1)
-const withNewUser = activeUsers.add(user); // O(1) - returns new ISetMapped
-const withoutUser = activeUsers.delete(user); // O(1) - returns new ISetMapped
-
-export {
-  activeUsers,
-  hasUser,
-  keyToUser,
-  user,
-  userToKey,
-  withNewUser,
-  withoutUser,
-};
-export type { User };
+// embed-sample-code-ignore-below
+export { summary };

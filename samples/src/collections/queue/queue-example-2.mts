@@ -1,25 +1,15 @@
-// Example: src/collections/queue.mts (queue)
-const queue = createQueue<string>();
+// Example: src/collections/queue.mts
+import { createQueue } from 'ts-data-forge';
 
-// Add some elements
-queue.enqueue('first');
+const queue = createQueue(['first']);
 queue.enqueue('second');
-queue.enqueue('third');
+const removed = queue.dequeue();
 
-// Remove elements in FIFO order
-const first = queue.dequeue();
-if (first.isSome) {
-  console.log(first.value); // "first"
-}
+const summary = {
+  isEmpty: queue.isEmpty,
+  removed,
+  size: queue.size,
+};
 
-const second = queue.dequeue().unwrap(); // "second"
-console.log(queue.size); // 1
-
-// Safe handling of empty queue
-const emptyQueue = createQueue<number>();
-const result = emptyQueue.dequeue();
-if (result.isNone) {
-  console.log('Queue is empty');
-}
-
-export { emptyQueue, first, queue, result, second };
+// embed-sample-code-ignore-below
+export { summary };
