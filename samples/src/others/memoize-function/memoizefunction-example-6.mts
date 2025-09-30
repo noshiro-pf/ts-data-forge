@@ -1,20 +1,15 @@
-// Example: src/others/memoize-function.mts (memoizeFunction)
-// Memory-conscious memoization with weak references
+// Example: src/others/memoize-function.mts
+import { memoizeFunction } from 'ts-data-forge';
 
-// For object keys, consider using WeakMap externally
-const cache = new WeakMap<UnknownRecord, Result>();
+const memoizedSquare = memoizeFunction((value: number) => value * value, (value) => value);
 
-function memoizeWithWeakMap<T extends UnknownRecord, R>(
-  fn: (obj: T) => R,
-): (obj: T) => R {
-  return (obj: T): R => {
-    if (cache.has(obj)) {
-      return cache.get(obj)!;
-    }
-    const result = fn(obj);
-    cache.set(obj, result);
-    return result;
-  };
-}
+const firstCall = memoizedSquare(4);
+const cachedCall = memoizedSquare(4);
 
-export { cache, memoizeWithWeakMap };
+const summary = {
+  cachedCall,
+  firstCall,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

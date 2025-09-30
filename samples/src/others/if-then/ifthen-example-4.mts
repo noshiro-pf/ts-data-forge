@@ -1,26 +1,15 @@
-// Example: src/others/if-then.mts (ifThen)
-// Contract validation - "if premium then features enabled"
-
+// Example: src/others/if-then.mts
 import { ifThen } from 'ts-data-forge';
 
-type Subscription = {
-  isPremium: boolean;
-  features: {
-    advancedAnalytics: boolean;
-    unlimitedStorage: boolean;
-    prioritySupport: boolean;
-  };
-}
+const implicationTrue = ifThen(true, true);
+const implicationFalse = ifThen(true, false);
+const vacuousTruth = ifThen(false, false);
 
-function validateSubscription(sub: Subscription): boolean {
-  // If premium, then all premium features must be enabled
-  return ifThen(
-    sub.isPremium,
-    sub.features.advancedAnalytics &&
-      sub.features.unlimitedStorage &&
-      sub.features.prioritySupport,
-  );
-}
+const summary = {
+  implicationFalse,
+  implicationTrue,
+  vacuousTruth,
+};
 
-export { validateSubscription };
-export type { Subscription };
+// embed-sample-code-ignore-below
+export { summary };

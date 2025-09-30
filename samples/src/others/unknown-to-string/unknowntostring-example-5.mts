@@ -1,23 +1,13 @@
-// Example: src/others/unknown-to-string.mts (unknownToString)
-// API response formatting
-
+// Example: src/others/unknown-to-string.mts
 import { unknownToString } from 'ts-data-forge';
 
-// Safe error response formatting
-function formatErrorResponse(error: unknown): string {
-  const errorStr = unknownToString(error, { prettyPrintObject: true });
+const numberText = unknownToString(42);
+const objectText = unknownToString({ id: 1, name: 'Ada' }, { prettyPrintObject: true });
 
-  return JSON.stringify({
-    success: false,
-    error: errorStr,
-  });
-}
+const summary = {
+  numberText,
+  objectText,
+};
 
-try {
-  // some operation
-} catch (error) {
-  const response = formatErrorResponse(error);
-  res.status(500).send(response);
-}
-
-export { formatErrorResponse };
+// embed-sample-code-ignore-below
+export { summary };

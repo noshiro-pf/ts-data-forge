@@ -1,23 +1,15 @@
-// Example: src/others/memoize-function.mts (memoizeFunction)
-// Memoizing recursive functions
-
+// Example: src/others/memoize-function.mts
 import { memoizeFunction } from 'ts-data-forge';
 
-// Recursive path finding
-const findPaths = (
-  start: string,
-  end: string,
-  visited: Set<string> = new Set(),
-): string[][] => {
-  if (start === end) return [[end]];
-  // ... complex recursive logic
+const memoizedSquare = memoizeFunction((value: number) => value * value, (value) => value);
+
+const firstCall = memoizedSquare(4);
+const cachedCall = memoizedSquare(4);
+
+const summary = {
+  cachedCall,
+  firstCall,
 };
 
-// Use sorted, serialized visited set for consistent keys
-const memoizedFindPaths = memoizeFunction(
-  findPaths,
-  (start, end, visited = new Set()) =>
-    `${start}->${end}:[${Array.from(visited).toSorted().join(',')}]`,
-);
-
-export { findPaths, memoizedFindPaths };
+// embed-sample-code-ignore-below
+export { summary };

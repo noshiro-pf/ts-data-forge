@@ -1,24 +1,13 @@
-// Example: src/others/map-nullable.mts (mapNullable)
-// Working with optional object properties
-
+// Example: src/others/map-nullable.mts
 import { mapNullable } from 'ts-data-forge';
 
-type User = {
-  id: number;
-  name?: string;
-  email?: string;
-}
+const upper = mapNullable('hello', (value) => value.toUpperCase());
+const lengthOrUndefined = mapNullable((value: string) => value.length)(undefined);
 
-function formatUserDisplay(user: User): string {
-  const displayName =
-    mapNullable(user.name, (name) => name.toUpperCase()) ?? 'Anonymous';
-  const emailDomain = mapNullable(user.email, (email) => email.split('@')[1]);
+const summary = {
+  lengthOrUndefined,
+  upper,
+};
 
-  return `${displayName} ${emailDomain ? `(${emailDomain})` : ''}`;
-}
-
-formatUserDisplay({ id: 1, name: 'John', email: 'john@example.com' }); // "JOHN (example.com)"
-formatUserDisplay({ id: 2 }); // "Anonymous "
-
-export { formatUserDisplay };
-export type { User };
+// embed-sample-code-ignore-below
+export { summary };

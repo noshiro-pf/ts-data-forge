@@ -1,41 +1,15 @@
-// Example: src/others/memoize-function.mts (memoizeFunction)
-// Object arguments with selective memoization
-
+// Example: src/others/memoize-function.mts
 import { memoizeFunction } from 'ts-data-forge';
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  metadata?: Record<string, unknown>;
-}
+const memoizedSquare = memoizeFunction((value: number) => value * value, (value) => value);
 
-const fetchUserPermissions = async (user: User): Promise<string[]> => {
-  console.log(`Fetching permissions for user ${user.id}`);
-  const response = await api.get(`/permissions/${user.id}`);
-  return response.data;
+const firstCall = memoizedSquare(4);
+const cachedCall = memoizedSquare(4);
+
+const summary = {
+  cachedCall,
+  firstCall,
 };
 
-// Memoize based only on user ID, ignoring other fields
-const memoizedFetchPermissions = memoizeFunction(
-  fetchUserPermissions,
-  (user) => user.id, // Only cache by ID
-);
-
-// For multiple identifying fields
-const processUserData = (user: User, orgId: number): ProcessedData => {
-  // Complex processing...
-};
-
-const memoizedProcess = memoizeFunction(
-  processUserData,
-  (user, orgId) => `${user.id}:${orgId}`, // Composite key with separator
-);
-
-export {
-  fetchUserPermissions,
-  memoizedFetchPermissions,
-  memoizedProcess,
-  processUserData,
-};
-export type { User };
+// embed-sample-code-ignore-below
+export { summary };

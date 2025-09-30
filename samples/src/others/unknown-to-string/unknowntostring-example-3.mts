@@ -1,13 +1,13 @@
-// Example: src/others/unknown-to-string.mts (unknownToString)
-// Error handling for circular references
-
+// Example: src/others/unknown-to-string.mts
 import { unknownToString } from 'ts-data-forge';
 
-// Circular reference
-const circular: any = { name: 'parent' };
-circular.self = circular;
+const numberText = unknownToString(42);
+const objectText = unknownToString({ id: 1, name: 'Ada' }, { prettyPrintObject: true });
 
-const result = unknownToString(circular);
-console.log(result); // "Converting circular structure to JSON"
+const summary = {
+  numberText,
+  objectText,
+};
 
-export { circular, result };
+// embed-sample-code-ignore-below
+export { summary };

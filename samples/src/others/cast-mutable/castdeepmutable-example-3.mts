@@ -1,23 +1,23 @@
-// Example: src/others/cast-mutable.mts (castDeepMutable)
-// Type complexity with generics
+// Example: src/others/cast-mutable.mts
+import { castDeepMutable, castMutable } from 'ts-data-forge';
 
-import { castDeepMutable, castDeepReadonly } from 'ts-data-forge';
+type User = { id: number; profile: { active: boolean } };
+const readonlyUser: Readonly<User> = { id: 1, profile: { active: false } };
+const mutableUser = castMutable(readonlyUser);
+mutableUser.profile.active = true;
 
-type DeepReadonlyUser = DeepReadonly<{
-  id: number;
-  profile: {
-    settings: {
-      preferences: string[];
-    };
-  };
-}>;
+const readonlyConfig: Readonly<{ settings: { theme: string } }> = {
+  settings: { theme: 'light' },
+};
+const deepMutableConfig = castDeepMutable(readonlyConfig);
+deepMutableConfig.settings.theme = 'dark';
 
-function updateUserPreferences(user: DeepReadonlyUser, newPref: string) {
-  // Create a mutable copy to work with
-  const mutableUser = castDeepMutable(structuredClone(user));
-  mutableUser.profile.settings.preferences.push(newPref);
-  return castDeepReadonly(mutableUser);
-}
+const summary = {
+  deepMutableConfig,
+  mutableUser,
+  readonlyConfig,
+  readonlyUser,
+};
 
-export { updateUserPreferences };
-export type { DeepReadonlyUser };
+// embed-sample-code-ignore-below
+export { summary };

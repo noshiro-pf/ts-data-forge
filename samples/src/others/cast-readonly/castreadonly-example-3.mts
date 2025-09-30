@@ -1,19 +1,17 @@
-// Example: src/others/cast-readonly.mts (castReadonly)
-// Creating immutable configurations
+// Example: src/others/cast-readonly.mts
+import { castDeepReadonly, castReadonly } from 'ts-data-forge';
 
-import { castReadonly } from 'ts-data-forge';
+const user = { id: 1, profile: { active: true } };
+const readonlyUser = castReadonly(user);
 
-// Start with mutable object for initialization
-const config = {
-  apiUrl: 'https://api.example.com',
-  timeout: 5000,
-  retries: 3,
+const config = { settings: { theme: 'dark', language: 'en' } };
+const deepReadonlyConfig = castDeepReadonly(config);
+
+const summary = {
+  deepReadonlyConfig,
+  readonlyUser,
+  user,
 };
 
-// Validate and process config...
-
-// Export as readonly to prevent modifications
-export const APP_CONFIG = castReadonly(config);
-// APP_CONFIG.timeout = 10000; // ❌ TypeScript Error
-
-export { config };
+// embed-sample-code-ignore-below
+export { summary };

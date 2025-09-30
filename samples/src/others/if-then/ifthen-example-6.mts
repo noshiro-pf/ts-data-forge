@@ -1,12 +1,15 @@
-// Example: src/others/if-then.mts (ifThen)
-// Negation patterns
-
+// Example: src/others/if-then.mts
 import { ifThen } from 'ts-data-forge';
 
-// "If not expired then valid" is equivalent to "expired OR valid"
-const isExpired = Date.now() > expiryDate;
-const isValid = checkValidity();
-const result = ifThen(!isExpired, isValid);
-// Same as: isExpired || isValid
+const implicationTrue = ifThen(true, true);
+const implicationFalse = ifThen(true, false);
+const vacuousTruth = ifThen(false, false);
 
-export { isExpired, isValid, result };
+const summary = {
+  implicationFalse,
+  implicationTrue,
+  vacuousTruth,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

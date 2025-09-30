@@ -1,18 +1,13 @@
-// Example: src/others/tuple.mts (tp)
-// Creating type-safe coordinate systems
-
+// Example: src/others/tuple.mts
 import { tp } from 'ts-data-forge';
 
-// 2D coordinates
-const point2D = tp(10, 20);
-const [x, y] = point2D; // x: 10, y: 20
+const point = tp(10, 20);
+const labels = tp('alpha', 'beta', 'gamma');
 
-// 3D coordinates
-const point3D = tp(10, 20, 30);
-const [x3, y3, z3] = point3D; // Exact types preserved
+const summary = {
+  labels,
+  point,
+};
 
-// Named coordinate system
-const namedPoint = tp('x', 100, 'y', 200);
-// Type: readonly ['x', 100, 'y', 200]
-
-export { namedPoint, point2D, point3D, x, x3, y, y3, z3 };
+// embed-sample-code-ignore-below
+export { summary };

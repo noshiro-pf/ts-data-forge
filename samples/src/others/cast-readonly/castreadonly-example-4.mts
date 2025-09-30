@@ -1,18 +1,17 @@
-// Example: src/others/cast-readonly.mts (castReadonly)
-// Working with array methods
+// Example: src/others/cast-readonly.mts
+import { castDeepReadonly, castReadonly } from 'ts-data-forge';
 
-import { castReadonly } from 'ts-data-forge';
+const user = { id: 1, profile: { active: true } };
+const readonlyUser = castReadonly(user);
 
-const numbers: number[] = [1, 2, 3, 4, 5];
-const readonlyNumbers = castReadonly(numbers);
+const config = { settings: { theme: 'dark', language: 'en' } };
+const deepReadonlyConfig = castDeepReadonly(config);
 
-// Read operations still work
-const doubled = readonlyNumbers.map((n) => n * 2); // ✅ Returns new array
-const sum = readonlyNumbers.reduce((a, b) => a + b, 0); // ✅ Works
-const first = readonlyNumbers[0]; // ✅ Reading is allowed
+const summary = {
+  deepReadonlyConfig,
+  readonlyUser,
+  user,
+};
 
-// Mutations are prevented
-// readonlyNumbers[0] = 10; // ❌ TypeScript Error
-// readonlyNumbers.sort(); // ❌ TypeScript Error (sort mutates)
-
-export { doubled, first, numbers, readonlyNumbers, sum };
+// embed-sample-code-ignore-below
+export { summary };

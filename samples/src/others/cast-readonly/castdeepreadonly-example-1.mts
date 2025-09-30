@@ -1,16 +1,17 @@
-// Example: src/others/cast-readonly.mts (castDeepReadonly)
-// Basic usage with nested structures
+// Example: src/others/cast-readonly.mts
+import { castDeepReadonly, castReadonly } from 'ts-data-forge';
 
-import { castDeepReadonly } from 'ts-data-forge';
+const user = { id: 1, profile: { active: true } };
+const readonlyUser = castReadonly(user);
 
-const mutableNested = {
-  a: { b: [1, 2, 3] },
-  c: { d: { e: 'value' } },
+const config = { settings: { theme: 'dark', language: 'en' } };
+const deepReadonlyConfig = castDeepReadonly(config);
+
+const summary = {
+  deepReadonlyConfig,
+  readonlyUser,
+  user,
 };
 
-const readonlyNested = castDeepReadonly(mutableNested);
-// readonlyNested.a.b.push(4); // ❌ Error: readonly at all levels
-// readonlyNested.c.d.e = 'new'; // ❌ Error: readonly at all levels
-// readonlyNested.a = {}; // ❌ Error: cannot reassign readonly property
-
-export { mutableNested, readonlyNested };
+// embed-sample-code-ignore-below
+export { summary };

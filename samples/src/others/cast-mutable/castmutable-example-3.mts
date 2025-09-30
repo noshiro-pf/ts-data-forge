@@ -1,15 +1,23 @@
-// Example: src/others/cast-mutable.mts (castMutable)
-// Anti-pattern - Avoid mutating shared data
+// Example: src/others/cast-mutable.mts
+import { castDeepMutable, castMutable } from 'ts-data-forge';
 
-import { castMutable } from 'ts-data-forge';
+type User = { id: number; profile: { active: boolean } };
+const readonlyUser: Readonly<User> = { id: 1, profile: { active: false } };
+const mutableUser = castMutable(readonlyUser);
+mutableUser.profile.active = true;
 
-// ❌ Bad: Mutating data that other code expects to be immutable
-const sharedConfig: Readonly<Config> = getConfig();
-const mutable = castMutable(sharedConfig);
-mutable.apiKey = 'new-key'; // Dangerous! Other code expects this to be immutable
+const readonlyConfig: Readonly<{ settings: { theme: string } }> = {
+  settings: { theme: 'light' },
+};
+const deepMutableConfig = castDeepMutable(readonlyConfig);
+deepMutableConfig.settings.theme = 'dark';
 
-// ✅ Good: Create a copy if you need to mutate
-const configCopy = castMutable({ ...sharedConfig });
-configCopy.apiKey = 'new-key'; // Safe - operating on a copy
+const summary = {
+  deepMutableConfig,
+  mutableUser,
+  readonlyConfig,
+  readonlyUser,
+};
 
-export { configCopy, mutable, sharedConfig };
+// embed-sample-code-ignore-below
+export { summary };

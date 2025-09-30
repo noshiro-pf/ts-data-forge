@@ -1,20 +1,15 @@
-// Example: src/others/if-then.mts (ifThen)
-// Access control - "if admin then has all permissions"
-
+// Example: src/others/if-then.mts
 import { ifThen } from 'ts-data-forge';
 
-function checkPermission(user: User, permission: string): boolean {
-  const isAdmin = user.role === 'admin';
-  const hasPermission = user.permissions.includes(permission);
+const implicationTrue = ifThen(true, true);
+const implicationFalse = ifThen(true, false);
+const vacuousTruth = ifThen(false, false);
 
-  // Admin must have all permissions
-  return ifThen(isAdmin, hasPermission);
-}
+const summary = {
+  implicationFalse,
+  implicationTrue,
+  vacuousTruth,
+};
 
-const adminUser = { role: 'admin', permissions: ['read', 'write'] };
-checkPermission(adminUser, 'delete'); // false (admin without delete permission = invalid)
-
-const regularUser = { role: 'user', permissions: ['read'] };
-checkPermission(regularUser, 'delete'); // true (non-admin without permission is valid)
-
-export { adminUser, checkPermission, regularUser };
+// embed-sample-code-ignore-below
+export { summary };

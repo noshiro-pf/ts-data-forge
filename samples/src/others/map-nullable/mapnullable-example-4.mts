@@ -1,32 +1,13 @@
-// Example: src/others/map-nullable.mts (mapNullable)
-// Chaining nullable operations
-
+// Example: src/others/map-nullable.mts
 import { mapNullable } from 'ts-data-forge';
 
-// API response handling
-type ApiResponse = {
-  data?: {
-    user?: {
-      profile?: {
-        displayName?: string;
-      };
-    };
-  };
-}
+const upper = mapNullable('hello', (value) => value.toUpperCase());
+const lengthOrUndefined = mapNullable((value: string) => value.length)(undefined);
 
-function getDisplayName(response: ApiResponse): string | undefined {
-  return mapNullable(response.data?.user?.profile?.displayName, (name) =>
-    name.trim().toUpperCase(),
-  );
-}
+const summary = {
+  lengthOrUndefined,
+  upper,
+};
 
-// Chain multiple transformations
-function processNullableChain(value: string | null): string | undefined {
-  const step1 = mapNullable(value, (v) => v.trim());
-  const step2 = mapNullable(step1, (v) => (v.length > 0 ? v : null));
-  const step3 = mapNullable(step2, (v) => v.toUpperCase());
-  return step3;
-}
-
-export { getDisplayName, processNullableChain };
-export type { ApiResponse };
+// embed-sample-code-ignore-below
+export { summary };

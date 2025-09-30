@@ -1,20 +1,13 @@
-// Example: src/others/unknown-to-string.mts (unknownToString)
-// API response formatting
-
+// Example: src/others/unknown-to-string.mts
 import { unknownToString } from 'ts-data-forge';
 
-// Type-safe logger
-class Logger {
-  log(message: string, data?: unknown): void {
-    const timestamp = new Date().toISOString();
-    const dataStr =
-      data !== undefined
-        ? unknownToString(data, { prettyPrintObject: true })
-        : '';
-    console.log(`[${timestamp}] ${message}`, dataStr);
-  }
-}
+const numberText = unknownToString(42);
+const objectText = unknownToString({ id: 1, name: 'Ada' }, { prettyPrintObject: true });
 
-const logger = new Logger();
+const summary = {
+  numberText,
+  objectText,
+};
 
-logger.log('User data:', { id: 123, name: 'John' });
+// embed-sample-code-ignore-below
+export { summary };

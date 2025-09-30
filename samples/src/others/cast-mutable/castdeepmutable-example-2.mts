@@ -1,19 +1,23 @@
-// Example: src/others/cast-mutable.mts (castDeepMutable)
-// Practical use case - Working with immutable state updates
+// Example: src/others/cast-mutable.mts
+import { castDeepMutable, castMutable } from 'ts-data-forge';
 
-import { castDeepMutable, castDeepReadonly } from 'ts-data-forge';
+type User = { id: number; profile: { active: boolean } };
+const readonlyUser: Readonly<User> = { id: 1, profile: { active: false } };
+const mutableUser = castMutable(readonlyUser);
+mutableUser.profile.active = true;
 
-// When you need to perform multiple mutations before creating new immutable state
-const currentState: DeepReadonly<AppState> = getState();
-const draft = castDeepMutable(structuredClone(currentState)); // Clone first!
+const readonlyConfig: Readonly<{ settings: { theme: string } }> = {
+  settings: { theme: 'light' },
+};
+const deepMutableConfig = castDeepMutable(readonlyConfig);
+deepMutableConfig.settings.theme = 'dark';
 
-// Perform multiple mutations on the draft
-draft.users.push(newUser);
-draft.settings.theme = 'dark';
-draft.data.items[0].completed = true;
+const summary = {
+  deepMutableConfig,
+  mutableUser,
+  readonlyConfig,
+  readonlyUser,
+};
 
-// Create new immutable state from the mutated draft
-const newState = castDeepReadonly(draft);
-setState(newState);
-
-export { currentState, draft, newState };
+// embed-sample-code-ignore-below
+export { summary };

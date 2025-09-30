@@ -1,14 +1,17 @@
-// Example: src/others/cast-readonly.mts (castReadonly)
-// Basic usage with arrays and objects
+// Example: src/others/cast-readonly.mts
+import { castDeepReadonly, castReadonly } from 'ts-data-forge';
 
-import { castReadonly } from 'ts-data-forge';
+const user = { id: 1, profile: { active: true } };
+const readonlyUser = castReadonly(user);
 
-const mutableArr: number[] = [1, 2, 3];
-const readonlyArr = castReadonly(mutableArr);
-// readonlyArr.push(4); // ❌ TypeScript Error: no 'push' on readonly array
+const config = { settings: { theme: 'dark', language: 'en' } };
+const deepReadonlyConfig = castDeepReadonly(config);
 
-const mutableObj = { x: 1, y: 2 };
-const readonlyObj = castReadonly(mutableObj);
-// readonlyObj.x = 5; // ❌ TypeScript Error: cannot assign to readonly property
+const summary = {
+  deepReadonlyConfig,
+  readonlyUser,
+  user,
+};
 
-export { mutableArr, mutableObj, readonlyArr, readonlyObj };
+// embed-sample-code-ignore-below
+export { summary };

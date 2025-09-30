@@ -1,9 +1,15 @@
-// Example: src/others/if-then.mts (ifThen)
-// Basic truth table demonstration
-
+// Example: src/others/if-then.mts
 import { ifThen } from 'ts-data-forge';
 
-ifThen(true, true); // true  (if true then true = true)
-ifThen(true, false); // false (if true then false = false)
-ifThen(false, true); // true  (if false then true = true - vacuously true)
-ifThen(false, false); // true  (if false then false = true - vacuously true)
+const implicationTrue = ifThen(true, true);
+const implicationFalse = ifThen(true, false);
+const vacuousTruth = ifThen(false, false);
+
+const summary = {
+  implicationFalse,
+  implicationTrue,
+  vacuousTruth,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

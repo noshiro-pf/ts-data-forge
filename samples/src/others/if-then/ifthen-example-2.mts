@@ -1,16 +1,15 @@
-// Example: src/others/if-then.mts (ifThen)
-// Validation logic - "if required then must have value"
-
+// Example: src/others/if-then.mts
 import { ifThen } from 'ts-data-forge';
 
-function validateField(value: string, isRequired: boolean): boolean {
-  const hasValue = value.trim().length > 0;
-  return ifThen(isRequired, hasValue);
-}
+const implicationTrue = ifThen(true, true);
+const implicationFalse = ifThen(true, false);
+const vacuousTruth = ifThen(false, false);
 
-validateField('hello', true); // true (required and has value)
-validateField('', true); // false (required but no value)
-validateField('', false); // true (not required, so valid)
-validateField('hello', false); // true (not required, but has value is fine)
+const summary = {
+  implicationFalse,
+  implicationTrue,
+  vacuousTruth,
+};
 
-export { validateField };
+// embed-sample-code-ignore-below
+export { summary };

@@ -1,18 +1,13 @@
-// Example: src/others/unknown-to-string.mts (unknownToString)
-// Using with validation
-
+// Example: src/others/unknown-to-string.mts
 import { unknownToString } from 'ts-data-forge';
 
-// Simple validation helper
-function validateAndStringify(input: unknown): string {
-  const str = unknownToString(input);
-  const trimmed = str.trim();
+const numberText = unknownToString(42);
+const objectText = unknownToString({ id: 1, name: 'Ada' }, { prettyPrintObject: true });
 
-  if (trimmed.length === 0) {
-    throw new Error('Empty string');
-  }
+const summary = {
+  numberText,
+  objectText,
+};
 
-  return trimmed;
-}
-
-export { validateAndStringify };
+// embed-sample-code-ignore-below
+export { summary };

@@ -1,19 +1,17 @@
-// Example: src/others/cast-readonly.mts (castReadonly)
-// Protecting function return values
+// Example: src/others/cast-readonly.mts
+import { castDeepReadonly, castReadonly } from 'ts-data-forge';
 
-import { castReadonly } from 'ts-data-forge';
+const user = { id: 1, profile: { active: true } };
+const readonlyUser = castReadonly(user);
 
-// Prevent callers from mutating internal state
-class UserService {
-  private readonly users: User[] = [];
+const config = { settings: { theme: 'dark', language: 'en' } };
+const deepReadonlyConfig = castDeepReadonly(config);
 
-  getUsers(): readonly User[] {
-    return castReadonly(this.users); // Callers can't mutate the array
-  }
-}
+const summary = {
+  deepReadonlyConfig,
+  readonlyUser,
+  user,
+};
 
-const service = new UserService();
-const users = service.getUsers();
-// users.push(newUser); // ❌ TypeScript prevents this
-
-export { service, users, UserService };
+// embed-sample-code-ignore-below
+export { summary };

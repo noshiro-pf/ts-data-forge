@@ -1,11 +1,23 @@
-// Example: src/others/cast-mutable.mts (castMutable)
-// When to use - Working with third-party APIs
+// Example: src/others/cast-mutable.mts
+import { castDeepMutable, castMutable } from 'ts-data-forge';
 
-import { castMutable } from 'ts-data-forge';
+type User = { id: number; profile: { active: boolean } };
+const readonlyUser: Readonly<User> = { id: 1, profile: { active: false } };
+const mutableUser = castMutable(readonlyUser);
+mutableUser.profile.active = true;
 
-// Some APIs require mutable arrays but you have readonly data
-const readonlyData: readonly string[] = ['a', 'b', 'c'];
-const sortedData = castMutable(Array.from(readonlyData)); // Create a copy first!
-legacyApi.sort(sortedData); // API mutates the array
+const readonlyConfig: Readonly<{ settings: { theme: string } }> = {
+  settings: { theme: 'light' },
+};
+const deepMutableConfig = castDeepMutable(readonlyConfig);
+deepMutableConfig.settings.theme = 'dark';
 
-export { readonlyData, sortedData };
+const summary = {
+  deepMutableConfig,
+  mutableUser,
+  readonlyConfig,
+  readonlyUser,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

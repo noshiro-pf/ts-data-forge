@@ -1,24 +1,13 @@
-// Example: src/others/map-nullable.mts (mapNullable)
-// Curried usage for functional composition
-
+// Example: src/others/map-nullable.mts
 import { mapNullable } from 'ts-data-forge';
 
-// Create reusable transformers
-const toUpperCase = mapNullable((s: string) => s.toUpperCase());
-const addPrefix = mapNullable((s: string) => `PREFIX_${s}`);
-const parseNumber = mapNullable((s: string) => Number.parseInt(s, 10));
+const upper = mapNullable('hello', (value) => value.toUpperCase());
+const lengthOrUndefined = mapNullable((value: string) => value.length)(undefined);
 
-// Use in different contexts
-toUpperCase('hello'); // "HELLO"
-toUpperCase(null); // undefined
-
-// Compose transformations
-const processString = (s: string | null) => {
-  const upper = toUpperCase(s);
-  return addPrefix(upper);
+const summary = {
+  lengthOrUndefined,
+  upper,
 };
 
-processString('test'); // "PREFIX_TEST"
-processString(null); // undefined
-
-export { addPrefix, parseNumber, processString, toUpperCase };
+// embed-sample-code-ignore-below
+export { summary };

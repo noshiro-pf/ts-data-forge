@@ -1,29 +1,17 @@
-// Example: src/others/cast-readonly.mts (castDeepReadonly)
-// Working with Redux or state management
+// Example: src/others/cast-readonly.mts
+import { castDeepReadonly, castReadonly } from 'ts-data-forge';
 
-import { castDeepReadonly } from 'ts-data-forge';
+const user = { id: 1, profile: { active: true } };
+const readonlyUser = castReadonly(user);
 
-// Redux reducer example
-type State = DeepReadonly<AppState>;
+const config = { settings: { theme: 'dark', language: 'en' } };
+const deepReadonlyConfig = castDeepReadonly(config);
 
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case 'UPDATE_USER_NAME':
-      // Must create new objects, can't mutate
-      return castDeepReadonly({
-        ...state,
-        user: {
-          ...state.user,
-          profile: {
-            ...state.user.profile,
-            name: action.payload,
-          },
-        },
-      });
-    default:
-      return state;
-  }
-}
+const summary = {
+  deepReadonlyConfig,
+  readonlyUser,
+  user,
+};
 
-export { reducer };
-export type { State };
+// embed-sample-code-ignore-below
+export { summary };

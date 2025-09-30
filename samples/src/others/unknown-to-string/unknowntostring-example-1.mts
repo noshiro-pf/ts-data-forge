@@ -1,19 +1,13 @@
-// Example: src/others/unknown-to-string.mts (unknownToString)
-// Basic type conversions
-
+// Example: src/others/unknown-to-string.mts
 import { unknownToString } from 'ts-data-forge';
 
-// Primitive types
-unknownToString('hello'); // 'hello'
-unknownToString(123); // '123'
-unknownToString(true); // 'true'
-unknownToString(null); // 'null'
-unknownToString(undefined); // 'undefined'
-unknownToString(Symbol('test')); // 'Symbol(test)'
-unknownToString(123n); // '123'
+const numberText = unknownToString(42);
+const objectText = unknownToString({ id: 1, name: 'Ada' }, { prettyPrintObject: true });
 
-// Function conversion
-const fn = () => 'test';
-unknownToString(fn); // "() => 'test'"
+const summary = {
+  numberText,
+  objectText,
+};
 
-export { fn };
+// embed-sample-code-ignore-below
+export { summary };

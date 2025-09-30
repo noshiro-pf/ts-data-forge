@@ -1,17 +1,17 @@
-// Example: src/others/cast-readonly.mts (castDeepReadonly)
-// Type inference with generics
+// Example: src/others/cast-readonly.mts
+import { castDeepReadonly, castReadonly } from 'ts-data-forge';
 
-import { castDeepReadonly } from 'ts-data-forge';
+const user = { id: 1, profile: { active: true } };
+const readonlyUser = castReadonly(user);
 
-function processData<T>(data: T): DeepReadonly<T> {
-  // Perform processing...
-  console.log('Processing:', data);
+const config = { settings: { theme: 'dark', language: 'en' } };
+const deepReadonlyConfig = castDeepReadonly(config);
 
-  // Return immutable version
-  return castDeepReadonly(data);
-}
+const summary = {
+  deepReadonlyConfig,
+  readonlyUser,
+  user,
+};
 
-const result = processData({ nested: { value: [1, 2, 3] } });
-// Type of result is DeepReadonly<{ nested: { value: number[] } }>
-
-export { processData, result };
+// embed-sample-code-ignore-below
+export { summary };

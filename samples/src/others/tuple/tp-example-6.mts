@@ -1,21 +1,13 @@
-// Example: src/others/tuple.mts (tp)
-// Integration with other utilities
+// Example: src/others/tuple.mts
+import { tp } from 'ts-data-forge';
 
-import { Result, pipe, tp } from 'ts-data-forge';
+const point = tp(10, 20);
+const labels = tp('alpha', 'beta', 'gamma');
 
-// Type-safe error handling
-function divide(a: number, b: number): Result<number, string> {
-  if (b === 0) return Result.err('Division by zero');
-  return Result.ok(a / b);
-}
+const summary = {
+  labels,
+  point,
+};
 
-const calculation = tp(10, 2);
-const result = divide(...calculation); // Spread tuple as arguments
-
-// Building pipelines with tuples
-const pipeline = pipe(tp(5, 10))
-  .map(([a, b]) => tp(a + b, a * b))
-  .map(([sum, product]) => tp('sum', sum, 'product', product)).value;
-// Type: readonly ['sum', 15, 'product', 50]
-
-export { calculation, divide, pipeline, result };
+// embed-sample-code-ignore-below
+export { summary };

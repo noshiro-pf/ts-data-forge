@@ -1,14 +1,23 @@
-// Example: src/others/cast-mutable.mts (castMutable)
-// Basic usage with arrays and objects
+// Example: src/others/cast-mutable.mts
+import { castDeepMutable, castMutable } from 'ts-data-forge';
 
-import { castMutable } from 'ts-data-forge';
+type User = { id: number; profile: { active: boolean } };
+const readonlyUser: Readonly<User> = { id: 1, profile: { active: false } };
+const mutableUser = castMutable(readonlyUser);
+mutableUser.profile.active = true;
 
-const readonlyArr: readonly number[] = [1, 2, 3];
-const mutableArr = castMutable(readonlyArr);
-mutableArr.push(4); // Now allowed by TypeScript
+const readonlyConfig: Readonly<{ settings: { theme: string } }> = {
+  settings: { theme: 'light' },
+};
+const deepMutableConfig = castDeepMutable(readonlyConfig);
+deepMutableConfig.settings.theme = 'dark';
 
-const readonlyObj: Readonly<{ x: number }> = { x: 1 };
-const mutableObj = castMutable(readonlyObj);
-mutableObj.x = 2; // Now allowed by TypeScript
+const summary = {
+  deepMutableConfig,
+  mutableUser,
+  readonlyConfig,
+  readonlyUser,
+};
 
-export { mutableArr, mutableObj, readonlyArr, readonlyObj };
+// embed-sample-code-ignore-below
+export { summary };

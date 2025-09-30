@@ -1,20 +1,13 @@
-// Example: src/others/unknown-to-string.mts (unknownToString)
-// Working with special objects
-
+// Example: src/others/unknown-to-string.mts
 import { unknownToString } from 'ts-data-forge';
 
-// Date objects
-unknownToString(new Date('2023-01-01'));
-// '"2023-01-01T00:00:00.000Z"' - JSON stringified
+const numberText = unknownToString(42);
+const objectText = unknownToString({ id: 1, name: 'Ada' }, { prettyPrintObject: true });
 
-// Regular expressions
-unknownToString(/test/gi);
-// '{}' - RegExp has no enumerable properties
+const summary = {
+  numberText,
+  objectText,
+};
 
-// Arrays
-unknownToString([1, 'two', { three: 3 }]);
-// '[1,"two",{"three":3}]'
-
-// Map and Set (converted to empty objects by JSON.stringify)
-unknownToString(new Map([['a', 1]])); // '{}'
-unknownToString(new Set([1, 2, 3])); // '{}'
+// embed-sample-code-ignore-below
+export { summary };

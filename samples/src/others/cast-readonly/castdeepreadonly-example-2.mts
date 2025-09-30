@@ -1,36 +1,17 @@
-// Example: src/others/cast-readonly.mts (castDeepReadonly)
-// Protecting complex state objects
+// Example: src/others/cast-readonly.mts
+import { castDeepReadonly, castReadonly } from 'ts-data-forge';
 
-import { castDeepReadonly } from 'ts-data-forge';
+const user = { id: 1, profile: { active: true } };
+const readonlyUser = castReadonly(user);
 
-type AppState = {
-  user: {
-    id: number;
-    profile: {
-      name: string;
-      settings: {
-        theme: string;
-        notifications: boolean[];
-      };
-    };
-  };
-  data: {
-    items: { id: number; value: string }[];
-  };
-}
+const config = { settings: { theme: 'dark', language: 'en' } };
+const deepReadonlyConfig = castDeepReadonly(config);
 
-class StateManager {
-  private readonly state: AppState = initialState;
+const summary = {
+  deepReadonlyConfig,
+  readonlyUser,
+  user,
+};
 
-  getState(): DeepReadonly<AppState> {
-    return castDeepReadonly(this.state);
-  }
-
-  // Mutations only allowed through specific methods
-  updateTheme(theme: string) {
-    this.state.user.profile.settings.theme = theme;
-  }
-}
-
-export { StateManager };
-export type { AppState };
+// embed-sample-code-ignore-below
+export { summary };

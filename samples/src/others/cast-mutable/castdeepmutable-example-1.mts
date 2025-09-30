@@ -1,15 +1,23 @@
-// Example: src/others/cast-mutable.mts (castDeepMutable)
-// Basic usage with nested structures
+// Example: src/others/cast-mutable.mts
+import { castDeepMutable, castMutable } from 'ts-data-forge';
 
-import { castDeepMutable } from 'ts-data-forge';
+type User = { id: number; profile: { active: boolean } };
+const readonlyUser: Readonly<User> = { id: 1, profile: { active: false } };
+const mutableUser = castMutable(readonlyUser);
+mutableUser.profile.active = true;
 
-const readonlyNested: Readonly<{
-  a: { b: readonly number[] };
-}> = { a: { b: [1, 2, 3] } };
+const readonlyConfig: Readonly<{ settings: { theme: string } }> = {
+  settings: { theme: 'light' },
+};
+const deepMutableConfig = castDeepMutable(readonlyConfig);
+deepMutableConfig.settings.theme = 'dark';
 
-const mutableNested = castDeepMutable(readonlyNested);
-mutableNested.a.b.push(4); // Mutations allowed at all levels
-mutableNested.a = { b: [5, 6] }; // Can replace entire objects
-mutableNested.a.b[0] = 99; // Can mutate array elements
+const summary = {
+  deepMutableConfig,
+  mutableUser,
+  readonlyConfig,
+  readonlyUser,
+};
 
-export { mutableNested, readonlyNested };
+// embed-sample-code-ignore-below
+export { summary };

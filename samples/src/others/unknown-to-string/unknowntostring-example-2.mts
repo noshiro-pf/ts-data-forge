@@ -1,24 +1,13 @@
-// Example: src/others/unknown-to-string.mts (unknownToString)
-// Object stringification
-
+// Example: src/others/unknown-to-string.mts
 import { unknownToString } from 'ts-data-forge';
 
-// Simple object
-const obj = { a: 1, b: 'hello', c: [1, 2, 3] };
-const result = unknownToString(obj);
-console.log(result); // '{"a":1,"b":"hello","c":[1,2,3]}'
+const numberText = unknownToString(42);
+const objectText = unknownToString({ id: 1, name: 'Ada' }, { prettyPrintObject: true });
 
-// Pretty printing
-const prettyResult = unknownToString(obj, { prettyPrintObject: true });
-console.log(prettyResult);
-// {
-//   "a": 1,
-//   "b": "hello",
-//   "c": [
-//     1,
-//     2,
-//     3
-//   ]
-// }
+const summary = {
+  numberText,
+  objectText,
+};
 
-export { obj, prettyResult, result };
+// embed-sample-code-ignore-below
+export { summary };
