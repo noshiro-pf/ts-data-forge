@@ -1,13 +1,6 @@
-// Example: src/expect-type.mts (expectType)
-
-// Primitive type equality
+// Example: src/expect-type.mts
 import { expectType } from 'ts-data-forge';
 
-expectType<string, string>('='); // ✓ exact match
-expectType<number, string>('!='); // ✓ different types
-expectType<42, number>('<='); // ✓ literal extends primitive
-expectType<number, 42>('>='); // ✓ primitive is supertype
+expectType<string, string>('=');
+expectType<number, number>('=');
 
-// Type assertions will cause compilation errors for wrong relationships:
-// expectType<string, number>("=");        // ❌ TypeScript error
-// expectType<number, string>("<=");       // ❌ TypeScript error

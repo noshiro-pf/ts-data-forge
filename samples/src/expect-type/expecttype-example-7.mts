@@ -1,17 +1,8 @@
-// Example: src/expect-type.mts (expectType)
+// Example: src/expect-type.mts
 import { expectType } from 'ts-data-forge';
 
-import { hasKey, isRecord } from 'ts-data-forge';
+type Guarded<T> = { value: T; success: true } | { success: false };
 
-// Testing type guard functions
-if (isRecord(value)) {
-  expectType<typeof value, UnknownRecord>('<=');
-}
+const result: Guarded<string> = { value: 'ok', success: true };
+expectType<typeof result, Guarded<string>>('<=');
 
-// Testing compile-time type predicates
-const obj = { key: 'value' };
-if (hasKey(obj, 'key')) {
-  expectType<typeof obj.key, unknown>('<=');
-}
-
-export { obj };

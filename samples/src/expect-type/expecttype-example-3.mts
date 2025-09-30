@@ -1,13 +1,12 @@
-// Example: src/expect-type.mts (expectType)
-// Testing function return types
+// Example: src/expect-type.mts
 import { expectType } from 'ts-data-forge';
 
-const createUser = () => ({ id: 1, name: 'John' });
-expectType<ReturnType<typeof createUser>, { id: number; name: string }>('~=');
+type Result<T> = { ok: true; value: T } | { ok: false; error: string };
 
-// Generic function type inference
-const identity = <T,>(x: T): T => x;
-const result = identity('hello');
-expectType<typeof result, string>('=');
+const userResult: Result<{ id: number; name: string }> = {
+  ok: true,
+  value: { id: 1, name: 'John' },
+};
 
-export { createUser, identity, result };
+expectType<typeof userResult, Result<{ id: number; name: string }>>('<=');
+

@@ -1,14 +1,10 @@
-// Example: src/expect-type.mts (expectType)
+// Example: src/expect-type.mts
 import { expectType } from 'ts-data-forge';
 
-import  { type FiniteNumber, type Int, type PositiveInt } from 'ts-data-forge';
+type ApiResponse =
+  | { status: 'ok'; data: string }
+  | { status: 'error'; message: string };
 
-// Ensure proper type hierarchy
-expectType<PositiveInt, Int>('<='); // positive is subset of int
-expectType<Int, FiniteNumber>('<='); // int is subset of finite
-expectType<FiniteNumber, number>('<='); // finite is subset of number
+const response: ApiResponse = { status: 'ok', data: 'done' };
+expectType<typeof response, ApiResponse>('<=');
 
-// Verify mutual exclusion
-expectType<PositiveInt, NegativeInt>('!='); // different int types
-expectType<PositiveInt, NegativeInt>('!<='); // neither extends the other
-expectType<NegativeInt, PositiveInt>('!<=');

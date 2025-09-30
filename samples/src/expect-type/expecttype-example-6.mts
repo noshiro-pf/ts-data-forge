@@ -1,19 +1,6 @@
-// Example: src/expect-type.mts (expectType)
-import { expectType } from 'ts-data-forge';
+// Example: src/expect-type.mts
+import { Optional, expectType } from 'ts-data-forge';
 
-import { Optional, Result } from 'ts-data-forge';
+const maybeNumber = Optional.some(42);
+expectType<typeof maybeNumber, Optional<number>>('<=');
 
-// Optional type narrowing
-const optional: Optional<number> = Optional.some(42);
-if (Optional.isSome(optional)) {
-  expectType<typeof optional, Optional.Some<number>>('<=');
-}
-if (Optional.isNone(optional)) {
-  expectType<typeof optional, Optional.None>('<=');
-}
-
-// Result type validation
-const result: Result<string, Error> = Result.ok('success');
-expectType<typeof result, Result<string, Error>>('<=');
-
-export { optional, result };

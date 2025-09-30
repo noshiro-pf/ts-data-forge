@@ -1,17 +1,9 @@
-// Example: src/expect-type.mts (expectType)
-import { expectType } from 'ts-data-forge';
+// Example: src/expect-type.mts
+import { Arr, expectType } from 'ts-data-forge';
 
-import { Arr } from 'ts-data-forge';
-
-// Testing array utility function return types
 const zeros = Arr.zeros(3);
-expectType<typeof zeros, readonly [0, 0, 0]>('=');
-
 const sequence = Arr.seq(5);
+
+expectType<typeof zeros, readonly [0, 0, 0]>('=');
 expectType<typeof sequence, readonly [0, 1, 2, 3, 4]>('=');
 
-// Dynamic length arrays
-const dynamicArray = Arr.zeros(someLength);
-expectType<typeof dynamicArray, readonly 0[]>('=');
-
-export { dynamicArray, sequence, zeros };

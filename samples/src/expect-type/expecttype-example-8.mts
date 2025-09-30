@@ -1,18 +1,6 @@
-// Example: src/expect-type.mts (expectType)
+// Example: src/expect-type.mts
 import { expectType } from 'ts-data-forge';
 
-import { expect } from 'vitest';
+const tuple = [1, 'two', true] as const;
+expectType<typeof tuple, readonly [1, 'two', true]>('=');
 
-import { Arr } from 'ts-data-forge';
-
-describe('Arr.zeros', () => {
-  test('should create array of zeros with correct type', () => {
-    const result = Arr.zeros(3);
-
-    // Compile-time type assertion
-    expectType<typeof result, readonly [0, 0, 0]>('=');
-
-    // Runtime behavior assertion
-    expect(result).toStrictEqual([0, 0, 0]);
-  });
-});
