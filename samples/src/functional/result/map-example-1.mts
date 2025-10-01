@@ -1,14 +1,23 @@
-// Example: src/functional/result.mts (map)
-import { Result, pipe } from 'ts-data-forge';
+// Example: src/functional/result.mts
+import { Result } from 'ts-data-forge';
 
-// Regular usage
-const result = Result.ok(5);
-const mapped = Result.map(result, (x) => x * 2);
-console.log(Result.unwrap(mapped)); // 10
+const success = Result.ok(5);
+const failure = Result.err(new Error('fail'));
+const mapped = Result.map(success, (n) => n * 2);
+const mappedErr = Result.mapErr(failure, (error) => error.message);
+const swapped = Result.swap(failure);
+const optional = Result.toOptional(success);
+const fallback = Result.orElse(failure, success);
 
-// Curried version for use with pipe
-const doubler = Result.map((x: number) => x * 2);
-const result2 = pipe(Result.ok(5)).map(doubler).value;
-console.log(Result.unwrap(result2)); // 10
+const summary = {
+  fallback,
+  mapped,
+  mappedErr,
+  optional,
+  success,
+  swapped,
+};
 
-export { doubler, mapped, result, result2 };
+// embed-sample-code-ignore-below
+export { summary };
+

@@ -1,19 +1,16 @@
-// Example: src/functional/match.mts (match)
-// Complex discriminated union handling:
-
+// Example: src/functional/match.mts
 import { match } from 'ts-data-forge';
 
-type ApiResponse =
-  | { status: 'loading' }
-  | { status: 'success'; data: string }
-  | { status: 'error'; error: string };
+const status = match('success' as 'loading' | 'success' | 'error', {
+  loading: 'Loading…',
+  success: 'Completed',
+  error: 'Failed',
+});
 
-const handleResponse = (response: ApiResponse) =>
-  match(response.status, {
-    loading: 'Please wait...',
-    success: 'Data loaded successfully!',
-    error: 'Failed to load data',
-  });
+const summary = {
+  status,
+};
 
-export { handleResponse };
-export type { ApiResponse };
+// embed-sample-code-ignore-below
+export { summary };
+

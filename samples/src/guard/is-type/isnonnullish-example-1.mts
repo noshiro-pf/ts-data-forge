@@ -1,18 +1,19 @@
-// Example: src/guard/is-type.mts (isNonNullish)
-const items: (string | null | undefined)[] = [
-  'hello',
-  null,
-  'world',
-  undefined,
-  'test',
-];
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-const definedItems = items.filter(isNonNullish);
-// definedItems is now string[] - both null and undefined values are filtered out
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-for (const item of definedItems) {
-  // item is guaranteed to be string, never null or undefined
-  console.log(item.toUpperCase());
-}
+const summary = {
+  checks,
+  value,
+};
 
-export { definedItems, items };
+// embed-sample-code-ignore-below
+export { summary };
+

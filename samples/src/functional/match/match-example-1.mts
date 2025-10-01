@@ -1,18 +1,16 @@
-// Example: src/functional/match.mts (match)
-// Exhaustive matching (no default needed):
-
+// Example: src/functional/match.mts
 import { match } from 'ts-data-forge';
 
-type Status = 'loading' | 'success' | 'error';
-const status: Status = 'loading';
-
-const message = match(status, {
-  loading: 'Please wait...',
-  success: 'Operation completed!',
-  error: 'Something went wrong',
+const status = match('success' as 'loading' | 'success' | 'error', {
+  loading: 'Loading…',
+  success: 'Completed',
+  error: 'Failed',
 });
-// Type: string
-// Result: 'Please wait...'
 
-export { message, status };
-export type { Status };
+const summary = {
+  status,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
+

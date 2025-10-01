@@ -1,16 +1,16 @@
-// Example: src/json/json.mts (stringifySortedKey)
-import { Json, Result } from 'ts-data-forge';
+// Example: src/json/json.mts
+import { Json } from 'ts-data-forge';
 
-const unsortedObj = {
-  zebra: 'animal',
-  apple: 'fruit',
-  banana: 'fruit',
+const parsed = Json.parse('{"id":1,"name":"Ada"}');
+const stringified = Json.stringify({ id: 1, name: 'Ada' });
+const selected = Json.stringifySelected({ id: 1, name: 'Ada', role: 'admin' }, ['name']);
+
+const summary = {
+  parsed,
+  selected,
+  stringified,
 };
 
-const sorted = Json.stringifySortedKey(unsortedObj);
-if (Result.isOk(sorted)) {
-  console.log(sorted.value);
-  // '{"apple":"fruit","banana":"fruit","zebra":"animal"}'
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-export { sorted, unsortedObj };

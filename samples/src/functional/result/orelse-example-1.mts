@@ -1,9 +1,23 @@
-// Example: src/functional/result.mts (orElse)
+// Example: src/functional/result.mts
 import { Result } from 'ts-data-forge';
 
-const primary = Result.err('error');
-const fallback = Result.ok('default');
-const result = Result.orElse(primary, fallback);
-console.log(Result.unwrapOk(result)); // "default"
+const success = Result.ok(5);
+const failure = Result.err(new Error('fail'));
+const mapped = Result.map(success, (n) => n * 2);
+const mappedErr = Result.mapErr(failure, (error) => error.message);
+const swapped = Result.swap(failure);
+const optional = Result.toOptional(success);
+const fallback = Result.orElse(failure, success);
 
-export { fallback, primary, result };
+const summary = {
+  fallback,
+  mapped,
+  mappedErr,
+  optional,
+  success,
+  swapped,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
+

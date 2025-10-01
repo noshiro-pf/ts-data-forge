@@ -1,21 +1,16 @@
-// Example: src/guard/key-is-in.mts (keyIsIn)
-// Comparison with hasKey() - different narrowing behavior:
+// Example: src/guard/key-is-in.mts
+import { keyIsIn } from 'ts-data-forge';
 
-import { hasKey, keyIsIn } from 'ts-data-forge';
+const record = { a: 1, b: 2 } as const;
+const key: string = 'a';
+const isKey = keyIsIn(key, record);
+const value = isKey ? record[key] : undefined;
 
-const obj = { x: 10, y: 20 };
-const key: string = 'x';
+const summary = {
+  isKey,
+  value,
+};
 
-// Using keyIsIn - narrows the key type
-if (keyIsIn(key, obj)) {
-  // key is now 'x' | 'y'
-  const value = obj[key]; // Safe access
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-// Using hasKey - narrows the object type
-if (hasKey(obj, key)) {
-  // obj type is narrowed to guarantee the key exists
-  const value = obj.x; // Direct access
-}
-
-export { key, obj };

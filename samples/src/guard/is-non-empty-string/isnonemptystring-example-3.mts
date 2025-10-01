@@ -1,15 +1,13 @@
-// Example: src/guard/is-non-empty-string.mts (isNonEmptyString)
-// Working with literal string types:
-
+// Example: src/guard/is-non-empty-string.mts
 import { isNonEmptyString } from 'ts-data-forge';
 
-type Status = 'active' | 'inactive' | '' | null;
-const status: Status = getStatus();
+const maybeString: string | null = 'hello';
+const result = isNonEmptyString(maybeString) ? maybeString : undefined;
 
-if (isNonEmptyString(status)) {
-  // status is now typed as "active" | "inactive"
-  console.log(`Status is: ${status}`);
-}
+const summary = {
+  result,
+};
 
-export { status };
-export type { Status };
+// embed-sample-code-ignore-below
+export { summary };
+

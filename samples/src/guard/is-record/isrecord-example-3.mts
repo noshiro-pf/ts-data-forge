@@ -1,24 +1,13 @@
-// Example: src/guard/is-record.mts (isRecord)
-// Filtering mixed arrays to find plain objects:
+// Example: src/guard/is-record.mts
+import { isRecord } from 'ts-data-forge';
 
-const mixedData: unknown[] = [
-  { type: 'user', name: 'Alice' },
-  [1, 2, 3],
-  'string',
-  { type: 'admin', permissions: ['read', 'write'] },
-  new Date(),
-  null,
-  { id: 123 },
-];
+const value: unknown = { id: 1 };
+const record = isRecord(value) ? value : undefined;
 
-const records = mixedData.filter(isRecord);
-// records contains only the plain objects:
-// [{ type: 'user', name: 'Alice' }, { type: 'admin', permissions: [...] }, { id: 123 }]
+const summary = {
+  record,
+};
 
-for (const record of records) {
-  // Each record is guaranteed to be UnknownRecord
-  const keys = Object.keys(record);
-  console.log('Object keys:', keys);
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-export { mixedData, records };

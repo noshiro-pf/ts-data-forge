@@ -1,19 +1,16 @@
-// Example: src/functional/match.mts (match)
-// Working with general string types:
-
+// Example: src/functional/match.mts
 import { match } from 'ts-data-forge';
 
-const userInput: string = getUserInput();
+const status = match('success' as 'loading' | 'success' | 'error', {
+  loading: 'Loading…',
+  success: 'Completed',
+  error: 'Failed',
+});
 
-const route = match(
-  userInput,
-  {
-    home: '/',
-    about: '/about',
-    contact: '/contact',
-  },
-  '/404',
-); // Default required for string type
-// Type: '/' | '/about' | '/contact' | '/404'
+const summary = {
+  status,
+};
 
-export { route, userInput };
+// embed-sample-code-ignore-below
+export { summary };
+

@@ -1,31 +1,14 @@
-// Example: src/guard/is-primitive.mts (isPrimitive)
-// Deep cloning detection - primitives don't need cloning:
+// Example: src/guard/is-primitive.mts
+import { isPrimitive } from 'ts-data-forge';
 
-import { isPrimitive, isRecord } from 'ts-data-forge';
+const primitives = ['text', 123, null, true];
+const checks = primitives.map((item) => isPrimitive(item));
 
-function deepClone<T>(value: T): T {
-  if (isPrimitive(value)) {
-    // Primitives are immutable, return as-is
-    return value;
-  }
+const summary = {
+  checks,
+  primitives,
+};
 
-  // Handle object cloning for non-primitives
-  if (Array.isArray(value)) {
-    return value.map(deepClone) as T;
-  }
+// embed-sample-code-ignore-below
+export { summary };
 
-  if (isRecord(value)) {
-    const cloned = {} as T;
-    for (const key in value) {
-      if (Object.hasOwn(value, key)) {
-        cloned[key] = deepClone(value[key]);
-      }
-    }
-    return cloned;
-  }
-
-  // For other object types, return as-is or implement specific cloning
-  return value;
-}
-
-export { deepClone };

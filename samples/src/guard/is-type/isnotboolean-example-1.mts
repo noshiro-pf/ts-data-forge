@@ -1,13 +1,19 @@
-// Example: src/guard/is-type.mts (isNotBoolean)
-import { isNotBoolean } from 'ts-data-forge';
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-type MixedValue = string | number | boolean;
-const value: MixedValue = getValue();
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-if (isNotBoolean(value)) {
-  // value is now string | number
-  console.log('Non-boolean value:', value);
-}
+const summary = {
+  checks,
+  value,
+};
 
-export { value };
-export type { MixedValue };
+// embed-sample-code-ignore-below
+export { summary };
+

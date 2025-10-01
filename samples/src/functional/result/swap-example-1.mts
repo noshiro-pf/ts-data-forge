@@ -1,9 +1,23 @@
-// Example: src/functional/result.mts (swap)
+// Example: src/functional/result.mts
 import { Result } from 'ts-data-forge';
 
-const okResult = Result.ok(42);
-const swapped = Result.swap(okResult);
-console.log(Result.isErr(swapped)); // true
-console.log(Result.unwrapErr(swapped)); // 42
+const success = Result.ok(5);
+const failure = Result.err(new Error('fail'));
+const mapped = Result.map(success, (n) => n * 2);
+const mappedErr = Result.mapErr(failure, (error) => error.message);
+const swapped = Result.swap(failure);
+const optional = Result.toOptional(success);
+const fallback = Result.orElse(failure, success);
 
-export { okResult, swapped };
+const summary = {
+  fallback,
+  mapped,
+  mappedErr,
+  optional,
+  success,
+  swapped,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
+

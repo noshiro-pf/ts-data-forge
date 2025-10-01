@@ -1,14 +1,23 @@
-// Example: src/functional/optional.mts (unwrapThrow)
+// Example: src/functional/optional.mts
 import { Optional } from 'ts-data-forge';
 
-const userInput = Optional.some(42);
-console.log(Optional.unwrapThrow(userInput)); // 42
-
+const someNumber = Optional.some(5);
 const empty = Optional.none;
-try {
-  Optional.unwrapThrow(empty); // throws Error
-} catch (error) {
-  console.log(error.message); // "`unwrapThrow()` has failed because it is `None`"
-}
+const doubled = Optional.map(someNumber, (n) => n * 2);
+const flatMapped = Optional.flatMap(someNumber, (n) => Optional.some(n.toString()));
+const filtered = Optional.filter(someNumber, (n) => n > 3);
+const fallback = Optional.unwrapOr(empty, 0);
+const zipped = Optional.zip(Optional.some('left'), Optional.some('right'));
 
-export { empty, userInput };
+const summary = {
+  doubled,
+  fallback,
+  filtered,
+  flatMapped,
+  someNumber,
+  zipped,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
+

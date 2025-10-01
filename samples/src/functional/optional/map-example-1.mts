@@ -1,12 +1,23 @@
-// Example: src/functional/optional.mts (map)
+// Example: src/functional/optional.mts
 import { Optional } from 'ts-data-forge';
 
 const someNumber = Optional.some(5);
-const mapped = Optional.map(someNumber, (x) => x * 2);
-console.log(Optional.unwrap(mapped)); // 10
+const empty = Optional.none;
+const doubled = Optional.map(someNumber, (n) => n * 2);
+const flatMapped = Optional.flatMap(someNumber, (n) => Optional.some(n.toString()));
+const filtered = Optional.filter(someNumber, (n) => n > 3);
+const fallback = Optional.unwrapOr(empty, 0);
+const zipped = Optional.zip(Optional.some('left'), Optional.some('right'));
 
-const noneValue = Optional.none;
-const mappedNone = Optional.map(noneValue, (x) => x * 2);
-console.log(Optional.isNone(mappedNone)); // true
+const summary = {
+  doubled,
+  fallback,
+  filtered,
+  flatMapped,
+  someNumber,
+  zipped,
+};
 
-export { mapped, mappedNone, noneValue, someNumber };
+// embed-sample-code-ignore-below
+export { summary };
+

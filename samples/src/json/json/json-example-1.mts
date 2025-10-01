@@ -1,18 +1,16 @@
-// Example: src/json/json.mts (Json)
-// Basic usage
+// Example: src/json/json.mts
+import { Json } from 'ts-data-forge';
 
-import { Json, Result } from 'ts-data-forge';
+const parsed = Json.parse('{"id":1,"name":"Ada"}');
+const stringified = Json.stringify({ id: 1, name: 'Ada' });
+const selected = Json.stringifySelected({ id: 1, name: 'Ada', role: 'admin' }, ['name']);
 
-// Parse JSON safely
-const parseResult = Json.parse('{"name": "Alice", "age": 30}');
-if (Result.isOk(parseResult)) {
-  console.log(parseResult.value); // { name: 'Alice', age: 30 }
-}
+const summary = {
+  parsed,
+  selected,
+  stringified,
+};
 
-// Stringify with error handling
-const stringifyResult = Json.stringify({ name: 'Bob', age: 25 });
-if (Result.isOk(stringifyResult)) {
-  console.log(stringifyResult.value); // '{"name":"Bob","age":25}'
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-export { parseResult, stringifyResult };

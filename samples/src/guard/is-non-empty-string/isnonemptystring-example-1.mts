@@ -1,11 +1,13 @@
-// Example: src/guard/is-non-empty-string.mts (isNonEmptyString)
-// Basic usage with different string types:
-
+// Example: src/guard/is-non-empty-string.mts
 import { isNonEmptyString } from 'ts-data-forge';
 
-isNonEmptyString('hello'); // true
-isNonEmptyString(' '); // true (whitespace is considered non-empty)
-isNonEmptyString('\t\n'); // true (whitespace characters are non-empty)
-isNonEmptyString(''); // false
-isNonEmptyString(null); // false
-isNonEmptyString(undefined); // false
+const maybeString: string | null = 'hello';
+const result = isNonEmptyString(maybeString) ? maybeString : undefined;
+
+const summary = {
+  result,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
+

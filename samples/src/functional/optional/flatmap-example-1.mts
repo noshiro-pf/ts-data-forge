@@ -1,12 +1,23 @@
-// Example: src/functional/optional.mts (flatMap)
+// Example: src/functional/optional.mts
 import { Optional } from 'ts-data-forge';
 
-const parseNumber = (s: string): Optional<number> => {
-  const n = Number(s);
-  return isNaN(n) ? Optional.none : Optional.some(n);
+const someNumber = Optional.some(5);
+const empty = Optional.none;
+const doubled = Optional.map(someNumber, (n) => n * 2);
+const flatMapped = Optional.flatMap(someNumber, (n) => Optional.some(n.toString()));
+const filtered = Optional.filter(someNumber, (n) => n > 3);
+const fallback = Optional.unwrapOr(empty, 0);
+const zipped = Optional.zip(Optional.some('left'), Optional.some('right'));
+
+const summary = {
+  doubled,
+  fallback,
+  filtered,
+  flatMapped,
+  someNumber,
+  zipped,
 };
 
-const result = Optional.flatMap(Optional.some('42'), parseNumber);
-console.log(Optional.unwrap(result)); // 42
+// embed-sample-code-ignore-below
+export { summary };
 
-export { parseNumber, result };

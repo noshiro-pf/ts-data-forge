@@ -1,13 +1,19 @@
-// Example: src/guard/is-type.mts (isNotSymbol)
-import { isNotSymbol } from 'ts-data-forge';
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-type PropertyKey = string | number | symbol;
-const key: PropertyKey = getPropertyKey();
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-if (isNotSymbol(key)) {
-  // key is now string | number
-  console.log('Non-symbol key:', key);
-}
+const summary = {
+  checks,
+  value,
+};
 
-export { key };
-export type { PropertyKey };
+// embed-sample-code-ignore-below
+export { summary };
+

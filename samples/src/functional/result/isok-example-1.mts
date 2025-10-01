@@ -1,30 +1,23 @@
-// Example: src/functional/result.mts (isOk)
+// Example: src/functional/result.mts
 import { Result } from 'ts-data-forge';
 
-// Basic type guard usage
-const result: Result<number, string> = divide(10, 2);
+const success = Result.ok(5);
+const failure = Result.err(new Error('fail'));
+const mapped = Result.map(success, (n) => n * 2);
+const mappedErr = Result.mapErr(failure, (error) => error.message);
+const swapped = Result.swap(failure);
+const optional = Result.toOptional(success);
+const fallback = Result.orElse(failure, success);
 
-if (Result.isOk(result)) {
-  // TypeScript knows result is Result.Ok<number>
-  console.log(result.value); // Safe to access .value
-  console.log(Result.unwrapOk(result)); // 5
-} else {
-  // TypeScript knows result is Result.Err<string>
-  console.log(result.value); // Error message
-}
+const summary = {
+  fallback,
+  mapped,
+  mappedErr,
+  optional,
+  success,
+  swapped,
+};
 
-// Using in conditional logic
-const processResult = (r: Result<string, Error>) => Result.isOk(r)
-    ? r.value.toUpperCase() // Safe string operations
-    : 'Error occurred';
+// embed-sample-code-ignore-below
+export { summary };
 
-// Filtering arrays of Results
-const results: Result<number, string>[] = [
-  Result.ok(1),
-  Result.err('error'),
-  Result.ok(2),
-];
-const successes = results.filter(Result.isOk);
-// successes is Result.Ok<number>[]
-
-export { processResult, result, results, successes };

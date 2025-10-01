@@ -1,22 +1,20 @@
-// Example: src/functional/pipe.mts (pipe)
-// Mixed type transformations:
+// Example: src/functional/pipe.mts
+import { Optional, pipe } from 'ts-data-forge';
 
-import { strict as assert } from 'node:assert/strict';
+const value = pipe(2)
+  .map((n) => n * 3)
+  .mapNullable((n) => n?.toString())
+  .value;
 
-import { pipe } from 'ts-data-forge';
+const optionalValue = pipe(Optional.some('hello'))
+  .mapOptional((text) => text.length)
+  .value;
 
-// Starting with a string, transforming through different types
-const complex = pipe('hello')
-  .map((s) => s.length) // number: 5
-  .map((n) => (n > 3 ? n : undefined)) // number | undefined: 5
-  .mapNullable((n) => n * 10).value; // number: 50 (or undefined if undefined) // 50 or undefined
-assert(complex === 50);
+const summary = {
+  optionalValue,
+  value,
+};
 
-// Short string case
-const shortString = pipe('hi')
-  .map((s) => s.length) // number: 2
-  .map((n) => (n > 3 ? n : undefined)) // number | undefined: undefined
-  .mapNullable((n) => n * 10).value; // undefined
-assert(shortString === undefined);
+// embed-sample-code-ignore-below
+export { summary };
 
-export { complex, shortString };

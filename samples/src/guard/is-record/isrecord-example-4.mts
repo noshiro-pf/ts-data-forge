@@ -1,48 +1,13 @@
-// Example: src/guard/is-record.mts (isRecord)
-// Progressive validation of nested structures:
+// Example: src/guard/is-record.mts
+import { isRecord } from 'ts-data-forge';
 
-import { hasKey, isRecord, isString } from 'ts-data-forge';
+const value: unknown = { id: 1 };
+const record = isRecord(value) ? value : undefined;
 
-type User = {
-  id: string;
-  profile: {
-    name: string;
-    email: string;
-  };
-}
+const summary = {
+  record,
+};
 
-function validateUser(data: unknown): User | null {
-  if (!isRecord(data)) {
-    return null;
-  }
+// embed-sample-code-ignore-below
+export { summary };
 
-  // data is now UnknownRecord
-  if (!hasKey(data, 'id') || !isString(data.id)) {
-    return null;
-  }
-
-  if (!hasKey(data, 'profile') || !isRecord(data.profile)) {
-    return null;
-  }
-
-  const profile = data.profile;
-  if (
-    !hasKey(profile, 'name') ||
-    !isString(profile.name) ||
-    !hasKey(profile, 'email') ||
-    !isString(profile.email)
-  ) {
-    return null;
-  }
-
-  return {
-    id: data.id,
-    profile: {
-      name: profile.name,
-      email: profile.email,
-    },
-  };
-}
-
-export { validateUser };
-export type { User };

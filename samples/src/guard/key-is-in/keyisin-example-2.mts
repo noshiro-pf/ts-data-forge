@@ -1,26 +1,16 @@
-// Example: src/guard/key-is-in.mts (keyIsIn)
-// Dynamic key validation for safe property access:
-
+// Example: src/guard/key-is-in.mts
 import { keyIsIn } from 'ts-data-forge';
 
-const config = {
-  apiUrl: 'https://api.example.com',
-  timeout: 5000,
-  retries: 3,
-} as const;
+const record = { a: 1, b: 2 } as const;
+const key: string = 'a';
+const isKey = keyIsIn(key, record);
+const value = isKey ? record[key] : undefined;
 
-function getConfigValue(key: string): unknown {
-  if (keyIsIn(key, config)) {
-    // key is now narrowed to 'apiUrl' | 'timeout' | 'retries'
-    return config[key]; // Safe access with proper typing
-  }
+const summary = {
+  isKey,
+  value,
+};
 
-  throw new Error(`Invalid config key: ${key}`);
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-// Usage
-const apiUrl = getConfigValue('apiUrl'); // Returns string
-const timeout = getConfigValue('timeout'); // Returns number
-// getConfigValue('invalid') would throw an error
-
-export { apiUrl, config, getConfigValue, timeout };

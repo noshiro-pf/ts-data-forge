@@ -1,9 +1,16 @@
-// Example: src/json/json.mts (parse)
-import { Json, Result } from 'ts-data-forge';
+// Example: src/json/json.mts
+import { Json } from 'ts-data-forge';
 
-const result = Json.parse('{"name": "John", "age": 30}');
-if (Result.isOk(result)) {
-  console.log(result.value.name); // 'John'
-}
+const parsed = Json.parse('{"id":1,"name":"Ada"}');
+const stringified = Json.stringify({ id: 1, name: 'Ada' });
+const selected = Json.stringifySelected({ id: 1, name: 'Ada', role: 'admin' }, ['name']);
 
-export { result };
+const summary = {
+  parsed,
+  selected,
+  stringified,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
+

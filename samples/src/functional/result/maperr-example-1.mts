@@ -1,8 +1,23 @@
-// Example: src/functional/result.mts (mapErr)
+// Example: src/functional/result.mts
 import { Result } from 'ts-data-forge';
 
-const result = Result.err('error');
-const mapped = Result.mapErr(result, (e) => e.toUpperCase());
-console.log(Result.unwrapErr(mapped)); // "ERROR"
+const success = Result.ok(5);
+const failure = Result.err(new Error('fail'));
+const mapped = Result.map(success, (n) => n * 2);
+const mappedErr = Result.mapErr(failure, (error) => error.message);
+const swapped = Result.swap(failure);
+const optional = Result.toOptional(success);
+const fallback = Result.orElse(failure, success);
 
-export { mapped, result };
+const summary = {
+  fallback,
+  mapped,
+  mappedErr,
+  optional,
+  success,
+  swapped,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
+

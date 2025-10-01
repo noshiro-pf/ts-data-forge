@@ -1,14 +1,19 @@
-// Example: src/guard/is-type.mts (isNullish)
-import { isNullish } from 'ts-data-forge';
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-const value: string | null | undefined = getValue();
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-if (isNullish(value)) {
-  // value is now typed as null | undefined
-  console.log('Value is nullish');
-} else {
-  // value is now typed as string
-  console.log('Value length:', value.length);
-}
+const summary = {
+  checks,
+  value,
+};
 
-export { value };
+// embed-sample-code-ignore-below
+export { summary };
+

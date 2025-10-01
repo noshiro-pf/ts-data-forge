@@ -1,18 +1,15 @@
-// Example: src/guard/has-key.mts (hasKey)
-// Basic usage with isRecord for progressive narrowing:
+// Example: src/guard/has-key.mts
+import { hasKey } from 'ts-data-forge';
 
-import { hasKey, isRecord } from 'ts-data-forge';
+const record = { a: 1, b: 2 } as const;
+const hasA = hasKey(record, 'a');
+const value = hasA ? record.a : undefined;
 
-const data: unknown = parseApiResponse();
+const summary = {
+  hasA,
+  value,
+};
 
-if (isRecord(data) && hasKey(data, 'user')) {
-  // data is now Record<string, unknown> with guaranteed 'user' key
-  const user = data.user;
+// embed-sample-code-ignore-below
+export { summary };
 
-  if (isRecord(user) && hasKey(user, 'name')) {
-    // Safely access nested properties
-    console.log('User name:', user.name);
-  }
-}
-
-export { data };

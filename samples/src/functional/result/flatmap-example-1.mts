@@ -1,10 +1,23 @@
-// Example: src/functional/result.mts (flatMap)
+// Example: src/functional/result.mts
 import { Result } from 'ts-data-forge';
 
-const divide = (a: number, b: number): Result<number, string> =>
-  b === 0 ? Result.err('Division by zero') : Result.ok(a / b);
+const success = Result.ok(5);
+const failure = Result.err(new Error('fail'));
+const mapped = Result.map(success, (n) => n * 2);
+const mappedErr = Result.mapErr(failure, (error) => error.message);
+const swapped = Result.swap(failure);
+const optional = Result.toOptional(success);
+const fallback = Result.orElse(failure, success);
 
-const result = Result.flatMap(Result.ok(10), (x) => divide(x, 2));
-console.log(Result.unwrapOk(result)); // 5
+const summary = {
+  fallback,
+  mapped,
+  mappedErr,
+  optional,
+  success,
+  swapped,
+};
 
-export { divide, result };
+// embed-sample-code-ignore-below
+export { summary };
+

@@ -1,17 +1,16 @@
-// Example: src/json/json.mts (stringifySelected)
-import { Json, Result } from 'ts-data-forge';
+// Example: src/json/json.mts
+import { Json } from 'ts-data-forge';
 
-const user = {
-  id: 1,
-  name: 'Alice',
-  email: 'alice@example.com',
-  password: 'secret123',
+const parsed = Json.parse('{"id":1,"name":"Ada"}');
+const stringified = Json.stringify({ id: 1, name: 'Ada' });
+const selected = Json.stringifySelected({ id: 1, name: 'Ada', role: 'admin' }, ['name']);
+
+const summary = {
+  parsed,
+  selected,
+  stringified,
 };
 
-const publicFields = Json.stringifySelected(user, ['id', 'name', 'email']);
-if (Result.isOk(publicFields)) {
-  console.log(publicFields.value);
-  // '{"id":1,"name":"Alice","email":"alice@example.com"}'
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-export { publicFields, user };

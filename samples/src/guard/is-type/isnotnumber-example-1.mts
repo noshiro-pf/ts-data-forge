@@ -1,9 +1,19 @@
-// Example: src/guard/is-type.mts (isNotNumber)
-type Value = string | number | boolean;
-const values: Value[] = ['hello', 42, true, 3.14, false];
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-const nonNumbers = values.filter(isNotNumber);
-// nonNumbers is now (string | boolean)[] - numbers are filtered out
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-export { nonNumbers, values };
-export type { Value };
+const summary = {
+  checks,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
+

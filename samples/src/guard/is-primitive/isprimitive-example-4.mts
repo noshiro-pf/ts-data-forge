@@ -1,26 +1,14 @@
-// Example: src/guard/is-primitive.mts (isPrimitive)
-// Serialization helpers:
-
+// Example: src/guard/is-primitive.mts
 import { isPrimitive } from 'ts-data-forge';
 
-function canSerializeDirectly(value: unknown): boolean {
-  if (isPrimitive(value)) {
-    // Most primitives can be serialized directly
-    return typeof value !== 'symbol' && typeof value !== 'bigint';
-  }
-  return false;
-}
+const primitives = ['text', 123, null, true];
+const checks = primitives.map((item) => isPrimitive(item));
 
-function safeStringify(value: unknown): string {
-  if (isPrimitive(value)) {
-    if (value === null) return 'null';
-    if (value === undefined) return 'undefined';
-    if (typeof value === 'symbol') return value.toString();
-    if (typeof value === 'bigint') return `${value.toString()  }n`;
-    return String(value);
-  }
+const summary = {
+  checks,
+  primitives,
+};
 
-  return JSON.stringify(value);
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-export { canSerializeDirectly, safeStringify };

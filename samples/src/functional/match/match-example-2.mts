@@ -1,21 +1,16 @@
-// Example: src/functional/match.mts (match)
-// Partial matching (default required):
-
+// Example: src/functional/match.mts
 import { match } from 'ts-data-forge';
 
-type Priority = 'low' | 'medium' | 'high' | 'critical';
-const priority: Priority = 'medium';
+const status = match('success' as 'loading' | 'success' | 'error', {
+  loading: 'Loading…',
+  success: 'Completed',
+  error: 'Failed',
+});
 
-const color = match(
-  priority,
-  {
-    high: 'red',
-    critical: 'darkred',
-  },
-  'gray',
-); // Default required for uncovered cases
-// Type: 'red' | 'darkred' | 'gray'
-// Result: 'gray'
+const summary = {
+  status,
+};
 
-export { color, priority };
-export type { Priority };
+// embed-sample-code-ignore-below
+export { summary };
+

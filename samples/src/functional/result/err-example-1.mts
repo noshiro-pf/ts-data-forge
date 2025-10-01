@@ -1,33 +1,23 @@
-// Example: src/functional/result.mts (err)
+// Example: src/functional/result.mts
 import { Result } from 'ts-data-forge';
 
-// Basic error case
-const failure = Result.err('Something went wrong');
-console.log(Result.isErr(failure)); // true
-console.log(Result.unwrapErr(failure)); // "Something went wrong"
+const success = Result.ok(5);
+const failure = Result.err(new Error('fail'));
+const mapped = Result.map(success, (n) => n * 2);
+const mappedErr = Result.mapErr(failure, (error) => error.message);
+const swapped = Result.swap(failure);
+const optional = Result.toOptional(success);
+const fallback = Result.orElse(failure, success);
 
-// Function that can fail
-function parseInteger(input: string): Result<number, string> {
-  const num = Number.parseInt(input, 10);
-  if (isNaN(num)) {
-    return Result.err(`Invalid number format: ${input}`);
-  }
-  return Result.ok(num);
-}
+const summary = {
+  fallback,
+  mapped,
+  mappedErr,
+  optional,
+  success,
+  swapped,
+};
 
-const result = parseInteger('abc');
-console.log(Result.unwrapErr(result)); // "Invalid number format: abc"
+// embed-sample-code-ignore-below
+export { summary };
 
-// Using custom error types
-type ValidationError = {
-  field: string;
-  message: string;
-}
-
-const validationError = Result.err<ValidationError>({
-  field: 'email',
-  message: 'Invalid email format',
-});
-
-export { failure, parseInteger, result, validationError };
-export type { ValidationError };

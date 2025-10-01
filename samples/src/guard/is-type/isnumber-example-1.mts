@@ -1,16 +1,19 @@
-// Example: src/guard/is-type.mts (isNumber)
-import { isNumber } from 'ts-data-forge';
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-const userInput: unknown = parseInput();
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-if (isNumber(userInput)) {
-  // userInput is now typed as number
-  console.log('Number value:', userInput.toFixed(2));
+const summary = {
+  checks,
+  value,
+};
 
-  // Note: this includes NaN and Infinity
-  if (Number.isFinite(userInput)) {
-    console.log('Finite number:', userInput);
-  }
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-export { userInput };

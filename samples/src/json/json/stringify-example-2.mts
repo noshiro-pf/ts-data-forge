@@ -1,13 +1,16 @@
-// Example: src/json/json.mts (stringify)
-// Error handling
+// Example: src/json/json.mts
+import { Json } from 'ts-data-forge';
 
-import { Json, Result } from 'ts-data-forge';
+const parsed = Json.parse('{"id":1,"name":"Ada"}');
+const stringified = Json.stringify({ id: 1, name: 'Ada' });
+const selected = Json.stringifySelected({ id: 1, name: 'Ada', role: 'admin' }, ['name']);
 
-const circular: any = { name: 'test' };
-circular.self = circular;
-const error = Json.stringify(circular);
-if (Result.isErr(error)) {
-  console.log('Stringify failed:', error.value);
-}
+const summary = {
+  parsed,
+  selected,
+  stringified,
+};
 
-export { circular, error };
+// embed-sample-code-ignore-below
+export { summary };
+

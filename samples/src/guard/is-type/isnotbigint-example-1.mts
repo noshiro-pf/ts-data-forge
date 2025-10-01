@@ -1,13 +1,19 @@
-// Example: src/guard/is-type.mts (isNotBigint)
-import { isNotBigint } from 'ts-data-forge';
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-type NumericValue = number | bigint;
-const value: NumericValue = getValue();
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-if (isNotBigint(value)) {
-  // value is now number
-  console.log('Regular number:', value.toFixed(2));
-}
+const summary = {
+  checks,
+  value,
+};
 
-export { value };
-export type { NumericValue };
+// embed-sample-code-ignore-below
+export { summary };
+

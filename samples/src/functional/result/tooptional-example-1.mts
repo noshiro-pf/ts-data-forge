@@ -1,14 +1,23 @@
-// Example: src/functional/result.mts (toOptional)
-import { Optional, Result } from 'ts-data-forge';
+// Example: src/functional/result.mts
+import { Result } from 'ts-data-forge';
 
-// Basic conversion
-const okResult = Result.ok(42);
-const optional = Result.toOptional(okResult);
-console.log(Optional.isSome(optional)); // true
-console.log(Optional.unwrap(optional)); // 42
+const success = Result.ok(5);
+const failure = Result.err(new Error('fail'));
+const mapped = Result.map(success, (n) => n * 2);
+const mappedErr = Result.mapErr(failure, (error) => error.message);
+const swapped = Result.swap(failure);
+const optional = Result.toOptional(success);
+const fallback = Result.orElse(failure, success);
 
-const errResult = Result.err('Network error');
-const none = Result.toOptional(errResult);
-console.log(Optional.isNone(none)); // true
+const summary = {
+  fallback,
+  mapped,
+  mappedErr,
+  optional,
+  success,
+  swapped,
+};
 
-export { errResult, none, okResult, optional };
+// embed-sample-code-ignore-below
+export { summary };
+

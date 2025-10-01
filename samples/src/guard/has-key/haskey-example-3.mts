@@ -1,24 +1,15 @@
-// Example: src/guard/has-key.mts (hasKey)
-// Type narrowing with union types:
-
+// Example: src/guard/has-key.mts
 import { hasKey } from 'ts-data-forge';
 
-type UserPreferences =
-  | { theme: 'dark'; notifications: boolean }
-  | { theme: 'light' }
-  | { autoSave: true; interval: number };
+const record = { a: 1, b: 2 } as const;
+const hasA = hasKey(record, 'a');
+const value = hasA ? record.a : undefined;
 
-const preferences: UserPreferences = getPreferences();
+const summary = {
+  hasA,
+  value,
+};
 
-if (hasKey(preferences, 'theme')) {
-  // preferences is narrowed to the first two union members
-  console.log(preferences.theme); // 'dark' | 'light'
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-if (hasKey(preferences, 'autoSave')) {
-  // preferences is narrowed to the third union member
-  console.log(preferences.interval); // number (we know this exists)
-}
-
-export { preferences };
-export type { UserPreferences };

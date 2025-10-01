@@ -1,20 +1,23 @@
-// Example: src/functional/result.mts (ok)
+// Example: src/functional/result.mts
 import { Result } from 'ts-data-forge';
 
-// Basic success case
-const success = Result.ok(42);
-console.log(Result.isOk(success)); // true
-console.log(Result.unwrapOk(success)); // 42
+const success = Result.ok(5);
+const failure = Result.err(new Error('fail'));
+const mapped = Result.map(success, (n) => n * 2);
+const mappedErr = Result.mapErr(failure, (error) => error.message);
+const swapped = Result.swap(failure);
+const optional = Result.toOptional(success);
+const fallback = Result.orElse(failure, success);
 
-// Function that returns a Result
-function divide(a: number, b: number): Result<number, string> {
-  if (b === 0) {
-    return Result.err('Division by zero');
-  }
-  return Result.ok(a / b);
-}
+const summary = {
+  fallback,
+  mapped,
+  mappedErr,
+  optional,
+  success,
+  swapped,
+};
 
-const result = divide(10, 2);
-console.log(Result.unwrapOk(result)); // 5
+// embed-sample-code-ignore-below
+export { summary };
 
-export { divide, result, success };

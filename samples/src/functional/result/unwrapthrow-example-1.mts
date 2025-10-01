@@ -1,14 +1,23 @@
-// Example: src/functional/result.mts (unwrapThrow)
+// Example: src/functional/result.mts
 import { Result } from 'ts-data-forge';
 
-const success = Result.ok(42);
-console.log(Result.unwrapThrow(success)); // 42
+const success = Result.ok(5);
+const failure = Result.err(new Error('fail'));
+const mapped = Result.map(success, (n) => n * 2);
+const mappedErr = Result.mapErr(failure, (error) => error.message);
+const swapped = Result.swap(failure);
+const optional = Result.toOptional(success);
+const fallback = Result.orElse(failure, success);
 
-const failure = Result.err('Network error');
-try {
-  Result.unwrapThrow(failure); // throws Error: "Network error"
-} catch (error) {
-  console.log(error.message); // "Network error"
-}
+const summary = {
+  fallback,
+  mapped,
+  mappedErr,
+  optional,
+  success,
+  swapped,
+};
 
-export { failure, success };
+// embed-sample-code-ignore-below
+export { summary };
+

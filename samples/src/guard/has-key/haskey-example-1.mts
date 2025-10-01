@@ -1,19 +1,15 @@
-// Example: src/guard/has-key.mts (hasKey)
-// Basic usage with known object structure:
-
+// Example: src/guard/has-key.mts
 import { hasKey } from 'ts-data-forge';
 
-const obj = { a: 1, b: 'hello' };
+const record = { a: 1, b: 2 } as const;
+const hasA = hasKey(record, 'a');
+const value = hasA ? record.a : undefined;
 
-if (hasKey(obj, 'a')) {
-  // obj is narrowed to guarantee 'a' exists
-  console.log(obj.a); // TypeScript knows 'a' exists and is type number
-  // No need for optional chaining or undefined checks
-}
+const summary = {
+  hasA,
+  value,
+};
 
-if (hasKey(obj, 'c')) {
-  // This block won't execute at runtime
-  console.log(obj.c); // But TypeScript would know 'c' exists if it did
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-export { obj };

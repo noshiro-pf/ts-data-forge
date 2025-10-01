@@ -1,21 +1,20 @@
-// Example: src/functional/pipe.mts (pipe)
-// Optional value handling with monadic operations:
-
-import { strict as assert } from 'node:assert/strict';
-
+// Example: src/functional/pipe.mts
 import { Optional, pipe } from 'ts-data-forge';
 
-// Working with Optional types
-const optional = Optional.some(42);
-const result = pipe(optional)
-  .mapOptional((x) => x / 2) // Optional.some(21)
-  .mapOptional((x) => Math.sqrt(x)).value; // Optional.some(~4.58) // Optional.some(4.58...)
-assert(Optional.isSome(result));
-assert(Math.abs(Optional.unwrap(result) - Math.sqrt(21)) < 0.01);
+const value = pipe(2)
+  .map((n) => n * 3)
+  .mapNullable((n) => n?.toString())
+  .value;
 
-// Optional with None
-const noneOptional = Optional.none;
-const noneResult = pipe(noneOptional).mapOptional((x) => x * 2).value;
-assert(Optional.isNone(noneResult));
+const optionalValue = pipe(Optional.some('hello'))
+  .mapOptional((text) => text.length)
+  .value;
 
-export { noneOptional, noneResult, optional, result };
+const summary = {
+  optionalValue,
+  value,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
+

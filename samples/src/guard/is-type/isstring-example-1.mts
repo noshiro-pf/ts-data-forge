@@ -1,17 +1,19 @@
-// Example: src/guard/is-type.mts (isString)
-import { isString } from 'ts-data-forge';
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-const userInput: unknown = parseInput();
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-if (isString(userInput)) {
-  // userInput is now typed as string
-  console.log('String length:', userInput.length);
-  console.log('Uppercase:', userInput.toUpperCase());
+const summary = {
+  checks,
+  value,
+};
 
-  // You can further check for non-empty strings
-  if (userInput.length > 0) {
-    console.log('Non-empty string:', userInput);
-  }
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-export { userInput };

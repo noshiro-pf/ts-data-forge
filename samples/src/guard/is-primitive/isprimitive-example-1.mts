@@ -1,18 +1,14 @@
-// Example: src/guard/is-primitive.mts (isPrimitive)
-// Basic usage with different value types:
-
+// Example: src/guard/is-primitive.mts
 import { isPrimitive } from 'ts-data-forge';
 
-isPrimitive('hello'); // true (string)
-isPrimitive(42); // true (number)
-isPrimitive(true); // true (boolean)
-isPrimitive(undefined); // true (undefined)
-isPrimitive(Symbol('test')); // true (symbol)
-isPrimitive(123n); // true (bigint)
-isPrimitive(null); // true (null is primitive despite typeof quirk)
+const primitives = ['text', 123, null, true];
+const checks = primitives.map((item) => isPrimitive(item));
 
-isPrimitive({}); // false (object)
-isPrimitive([]); // false (array)
-isPrimitive(() => {}); // false (function)
-isPrimitive(new Date()); // false (object instance)
-isPrimitive(/regex/); // false (RegExp object)
+const summary = {
+  checks,
+  primitives,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
+

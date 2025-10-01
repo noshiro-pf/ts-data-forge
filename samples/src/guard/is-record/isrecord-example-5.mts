@@ -1,20 +1,13 @@
-// Example: src/guard/is-record.mts (isRecord)
-// Object transformation and mapping:
+// Example: src/guard/is-record.mts
+import { isRecord } from 'ts-data-forge';
 
-function transformRecords(data: unknown[]): Record<string, unknown>[] {
-  return data
-    .filter(isRecord) // Keep only plain objects
-    .map((record) => {
-      // Transform each record
-      const transformed: Record<string, unknown> = {};
+const value: unknown = { id: 1 };
+const record = isRecord(value) ? value : undefined;
 
-      for (const [key, value] of Object.entries(record)) {
-        // Apply some transformation logic
-        transformed[key.toLowerCase()] = value;
-      }
+const summary = {
+  record,
+};
 
-      return transformed;
-    });
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-export { transformRecords };

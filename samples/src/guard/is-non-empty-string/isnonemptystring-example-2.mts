@@ -1,17 +1,13 @@
-// Example: src/guard/is-non-empty-string.mts (isNonEmptyString)
-// Type guard usage with nullable strings:
-
+// Example: src/guard/is-non-empty-string.mts
 import { isNonEmptyString } from 'ts-data-forge';
 
-const userInput: string | null | undefined = getUserInput();
+const maybeString: string | null = 'hello';
+const result = isNonEmptyString(maybeString) ? maybeString : undefined;
 
-if (isNonEmptyString(userInput)) {
-  // userInput is now typed as non-empty string
-  console.log(userInput.charAt(0)); // Safe to access string methods
-  console.log(userInput.toUpperCase()); // No need for null checks
-  const length = userInput.length; // Guaranteed to be > 0
-} else {
-  console.log('No valid input provided');
-}
+const summary = {
+  result,
+};
 
-export { userInput };
+// embed-sample-code-ignore-below
+export { summary };
+

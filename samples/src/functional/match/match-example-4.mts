@@ -1,18 +1,16 @@
-// Example: src/functional/match.mts (match)
-// HTTP status code handling:
-
+// Example: src/functional/match.mts
 import { match } from 'ts-data-forge';
 
-type HttpStatus = 200 | 404 | 500;
-const status: HttpStatus = 404;
-
-const response = match(String(status), {
-  '200': { ok: true, message: 'Success' },
-  '404': { ok: false, message: 'Not Found' },
-  '500': { ok: false, message: 'Server Error' },
+const status = match('success' as 'loading' | 'success' | 'error', {
+  loading: 'Loading…',
+  success: 'Completed',
+  error: 'Failed',
 });
-// All cases covered, no default needed
-// Result: { ok: false, message: 'Not Found' }
 
-export { response, status };
-export type { HttpStatus };
+const summary = {
+  status,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
+

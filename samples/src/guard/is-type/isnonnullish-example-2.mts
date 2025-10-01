@@ -1,22 +1,19 @@
-// Example: src/guard/is-type.mts (isNonNullish)
-// Progressive validation with optional chaining alternative:
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-import { isNonNullish } from 'ts-data-forge';
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-type User = {
-  profile?: {
-    name?: string;
-    email?: string;
-  };
-}
+const summary = {
+  checks,
+  value,
+};
 
-const user: User = getUser();
+// embed-sample-code-ignore-below
+export { summary };
 
-// Instead of optional chaining: user.profile?.name
-if (isNonNullish(user.profile) && isNonNullish(user.profile.name)) {
-  // user.profile.name is now guaranteed to be string
-  console.log('User name:', user.profile.name.toUpperCase());
-}
-
-export { user };
-export type { User };

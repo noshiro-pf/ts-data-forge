@@ -1,33 +1,16 @@
-// Example: src/guard/key-is-in.mts (keyIsIn)
-// Form field validation:
-
+// Example: src/guard/key-is-in.mts
 import { keyIsIn } from 'ts-data-forge';
 
-type FormData = {
-  name: string;
-  email: string;
-  age: number;
-}
+const record = { a: 1, b: 2 } as const;
+const key: string = 'a';
+const isKey = keyIsIn(key, record);
+const value = isKey ? record[key] : undefined;
 
-const formData: FormData = getFormData();
-const requiredFields: readonly string[] = ['name', 'email'] as const;
+const summary = {
+  isKey,
+  value,
+};
 
-function validateRequiredFields(data: FormData): string[] {
-  const errors: string[] = [];
+// embed-sample-code-ignore-below
+export { summary };
 
-  for (const field of requiredFields) {
-    if (keyIsIn(field, data)) {
-      // field is now narrowed to keyof FormData
-      const value = data[field];
-
-      if (typeof value === 'string' && value.trim() === '') {
-        errors.push(`${field} is required`);
-      }
-    }
-  }
-
-  return errors;
-}
-
-export { formData, requiredFields, validateRequiredFields };
-export type { FormData };

@@ -1,17 +1,15 @@
-// Example: src/guard/has-key.mts (hasKey)
-// Working with dynamic objects and unknown keys:
-
+// Example: src/guard/has-key.mts
 import { hasKey } from 'ts-data-forge';
 
-const dynamicObj: Record<string, unknown> = { x: 10, y: 20 };
-const userInput: string = getUserInput();
+const record = { a: 1, b: 2 } as const;
+const hasA = hasKey(record, 'a');
+const value = hasA ? record.a : undefined;
 
-if (hasKey(dynamicObj, userInput)) {
-  // Safe to access the dynamic key
-  const value = dynamicObj[userInput]; // Type: unknown
-  console.log(`Value for ${userInput}:`, value);
-} else {
-  console.log(`Key '${userInput}' not found`);
-}
+const summary = {
+  hasA,
+  value,
+};
 
-export { dynamicObj, userInput };
+// embed-sample-code-ignore-below
+export { summary };
+

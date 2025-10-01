@@ -1,11 +1,19 @@
-// Example: src/guard/is-type.mts (isBoolean)
-import { isBoolean } from 'ts-data-forge';
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-const userInput: unknown = parseInput();
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-if (isBoolean(userInput)) {
-  // userInput is now typed as boolean
-  console.log('Boolean value:', userInput ? 'true' : 'false');
-}
+const summary = {
+  checks,
+  value,
+};
 
-export { userInput };
+// embed-sample-code-ignore-below
+export { summary };
+

@@ -1,12 +1,19 @@
-// Example: src/guard/is-type.mts (isNotUndefined)
-const items: (string | undefined)[] = ['a', undefined, 'b', undefined, 'c'];
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-const definedItems = items.filter(isNotUndefined);
-// definedItems is now string[] - undefined values are filtered out
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-for (const item of definedItems) {
-  // item is guaranteed to be string, not undefined
-  console.log(item.toUpperCase());
-}
+const summary = {
+  checks,
+  value,
+};
 
-export { definedItems, items };
+// embed-sample-code-ignore-below
+export { summary };
+

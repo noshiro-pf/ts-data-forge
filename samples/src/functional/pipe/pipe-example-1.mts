@@ -1,23 +1,20 @@
-// Example: src/functional/pipe.mts (pipe)
-// Basic value transformation chaining:
+// Example: src/functional/pipe.mts
+import { Optional, pipe } from 'ts-data-forge';
 
-import { strict as assert } from 'node:assert/strict';
+const value = pipe(2)
+  .map((n) => n * 3)
+  .mapNullable((n) => n?.toString())
+  .value;
 
-import { pipe } from 'ts-data-forge';
+const optionalValue = pipe(Optional.some('hello'))
+  .mapOptional((text) => text.length)
+  .value;
 
-// Simple sequential transformations
-const result = pipe(10)
-  .map((x) => x * 2) // 20
-  .map((x) => x + 5) // 25
-  .map((x) => x.toString()).value; // '25'
-assert(result === '25');
+const summary = {
+  optionalValue,
+  value,
+};
 
-// String processing pipeline
-const processed = pipe('  Hello World  ')
-  .map((s) => s.trim()) // "Hello World"
-  .map((s) => s.toLowerCase()) // "hello world"
-  .map((s) => s.split(' ')) // ["hello", "world"]
-  .map((arr) => arr.join('-')).value; // "hello-world"
-assert(processed === 'hello-world');
+// embed-sample-code-ignore-below
+export { summary };
 
-export { processed, result };

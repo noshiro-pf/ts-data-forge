@@ -1,30 +1,13 @@
-// Example: src/guard/is-non-empty-string.mts (isNonEmptyString)
-// Form validation patterns:
-
+// Example: src/guard/is-non-empty-string.mts
 import { isNonEmptyString } from 'ts-data-forge';
 
-type FormData = {
-  name?: string;
-  email?: string;
-  phone?: string;
-}
+const maybeString: string | null = 'hello';
+const result = isNonEmptyString(maybeString) ? maybeString : undefined;
 
-function validateForm(data: FormData): string[] {
-  const errors: string[] = [];
+const summary = {
+  result,
+};
 
-  if (!isNonEmptyString(data.name)) {
-    errors.push('Name is required');
-  }
+// embed-sample-code-ignore-below
+export { summary };
 
-  if (!isNonEmptyString(data.email)) {
-    errors.push('Email is required');
-  } else if (!data.email.includes('@')) {
-    // Safe to access string methods after guard
-    errors.push('Invalid email format');
-  }
-
-  return errors;
-}
-
-export { validateForm };
-export type { FormData };

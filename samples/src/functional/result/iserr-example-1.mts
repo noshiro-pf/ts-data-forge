@@ -1,29 +1,23 @@
-// Example: src/functional/result.mts (isErr)
+// Example: src/functional/result.mts
 import { Result } from 'ts-data-forge';
 
-// Basic type guard usage
-const result: Result<number, string> = divide(10, 0);
+const success = Result.ok(5);
+const failure = Result.err(new Error('fail'));
+const mapped = Result.map(success, (n) => n * 2);
+const mappedErr = Result.mapErr(failure, (error) => error.message);
+const swapped = Result.swap(failure);
+const optional = Result.toOptional(success);
+const fallback = Result.orElse(failure, success);
 
-if (Result.isErr(result)) {
-  // TypeScript knows result is Result.Err<string>
-  console.log(result.value); // Safe to access error .value
-  console.log(Result.unwrapErr(result)); // "Division by zero"
-} else {
-  // TypeScript knows result is Result.Ok<number>
-  console.log(result.value); // Success value
-}
-
-// Error handling patterns
-const handleResult = (r: Result<Data, ApiError>) => {
-  if (Result.isErr(r)) {
-    logError(r.value); // Safe error operations
-    return null;
-  }
-  return processData(r.value);
+const summary = {
+  fallback,
+  mapped,
+  mappedErr,
+  optional,
+  success,
+  swapped,
 };
 
-// Collecting errors from multiple Results
-const results: Result<string, ValidationError>[] = validateForm();
-const errors = results.filter(Result.isErr).map((err) => err.value); // ValidationError[]
+// embed-sample-code-ignore-below
+export { summary };
 
-export { errors, handleResult, result, results };

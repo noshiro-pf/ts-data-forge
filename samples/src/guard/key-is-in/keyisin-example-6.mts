@@ -1,21 +1,16 @@
-// Example: src/guard/key-is-in.mts (keyIsIn)
-// Working with union types:
-
+// Example: src/guard/key-is-in.mts
 import { keyIsIn } from 'ts-data-forge';
 
-type Config =
-  | { type: 'database'; host: string; port: number }
-  | { type: 'file'; path: string }
-  | { type: 'memory'; maxSize: number };
+const record = { a: 1, b: 2 } as const;
+const key: string = 'a';
+const isKey = keyIsIn(key, record);
+const value = isKey ? record[key] : undefined;
 
-function getConfigProperty(config: Config, propName: string): unknown {
-  if (keyIsIn(propName, config)) {
-    // propName is narrowed to valid keys for the specific config type
-    return config[propName];
-  }
+const summary = {
+  isKey,
+  value,
+};
 
-  return undefined;
-}
+// embed-sample-code-ignore-below
+export { summary };
 
-export { getConfigProperty };
-export type { Config };

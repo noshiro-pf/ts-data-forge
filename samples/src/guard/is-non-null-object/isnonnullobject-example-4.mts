@@ -1,22 +1,13 @@
-// Example: src/guard/is-non-null-object.mts (isNonNullObject)
-// Progressive type narrowing with other guards:
+// Example: src/guard/is-non-null-object.mts
+import { isNonNullObject } from 'ts-data-forge';
 
-import { hasKey, isNonNullObject, isRecord } from 'ts-data-forge';
+const value: unknown = { id: 1 };
+const isObject = isNonNullObject(value);
 
-const apiResponse: unknown = await fetchData();
+const summary = {
+  isObject,
+};
 
-if (isNonNullObject(apiResponse)) {
-  // apiResponse is now object
+// embed-sample-code-ignore-below
+export { summary };
 
-  if (isRecord(apiResponse)) {
-    // Further narrowed to UnknownRecord (plain object, not array)
-
-    if (hasKey(apiResponse, 'status')) {
-      console.log('API status:', apiResponse.status);
-    }
-  } else if (Array.isArray(apiResponse)) {
-    console.log('Response is an array with length:', apiResponse.length);
-  }
-}
-
-export { apiResponse };

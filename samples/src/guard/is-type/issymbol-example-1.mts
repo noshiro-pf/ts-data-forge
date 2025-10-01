@@ -1,12 +1,19 @@
-// Example: src/guard/is-type.mts (isSymbol)
-import { isSymbol } from 'ts-data-forge';
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-const userInput: unknown = parseInput();
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-if (isSymbol(userInput)) {
-  // userInput is now typed as symbol
-  console.log('Symbol description:', userInput.description);
-  console.log('Symbol string:', userInput.toString());
-}
+const summary = {
+  checks,
+  value,
+};
 
-export { userInput };
+// embed-sample-code-ignore-below
+export { summary };
+

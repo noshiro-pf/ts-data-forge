@@ -1,14 +1,19 @@
-// Example: src/guard/is-type.mts (isUndefined)
-import { isUndefined } from 'ts-data-forge';
+// Example: src/guard/is-type.mts
+import { isBoolean, isNumber, isString, isUndefined } from 'ts-data-forge';
 
-const value: string | undefined = getValue();
+const value: unknown = 'example';
+const checks = {
+  isBoolean: isBoolean(value),
+  isNumber: isNumber(value),
+  isString: isString(value),
+  isUndefined: isUndefined(value),
+};
 
-if (isUndefined(value)) {
-  // value is now typed as undefined
-  console.log('Value is undefined');
-} else {
-  // value is now typed as string
-  console.log('Value length:', value.length);
-}
+const summary = {
+  checks,
+  value,
+};
 
-export { value };
+// embed-sample-code-ignore-below
+export { summary };
+
