@@ -9,8 +9,8 @@ const fruits: readonly string[] = ['apple', 'banana', 'cherry'];
 const startsWithB = Arr.findIndex(fruits, (fruit) => fruit.startsWith('b'));
 const startsWithZ = Arr.findIndex(fruits, (fruit) => fruit.startsWith('z'));
 
-const firstEvenElement = firstEven >= 0 ? numbers[firstEven] : undefined;
-const fallbackIndex = greaterThanTen >= 0 ? greaterThanTen : 0;
+const firstEvenElement = firstEven !== -1 ? numbers[firstEven] : undefined;
+const fallbackIndex = Math.max(greaterThanTen, 0);
 
 const summary = {
   fallbackIndex,
