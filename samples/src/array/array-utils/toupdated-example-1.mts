@@ -10,7 +10,10 @@ const users = [
   { id: 2, active: false },
 ] as const;
 
-const activated = Arr.toUpdated(users, 1, (user) => ({ ...user, active: true }));
+const activated = Arr.toUpdated(users, 1, (user) => ({
+  ...user,
+  active: true,
+}));
 
 const summary = {
   activated,

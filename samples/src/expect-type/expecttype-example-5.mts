@@ -1,11 +1,13 @@
 // Example: src/expect-type.mts
 import { expectType } from 'ts-data-forge';
 
-const tuple = [1, 'two', true] as const;
-expectType<typeof tuple, readonly [1, 'two', true]>('=');
+type Id = { id: number };
+type User = Id & { name: string };
+
+expectType<User, Id>('<=');
 
 const summary = {
-  tuple,
+  example: true,
 };
 
 // embed-sample-code-ignore-below

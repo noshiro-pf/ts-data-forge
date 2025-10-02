@@ -7,18 +7,7 @@ const numbers = Arr.generate<number>(function* () {
   yield 3;
 });
 
-const includeExtra = false;
-const conditional = Arr.generate<number>(function* () {
-  yield 1;
-  if (!includeExtra) {
-    return;
-  }
-  yield 2;
-});
-
 const summary = {
-  conditional,
-  includeExtra,
   numbers,
 };
 

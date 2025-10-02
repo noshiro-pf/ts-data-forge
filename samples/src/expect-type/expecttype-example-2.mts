@@ -7,3 +7,10 @@ const sequence = Arr.seq(5);
 expectType<typeof zeros, readonly [0, 0, 0]>('=');
 expectType<typeof sequence, readonly [0, 1, 2, 3, 4]>('=');
 
+const summary = {
+  sequence,
+  zeros,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

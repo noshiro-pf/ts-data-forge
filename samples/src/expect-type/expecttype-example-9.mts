@@ -8,3 +8,9 @@ type ApiResponse =
 const response: ApiResponse = { status: 'ok', data: 'done' };
 expectType<typeof response, ApiResponse>('<=');
 
+const summary = {
+  response,
+};
+
+// embed-sample-code-ignore-below
+export { summary };

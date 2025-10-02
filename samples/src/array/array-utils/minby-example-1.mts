@@ -7,7 +7,10 @@ const people = [
 ] as const;
 
 const youngest = Arr.minBy(people, (person) => person.age);
-const youngestName = Optional.unwrapOr(youngest, { name: 'Unknown', age: 0 }).name;
+const youngestName = Optional.unwrapOr(youngest, {
+  name: 'Unknown',
+  age: 0,
+}).name;
 
 const summary = {
   people,

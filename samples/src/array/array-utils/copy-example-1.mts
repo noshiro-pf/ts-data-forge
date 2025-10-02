@@ -8,7 +8,10 @@ mutableCopy[0] = 99;
 const readonlyOriginal = ['alpha', 'beta'] as const;
 const readonlyCopy = Arr.copy(readonlyOriginal);
 
-const records = [{ id: 1, name: 'Ada' }, { id: 2, name: 'Bea' }] as const;
+const records = [
+  { id: 1, name: 'Ada' },
+  { id: 2, name: 'Bea' },
+] as const;
 const copiedRecords = Arr.copy(records);
 const copiedNames = copiedRecords.map(({ name }) => name);
 

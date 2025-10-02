@@ -1,15 +1,13 @@
 // Example: src/array/array-utils.mts (isArray)
 import { Arr } from 'ts-data-forge';
 
-function processValue(value: string | number[] | null) {
-  if (Arr.isArray(value)) {
-    // value is now typed as number[]
-    console.log(value.length);
-  }
-}
+const values = [1, 2, 3] as const;
+const isArray = Arr.isArray(values);
 
-Arr.isArray([1, 2, 3]); // true
-Arr.isArray('hello'); // false
-Arr.isArray(null); // false
+const summary = {
+  isArray,
+  values,
+};
 
-export { processValue };
+// embed-sample-code-ignore-below
+export { summary };

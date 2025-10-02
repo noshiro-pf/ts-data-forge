@@ -2,7 +2,9 @@
 import { mapNullable } from 'ts-data-forge';
 
 const upper = mapNullable('hello', (value) => value.toUpperCase());
-const lengthOrUndefined = mapNullable((value: string) => value.length)(undefined);
+const lengthOrUndefined = mapNullable((value: string) => value.length)(
+  undefined,
+);
 
 const summary = {
   lengthOrUndefined,

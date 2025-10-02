@@ -1,5 +1,8 @@
 // Example: src/number/branded-types/non-negative-finite-number.mts (non-negative-finite-number)
-import { NonNegativeFiniteNumber, asNonNegativeFiniteNumber } from 'ts-data-forge';
+import {
+  NonNegativeFiniteNumber,
+  asNonNegativeFiniteNumber,
+} from 'ts-data-forge';
 
 const value = asNonNegativeFiniteNumber(1.5);
 const other = asNonNegativeFiniteNumber(2.5);

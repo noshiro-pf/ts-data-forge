@@ -12,7 +12,10 @@ const isString = (value: unknown): value is string => typeof value === 'string';
 const stringValues = Arr.filter(['a', 1, 'b', 2], isString);
 
 const processNumbers = (values: readonly number[]) =>
-  Arr.map(Arr.filter(values, (n) => n > 0), (n) => n * 2);
+  Arr.map(
+    Arr.filter(values, (n) => n > 0),
+    (n) => n * 2,
+  );
 
 const summary = {
   evens,

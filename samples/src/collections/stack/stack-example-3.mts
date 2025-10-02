@@ -1,7 +1,7 @@
 // Example: src/collections/stack.mts
 import { createStack } from 'ts-data-forge';
 
-const stack = createStack(['first']);
+const stack = createStack<string>(['first']);
 stack.push('second');
 const popped = stack.pop();
 

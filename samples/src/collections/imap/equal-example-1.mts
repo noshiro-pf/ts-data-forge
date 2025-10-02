@@ -6,11 +6,11 @@ const map = IMap.create<string, number>([
   ['b', 2],
 ]);
 
-const updated = map.set('c', 3);
-const value = Optional.unwrapOr(updated.get('b'), 0);
+const updated = map.set('b', 3);
+const value = Optional.unwrapOr(updated.get('a'), 0);
 
 const summary = {
-  hasC: updated.has('c'),
+  hasA: updated.has('a'),
   size: updated.size,
   value,
   values: updated.toValuesArray(),

@@ -1,7 +1,7 @@
 // Example: src/collections/queue.mts
 import { createQueue } from 'ts-data-forge';
 
-const queue = createQueue(['first']);
+const queue = createQueue<string>(['first']);
 queue.enqueue('second');
 const removed = queue.dequeue();
 

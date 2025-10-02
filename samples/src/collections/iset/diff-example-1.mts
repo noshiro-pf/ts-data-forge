@@ -1,13 +1,13 @@
 // Example: src/collections/iset.mts
 import { ISet } from 'ts-data-forge';
 
-const set = ISet.create<string>(['a', 'b']);
-const withC = set.add('c');
+const set = ISet.create(['a', 'b', 'c']);
+const removedB = set.delete('b');
 
 const summary = {
-  hasA: withC.has('a'),
-  size: withC.size,
-  values: withC.toArray(),
+  hasA: removedB.has('a'),
+  size: removedB.size,
+  values: removedB.toArray(),
 };
 
 // embed-sample-code-ignore-below

@@ -7,19 +7,7 @@ const numbers = await Arr.generateAsync<number>(async function* () {
   yield 2;
 });
 
-const includeExtra = true;
-const conditional = await Arr.generateAsync<number>(async function* () {
-  yield 1;
-  if (!includeExtra) {
-    return;
-  }
-  await Promise.resolve();
-  yield 2;
-});
-
 const summary = {
-  conditional,
-  includeExtra,
   numbers,
 };
 

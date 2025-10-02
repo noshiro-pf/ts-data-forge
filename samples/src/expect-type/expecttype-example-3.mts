@@ -10,3 +10,9 @@ const userResult: Result<{ id: number; name: string }> = {
 
 expectType<typeof userResult, Result<{ id: number; name: string }>>('<=');
 
+const summary = {
+  userResult,
+};
+
+// embed-sample-code-ignore-below
+export { summary };
