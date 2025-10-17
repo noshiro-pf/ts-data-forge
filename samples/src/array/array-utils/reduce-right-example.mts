@@ -9,4 +9,4 @@ const concatenated = Arr.reduceRight(
   'end',
 );
 
-assert.strictEqual(concatenated, 'one:two:three:end');
+assert.strictEqual(concatenated, 'end:three:two:one');

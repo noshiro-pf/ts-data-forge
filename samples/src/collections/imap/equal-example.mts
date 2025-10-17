@@ -16,5 +16,5 @@ const third = IMap.create<'a' | 'b', number>([
   ['b', 3],
 ]);
 
-assert.strictEqual(IMap.equal(first, second), true);
-assert.strictEqual(IMap.equal(first, third), false);
+assert.isOk(IMap.equal(first, second));
+assert.isNotOk(IMap.equal(first, third));

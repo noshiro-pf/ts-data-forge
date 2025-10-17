@@ -1,4 +1,4 @@
-import { Optional } from '../functional/index.mjs';
+import { Optional, pipe } from '../functional/index.mjs';
 import { asUint32 } from '../number/index.mjs';
 import { tp, unknownToString } from '../others/index.mjs';
 
@@ -313,7 +313,12 @@ export namespace IMap {
   export const equal = <K extends MapSetKeyType, V>(
     a: IMap<K, V>,
     b: IMap<K, V>,
-  ): boolean => a.size === b.size && a.every((v, k) => b.get(k) === v);
+  ): boolean =>
+    a.size === b.size &&
+    a.every(
+      (v, k) =>
+        pipe(b.get(k)).map((v2) => Optional.isSome(v2) && v2.value === v).value,
+    );
 }
 
 /**
