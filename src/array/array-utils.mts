@@ -452,13 +452,28 @@ export namespace Arr {
    * @returns An {@link Optional}<E> containing:
    *   - {@link Optional.Some}<E> with the element if the index is valid
    *   - {@link Optional.None} if the index is out of bounds (including empty arrays)
+   * @example
+   *
+   * ```ts
+   * // Example: src/array/array-utils.mts (at)
+   * import { Arr, Optional } from 'ts-data-forge';
+   *
+   * const letters: readonly string[] = ['a', 'b', 'c'];
+   *
+   * const two = Arr.at(letters, 1);
+   * const last = Arr.at(-1)(letters);
+   * const missing = Arr.at(letters, 5);
+   *
+   * assert.deepStrictEqual(two, Optional.some('b'));
+   * assert.deepStrictEqual(last, Optional.some('c'));
+   * assert.deepStrictEqual(missing, Optional.none);
+   * ```
    *
    * @see {@link head} for getting the first element specifically
    * @see {@link last} for getting the last element specifically
    * @see {@link Optional} for working with the returned Optional values
    * @see {@link Optional.unwrapOr} for safe unwrapping with defaults
    * @see {@link Optional.map} for transforming Optional values
-   * @see {@link https://github.com/noshiro-pf/ts-data-forge/blob/main/samples/src/array/array-utils/at-example.mts|Sample code}.
    */
   export function at<const Ar extends readonly unknown[]>(
     array: Ar,
