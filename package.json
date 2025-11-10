@@ -118,7 +118,7 @@
     "typedoc": "^0.28.14",
     "typedoc-github-theme": "^0.3.1",
     "typescript": "^5.9.3",
-    "vite": "^7.1.12",
+    "vite": "^7.2.2",
     "vitest": "^4.0.6"
   },
   "peerDependencies": {
