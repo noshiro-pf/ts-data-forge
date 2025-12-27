@@ -36,9 +36,9 @@ export default [
     }),
   },
 
-  eslintConfigForNodeJs(['scripts/**', 'configs/**']),
+  eslintConfigForNodeJs(['scripts/**', 'configs/**', 'eslint-plugin/**']),
   {
-    files: ['scripts/**', 'configs/**'],
+    files: ['scripts/**', 'configs/**', 'eslint-plugin/**'],
     rules: defineKnownRules({
       '@typescript-eslint/explicit-function-return-type': 'off',
       'no-await-in-loop': 'off',
