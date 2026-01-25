@@ -39,7 +39,7 @@ This library offers a range of utilities, including:
 ## Installation
 
 ```bash
-npm install ts-data-forge
+npm add ts-data-forge
 ```
 
 Or with other package managers:
