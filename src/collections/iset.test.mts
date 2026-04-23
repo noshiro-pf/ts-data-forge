@@ -1000,7 +1000,7 @@ describe('ISet.toArray', () => {
     expectType<typeof s0.toArray, () => readonly (1 | 2 | 3)[]>('<=');
 
     assert.deepStrictEqual(
-      Array.from(s0.toArray()).toSorted((a, b) => a - b),
+      s0.toArray().toSorted((a, b) => a - b),
       [1, 2, 3],
     );
   });
