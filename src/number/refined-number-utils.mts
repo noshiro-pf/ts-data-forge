@@ -6,6 +6,7 @@ import {
   type IntersectBrand,
   type NonNegativeNumber,
   type NonZeroNumber,
+  type PositiveNumber,
   type RelaxedExclude,
   type TypeEq,
   type UnknownBrand,
@@ -84,10 +85,10 @@ export namespace TsDataForgeInternals {
      * @template N - A branded number type
      * @internal
      */
-    export type ToNonNegative<N extends UnknownNumberBrand> = IntersectBrand<
-      N,
-      NonNegativeNumber
-    >;
+    export type ToNonNegative<N extends UnknownNumberBrand> =
+      '!=0' extends UnwrapBrandTrueKeys<N>
+        ? IntersectBrand<N, PositiveNumber>
+        : IntersectBrand<N, NonNegativeNumber>;
 
     /**
      * Removes the non-zero brand constraint from a branded number type. Used
@@ -99,7 +100,7 @@ export namespace TsDataForgeInternals {
     export type RemoveNonZeroBrandKey<N extends UnknownNumberBrand> = Brand<
       GetBrandValuePart<N>,
       RelaxedExclude<UnwrapBrandTrueKeys<N>, '!=0'> & string,
-      UnwrapBrandFalseKeys<N> & string
+      RelaxedExclude<UnwrapBrandFalseKeys<N>, '<=0'> & string
     >;
 
     type CastToInt<N> = N extends Int ? N : never;
