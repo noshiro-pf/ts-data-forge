@@ -7,7 +7,7 @@ import {
 } from './non-positive-int.mjs';
 
 describe('NonPositiveInt test', () => {
-  describe('asNonPositiveInt', () => {
+  describe(asNonPositiveInt, () => {
     test('accepts valid non-positive integers', () => {
       expect(() => asNonPositiveInt(0)).not.toThrow();
 
@@ -55,7 +55,7 @@ describe('NonPositiveInt test', () => {
     });
   });
 
-  describe('isNonPositiveInt', () => {
+  describe(isNonPositiveInt, () => {
     test('correctly identifies non-positive integers', () => {
       assert.isTrue(isNonPositiveInt(0));
 
@@ -189,9 +189,9 @@ describe('NonPositiveInt test', () => {
 
   describe('NonPositiveInt.div', () => {
     test('divides two non-positive integers', () => {
-      expect(asNonPositiveInt(-10 / -2)).toBe(-5);
+      expect(NonPositiveInt.div(-10, -2)).toBe(-5);
 
-      expect(asNonPositiveInt(0 / -5)).toBe(0);
+      expect(NonPositiveInt.div(0, -5)).toBe(0);
     });
   });
 

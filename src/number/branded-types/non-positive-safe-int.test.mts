@@ -7,7 +7,7 @@ import {
 } from './non-positive-safe-int.mjs';
 
 describe('NonPositiveSafeInt test', () => {
-  describe('asNonPositiveSafeInt', () => {
+  describe(asNonPositiveSafeInt, () => {
     test('accepts valid non-positive safe integer values', () => {
       expect(() => asNonPositiveSafeInt(0)).not.toThrow();
 
@@ -75,7 +75,7 @@ describe('NonPositiveSafeInt test', () => {
     });
   });
 
-  describe('isNonPositiveSafeInt', () => {
+  describe(isNonPositiveSafeInt, () => {
     test('correctly identifies non-positive safe integers', () => {
       assert.isTrue(isNonPositiveSafeInt(0));
 

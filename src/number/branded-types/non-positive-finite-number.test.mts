@@ -5,9 +5,10 @@ import {
   isNonPositiveFiniteNumber,
   NonPositiveFiniteNumber,
 } from './non-positive-finite-number.mjs';
+import { asNonZeroFiniteNumber } from './non-zero-finite-number.mjs';
 
 describe('NonPositiveFiniteNumber test', () => {
-  describe('asNonPositiveFiniteNumber', () => {
+  describe(asNonPositiveFiniteNumber, () => {
     test('accepts valid non-positive finite numbers', () => {
       expect(() => asNonPositiveFiniteNumber(0)).not.toThrow();
 
@@ -17,9 +18,13 @@ describe('NonPositiveFiniteNumber test', () => {
 
       expect(() => asNonPositiveFiniteNumber(-0.5)).not.toThrow();
 
-      expect(() => asNonPositiveFiniteNumber(Number.MIN_VALUE * -1)).not.toThrow();
+      expect(() =>
+        asNonPositiveFiniteNumber(Number.MIN_VALUE * -1),
+      ).not.toThrow();
 
-      expect(() => asNonPositiveFiniteNumber(Number.MAX_VALUE * -1)).not.toThrow();
+      expect(() =>
+        asNonPositiveFiniteNumber(Number.MAX_VALUE * -1),
+      ).not.toThrow();
     });
 
     test('rejects positive numbers', () => {
@@ -53,7 +58,7 @@ describe('NonPositiveFiniteNumber test', () => {
     });
   });
 
-  describe('isNonPositiveFiniteNumber', () => {
+  describe(isNonPositiveFiniteNumber, () => {
     test('correctly identifies non-positive finite numbers', () => {
       assert.isTrue(isNonPositiveFiniteNumber(0));
 
@@ -88,10 +93,7 @@ describe('NonPositiveFiniteNumber test', () => {
       const value: number = -42.5;
 
       if (NonPositiveFiniteNumber.is(value)) {
-        expectType<
-          typeof value,
-          typeof value & NonPositiveFiniteNumber
-        >('=');
+        expectType<typeof value, typeof value & NonPositiveFiniteNumber>('=');
       }
     });
   });
@@ -106,15 +108,15 @@ describe('NonPositiveFiniteNumber test', () => {
     test('returns the smaller value', () => {
       expect(
         NonPositiveFiniteNumber.min(
-          -5.5 as NonPositiveFiniteNumber,
-          -10.5 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-5.5),
+          asNonPositiveFiniteNumber(-10.5),
         ),
       ).toBe(-10.5);
 
       expect(
         NonPositiveFiniteNumber.min(
-          0 as NonPositiveFiniteNumber,
-          -1.5 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(0),
+          asNonPositiveFiniteNumber(-1.5),
         ),
       ).toBe(-1.5);
     });
@@ -122,15 +124,15 @@ describe('NonPositiveFiniteNumber test', () => {
     test('clamps to range when necessary', () => {
       expect(
         NonPositiveFiniteNumber.min(
-          -5 as NonPositiveFiniteNumber,
-          10 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-5),
+          asNonPositiveFiniteNumber(10),
         ),
       ).toBe(-5);
 
       expect(
         NonPositiveFiniteNumber.min(
-          5 as NonPositiveFiniteNumber,
-          10 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(5),
+          asNonPositiveFiniteNumber(10),
         ),
       ).toBe(0);
     });
@@ -140,15 +142,15 @@ describe('NonPositiveFiniteNumber test', () => {
     test('returns the larger value', () => {
       expect(
         NonPositiveFiniteNumber.max(
-          -5.5 as NonPositiveFiniteNumber,
-          -10.5 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-5.5),
+          asNonPositiveFiniteNumber(-10.5),
         ),
       ).toBe(-5.5);
 
       expect(
         NonPositiveFiniteNumber.max(
-          -1.5 as NonPositiveFiniteNumber,
-          0 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-1.5),
+          asNonPositiveFiniteNumber(0),
         ),
       ).toBe(0);
     });
@@ -156,15 +158,15 @@ describe('NonPositiveFiniteNumber test', () => {
     test('clamps to range when necessary', () => {
       expect(
         NonPositiveFiniteNumber.max(
-          -5.5 as NonPositiveFiniteNumber,
-          -10.5 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-5.5),
+          asNonPositiveFiniteNumber(-10.5),
         ),
       ).toBe(-5.5);
 
       expect(
         NonPositiveFiniteNumber.max(
-          -5 as NonPositiveFiniteNumber,
-          10 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-5),
+          asNonPositiveFiniteNumber(10),
         ),
       ).toBe(0);
     });
@@ -186,56 +188,54 @@ describe('NonPositiveFiniteNumber test', () => {
     });
 
     test('clamps infinity to range', () => {
-      expect(
-        NonPositiveFiniteNumber.clamp(Number.POSITIVE_INFINITY),
-      ).toBe(0);
+      expect(NonPositiveFiniteNumber.clamp(Number.POSITIVE_INFINITY)).toBe(0);
     });
   });
 
   describe('NonPositiveFiniteNumber.floor', () => {
     test('rounds down non-positive finite numbers', () => {
       expect(
-        NonPositiveFiniteNumber.floor(-5.9 as NonPositiveFiniteNumber),
+        NonPositiveFiniteNumber.floor(asNonPositiveFiniteNumber(-5.9)),
       ).toBe(-6);
 
       expect(
-        NonPositiveFiniteNumber.floor(-0.1 as NonPositiveFiniteNumber),
+        NonPositiveFiniteNumber.floor(asNonPositiveFiniteNumber(-0.1)),
       ).toBe(-1);
 
-      expect(
-        NonPositiveFiniteNumber.floor(0 as NonPositiveFiniteNumber),
-      ).toBe(0);
+      expect(NonPositiveFiniteNumber.floor(asNonPositiveFiniteNumber(0))).toBe(
+        0,
+      );
     });
   });
 
   describe('NonPositiveFiniteNumber.ceil', () => {
     test('rounds up non-positive finite numbers', () => {
       expect(
-        NonPositiveFiniteNumber.ceil(-5.1 as NonPositiveFiniteNumber),
+        NonPositiveFiniteNumber.ceil(asNonPositiveFiniteNumber(-5.1)),
       ).toBe(-5);
 
       expect(
-        NonPositiveFiniteNumber.ceil(-0.9 as NonPositiveFiniteNumber),
+        NonPositiveFiniteNumber.ceil(asNonPositiveFiniteNumber(-0.9)),
       ).toBe(0);
 
-      expect(
-        NonPositiveFiniteNumber.ceil(0 as NonPositiveFiniteNumber),
-      ).toBe(0);
+      expect(NonPositiveFiniteNumber.ceil(asNonPositiveFiniteNumber(0))).toBe(
+        0,
+      );
     });
   });
 
   describe('NonPositiveFiniteNumber.round', () => {
     test('rounds non-positive finite numbers', () => {
       expect(
-        NonPositiveFiniteNumber.round(-5.5 as NonPositiveFiniteNumber),
+        NonPositiveFiniteNumber.round(asNonPositiveFiniteNumber(-5.5)),
       ).toBe(-6);
 
       expect(
-        NonPositiveFiniteNumber.round(-0.4 as NonPositiveFiniteNumber),
+        NonPositiveFiniteNumber.round(asNonPositiveFiniteNumber(-0.4)),
       ).toBe(0);
 
       expect(
-        NonPositiveFiniteNumber.round(-0.5 as NonPositiveFiniteNumber),
+        NonPositiveFiniteNumber.round(asNonPositiveFiniteNumber(-0.5)),
       ).toBe(-1);
     });
   });
@@ -244,15 +244,15 @@ describe('NonPositiveFiniteNumber test', () => {
     test('adds two non-positive finite numbers', () => {
       expect(
         NonPositiveFiniteNumber.add(
-          -5.5 as NonPositiveFiniteNumber,
-          -3.2 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-5.5),
+          asNonPositiveFiniteNumber(-3.2),
         ),
       ).toBeCloseTo(-8.7, 5);
 
       expect(
         NonPositiveFiniteNumber.add(
-          0 as NonPositiveFiniteNumber,
-          -10.5 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(0),
+          asNonPositiveFiniteNumber(-10.5),
         ),
       ).toBe(-10.5);
     });
@@ -260,15 +260,15 @@ describe('NonPositiveFiniteNumber test', () => {
     test('clamps result to MAX_VALUE (0) when sum is positive', () => {
       expect(
         NonPositiveFiniteNumber.add(
-          -5.5 as NonPositiveFiniteNumber,
-          10 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-5.5),
+          asNonPositiveFiniteNumber(10),
         ),
       ).toBe(0);
 
       expect(
         NonPositiveFiniteNumber.add(
-          0 as NonPositiveFiniteNumber,
-          0 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(0),
+          asNonPositiveFiniteNumber(0),
         ),
       ).toBe(0);
     });
@@ -278,15 +278,15 @@ describe('NonPositiveFiniteNumber test', () => {
     test('subtracts two non-positive finite numbers', () => {
       expect(
         NonPositiveFiniteNumber.sub(
-          -10.5 as NonPositiveFiniteNumber,
-          -3.2 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-10.5),
+          asNonPositiveFiniteNumber(-3.2),
         ),
       ).toBeCloseTo(-7.3, 5);
 
       expect(
         NonPositiveFiniteNumber.sub(
-          0 as NonPositiveFiniteNumber,
-          -5.5 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(0),
+          asNonPositiveFiniteNumber(-5.5),
         ),
       ).toBe(0);
     });
@@ -294,8 +294,8 @@ describe('NonPositiveFiniteNumber test', () => {
     test('clamps result to MAX_VALUE (0) when result is positive', () => {
       expect(
         NonPositiveFiniteNumber.sub(
-          -5.5 as NonPositiveFiniteNumber,
-          10 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-5.5),
+          asNonPositiveFiniteNumber(10),
         ),
       ).toBe(0);
     });
@@ -305,22 +305,22 @@ describe('NonPositiveFiniteNumber test', () => {
     test('multiplies two non-positive finite numbers', () => {
       expect(
         NonPositiveFiniteNumber.mul(
-          -5.5 as NonPositiveFiniteNumber,
-          -3.2 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-5.5),
+          asNonPositiveFiniteNumber(-3.2),
         ),
       ).toBeCloseTo(-17.6, 5);
 
       expect(
         NonPositiveFiniteNumber.mul(
-          -5.5 as NonPositiveFiniteNumber,
-          0 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-5.5),
+          asNonPositiveFiniteNumber(0),
         ),
       ).toBe(0);
 
       expect(
         NonPositiveFiniteNumber.mul(
-          0 as NonPositiveFiniteNumber,
-          -5.5 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(0),
+          asNonPositiveFiniteNumber(-5.5),
         ),
       ).toBe(0);
     });
@@ -328,11 +328,26 @@ describe('NonPositiveFiniteNumber test', () => {
 
   describe('NonPositiveFiniteNumber.div', () => {
     test('divides non-positive dividend by non-zero divisor', () => {
-      expect(asNonPositiveFiniteNumber(-10.5 / -2.1)).toBeCloseTo(-5, 5);
+      expect(
+        NonPositiveFiniteNumber.div(
+          asNonPositiveFiniteNumber(-10.5),
+          asNonZeroFiniteNumber(-2.1),
+        ),
+      ).toBeCloseTo(-5, 5);
 
-      expect(asNonPositiveFiniteNumber(-10.5 / -2)).toBeCloseTo(-5.25, 5);
+      expect(
+        NonPositiveFiniteNumber.div(
+          asNonPositiveFiniteNumber(-10.5),
+          asNonPositiveFiniteNumber(-2),
+        ),
+      ).toBeCloseTo(-5.25, 5);
 
-      expect(asNonPositiveFiniteNumber(0 / -5.5)).toBe(0);
+      expect(
+        NonPositiveFiniteNumber.div(
+          asNonPositiveFiniteNumber(0),
+          asNonPositiveFiniteNumber(-5.5),
+        ),
+      ).toBe(0);
     });
   });
 
@@ -340,8 +355,8 @@ describe('NonPositiveFiniteNumber test', () => {
     test('raises to power', () => {
       expect(
         NonPositiveFiniteNumber.pow(
-          -2 as NonPositiveFiniteNumber,
-          -1 as NonPositiveFiniteNumber,
+          asNonPositiveFiniteNumber(-2),
+          asNonPositiveFiniteNumber(-1),
         ),
       ).toBeDefined();
     });
