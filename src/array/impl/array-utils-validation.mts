@@ -1,9 +1,9 @@
 import {
-  type ArrayAtLeastLen,
-  type ArrayAtMostLen,
-  type ArrayBoundedLen,
-  type ArrayOfLength,
   type BoolOr,
+  type BoundedLengthTuple,
+  type FixedLengthTuple,
+  type MaxLengthTuple,
+  type MinLengthTuple,
   type NonEmptyArray,
   type TypeEq,
 } from 'ts-type-forge';
@@ -112,7 +112,7 @@ export const isNonEmpty = <E,>(
 export const isArrayOfLength = <E, N extends SizeType.ArgArr>(
   array: readonly E[],
   len: N,
-): array is ArrayOfLength<N, E> => array.length === len;
+): array is FixedLengthTuple<N, E> => array.length === len;
 
 /**
  * Checks if an array has at least a specific length.
@@ -136,7 +136,7 @@ export const isArrayOfLength = <E, N extends SizeType.ArgArr>(
 export const isArrayAtLeastLength = <E, N extends SizeType.ArgArr>(
   array: readonly E[],
   len: N,
-): array is ArrayAtLeastLen<N, E> => array.length >= len;
+): array is MinLengthTuple<N, E> => array.length >= len;
 
 /**
  * Checks if an array has at most a specific length.
@@ -160,7 +160,7 @@ export const isArrayAtLeastLength = <E, N extends SizeType.ArgArr>(
 export const isArrayAtMostLength = <E, N extends SizeType.ArgArr>(
   array: readonly E[],
   len: N,
-): array is ArrayAtMostLen<N, E> => array.length <= len;
+): array is MaxLengthTuple<N, E> => array.length <= len;
 
 /**
  * Checks if an array's length is within a specific inclusive range.
@@ -189,7 +189,7 @@ export const isArrayBoundedLength = <
   array: readonly E[],
   min: Min,
   max: Max,
-): array is ArrayBoundedLen<Min, Max, E> =>
+): array is BoundedLengthTuple<Min, Max, E> =>
   array.length >= min && array.length <= max;
 
 /**

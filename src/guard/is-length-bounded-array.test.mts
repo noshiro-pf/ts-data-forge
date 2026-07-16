@@ -37,6 +37,20 @@ describe(isMinLengthArray, () => {
 
       expectType<typeof value, MinLengthArray<5, number>>('!<=');
 
+      // indexed access below the minimum length does not include `undefined`
+      // (even under `noUncheckedIndexedAccess`)
+      const _first = value[0];
+
+      expectType<typeof _first, number>('=');
+
+      const _third = value[2];
+
+      expectType<typeof _third, number>('=');
+
+      const _fourth = value[3];
+
+      expectType<typeof _fourth, number | undefined>('=');
+
       expect(value.length).toBeGreaterThanOrEqual(3);
     }
   });
@@ -138,6 +152,16 @@ describe(isFixedLengthArray, () => {
       expectType<typeof value, MinLengthArray<1, number>>('<='); // 3 >= 1
 
       expectType<typeof value, FixedLengthArray<4, number>>('!<=');
+
+      // `length` is narrowed to the literal and in-range indexed access does
+      // not include `undefined` (even under `noUncheckedIndexedAccess`)
+      const _len = value.length;
+
+      expectType<typeof _len, 3>('=');
+
+      const _second = value[1];
+
+      expectType<typeof _second, number>('=');
 
       expect(value).toHaveLength(3);
     }

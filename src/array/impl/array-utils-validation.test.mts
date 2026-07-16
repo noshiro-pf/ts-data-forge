@@ -1,8 +1,8 @@
 import {
-  type ArrayAtLeastLen,
-  type ArrayAtMostLen,
-  type ArrayBoundedLen,
-  type ArrayOfLength,
+  type BoundedLengthTuple,
+  type FixedLengthTuple,
+  type MaxLengthTuple,
+  type MinLengthTuple,
 } from 'ts-type-forge';
 import { expectType } from '../../expect-type.mjs';
 import {
@@ -456,7 +456,7 @@ describe('Arr validations', () => {
 
       if (isArrayOfLength(mut_arr, 2)) {
         // transformer-ignore-next-line
-        expectType<typeof mut_arr, number[] & ArrayOfLength<2, number>>('=');
+        expectType<typeof mut_arr, number[] & FixedLengthTuple<2, number>>('=');
       }
 
       assert.isFalse(isArrayOfLength(mut_arr, 3));
@@ -468,7 +468,7 @@ describe('Arr validations', () => {
       assert.isTrue(isArrayOfLength(arr, 2));
 
       if (isArrayOfLength(arr, 2)) {
-        expectType<typeof arr, ArrayOfLength<2, number>>('=');
+        expectType<typeof arr, FixedLengthTuple<2, number>>('=');
       }
 
       assert.isFalse(isArrayOfLength(arr, 3));
@@ -494,7 +494,7 @@ describe('Arr validations', () => {
       const array: readonly number[] = [1, 2, 3] as const;
 
       if (isArrayOfLength(array, 3)) {
-        expectType<typeof array, ArrayOfLength<3, number>>('=');
+        expectType<typeof array, FixedLengthTuple<3, number>>('=');
 
         expect(array).toHaveLength(3);
       }
@@ -546,7 +546,7 @@ describe('Arr validations', () => {
       assert.isTrue(isArrayAtLeastLength(mut_arr, 2));
 
       // transformer-ignore-next-line
-      expectType<typeof mut_arr, number[] & ArrayAtLeastLen<2, number>>('=');
+      expectType<typeof mut_arr, number[] & MinLengthTuple<2, number>>('=');
 
       assert.isFalse(isArrayAtLeastLength(mut_arr, 3));
     });
@@ -557,7 +557,7 @@ describe('Arr validations', () => {
       assert.isTrue(isArrayAtLeastLength(mut_arr, 1));
 
       // transformer-ignore-next-line
-      expectType<typeof mut_arr, number[] & ArrayAtLeastLen<1, number>>('=');
+      expectType<typeof mut_arr, number[] & MinLengthTuple<1, number>>('=');
 
       assert.isFalse(isArrayAtLeastLength(mut_arr, 3));
     });
@@ -582,7 +582,7 @@ describe('Arr validations', () => {
       const array: readonly number[] = [1, 2, 3] as const;
 
       if (isArrayAtLeastLength(array, 2)) {
-        expectType<typeof array, ArrayAtLeastLen<2, number>>('=');
+        expectType<typeof array, MinLengthTuple<2, number>>('=');
 
         expect(array.length).toBeGreaterThanOrEqual(2);
       }
@@ -634,7 +634,7 @@ describe('Arr validations', () => {
       assert.isTrue(isArrayAtMostLength(mut_arr, 2));
 
       // transformer-ignore-next-line
-      expectType<typeof mut_arr, number[] & ArrayAtMostLen<2, number>>('=');
+      expectType<typeof mut_arr, number[] & MaxLengthTuple<2, number>>('=');
 
       assert.isFalse(isArrayAtMostLength(mut_arr, 1));
     });
@@ -657,7 +657,7 @@ describe('Arr validations', () => {
       const array: readonly number[] = [1, 2] as const;
 
       if (isArrayAtMostLength(array, 3)) {
-        expectType<typeof array, ArrayAtMostLen<3, number>>('=');
+        expectType<typeof array, MaxLengthTuple<3, number>>('=');
 
         expect(array.length).toBeLessThanOrEqual(3);
       }
@@ -709,7 +709,9 @@ describe('Arr validations', () => {
       assert.isTrue(isArrayBoundedLength(mut_arr, 1, 3));
 
       // transformer-ignore-next-line
-      expectType<typeof mut_arr, number[] & ArrayBoundedLen<1, 3, number>>('=');
+      expectType<typeof mut_arr, number[] & BoundedLengthTuple<1, 3, number>>(
+        '=',
+      );
 
       assert.isFalse(isArrayBoundedLength(mut_arr, 3, 5));
     });
@@ -732,7 +734,7 @@ describe('Arr validations', () => {
       const array: readonly number[] = [1, 2] as const;
 
       if (isArrayBoundedLength(array, 1, 3)) {
-        expectType<typeof array, ArrayBoundedLen<1, 3, number>>('=');
+        expectType<typeof array, BoundedLengthTuple<1, 3, number>>('=');
 
         expect(array.length).toBeGreaterThanOrEqual(1);
 
