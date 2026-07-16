@@ -15,7 +15,7 @@ import { type SizeType } from '../types.mjs';
  *   original array type (e.g. tuple types) via intersection.
  * - The length constraint lives only in the brand, so this stays cheap for the
  *   type checker even when the element type is large — unlike
- *   `isArrayAtLeastLength`, which narrows to a structural tuple type.
+ *   `isMinLengthTuple`, which narrows to a structural tuple type.
  * - The result participates in the length-constraint subtyping relation: for
  *   example, a value narrowed to `MinLengthArray<3, E>` is assignable to
  *   `MinLengthArray<1, E>`.
@@ -60,7 +60,7 @@ export const isMinLengthArray = <
  *   original array type (e.g. tuple types) via intersection.
  * - The length constraint lives only in the brand, so this stays cheap for the
  *   type checker even when the element type is large — unlike
- *   `isArrayAtMostLength`, which narrows to a union of tuple types.
+ *   `isMaxLengthTuple`, which narrows to a union of tuple types.
  * - The result participates in the length-constraint subtyping relation: for
  *   example, a value narrowed to `MaxLengthArray<8, E>` is assignable to
  *   `MaxLengthArray<16, E>`.
@@ -109,7 +109,7 @@ export const isMaxLengthArray = <
  *   bounds can be weakened independently.
  * - The length constraint lives only in the brand, so this stays cheap for the
  *   type checker even when the element type is large — unlike
- *   `isArrayBoundedLength`, which narrows to a union of tuple types.
+ *   `isBoundedLengthTuple`, which narrows to a union of tuple types.
  *
  * @example
  *
@@ -161,7 +161,7 @@ export const isBoundedLengthArray = <
  *   `MaxLengthArray<N, E>` with `N >= Length`.
  * - The length constraint lives only in the brand, so this stays cheap for the
  *   type checker even when the element type is large — unlike
- *   `isArrayOfLength`, which narrows to a structural tuple type.
+ *   `isFixedLengthTuple`, which narrows to a structural tuple type.
  *
  * @example
  *

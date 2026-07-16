@@ -100,16 +100,16 @@ export const isNonEmpty = <E,>(
  *
  * const triple: readonly number[] = [1, 2, 3] as const;
  *
- * assert.isTrue(Arr.isArrayOfLength(pair, 2));
+ * assert.isTrue(Arr.isFixedLengthTuple(pair, 2));
  *
- * assert.isFalse(Arr.isArrayOfLength(triple, 2));
+ * assert.isFalse(Arr.isFixedLengthTuple(triple, 2));
  *
- * if (Arr.isArrayOfLength(pair, 2)) {
+ * if (Arr.isFixedLengthTuple(pair, 2)) {
  *   assert.deepStrictEqual(pair, [1, 2]);
  * }
  * ```
  */
-export const isArrayOfLength = <E, N extends SizeType.ArgArr>(
+export const isFixedLengthTuple = <E, N extends SizeType.ArgArr>(
   array: readonly E[],
   len: N,
 ): array is FixedLengthTuple<N, E> => array.length === len;
@@ -124,16 +124,16 @@ export const isArrayOfLength = <E, N extends SizeType.ArgArr>(
  *
  * const emptyQueue: readonly string[] = [] as const;
  *
- * assert.isTrue(Arr.isArrayAtLeastLength(queue, 1));
+ * assert.isTrue(Arr.isMinLengthTuple(queue, 1));
  *
- * assert.isFalse(Arr.isArrayAtLeastLength(emptyQueue, 1));
+ * assert.isFalse(Arr.isMinLengthTuple(emptyQueue, 1));
  *
- * if (Arr.isArrayAtLeastLength(queue, 1)) {
+ * if (Arr.isMinLengthTuple(queue, 1)) {
  *   assert.isTrue(queue[0] === 'task-1');
  * }
  * ```
  */
-export const isArrayAtLeastLength = <E, N extends SizeType.ArgArr>(
+export const isMinLengthTuple = <E, N extends SizeType.ArgArr>(
   array: readonly E[],
   len: N,
 ): array is MinLengthTuple<N, E> => array.length >= len;
@@ -148,16 +148,16 @@ export const isArrayAtLeastLength = <E, N extends SizeType.ArgArr>(
  *
  * const triple: readonly number[] = [1, 2, 3] as const;
  *
- * assert.isTrue(Arr.isArrayAtMostLength(pair, 2));
+ * assert.isTrue(Arr.isMaxLengthTuple(pair, 2));
  *
- * assert.isFalse(Arr.isArrayAtMostLength(triple, 2));
+ * assert.isFalse(Arr.isMaxLengthTuple(triple, 2));
  *
- * if (Arr.isArrayAtMostLength(pair, 2)) {
+ * if (Arr.isMaxLengthTuple(pair, 2)) {
  *   assert.isTrue(pair.length <= 2);
  * }
  * ```
  */
-export const isArrayAtMostLength = <E, N extends SizeType.ArgArr>(
+export const isMaxLengthTuple = <E, N extends SizeType.ArgArr>(
   array: readonly E[],
   len: N,
 ): array is MaxLengthTuple<N, E> => array.length <= len;
@@ -172,16 +172,16 @@ export const isArrayAtMostLength = <E, N extends SizeType.ArgArr>(
  *
  * const quad: readonly number[] = [1, 2, 3, 4] as const;
  *
- * assert.isTrue(Arr.isArrayBoundedLength(pair, 1, 3));
+ * assert.isTrue(Arr.isBoundedLengthTuple(pair, 1, 3));
  *
- * assert.isFalse(Arr.isArrayBoundedLength(quad, 1, 3));
+ * assert.isFalse(Arr.isBoundedLengthTuple(quad, 1, 3));
  *
- * if (Arr.isArrayBoundedLength(pair, 1, 3)) {
+ * if (Arr.isBoundedLengthTuple(pair, 1, 3)) {
  *   assert.isTrue(pair.length >= 1 && pair.length <= 3);
  * }
  * ```
  */
-export const isArrayBoundedLength = <
+export const isBoundedLengthTuple = <
   E,
   Min extends SizeType.ArgArr,
   Max extends SizeType.ArgArr,
