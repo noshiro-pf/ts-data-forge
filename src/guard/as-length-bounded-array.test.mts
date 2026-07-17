@@ -14,7 +14,7 @@ import {
 
 describe(asFixedLengthArray, () => {
   test('should return the input when the length matches exactly', () => {
-    const xs: readonly number[] = [0, 1, 2, 3];
+    const xs: readonly number[] = [0, 1, 2, 3] as const;
 
     const casted = asFixedLengthArray(xs, 4);
 
@@ -51,7 +51,7 @@ describe(asFixedLengthArray, () => {
 
 describe(asMinLengthArray, () => {
   test('should return the input when the array is long enough', () => {
-    const xs: readonly number[] = [0, 1, 2, 3];
+    const xs: readonly number[] = [0, 1, 2, 3] as const;
 
     const casted = asMinLengthArray(xs, 3);
 
@@ -73,7 +73,7 @@ describe(asMinLengthArray, () => {
 
 describe(asMaxLengthArray, () => {
   test('should return the input when the array is short enough', () => {
-    const xs: readonly number[] = [0, 1, 2];
+    const xs: readonly number[] = [0, 1, 2] as const;
 
     const casted = asMaxLengthArray(xs, 8);
 
@@ -95,7 +95,7 @@ describe(asMaxLengthArray, () => {
 
 describe(asBoundedLengthArray, () => {
   test('should return the input when the length is within the range', () => {
-    const xs: readonly number[] = [1, 2, 3];
+    const xs: readonly number[] = [1, 2, 3] as const;
 
     const casted = asBoundedLengthArray(xs, 1, 5);
 

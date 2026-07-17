@@ -28,7 +28,7 @@ describe(isMinLengthArray, () => {
   });
 
   test('should act as a type guard', () => {
-    const value: readonly number[] = [0, 1, 2, 3];
+    const value: readonly number[] = [0, 1, 2, 3] as const;
 
     if (isMinLengthArray(value, 3)) {
       expectType<typeof value, MinLengthArray<3, number>>('<=');
@@ -82,7 +82,7 @@ describe(isMaxLengthArray, () => {
   });
 
   test('should act as a type guard', () => {
-    const value: readonly number[] = [0, 1, 2];
+    const value: readonly number[] = [0, 1, 2] as const;
 
     if (isMaxLengthArray(value, 8)) {
       expectType<typeof value, MaxLengthArray<8, number>>('<=');
@@ -112,7 +112,7 @@ describe(isBoundedLengthArray, () => {
   });
 
   test('should act as a type guard', () => {
-    const value: readonly number[] = [1, 2, 3];
+    const value: readonly number[] = [1, 2, 3] as const;
 
     if (isBoundedLengthArray(value, 1, 5)) {
       expectType<typeof value, BoundedLengthArray<1, 5, number>>('<=');
@@ -142,7 +142,7 @@ describe(isFixedLengthArray, () => {
   });
 
   test('should act as a type guard', () => {
-    const value: readonly number[] = [255, 128, 0];
+    const value: readonly number[] = [255, 128, 0] as const;
 
     if (isFixedLengthArray(value, 3)) {
       expectType<typeof value, FixedLengthArray<3, number>>('<=');
