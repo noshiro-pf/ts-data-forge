@@ -3,8 +3,8 @@ import {
   type FixedLengthArray,
   type MaxLengthArray,
   type MinLengthArray,
+  type SupportedArrayLength,
 } from 'ts-type-forge';
-import { type SizeType } from '../types.mjs';
 import {
   isBoundedLengthArray,
   isFixedLengthArray,
@@ -42,7 +42,7 @@ import {
  */
 export const asFixedLengthArray = <
   Xs extends readonly unknown[],
-  Length extends SizeType.ArgArr,
+  Length extends SupportedArrayLength,
 >(
   xs: Xs,
   length: Length,
@@ -86,7 +86,7 @@ export const asFixedLengthArray = <
  */
 export const asMinLengthArray = <
   Xs extends readonly unknown[],
-  MinLength extends SizeType.ArgArr,
+  MinLength extends SupportedArrayLength,
 >(
   xs: Xs,
   minLength: MinLength,
@@ -127,7 +127,7 @@ export const asMinLengthArray = <
  */
 export const asMaxLengthArray = <
   Xs extends readonly unknown[],
-  MaxLength extends SizeType.ArgArr,
+  MaxLength extends SupportedArrayLength,
 >(
   xs: Xs,
   maxLength: MaxLength,
@@ -173,8 +173,8 @@ export const asMaxLengthArray = <
  */
 export const asBoundedLengthArray = <
   Xs extends readonly unknown[],
-  MinLength extends SizeType.ArgArr,
-  MaxLength extends SizeType.ArgArr,
+  MinLength extends SupportedArrayLength,
+  MaxLength extends SupportedArrayLength,
 >(
   xs: Xs,
   minLength: MinLength,

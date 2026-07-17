@@ -3,8 +3,8 @@ import {
   type FixedLengthArray,
   type MaxLengthArray,
   type MinLengthArray,
+  type SupportedArrayLength,
 } from 'ts-type-forge';
-import { type SizeType } from '../types.mjs';
 
 /**
  * Type guard that checks if an array has at least `minLength` elements.
@@ -45,7 +45,7 @@ import { type SizeType } from '../types.mjs';
  */
 export const isMinLengthArray = <
   Xs extends readonly unknown[],
-  MinLength extends SizeType.ArgArr,
+  MinLength extends SupportedArrayLength,
 >(
   xs: Xs,
   minLength: MinLength,
@@ -90,7 +90,7 @@ export const isMinLengthArray = <
  */
 export const isMaxLengthArray = <
   Xs extends readonly unknown[],
-  MaxLength extends SizeType.ArgArr,
+  MaxLength extends SupportedArrayLength,
 >(
   xs: Xs,
   maxLength: MaxLength,
@@ -139,8 +139,8 @@ export const isMaxLengthArray = <
  */
 export const isBoundedLengthArray = <
   Xs extends readonly unknown[],
-  MinLength extends SizeType.ArgArr,
-  MaxLength extends SizeType.ArgArr,
+  MinLength extends SupportedArrayLength,
+  MaxLength extends SupportedArrayLength,
 >(
   xs: Xs,
   minLength: MinLength,
@@ -188,7 +188,7 @@ export const isBoundedLengthArray = <
  */
 export const isFixedLengthArray = <
   Xs extends readonly unknown[],
-  Length extends SizeType.ArgArr,
+  Length extends SupportedArrayLength,
 >(
   xs: Xs,
   length: Length,
