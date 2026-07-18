@@ -1,16 +1,19 @@
 # ts-data-forge monorepo
 
-This repository is a [pnpm](https://pnpm.io/) monorepo containing `ts-data-forge`
-and its companion packages.
+This repository is a [pnpm](https://pnpm.io/) monorepo. It currently contains the
+`ts-data-forge` library.
 
-| Package                       | Path                                   | Description                                                                 |
-| ----------------------------- | -------------------------------------- | --------------------------------------------------------------------------- |
-| `ts-data-forge`               | `packages/ts-data-forge`               | Type-safe utility library for TypeScript (types, guards, functional tools). |
-| `eslint-plugin-ts-data-forge` | `packages/eslint-plugin-ts-data-forge` | ESLint rules that steer code toward `ts-data-forge` idioms.                 |
-| `@ts-data-forge/docs`         | `packages/docs`                        | Documentation site (Astro + Starlight).                                     |
+| Package         | Path                     | Description                                                                 |
+| --------------- | ------------------------ | --------------------------------------------------------------------------- |
+| `ts-data-forge` | `packages/ts-data-forge` | Type-safe utility library for TypeScript (types, guards, functional tools). |
 
-> The `eslint-plugin-ts-data-forge` and `@ts-data-forge/docs` packages are added
-> incrementally; see each package directory for its current status.
+## Roadmap
+
+The following packages are planned and not yet part of the repository:
+
+- `eslint-plugin-ts-data-forge` — ESLint rules that steer code toward
+  `ts-data-forge` idioms.
+- `@ts-data-forge/docs` — documentation site (Astro + Starlight).
 
 ## Getting started
 
