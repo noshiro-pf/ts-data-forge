@@ -5,7 +5,7 @@ import {
   type IsUnion,
   type List,
   type Min,
-  type NonEmptyArray,
+  type NonEmptyTuple,
   type NonZeroSafeIntWithSmallInt,
   type PositiveSafeIntWithSmallInt,
   type RelaxedExclude,
@@ -40,7 +40,7 @@ export const zeros = <N extends SizeType.ArgArr>(
 ): N extends SmallUint
   ? FixedLengthTuple<N, 0>
   : N extends SizeType.ArgArrPositive
-    ? NonEmptyArray<0>
+    ? NonEmptyTuple<0>
     : readonly 0[] =>
   // eslint-disable-next-line total-functions/no-unsafe-type-assertion
   Array.from({ length: len }, () => 0) as never;
@@ -65,7 +65,7 @@ export const seq = <N extends SizeType.ArgArr>(
 ): N extends SmallUint
   ? Seq<N>
   : N extends SizeType.ArgArrPositive
-    ? NonEmptyArray<SizeType.Arr>
+    ? NonEmptyTuple<SizeType.Arr>
     : readonly SizeType.Arr[] =>
   // eslint-disable-next-line total-functions/no-unsafe-type-assertion
   Array.from({ length: len }, (_, i) => i) as never;
@@ -91,7 +91,7 @@ export const create = <N extends SizeType.ArgArr, const V>(
 ): N extends SmallUint
   ? FixedLengthTuple<N, V>
   : N extends SizeType.ArgArrPositive
-    ? NonEmptyArray<V>
+    ? NonEmptyTuple<V>
     : readonly V[] =>
   // eslint-disable-next-line total-functions/no-unsafe-type-assertion
   Array.from({ length: Math.max(0, len) }, () => init) as never;

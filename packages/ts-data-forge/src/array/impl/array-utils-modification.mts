@@ -2,7 +2,7 @@ import {
   type FixedLengthTuple,
   type Increment,
   type IsFixedLengthList,
-  type NonEmptyArray,
+  type NonEmptyTuple,
 } from 'ts-type-forge';
 import { asPositiveUint32 } from '../../number/index.mjs';
 import { castMutable } from '../../others/index.mjs';
@@ -32,8 +32,8 @@ export function set<const Ar extends readonly unknown[], const V = Ar[number]>(
   newValue: V,
 ): IsFixedLengthList<Ar> extends true
   ? Readonly<{ [K in keyof Ar]: Ar[K] | V }>
-  : Ar extends NonEmptyArray<unknown>
-    ? NonEmptyArray<Ar[number] | V>
+  : Ar extends NonEmptyTuple<unknown>
+    ? NonEmptyTuple<Ar[number] | V>
     : readonly (Ar[number] | V)[];
 
 // curried version
@@ -44,8 +44,8 @@ export function set<const V>(
   array: Ar,
 ) => IsFixedLengthList<Ar> extends true
   ? Readonly<{ [K in keyof Ar]: Ar[K] | V }>
-  : Ar extends NonEmptyArray<unknown>
-    ? NonEmptyArray<Ar[number] | V>
+  : Ar extends NonEmptyTuple<unknown>
+    ? NonEmptyTuple<Ar[number] | V>
     : readonly (Ar[number] | V)[];
 
 export function set<E, const V = E>(
@@ -97,8 +97,8 @@ export function toUpdated<
   updater: (prev: Ar[number]) => V,
 ): IsFixedLengthList<Ar> extends true
   ? Readonly<{ [K in keyof Ar]: Ar[K] | V }>
-  : Ar extends NonEmptyArray<unknown>
-    ? NonEmptyArray<Ar[number] | V>
+  : Ar extends NonEmptyTuple<unknown>
+    ? NonEmptyTuple<Ar[number] | V>
     : readonly (Ar[number] | V)[];
 
 // curried version
@@ -109,8 +109,8 @@ export function toUpdated<E, const V = E>(
   array: Ar,
 ) => IsFixedLengthList<Ar> extends true
   ? Readonly<{ [K in keyof Ar]: Ar[K] | V }>
-  : Ar extends NonEmptyArray<unknown>
-    ? NonEmptyArray<Ar[number] | V>
+  : Ar extends NonEmptyTuple<unknown>
+    ? NonEmptyTuple<Ar[number] | V>
     : readonly (Ar[number] | V)[];
 
 export function toUpdated<E, V = E>(
@@ -164,7 +164,7 @@ export function toInserted<
   newValue: V,
 ): IsFixedLengthList<Ar> extends true
   ? FixedLengthTuple<CastToNumber<Increment<Ar['length']>>, Ar[number] | V>
-  : NonEmptyArray<Ar[number] | V>;
+  : NonEmptyTuple<Ar[number] | V>;
 
 // curried version
 export function toInserted<const V>(
@@ -174,7 +174,7 @@ export function toInserted<const V>(
   array: Ar,
 ) => IsFixedLengthList<Ar> extends true
   ? FixedLengthTuple<CastToNumber<Increment<Ar['length']>>, Ar[number] | V>
-  : NonEmptyArray<Ar[number] | V>;
+  : NonEmptyTuple<Ar[number] | V>;
 
 export function toInserted<E, const V = E>(
   ...args:
@@ -184,7 +184,7 @@ export function toInserted<E, const V = E>(
         newValue: V,
       ]
     | readonly [index: SizeType.ArgArrWithNegative, newValue: V]
-): NonEmptyArray<E | V> | ((array: readonly E[]) => NonEmptyArray<E | V>) {
+): NonEmptyTuple<E | V> | ((array: readonly E[]) => NonEmptyTuple<E | V>) {
   switch (args.length) {
     case 3: {
       const [array, index, newValue] = args;
@@ -194,7 +194,7 @@ export function toInserted<E, const V = E>(
         index,
         0,
         newValue,
-      ) as unknown as NonEmptyArray<E | V>;
+      ) as unknown as NonEmptyTuple<E | V>;
     }
 
     case 2: {
@@ -368,8 +368,8 @@ export function toFilled<const Ar extends readonly unknown[], const V>(
   value: V,
 ): IsFixedLengthList<Ar> extends true
   ? FixedLengthTuple<Ar['length'], V>
-  : Ar extends NonEmptyArray<unknown>
-    ? NonEmptyArray<V>
+  : Ar extends NonEmptyTuple<unknown>
+    ? NonEmptyTuple<V>
     : readonly V[];
 
 // curried version
@@ -379,8 +379,8 @@ export function toFilled<const V>(
   array: Ar,
 ) => IsFixedLengthList<Ar> extends true
   ? FixedLengthTuple<Ar['length'], V>
-  : Ar extends NonEmptyArray<unknown>
-    ? NonEmptyArray<V>
+  : Ar extends NonEmptyTuple<unknown>
+    ? NonEmptyTuple<V>
     : readonly V[];
 
 export function toFilled<E>(
@@ -427,8 +427,8 @@ export function toRangeFilled<const Ar extends readonly unknown[], const V>(
   ],
 ): IsFixedLengthList<Ar> extends true
   ? FixedLengthTuple<Ar['length'], V | Ar[number]>
-  : Ar extends NonEmptyArray<unknown>
-    ? NonEmptyArray<V | Ar[number]>
+  : Ar extends NonEmptyTuple<unknown>
+    ? NonEmptyTuple<V | Ar[number]>
     : readonly (V | Ar[number])[];
 
 // curried version
@@ -442,8 +442,8 @@ export function toRangeFilled<const V>(
   array: Ar,
 ) => IsFixedLengthList<Ar> extends true
   ? FixedLengthTuple<Ar['length'], V | Ar[number]>
-  : Ar extends NonEmptyArray<unknown>
-    ? NonEmptyArray<V | Ar[number]>
+  : Ar extends NonEmptyTuple<unknown>
+    ? NonEmptyTuple<V | Ar[number]>
     : readonly (V | Ar[number])[];
 
 export function toRangeFilled<E, const V>(

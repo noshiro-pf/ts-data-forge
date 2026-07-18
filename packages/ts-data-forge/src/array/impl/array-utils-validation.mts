@@ -4,7 +4,7 @@ import {
   type FixedLengthTuple,
   type MaxLengthTuple,
   type MinLengthTuple,
-  type NonEmptyArray,
+  type NonEmptyTuple,
   type TypeEq,
 } from 'ts-type-forge';
 import { asUint32, Num } from '../../number/index.mjs';
@@ -88,7 +88,7 @@ export const isEmpty = <E,>(array: readonly E[]): array is readonly [] =>
  */
 export const isNonEmpty = <E,>(
   array: readonly E[],
-): array is NonEmptyArray<E> => array.length > 0;
+): array is NonEmptyTuple<E> => array.length > 0;
 
 /**
  * Checks if an array has a specific length.

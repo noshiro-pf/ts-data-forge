@@ -1,4 +1,4 @@
-import { type List, type NonEmptyArray, type SmallUint } from 'ts-type-forge';
+import { type List, type NonEmptyTuple, type SmallUint } from 'ts-type-forge';
 import { Uint32 } from '../../number/index.mjs';
 import { type SizeType } from '../../types.mjs';
 import { size } from './array-utils-size.mjs';
@@ -87,8 +87,8 @@ export function take<
 ): N extends SmallUint
   ? List.Take<N, Ar>
   : N extends SizeType.ArgArrPositive
-    ? Ar extends NonEmptyArray<unknown>
-      ? NonEmptyArray<Ar[number]>
+    ? Ar extends NonEmptyTuple<unknown>
+      ? NonEmptyTuple<Ar[number]>
       : readonly Ar[number][]
     : readonly Ar[number][];
 
@@ -99,8 +99,8 @@ export function take<N extends SizeType.ArgArr>(
 ) => N extends SmallUint
   ? List.Take<N, Ar>
   : N extends SizeType.ArgArrPositive
-    ? Ar extends NonEmptyArray<unknown>
-      ? NonEmptyArray<Ar[number]>
+    ? Ar extends NonEmptyTuple<unknown>
+      ? NonEmptyTuple<Ar[number]>
       : readonly Ar[number][]
     : readonly Ar[number][];
 
@@ -150,8 +150,8 @@ export function takeLast<
 ): N extends SmallUint
   ? List.TakeLast<N, Ar>
   : N extends SizeType.ArgArrPositive
-    ? Ar extends NonEmptyArray<unknown>
-      ? NonEmptyArray<Ar[number]>
+    ? Ar extends NonEmptyTuple<unknown>
+      ? NonEmptyTuple<Ar[number]>
       : readonly Ar[number][]
     : readonly Ar[number][];
 
@@ -162,8 +162,8 @@ export function takeLast<N extends SizeType.ArgArr>(
 ) => N extends SmallUint
   ? List.TakeLast<N, Ar>
   : N extends SizeType.ArgArrPositive
-    ? Ar extends NonEmptyArray<unknown>
-      ? NonEmptyArray<Ar[number]>
+    ? Ar extends NonEmptyTuple<unknown>
+      ? NonEmptyTuple<Ar[number]>
       : readonly Ar[number][]
     : readonly Ar[number][];
 
