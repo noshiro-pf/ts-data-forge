@@ -1,4 +1,4 @@
-import { type FixedLengthTuple, type NonEmptyTuple } from 'ts-type-forge';
+import { type FixedLengthTuple, type NonEmptyArray } from 'ts-type-forge';
 import { expectType } from '../../expect-type.mjs';
 import { asUint32 } from '../../number/index.mjs';
 import {
@@ -59,9 +59,14 @@ describe('Arr modifications', () => {
         5,
       );
 
-      expectType<typeof result, NonEmptyTuple<string | 5>>('=');
+      expectType<typeof result, NonEmptyArray<string | 5>>('=');
 
-      assert.deepStrictEqual(result, ['a', 'b', 'c', 5]);
+      assert.deepStrictEqual<readonly (5 | string)[]>(result, [
+        'a',
+        'b',
+        'c',
+        5,
+      ]);
     });
 
     test('should work with curried version', () => {

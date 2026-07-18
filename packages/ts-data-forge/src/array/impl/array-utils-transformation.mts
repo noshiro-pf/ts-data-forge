@@ -2,7 +2,7 @@ import {
   type FixedLengthTuple,
   type IsFixedLengthList,
   type List,
-  type MutableNonEmptyTuple,
+  type NonEmptyArray,
   type NonEmptyTuple,
   type PositiveInt,
   type PositiveUint32,
@@ -111,12 +111,12 @@ export function scan<const Ar extends readonly unknown[], S>(
     currentIndex: ArrayIndex<Ar>,
   ) => S,
   init: S,
-): NonEmptyTuple<S>;
+): NonEmptyArray<S>;
 
 export function scan<E, S>(
   reducer: (accumulator: S, currentValue: E, currentIndex: SizeType.Arr) => S,
   init: S,
-): (array: readonly E[]) => NonEmptyTuple<S>;
+): (array: readonly E[]) => NonEmptyArray<S>;
 
 export function scan<E, S>(
   ...args:
@@ -142,7 +142,7 @@ export function scan<E, S>(
     case 3: {
       const [array, reducer, init] = args;
 
-      const mut_result: MutableNonEmptyTuple<S> = castMutable(
+      const mut_result = castMutable<NonEmptyTuple<S>>(
         newArray<PositiveUint32, S>(asPositiveUint32(array.length + 1), init),
       );
 
@@ -222,7 +222,7 @@ export const toSorted = <const Ar extends readonly unknown[]>(
 ): IsFixedLengthList<Ar> extends true
   ? FixedLengthTuple<Ar['length'], Ar[number]>
   : Ar extends NonEmptyTuple<unknown>
-    ? NonEmptyTuple<Ar[number]>
+    ? NonEmptyArray<Ar[number]>
     : readonly Ar[number][] =>
   // eslint-disable-next-line total-functions/no-unsafe-type-assertion
   array.toSorted(
@@ -280,7 +280,7 @@ export function toSortedBy<const Ar extends readonly unknown[]>(
 ): IsFixedLengthList<Ar> extends true
   ? FixedLengthTuple<Ar['length'], Ar[number]>
   : Ar extends NonEmptyTuple<unknown>
-    ? NonEmptyTuple<Ar[number]>
+    ? NonEmptyArray<Ar[number]>
     : readonly Ar[number][];
 
 export function toSortedBy<const Ar extends readonly unknown[], const V>(
@@ -290,7 +290,7 @@ export function toSortedBy<const Ar extends readonly unknown[], const V>(
 ): IsFixedLengthList<Ar> extends true
   ? FixedLengthTuple<Ar['length'], Ar[number]>
   : Ar extends NonEmptyTuple<unknown>
-    ? NonEmptyTuple<Ar[number]>
+    ? NonEmptyArray<Ar[number]>
     : readonly Ar[number][];
 
 export function toSortedBy<E, const V>(
@@ -440,7 +440,7 @@ export function filterNot<E>(
 export const uniq = <const Ar extends readonly Primitive[]>(
   array: Ar,
 ): Ar extends NonEmptyTuple<unknown>
-  ? NonEmptyTuple<Ar[number]>
+  ? NonEmptyArray<Ar[number]>
   : readonly Ar[number][] =>
   // eslint-disable-next-line total-functions/no-unsafe-type-assertion
   Array.from(new Set(array)) as never;
@@ -476,7 +476,7 @@ export const uniqBy = <
   array: Ar,
   mapFn: (value: Ar[number]) => P,
 ): Ar extends NonEmptyTuple<unknown>
-  ? NonEmptyTuple<Ar[number]>
+  ? NonEmptyArray<Ar[number]>
   : readonly Ar[number][] => {
   const mut_mappedValues = new Set<P>();
 

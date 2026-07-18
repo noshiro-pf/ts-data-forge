@@ -5,7 +5,7 @@ import {
   type IsUnion,
   type List,
   type Min,
-  type NonEmptyTuple,
+  type NonEmptyArray,
   type NonZeroSafeIntWithSmallInt,
   type PositiveSafeIntWithSmallInt,
   type RelaxedExclude,
@@ -15,6 +15,7 @@ import {
   type SafeUintWithSmallInt,
   type Seq,
   type SmallUint,
+  type StructuralPrefixLength,
 } from 'ts-type-forge';
 import { expectType } from '../../expect-type.mjs';
 import { range as rangeIterator } from '../../iterator/index.mjs';
@@ -40,7 +41,7 @@ export const zeros = <N extends SizeType.ArgArr>(
 ): N extends SmallUint
   ? FixedLengthTuple<N, 0>
   : N extends SizeType.ArgArrPositive
-    ? NonEmptyTuple<0>
+    ? NonEmptyArray<0>
     : readonly 0[] =>
   // eslint-disable-next-line total-functions/no-unsafe-type-assertion
   Array.from({ length: len }, () => 0) as never;
@@ -65,7 +66,7 @@ export const seq = <N extends SizeType.ArgArr>(
 ): N extends SmallUint
   ? Seq<N>
   : N extends SizeType.ArgArrPositive
-    ? NonEmptyTuple<SizeType.Arr>
+    ? NonEmptyArray<SizeType.Arr>
     : readonly SizeType.Arr[] =>
   // eslint-disable-next-line total-functions/no-unsafe-type-assertion
   Array.from({ length: len }, (_, i) => i) as never;
@@ -88,10 +89,10 @@ export const seq = <N extends SizeType.ArgArr>(
 export const create = <N extends SizeType.ArgArr, const V>(
   len: N,
   init: V,
-): N extends SmallUint
+): N extends StructuralPrefixLength
   ? FixedLengthTuple<N, V>
   : N extends SizeType.ArgArrPositive
-    ? NonEmptyTuple<V>
+    ? NonEmptyArray<V>
     : readonly V[] =>
   // eslint-disable-next-line total-functions/no-unsafe-type-assertion
   Array.from({ length: Math.max(0, len) }, () => init) as never;
