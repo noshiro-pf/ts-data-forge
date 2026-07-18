@@ -37,9 +37,9 @@ export namespace Str {
    * assert.isFalse(Str.isMinLengthString('short', 12));
    *
    * if (Str.isMinLengthString(input, 12)) {
-   *   const password: MinLengthString<12> = input;
-   *
    *   const nonEmpty: NonEmptyString = input; // OK (12 >= 1)
+   *
+   *   assert.isTrue(nonEmpty.length >= 12);
    * }
    * ```
    *
@@ -79,9 +79,9 @@ export namespace Str {
    * assert.isFalse(Str.isMaxLengthString(input, 3));
    *
    * if (Str.isMaxLengthString(input, 32)) {
-   *   const userName: MaxLengthString<32> = input;
-   *
    *   const relaxed: MaxLengthString<64> = input; // OK (32 <= 64)
+   *
+   *   assert.isTrue(relaxed.length <= 32);
    * }
    * ```
    *
@@ -122,9 +122,9 @@ export namespace Str {
    * assert.isFalse(Str.isBoundedLengthString('user', 8, 16));
    *
    * if (Str.isBoundedLengthString(input, 8, 16)) {
-   *   const userId: BoundedLengthString<8, 16> = input;
+   *   const userId: BoundedLengthString<1, 255> = input; // OK ([8, 16] ⊆ [1, 255])
    *
-   *   const relaxed: BoundedLengthString<1, 255> = input; // OK ([8, 16] ⊆ [1, 255])
+   *   assert.isTrue(userId.length >= 8 && userId.length <= 16);
    * }
    * ```
    *
@@ -171,9 +171,9 @@ export namespace Str {
    * assert.isFalse(Str.isFixedLengthString(input, 3));
    *
    * if (Str.isFixedLengthString(input, 2)) {
-   *   const countryCode: FixedLengthString<2> = input;
-   *
    *   const atMost5: MaxLengthString<5> = input; // OK (2 <= 5)
+   *
+   *   assert.isTrue(atMost5.length === 2);
    * }
    * ```
    *
@@ -207,7 +207,9 @@ export namespace Str {
    *
    * const nonEmpty: NonEmptyString = password; // OK (>= 1)
    *
-   * // Str.asMinLengthString('short', 12); // throws TypeError
+   * assert.isTrue(nonEmpty.length >= 12);
+   *
+   * assert.throws(() => Str.asMinLengthString('short', 12)); // length 5 < 12
    * ```
    *
    * @template S - The input string type (literal types are preserved).
@@ -248,7 +250,9 @@ export namespace Str {
    *
    * const relaxed: MaxLengthString<64> = userName; // OK (32 <= 64)
    *
-   * // Str.asMaxLengthString('noshiro', 3); // throws TypeError
+   * assert.isTrue(relaxed.length <= 32);
+   *
+   * assert.throws(() => Str.asMaxLengthString('noshiro', 3)); // length 7 > 3
    * ```
    *
    * @template S - The input string type (literal types are preserved).
@@ -290,7 +294,9 @@ export namespace Str {
    *
    * const relaxed: BoundedLengthString<1, 255> = userId; // OK ([8, 16] ⊆ [1, 255])
    *
-   * // Str.asBoundedLengthString('user', 8, 16); // throws TypeError
+   * assert.isTrue(relaxed.length >= 8 && relaxed.length <= 16);
+   *
+   * assert.throws(() => Str.asBoundedLengthString('user', 8, 16)); // length 4 < 8
    * ```
    *
    * @template S - The input string type (literal types are preserved).
@@ -335,7 +341,9 @@ export namespace Str {
    *
    * const atMost5: MaxLengthString<5> = countryCode; // OK (2 <= 5)
    *
-   * // Str.asFixedLengthString('JP', 3); // throws TypeError
+   * assert.isTrue(atMost5.length === 2);
+   *
+   * assert.throws(() => Str.asFixedLengthString('JP', 3)); // length 2 !== 3
    * ```
    *
    * @template S - The input string type (literal types are preserved).
