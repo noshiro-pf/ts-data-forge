@@ -1,10 +1,12 @@
 name: Dependabot Changeset
 
-# Adds a changeset to Dependabot PRs so that the changesets release flow
+# Adds a changeset to Dependabot PRs so that the Changesets release flow
 # publishes a new version after they are merged. Only production-dependency
 # updates get a changeset (mirroring the previous semantic-release behavior,
 # where Dependabot's `fix`-prefixed production bumps triggered a release and
-# `chore`-prefixed dev-dependency bumps did not).
+# `chore`-prefixed dev-dependency bumps did not). Every publishable
+# (non-private) workspace package is bumped, since a production dependency may
+# be shared across packages.
 
 on:
   pull_request:
@@ -44,19 +46,52 @@ jobs:
           UPDATED_DEPS: ${{ steps.metadata.outputs.dependency-names }}
         run: |
           set -euo pipefail
-          slug=$(echo "$UPDATED_DEPS" | tr ',[:upper:]' '-[:lower:]' | tr -cd 'a-z0-9-')
+
+          # Collect every publishable (non-private) workspace package.
+          mapfile -t packages < <(node -e '
+            const fs = require("node:fs");
+            const path = require("node:path");
+            const out = [];
+            for (const dirent of fs.readdirSync("packages", { withFileTypes: true })) {
+              if (!dirent.isDirectory()) continue;
+              let pkg;
+              try {
+                pkg = JSON.parse(
+                  fs.readFileSync(path.join("packages", dirent.name, "package.json"), "utf8"),
+                );
+              } catch {
+                continue;
+              }
+              if (pkg && typeof pkg.name === "string" && pkg.private !== true) {
+                out.push(pkg.name);
+              }
+            }
+            process.stdout.write(out.join("\n"));
+          ')
+
+          if [ "${#packages[@]}" -eq 0 ]; then
+            echo "No publishable workspace package found; skipping changeset."
+            exit 0
+          fi
+
+          slug="$(printf '%s' "$UPDATED_DEPS" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-' | sed 's/^-//; s/-$//')"
           file=".changeset/dependabot-${slug}.md"
+
           if [ -f "$file" ]; then
             echo "Changeset $file already exists; nothing to do."
             exit 0
           fi
+
           {
             echo "---"
-            echo "'ts-data-forge': patch"
+            for pkg in "${packages[@]}"; do
+              echo "'${pkg}': patch"
+            done
             echo "---"
             echo ""
             echo "$PR_TITLE"
           } > "$file"
+
           git config user.name "dependabot[bot]"
           git config user.email "49699333+dependabot[bot]@users.noreply.github.com"
           git add "$file"
