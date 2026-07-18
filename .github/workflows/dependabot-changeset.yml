@@ -1,0 +1,64 @@
+name: Dependabot Changeset
+
+# Adds a changeset to Dependabot PRs so that the changesets release flow
+# publishes a new version after they are merged. Only production-dependency
+# updates get a changeset (mirroring the previous semantic-release behavior,
+# where Dependabot's `fix`-prefixed production bumps triggered a release and
+# `chore`-prefixed dev-dependency bumps did not).
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  changeset:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      - name: Generate Token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.DEPENDABOT_AUTO_MERGE_BOT_APP_ID }}
+          private-key: ${{ secrets.DEPENDABOT_AUTO_MERGE_BOT_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
+
+      - name: Create changeset for production dependency updates
+        if: contains(steps.metadata.outputs.dependency-type, 'production')
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          UPDATED_DEPS: ${{ steps.metadata.outputs.dependency-names }}
+        run: |
+          set -euo pipefail
+          slug=$(echo "$UPDATED_DEPS" | tr ',[:upper:]' '-[:lower:]' | tr -cd 'a-z0-9-')
+          file=".changeset/dependabot-${slug}.md"
+          if [ -f "$file" ]; then
+            echo "Changeset $file already exists; nothing to do."
+            exit 0
+          fi
+          {
+            echo "---"
+            echo "'ts-data-forge': patch"
+            echo "---"
+            echo ""
+            echo "$PR_TITLE"
+          } > "$file"
+          git config user.name "dependabot[bot]"
+          git config user.email "49699333+dependabot[bot]@users.noreply.github.com"
+          git add "$file"
+          git commit -m "chore: add changeset for ${UPDATED_DEPS}"
+          git push
