@@ -1,0 +1,44 @@
+# No-op companion of node-version-compatibility.yml.
+#
+# The `test-node-versions (<version>)` jobs are required status checks in the
+# main branch ruleset, but node-version-compatibility.yml is skipped entirely
+# (via paths-ignore) for docs-only changes, which would leave the required
+# checks permanently pending and block merges. This workflow runs exactly when
+# the real one is skipped and reports success under the same job/matrix names.
+# See https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks#handling-skipped-but-required-checks
+#
+# NOTE: Keep the `paths` list below in sync with the `paths-ignore` list in
+# node-version-compatibility.yml, and the matrix in sync with the real job
+# (and with the required status checks in github/rulesets/main.json).
+name: Node.js Version Compatibility (skip)
+
+on:
+  push:
+    branches-ignore:
+      - 'develop'
+      - 'develop*'
+    paths:
+      - '**.md'
+      - '**.txt'
+      - 'agents/**'
+      - 'docs/**'
+      - 'documents/**'
+      - '.gitignore'
+      - '.cspell.config.yaml'
+      - '.editorconfig'
+      - '.markdownlint-cli2.mjs'
+      - 'LICENSE'
+
+jobs:
+  test-node-versions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['22.22.2', '24.17.0', '26.3.1']
+
+    steps:
+      - name: Skip
+        run: echo "No Node.js compatibility tests required for this change (Node.js ${{ matrix.node-version }})"
