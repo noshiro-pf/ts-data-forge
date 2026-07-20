@@ -52,9 +52,7 @@ export const syncAgentConfig = async (): Promise<Result<undefined, string>> => {
 
     return await genAgentsMd();
   } catch (error) {
-    return Result.err(
-      `❌ Failed to sync the agent config: ${String(error)}`,
-    );
+    return Result.err(`❌ Failed to sync the agent config: ${String(error)}`);
   }
 };
 

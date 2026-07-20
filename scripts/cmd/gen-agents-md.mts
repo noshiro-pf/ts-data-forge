@@ -72,9 +72,7 @@ export const genAgentsMd = async (): Promise<Result<undefined, string>> => {
 
     return Result.ok(undefined);
   } catch (error) {
-    return Result.err(
-      `❌ Failed to generate AGENTS.md: ${String(error)}`,
-    );
+    return Result.err(`❌ Failed to generate AGENTS.md: ${String(error)}`);
   }
 };
 
