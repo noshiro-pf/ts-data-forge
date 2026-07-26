@@ -59,7 +59,7 @@
     "ts-type-forge": "7.x"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "8.63.0",
+    "@typescript-eslint/parser": "8.64.0",
     "@typescript-eslint/rule-tester": "8.63.0",
     "dedent": "1.7.2"
   },
