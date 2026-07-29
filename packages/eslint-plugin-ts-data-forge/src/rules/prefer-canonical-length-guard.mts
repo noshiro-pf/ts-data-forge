@@ -10,26 +10,28 @@ type Options = readonly [];
 type MessageIds = 'useCanonicalGuard';
 
 /**
- * Length guards whose bound makes them exactly equivalent to `Arr.isEmpty` /
+ * Length guards whose bound makes them redundant with `Arr.isEmpty` /
  * `Arr.isNonEmpty`, keyed by guard name.
  *
- * Every entry is *type-identical*, not merely equivalent at runtime:
+ * `isEmpty` narrows to `FixedLengthArray<0, E> & Xs` and `isNonEmpty` to
+ * `MinLengthArray<1, E> & Xs`, so:
  *
- * - `FixedLengthTuple<0, E>` / `MaxLengthTuple<0, E>` /
- *   `BoundedLengthTuple<0, 0, E>` all resolve to `readonly []`, which is what
- *   `isEmpty` narrows to.
- * - `MinLengthArray<1, E>` is the definition of `NonEmptyArray<E>`, which is
- *   what `isNonEmpty` narrows to.
- *
- * The branded `isFixedLengthArray(xs, 0)` is deliberately absent: it narrows to
- * `FixedLengthArray<0, E>`, a strict subtype of `readonly []`, so rewriting it
- * to `isEmpty` would *widen* the narrowed type and can break call sites.
+ * - The `*Array` entries are **type-identical** — `isFixedLengthArray(xs, 0)`
+ *   and `isMinLengthArray(xs, 1)` produce exactly those types.
+ * - The `*Tuple` entries **narrow**: they resolve to the structural
+ *   `readonly []` / `readonly [E, ...E[]]`, and the canonical guards add the
+ *   brand on top. The result stays assignable everywhere the old type was, so
+ *   the rewrite is safe, but it is a strengthening rather than a pure rename.
  */
 const GUARD_REWRITES = [
+  { guard: 'isFixedLengthArray', bounds: [0], replacement: 'isEmpty' },
   { guard: 'isFixedLengthTuple', bounds: [0], replacement: 'isEmpty' },
   { guard: 'isMaxLengthTuple', bounds: [0], replacement: 'isEmpty' },
+  { guard: 'isMaxLengthArray', bounds: [0], replacement: 'isEmpty' },
   { guard: 'isBoundedLengthTuple', bounds: [0, 0], replacement: 'isEmpty' },
+  { guard: 'isBoundedLengthArray', bounds: [0, 0], replacement: 'isEmpty' },
   { guard: 'isMinLengthArray', bounds: [1], replacement: 'isNonEmpty' },
+  { guard: 'isMinLengthTuple', bounds: [1], replacement: 'isNonEmpty' },
 ] as const satisfies readonly Readonly<{
   guard: string;
   bounds: readonly number[];
@@ -50,7 +52,7 @@ export const preferCanonicalLengthGuard: TSESLint.RuleModule<
     schema: [],
     messages: {
       useCanonicalGuard:
-        'Replace `{{arrName}}.{{guard}}({{boundsText}})` with `{{arrName}}.{{replacement}}(...)`: it narrows to exactly the same type.',
+        'Replace `{{arrName}}.{{guard}}({{boundsText}})` with `{{arrName}}.{{replacement}}(...)`: the bound makes the two guards equivalent.',
     },
   },
 

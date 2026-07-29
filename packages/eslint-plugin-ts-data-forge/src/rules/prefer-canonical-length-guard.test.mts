@@ -44,15 +44,6 @@ describe('prefer-canonical-length-guard', () => {
         `,
       },
       {
-        name: 'ignores the branded isFixedLengthArray (it narrows more tightly)',
-        code: dedent`
-          import { Arr } from 'ts-data-forge';
-
-          declare const xs: readonly number[];
-          const ok = Arr.isFixedLengthArray(xs, 0);
-        `,
-      },
-      {
         name: 'ignores a non-literal bound',
         code: dedent`
           import { Arr } from 'ts-data-forge';
@@ -91,6 +82,38 @@ describe('prefer-canonical-length-guard', () => {
       },
     ],
     invalid: [
+      {
+        name: 'isFixedLengthArray(xs, 0) becomes isEmpty(xs)',
+        code: dedent`
+          import { Arr } from 'ts-data-forge';
+
+          declare const xs: readonly number[];
+          const ok = Arr.isFixedLengthArray(xs, 0);
+        `,
+        output: dedent`
+          import { Arr } from 'ts-data-forge';
+
+          declare const xs: readonly number[];
+          const ok = Arr.isEmpty(xs);
+        `,
+        errors: [{ messageId: 'useCanonicalGuard' }],
+      },
+      {
+        name: 'isMinLengthTuple(xs, 1) becomes isNonEmpty(xs)',
+        code: dedent`
+          import { Arr } from 'ts-data-forge';
+
+          declare const xs: readonly number[];
+          const ok = Arr.isMinLengthTuple(xs, 1);
+        `,
+        output: dedent`
+          import { Arr } from 'ts-data-forge';
+
+          declare const xs: readonly number[];
+          const ok = Arr.isNonEmpty(xs);
+        `,
+        errors: [{ messageId: 'useCanonicalGuard' }],
+      },
       {
         name: 'isFixedLengthTuple(xs, 0) becomes isEmpty(xs)',
         code: dedent`
