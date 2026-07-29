@@ -4,10 +4,52 @@ import {
   type TSESTree,
 } from '@typescript-eslint/utils';
 import { getImportedLocalName, getTsDataForgeImport } from './import-utils.mjs';
+import { preferArrIsBoundedLengthArray } from './prefer-arr-is-bounded-length-array.mjs';
+import { preferArrIsFixedLengthArray } from './prefer-arr-is-fixed-length-array.mjs';
+import { preferArrIsMaxLengthArray } from './prefer-arr-is-max-length-array.mjs';
+import { preferArrIsMinLengthArray } from './prefer-arr-is-min-length-array.mjs';
+import { preferArrIsNonEmpty } from './prefer-arr-is-non-empty.mjs';
 
 type Options = readonly [];
 
-type MessageIds = 'useCanonicalGuard';
+type MessageIds =
+  | 'useCanonicalGuard'
+  | 'useIsBoundedLengthArray'
+  | 'useIsFixedLengthArray'
+  | 'useIsMaxLengthArray'
+  | 'useIsMinLengthArray'
+  | 'useIsNonEmpty';
+
+/**
+ * The `xs.length <op> n` → `Arr.is*` rules folded into this one.
+ *
+ * Their implementations are reused as-is rather than rewritten: this rule
+ * merges their visitors, so every case they already cover (type-aware array
+ * checks, `Arr` import insertion, the `&&`-bounded-range special case) keeps
+ * behaving exactly as before, and their co-located tests keep exercising them
+ * directly.
+ */
+const COMPARISON_RULES = [
+  preferArrIsNonEmpty,
+  preferArrIsMinLengthArray,
+  preferArrIsMaxLengthArray,
+  preferArrIsBoundedLengthArray,
+  preferArrIsFixedLengthArray,
+] as const;
+
+const MESSAGES = {
+  useCanonicalGuard:
+    'Replace `{{arrName}}.{{guard}}({{boundsText}})` with `{{arrName}}.{{replacement}}(...)`: the bound makes the two guards equivalent.',
+  useIsNonEmpty: preferArrIsNonEmpty.meta.messages.useIsNonEmpty,
+  useIsMinLengthArray:
+    preferArrIsMinLengthArray.meta.messages.useIsMinLengthArray,
+  useIsMaxLengthArray:
+    preferArrIsMaxLengthArray.meta.messages.useIsMaxLengthArray,
+  useIsBoundedLengthArray:
+    preferArrIsBoundedLengthArray.meta.messages.useIsBoundedLengthArray,
+  useIsFixedLengthArray:
+    preferArrIsFixedLengthArray.meta.messages.useIsFixedLengthArray,
+} as const satisfies Record<MessageIds, string>;
 
 /**
  * Length guards whose bound makes them redundant with `Arr.isEmpty` /
@@ -46,14 +88,11 @@ export const preferCanonicalLengthGuard: TSESLint.RuleModule<
     type: 'suggestion',
     docs: {
       description:
-        'Normalize degenerate `Arr` length guards (e.g. `Arr.isFixedLengthTuple(xs, 0)`) to `Arr.isEmpty` / `Arr.isNonEmpty`.',
+        'Normalize array-length checks to their canonical `Arr` guard: `xs.length <op> n` becomes the matching `Arr.is*` guard, and degenerate guards (e.g. `Arr.isFixedLengthTuple(xs, 0)`) become `Arr.isEmpty` / `Arr.isNonEmpty`.',
     },
     fixable: 'code',
     schema: [],
-    messages: {
-      useCanonicalGuard:
-        'Replace `{{arrName}}.{{guard}}({{boundsText}})` with `{{arrName}}.{{replacement}}(...)`: the bound makes the two guards equivalent.',
-    },
+    messages: MESSAGES,
   },
 
   create: (context) => {
@@ -64,48 +103,91 @@ export const preferCanonicalLengthGuard: TSESLint.RuleModule<
       'Arr',
     );
 
-    if (arrLocalName === undefined) return {};
+    const comparisonVisitors = COMPARISON_RULES.map((rule) =>
+      rule.create(context),
+    );
 
-    return {
-      CallExpression: (node) => {
-        const guardName = getGuardName(node, arrLocalName);
+    if (arrLocalName === undefined) return mergeVisitors(comparisonVisitors);
 
-        if (guardName === undefined) return;
+    return mergeVisitors([
+      ...comparisonVisitors,
+      {
+        CallExpression: (node) => {
+          const guardName = getGuardName(node, arrLocalName);
 
-        const rewrite = GUARD_REWRITES.find(
-          (entry) => entry.guard === guardName,
-        );
+          if (guardName === undefined) return;
 
-        if (rewrite === undefined || !matchesBounds(node, rewrite.bounds)) {
-          return;
-        }
+          const rewrite = GUARD_REWRITES.find(
+            (entry) => entry.guard === guardName,
+          );
 
-        const [array] = node.arguments;
+          if (rewrite === undefined || !matchesBounds(node, rewrite.bounds)) {
+            return;
+          }
 
-        if (array === undefined) return;
+          const [array] = node.arguments;
 
-        const arrayText = sourceCode.getText(array);
+          if (array === undefined) return;
 
-        context.report({
-          node,
-          messageId: 'useCanonicalGuard',
-          data: {
-            arrName: arrLocalName,
-            guard: guardName,
-            boundsText: ['…', ...rewrite.bounds.map(String)].join(', '),
-            replacement: rewrite.replacement,
-          },
-          fix: (fixer) =>
-            fixer.replaceText(
-              node,
-              `${arrLocalName}.${rewrite.replacement}(${arrayText})`,
-            ),
-        });
+          const arrayText = sourceCode.getText(array);
+
+          context.report({
+            node,
+            messageId: 'useCanonicalGuard',
+            data: {
+              arrName: arrLocalName,
+              guard: guardName,
+              boundsText: ['…', ...rewrite.bounds.map(String)].join(', '),
+              replacement: rewrite.replacement,
+            },
+            fix: (fixer) =>
+              fixer.replaceText(
+                node,
+                `${arrLocalName}.${rewrite.replacement}(${arrayText})`,
+              ),
+          });
+        },
       },
-    };
+    ]);
   },
   defaultOptions: [],
 } as const;
+
+/**
+ * Combines several rule listeners into one, calling every handler registered
+ * for a given selector in order.
+ */
+const mergeVisitors = (
+  // `RuleListener` holds mutable AST handler signatures, so it is not deeply
+  // readonly.
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+  visitors: readonly TSESLint.RuleListener[],
+): TSESLint.RuleListener => {
+  const mut_merged: Record<string, ((node: never) => void)[]> = {};
+
+  for (const visitor of visitors) {
+    for (const [selector, handler] of Object.entries(visitor)) {
+      if (typeof handler !== 'function') continue;
+
+      const mut_handlers = mut_merged[selector] ?? [];
+
+      mut_handlers.push(handler);
+
+      mut_merged[selector] = mut_handlers;
+    }
+  }
+
+  return Object.fromEntries(
+    Object.entries(mut_merged).map(([selector, handlers]) => [
+      selector,
+      (node: never) => {
+        for (const handler of handlers) {
+          handler(node);
+        }
+      },
+    ]),
+  );
+};
 
 /** The `Arr.<guard>` method name of `node`, or `undefined` for other calls. */
 const getGuardName = (

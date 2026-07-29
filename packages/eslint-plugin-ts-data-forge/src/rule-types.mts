@@ -43,7 +43,7 @@ namespace PreferCanonicalArraySlicing {
 }
 
 /**
- * @description Normalize degenerate `Arr` length guards (e.g. `Arr.isFixedLengthTuple(xs, 0)`) to `Arr.isEmpty` / `Arr.isNonEmpty`.
+ * @description Normalize array-length checks to their canonical `Arr` guard: `xs.length <op> n` becomes the matching `Arr.is*` guard, and degenerate guards (e.g. `Arr.isFixedLengthTuple(xs, 0)`) become `Arr.isEmpty` / `Arr.isNonEmpty`.
  *
  *  ```md
  *  | key        | value      |
@@ -54,66 +54,6 @@ namespace PreferCanonicalArraySlicing {
  *  ```
  */
 namespace PreferCanonicalLengthGuard {
-  export type RuleEntry = Linter.StringSeverity;
-}
-
-/**
- * @description Replace `xs.length >= n` with `Arr.isMinLengthArray(xs, n)` from ts-data-forge.
- *
- *  ```md
- *  | key        | value      |
- *  | :--------- | :--------- |
- *  | type       | suggestion |
- *  | deprecated | false      |
- *  | fixable    | code       |
- *  ```
- */
-namespace PreferArrIsMinLengthArray {
-  export type RuleEntry = Linter.StringSeverity;
-}
-
-/**
- * @description Replace `xs.length <= n` with `Arr.isMaxLengthArray(xs, n)` from ts-data-forge.
- *
- *  ```md
- *  | key        | value      |
- *  | :--------- | :--------- |
- *  | type       | suggestion |
- *  | deprecated | false      |
- *  | fixable    | code       |
- *  ```
- */
-namespace PreferArrIsMaxLengthArray {
-  export type RuleEntry = Linter.StringSeverity;
-}
-
-/**
- * @description Replace `xs.length >= min && xs.length <= max` with `Arr.isBoundedLengthArray(xs, min, max)` from ts-data-forge.
- *
- *  ```md
- *  | key        | value      |
- *  | :--------- | :--------- |
- *  | type       | suggestion |
- *  | deprecated | false      |
- *  | fixable    | code       |
- *  ```
- */
-namespace PreferArrIsBoundedLengthArray {
-  export type RuleEntry = Linter.StringSeverity;
-}
-
-/**
- * @description Replace `xs.length === n` with `Arr.isFixedLengthArray(xs, n)` from ts-data-forge.
- *
- *  ```md
- *  | key        | value      |
- *  | :--------- | :--------- |
- *  | type       | suggestion |
- *  | deprecated | false      |
- *  | fixable    | code       |
- *  ```
- */
-namespace PreferArrIsFixedLengthArray {
   export type RuleEntry = Linter.StringSeverity;
 }
 
@@ -129,21 +69,6 @@ namespace PreferArrIsFixedLengthArray {
  *  ```
  */
 namespace PreferArrIsArray {
-  export type RuleEntry = Linter.StringSeverity;
-}
-
-/**
- * @description Replace `xs.length > 0` with `Arr.isNonEmpty(xs)` from ts-data-forge.
- *
- *  ```md
- *  | key        | value      |
- *  | :--------- | :--------- |
- *  | type       | suggestion |
- *  | deprecated | false      |
- *  | fixable    | code       |
- *  ```
- */
-namespace PreferArrIsNonEmpty {
   export type RuleEntry = Linter.StringSeverity;
 }
 
@@ -313,12 +238,7 @@ namespace PreferComparisonOverNullishGuard {
 export type EslintTsDataForgeRules = Readonly<{
   'ts-data-forge/prefer-canonical-array-slicing': PreferCanonicalArraySlicing.RuleEntry;
   'ts-data-forge/prefer-canonical-length-guard': PreferCanonicalLengthGuard.RuleEntry;
-  'ts-data-forge/prefer-arr-is-min-length-array': PreferArrIsMinLengthArray.RuleEntry;
-  'ts-data-forge/prefer-arr-is-max-length-array': PreferArrIsMaxLengthArray.RuleEntry;
-  'ts-data-forge/prefer-arr-is-bounded-length-array': PreferArrIsBoundedLengthArray.RuleEntry;
-  'ts-data-forge/prefer-arr-is-fixed-length-array': PreferArrIsFixedLengthArray.RuleEntry;
   'ts-data-forge/prefer-arr-is-array': PreferArrIsArray.RuleEntry;
-  'ts-data-forge/prefer-arr-is-non-empty': PreferArrIsNonEmpty.RuleEntry;
   'ts-data-forge/prefer-arr-sum': PreferArrSum.RuleEntry;
   'ts-data-forge/prefer-as-int': PreferAsInt.RuleEntry;
   'ts-data-forge/prefer-is-non-null-object': PreferIsNonNullObject.RuleEntry;

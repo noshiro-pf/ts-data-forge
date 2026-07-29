@@ -13,6 +13,77 @@ const tester = new RuleTester({
   },
 });
 
+// The folded-in comparison rules are type-aware, so they need a TypeScript
+// program; the guard-normalization half does not.
+const typedTester = new RuleTester({
+  languageOptions: {
+    parser,
+    parserOptions: {
+      ecmaVersion: 2020,
+      sourceType: 'module',
+      projectService: {
+        allowDefaultProject: ['*.ts*'],
+      },
+      tsconfigRootDir: `${import.meta.dirname}/../..`,
+    },
+  },
+});
+
+describe('prefer-canonical-length-guard (folded-in length comparisons)', () => {
+  typedTester.run('prefer-canonical-length-guard', preferCanonicalLengthGuard, {
+    valid: [
+      {
+        name: 'ignores non-array length comparisons',
+        code: dedent`
+          const str = 'hello';
+          const ok = str.length > 0;
+        `,
+      },
+    ],
+    invalid: [
+      {
+        name: 'xs.length > 0 becomes Arr.isNonEmpty(xs)',
+        code: dedent`
+          const xs = [1, 2, 3];
+          const ok = xs.length > 0;
+        `,
+        output: dedent`
+          import { Arr } from 'ts-data-forge';
+          const xs = [1, 2, 3];
+          const ok = Arr.isNonEmpty(xs);
+        `,
+        errors: [{ messageId: 'useIsNonEmpty' }],
+      },
+      {
+        name: 'xs.length >= 2 becomes Arr.isMinLengthArray(xs, 2)',
+        code: dedent`
+          const xs = [1, 2, 3];
+          const ok = xs.length >= 2;
+        `,
+        output: dedent`
+          import { Arr } from 'ts-data-forge';
+          const xs = [1, 2, 3];
+          const ok = Arr.isMinLengthArray(xs, 2);
+        `,
+        errors: [{ messageId: 'useIsMinLengthArray' }],
+      },
+      {
+        name: 'xs.length === 3 becomes Arr.isFixedLengthArray(xs, 3)',
+        code: dedent`
+          const xs = [1, 2, 3];
+          const ok = xs.length === 3;
+        `,
+        output: dedent`
+          import { Arr } from 'ts-data-forge';
+          const xs = [1, 2, 3];
+          const ok = Arr.isFixedLengthArray(xs, 3);
+        `,
+        errors: [{ messageId: 'useIsFixedLengthArray' }],
+      },
+    ],
+  });
+});
+
 describe('prefer-canonical-length-guard', () => {
   tester.run('prefer-canonical-length-guard', preferCanonicalLengthGuard, {
     valid: [

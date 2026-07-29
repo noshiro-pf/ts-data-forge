@@ -27,3 +27,14 @@ and `isMinLengthArray(xs, 1)` are now the _type-identical_ rewrites, and the
 structural `*Tuple` guards (`isFixedLengthTuple(xs, 0)`, `isMaxLengthTuple(xs, 0)`,
 `isBoundedLengthTuple(xs, 0, 0)`, `isMinLengthTuple(xs, 1)`) are rewritten too —
 those strengthen the narrowed type by adding the brand.
+
+`prefer-canonical-length-guard` additionally absorbs the five `xs.length <op> n`
+comparison rules — `prefer-arr-is-non-empty`, `prefer-arr-is-min-length-array`,
+`prefer-arr-is-max-length-array`, `prefer-arr-is-bounded-length-array` and
+`prefer-arr-is-fixed-length-array` — so one rule now covers both
+comparison → guard and guard → guard normalization.
+
+BREAKING CHANGE: those five rule names are removed from the plugin; enable
+`ts-data-forge/prefer-canonical-length-guard` instead. Their behavior is
+unchanged — the rule reuses their implementations rather than reimplementing
+them.
