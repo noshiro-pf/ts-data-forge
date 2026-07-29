@@ -43,6 +43,21 @@ namespace PreferCanonicalArraySlicing {
 }
 
 /**
+ * @description Normalize degenerate `Arr` length guards (e.g. `Arr.isFixedLengthTuple(xs, 0)`) to `Arr.isEmpty` / `Arr.isNonEmpty`.
+ *
+ *  ```md
+ *  | key        | value      |
+ *  | :--------- | :--------- |
+ *  | type       | suggestion |
+ *  | deprecated | false      |
+ *  | fixable    | code       |
+ *  ```
+ */
+namespace PreferCanonicalLengthGuard {
+  export type RuleEntry = Linter.StringSeverity;
+}
+
+/**
  * @description Replace `xs.length >= n` with `Arr.isMinLengthArray(xs, n)` from ts-data-forge.
  *
  *  ```md
@@ -297,6 +312,7 @@ namespace PreferComparisonOverNullishGuard {
 
 export type EslintTsDataForgeRules = Readonly<{
   'ts-data-forge/prefer-canonical-array-slicing': PreferCanonicalArraySlicing.RuleEntry;
+  'ts-data-forge/prefer-canonical-length-guard': PreferCanonicalLengthGuard.RuleEntry;
   'ts-data-forge/prefer-arr-is-min-length-array': PreferArrIsMinLengthArray.RuleEntry;
   'ts-data-forge/prefer-arr-is-max-length-array': PreferArrIsMaxLengthArray.RuleEntry;
   'ts-data-forge/prefer-arr-is-bounded-length-array': PreferArrIsBoundedLengthArray.RuleEntry;
