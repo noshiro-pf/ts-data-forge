@@ -11,3 +11,8 @@ The check needs type information; without it the guard is kept, as before. It
 is deliberately conservative — a type TypeScript would accept through an
 _implicit_ index signature keeps the guard — and callables and arrays keep it
 too, because `isRecord` rejects those at runtime.
+
+`no-unnecessary-type-guard` recognizes `isRecord` for the same reason: it now
+reports `isRecord(x)` as always `true` when every union member already
+satisfies `UnknownRecord`, and as always `false` when none of them can (every
+primitive, array, tuple and callable).
