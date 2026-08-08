@@ -266,7 +266,9 @@ class QueueClass<T> implements Queue<T> {
     );
 
     // Copy elements in order from head to tail
-    for (const i of range(asSafeUint(this.#mut_size))) {
+    const indices = range(asSafeUint(this.#mut_size));
+
+    for (const i of indices) {
       const sourceIndex = (this.#mut_head + i) % this.#mut_capacity;
 
       newBuffer[i] = this.#mut_buffer[sourceIndex];
