@@ -515,14 +515,18 @@ describe('Queue test', () => {
       const elementCount = asUint32(1000);
 
       // Enqueue 1000 elements
-      for (const i of range(1, Uint32.add(elementCount, 1))) {
+      const valuesToEnqueue = range(1, Uint32.add(elementCount, 1));
+
+      for (const i of valuesToEnqueue) {
         q.enqueue(i);
       }
 
       expect(q.size).toBe(elementCount);
 
       // Dequeue all elements and verify order
-      for (const i of range(1, Uint32.add(elementCount, 1))) {
+      const expectedValues = range(1, Uint32.add(elementCount, 1));
+
+      for (const i of expectedValues) {
         const result = q.dequeue();
 
         assert.isTrue(Optional.isSome(result) && result.value === i);
@@ -583,7 +587,9 @@ describe('Queue test', () => {
       let mut_counter = 0;
 
       // Perform 1000 random operations
-      for (const _i of range(asUint32(1000))) {
+      const operationIndices = range(asUint32(1000));
+
+      for (const _i of operationIndices) {
         // Randomly decide to enqueue or dequeue
         const shouldEnqueue =
           Arr.isEmptyTuple(mut_expected) || Math.random() < 0.6;
@@ -628,7 +634,9 @@ describe('Queue test', () => {
       expect(q.size).toBe(1000);
 
       // Verify all elements in correct order
-      for (const i of range(1, asUint32(1001))) {
+      const expectedValues = range(1, asUint32(1001));
+
+      for (const i of expectedValues) {
         const result = q.dequeue();
 
         assert.isTrue(Optional.isSome(result) && result.value === i);

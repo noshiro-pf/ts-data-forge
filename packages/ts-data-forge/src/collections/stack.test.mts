@@ -185,7 +185,9 @@ describe('Stack test', () => {
     assert.isFalse(stack.isEmpty);
 
     // Pop all elements and verify LIFO order
-    for (const i of range(asSafeInt(n - 1), -1, -1)) {
+    const descendingIndices = range(asSafeInt(n - 1), -1, -1);
+
+    for (const i of descendingIndices) {
       const result = stack.pop();
 
       assert.isTrue(Optional.isSome(result));
@@ -283,7 +285,9 @@ describe('Stack test', () => {
     expect(stack.size).toBe(50);
 
     // Verify elements are in correct LIFO order
-    for (const i of range(98, -1, -2)) {
+    const remainingIndices = range(98, -1, -2);
+
+    for (const i of remainingIndices) {
       const result = stack.pop();
 
       expect(Optional.unwrap(result)).toBe(i);
