@@ -503,10 +503,10 @@ This repository is a **pnpm workspace** (`pnpm-workspace.yaml`,
 (`ts-data-forge-monorepo`) and only holds repository-wide tooling; every
 publishable artifact lives under `packages/`:
 
-| Package                                | Description                                               |
-| :------------------------------------- | :-------------------------------------------------------- |
-| `packages/ts-data-forge`               | The utility library published as `ts-data-forge`.         |
-| `packages/eslint-plugin-ts-data-forge` | ESLint rules that steer code toward ts-data-forge idioms. |
+| Package                                | Description                                                     |
+| :------------------------------------- | :-------------------------------------------------------------- |
+| `packages/ts-data-forge`               | The utility library published as `ts-data-forge`.               |
+| `packages/eslint-plugin-ts-data-forge` | ESLint rules that steer code toward ts-data-forge idioms.       |
 
 Repository-wide files at the root: `configs/`, `scripts/` (workspace
 orchestration: `ws-build-stages.mts`, `check-all.mts`, the `AGENTS.md`
@@ -562,7 +562,7 @@ not assume `node_modules/.bin/tsc` resolves to the one you want.
     7. `pnpm run ws:build`
 - **The codemod must run before the doc embeds.** `codemod:full`
   (`append-as-const` / `convert-to-readonly`) rewrites files under `samples/`,
-  so running it _after_ an embed leaves the copy inside the JSDoc block stale
+  so running it *after* an embed leaves the copy inside the JSDoc block stale
   — which fails CI's `lint-and-build (ws:build)` and `style-check (ws:doc)`
   while everything passes locally. This bites whenever a task adds **new**
   sample files.
@@ -617,14 +617,14 @@ easy to break without noticing:
   "brand intersected with tuple" types across these repos; see the
   ts-type-forge notes for how such a type must be consumed.
 - **A cast returns its input**, never a rebuilt value. Capture the length
-  _before_ the guard — the negative branch narrows the array away, so
+  *before* the guard — the negative branch narrows the array away, so
   `array.length` is no longer readable in the error message:
 
     ```ts
     const actualLength = array.length;
 
     if (!isFixedLengthTuple(length, array)) {
-        throw new TypeError(`... got an array of length ${actualLength}`);
+      throw new TypeError(`... got an array of length ${actualLength}`);
     }
 
     return array;
