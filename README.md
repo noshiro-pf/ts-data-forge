@@ -1,3 +1,11 @@
+> [!IMPORTANT]
+>
+> **This repository has moved to [noshiro-pf/mono](https://github.com/noshiro-pf/mono).**
+>
+> Development continues at [`libs/ts-data-forge`](https://github.com/noshiro-pf/mono/tree/main/libs/ts-data-forge), [`libs/eslint-plugin-ts-data-forge`](https://github.com/noshiro-pf/mono/tree/main/libs/eslint-plugin-ts-data-forge).
+> The full commit history and every tag came along; releases and issues stay
+> readable here.
+
 # ts-data-forge monorepo
 
 This repository is a [pnpm](https://pnpm.io/) monorepo.
